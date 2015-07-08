@@ -14,7 +14,12 @@ def makeCallOnce(callback, *args):
         callback(*args)
     return callOnce
 
-# The BV_Broadcast algorithm from [MMR13]
+# The BV_Broadcast algorithm [MMR13]
+# Input: a binary value
+# Output: outputs one binary value, and thereafter possibly a second
+# - If at least (t+1) of the honest parties input v, then v will be output by all honest parties
+#     (Note: it requires up to 2*t honest parties to deliver their messages. At the highest tolerance setting, this means *all* the honest parties)
+# - If any honest party outputs a value, then it must have been input by some honest party. If only corrupted parties propose a value, it will never be output. 
 def bv_broadcast(pid, N, t, broadcast, receive, output):
     assert N > 3*t
 
