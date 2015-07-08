@@ -18,28 +18,38 @@ def makeCallOnce(callback, *args):
 def bv_broadcast(pid, N, t, broadcast, receive, output):
     assert N > 3*t
 
-    def input(v):
-        assert v in (0,1)
-        broadcast(v)
+    def input(my_v):
+        # My initial input value is v in (0,1)
+        assert my_v in (0,1)
 
+        # We'll output each of (0,1) at most once
+        out = (makeCallOnce(lambda: output(0)),
+               makeCallOnce(lambda: output(1)))
+
+        # We'll relay each of (0,1) at most once
         received = defaultdict(set)
         def _bc(v):
             print '[%d]' % pid, 'Relaying', v
             broadcast(v)
-        relay0 = makeCallOnce(lambda: _bc(0))
-        relay1 = makeCallOnce(lambda: _bc(1))
-        out0 = makeCallOnce(lambda: output(0))
-        out1 = makeCallOnce(lambda: output(1))
+        relay = (makeCallOnce(lambda: _bc(0)),
+                 makeCallOnce(lambda: _bc(1)))
+
+        # Start by relaying my value
+        relay[my_v]()
 
         while True:
-            (pid, v) = receive()
+            (sender, v) = receive()
             assert v in (0,1)
-            assert pid in range(N)
-            received[v].add(pid)
+            assert sender in range(N)
+            received[v].add(sender)
+
+            # Relay after reaching first threshold
             if len(received[v]) >= t + 1:
-                (relay0,relay1)[v]()
+                relay[v]()
+
+            # Output after reaching second threshold
             if len(received[v]) >= 2*t + 1:
-                (out0,out1)[v]()
+                out[v]()
 
     return input
 
@@ -47,31 +57,32 @@ def bv_broadcast(pid, N, t, broadcast, receive, output):
 def shared_coin_dummy(pid, N, t, broadcast, receive):
     received = defaultdict(set)
     outputQueue = defaultdict(lambda:Queue(1))
-    round = [0]
+
     def _recv():
         while True:
-            # Receive P_i's share of value r
+            # New shares for some round r
             (i,r) = receive()
             assert i in range(N)
             assert r >= 0
             if i in received[r]: continue
             received[r].add(i)
-            if len(received[r]) == N-t: 
-                # We've collected enough shares
+
+            # After reaching the threshold, compute the output and
+            # make it available locally
+            if len(received[r]) == N-t:
                 b = hash(r) % 2
                 outputQueue[r].put(b)
     Greenlet(_recv).start()
-    def _next():
-        r = round[0]
-        # Broadcast our share
-        broadcast(r)
-        # Wait until the value is ready
-        b = outputQueue[r].get()
-        # Advance round
-        round[0] += 1
-        return b
 
-    return _next
+    # Broadcast our share
+    round = 0
+    while True:
+        broadcast(round)
+        # Wait until the value is ready
+        b = outputQueue[round].get()
+        # Advance round
+        round += 1
+        yield b
 
 def binary_consensus(pid, N, t, vi, broadcast, receive):
     # Messages received are routed to either a shared coin, the broadcast, or AUX

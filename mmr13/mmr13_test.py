@@ -6,7 +6,7 @@ import random
 
 import mmr13
 reload(mmr13)
-from mmr13 import makeCallOnce, bv_broadcast, shared_coin
+from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy
 
 
 
@@ -70,7 +70,7 @@ def random_delay_sharedcoin_dummy(N, t):
         while r < 5:
             gevent.sleep(random.random()*maxdelay)
             print '[',i,'] at round ', r
-            b = coin()
+            b = next(coin)
             print '[',i,'] bit[%d]:'%r, b
             r += 1
         print '[',i,'] done'
@@ -79,7 +79,7 @@ def random_delay_sharedcoin_dummy(N, t):
     for i in range(N):
         bc = makeBroadcast(i)
         recv = buffers[i].get
-        coin = shared_coin(i, N, t, bc, recv)
+        coin = shared_coin_dummy(i, N, t, bc, recv)
         th = Greenlet(_run, i, coin)
         th.start_later(random.random()*maxdelay)
         ts.append(th)
