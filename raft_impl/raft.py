@@ -120,13 +120,13 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
         def advanceCommitIndex():
             global commitIndex
             matchIndexArray = matchIndex[:]
-            matchIndexArray[pid] = len(log)-1
+            matchIndexArray[pid] = len(log)
             n = sorted(matchIndexArray)[N/2]
             if (state=='leader' and accessLog(n)['term']==term):
-                commitIndex = max([commitIndex, n])
+                commitIndex = max(commitIndex, n)
 
         def handleRequestVoteRequest(request):
-            global votedFor
+            global votedFor, electionTimeout
             if term<request['term']:
                 stepDown(request['term'])
             granted=False
@@ -146,7 +146,7 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
                 voteGranted[reply['from']] = reply['granted']
 
         def handleAppendEntriesRequest(req):
-            global log, commitIndex
+            global log, commitIndex, state, electionTimeout
             success = False
             matchIndex = 0
             if term < req['term']:
