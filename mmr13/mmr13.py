@@ -4,6 +4,17 @@ from gevent.queue import Queue
 from collections import defaultdict
 import random
 
+def joinQueues(a, b):
+    # Return an element from either a or b
+    q = Queue(1)
+    def _handle(chan):
+        chan.peek()
+        q.put( chan )
+    Greenlet(_handle, a).start()
+    Greenlet(_handle, b).start()
+    c = q.get()
+    if c is a: return 'a', a.get()
+    if c is b: return 'b', b.get()
 
 # Returns an idempotent function that only 
 def makeCallOnce(callback, *args):
