@@ -262,8 +262,32 @@ def runRaft(inputs, clientsChannel, t, tMin, tMax, getTime): # Everyone broadcas
         gevent.joinall(ts)
     except gevent.hub.LoopExit: pass
 
+def broadcastClient(channels):
+# In this implementation, if a 'follower' server receives a msg from a client, it will just ignore it.
+# So a client needs to manually broadcast the msg to everyone.
+    def mannualBr(msg):
+        for channel in channels:
+            channel.put(msg) # change to asynchronous?
+    MSG_TOTAL = 5
+    mailDispatchers = []
+    for i in range(MSG_TOTAL):
+        t = Greenlet(mannualBr, i)
+        t.start_later(random.random() * CLIENT_DELAY)
+        mailDispatchers.append(t)
+    gevent.joinall(mailDispatchers)
+    return
+
+
 if __name__ == '__main__':
     import time
     def myGetTime():
         return int(time.time() * 1000)
-    runRaft([0]*5, [Queue(1) for x in range(5)], 0, 100, 200, myGetTime)
+    N = 5
+    CLIENT_DELAY = 3000
+    clientChannels = [Queue(1) for x in range(N)]
+    clients = []
+    clientInstance = Greenlet(broadcastClient, clientChannels)
+    clientInstance.start_later(random.random() * CLIENT_DELAY)
+    clients.append(clientInstance)
+    gevent.joinall(clients)
+    runRaft([0]*N, clientChannels, 0, 100, 200, myGetTime)
