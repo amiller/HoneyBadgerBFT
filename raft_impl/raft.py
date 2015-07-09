@@ -111,7 +111,7 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
                     'term': term,
                     'prevIndex': prevIndex,
                     'prevTerm': accessLog(prevIndex),
-                    'entries': log[prevIndex:lastIndex],
+                    'entries': log[prevIndex:lastIndex], # To create a copy
                     'commitIndex': min(commitIndex, lastIndex)
                 })
                 rpcDue[j] = getTime() + RPC_TIMEOUT
@@ -130,10 +130,12 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
             if term<request['term']:
                 stepDown(request['term'])
             granted=False
-            if (term == request['term'] and (votedFor == None or votedFor == request['from'])
-                and (request['lastLogTerm'] > log[-1]['term'] or (request['lastLogTerm'] == log[-1]['term'] and
-                                                                  request['lastLogIndex'] >= len(log)-1))):
-                granted=True
+            if (term == request['term'] and
+                    (votedFor == None or votedFor == request['from']) and
+                    (request['lastLogTerm'] > log[-1]['term'] or
+                        (request['lastLogTerm'] == log[-1]['term'] and
+                            request['lastLogIndex'] >= len(log)))):
+                granted = True
                 votedFor = request['from']
                 electionTimeout = makeElectionTime()
             sendResponse(request['from'], dict(term=term, granted=granted))
@@ -160,8 +162,8 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
                     for i in range(len(log)):
                         index += 1
                         if accessLog(index)!= req['entries'][i]['term']:
-                            while len(log) > index:
-                                log = log[:-1]
+                            while len(log) > index - 1:
+                                log.pop()
                             log.append(req['entries'][i])
                     matchIndex = index
                     commitIndex = max([commitIndex, req['commitIndex']])
@@ -172,7 +174,7 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
                 stepDown(rep['term'])
             if state == 'leader' and term==rep['term']:
                 if rep['success']:
-                    matchIndex[rep['from']] = max([matchIndex[rep['from']]], rep['matchIndex'])
+                    matchIndex[rep['from']] = max(matchIndex[rep['from']], rep['matchIndex'])
                     nextIndex[rep['from']] = rep['matchIndex'] + 1
                 else:
                     nextIndex[rep['from']] = max([1, nextIndex[rep['from']]-1])
