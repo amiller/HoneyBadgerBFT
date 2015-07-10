@@ -7,7 +7,7 @@ import random
 import yaml
 
 INF = 1e40
-RPC_TIMEOUT = 50000
+RPC_TIMEOUT = 50.000
 MIN_RPC_LATENCY = 10.000
 MAX_RPC_LATENCY = 15.000
 ELECTION_TIMEOUT = 100.000
@@ -92,7 +92,8 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
                 run.electionTimeout = makeElectionTime()
         #############################
         def startNewElection():
-            if (run.state == 'follower' or run.state == 'candidate') and run.electionTimeout <= getTime():
+            if (run.state == 'follower' or run.state == 'candidate') \
+                    and run.electionTimeout <= getTime():
                 print bcolors.OKBLUE + "[%d] Starting a new election." % run.pid + bcolors.ENDC
                 run.electionTimeout = makeElectionTime()
                 run.term += 1
@@ -143,7 +144,7 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
                     'type': 'AppendEntries',
                     'term': run.term,
                     'prevIndex': prevIndex,
-                    'prevTerm': accessLog(prevIndex),
+                    'prevTerm': accessLog(prevIndex) and accessLog(prevIndex)['term'] or 0,
                     'entries': run.log[prevIndex:lastIndex], # To create a copy
                     'commitIndex': min(run.commitIndex, lastIndex)
                 })
@@ -197,12 +198,13 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
                 run.electionTimeout = makeElectionTime()
                 if (req['prevIndex']==0 or
                         (req['prevIndex']<=len(run.log) and
-                             (accessLog(req['prevIndex'])==None or accessLog(req['prevIndex'])['term'] == req['prevTerm']))):
+                             (accessLog(req['prevIndex'])==None or \
+                                          accessLog(req['prevIndex'])['term'] == req['prevTerm']))):
                     success = True
                     index = req['prevIndex']
                     for i in range(len(req['entries'])):
                         index += 1
-                        if (not run.log) or accessLog(index)['term']!= req['entries'][i]['term']:
+                        if accessLog(index)==None or accessLog(index)['term']!= req['entries'][i]['term']:
                             while len(run.log) > index - 1:
                                 run.log.pop()
                             run.log.append(req['entries'][i])
@@ -306,11 +308,11 @@ def runRaft(inputs, clientsChannel, t, tMin, tMax, getTime): # Everyone broadcas
         snd = makeSend(i)
         inp = raftServer(i, N, t, bc, snd, recv, client, outp, getTime, getElectionTime)
         th = Greenlet(inp, inputs[i])
-        th.start()
+        th.start_later(0)
         ts.append(th)
     try:
         gevent.joinall(ts)
-    except:
+    except gevent.hub.LoopExit:
         print "No more msgs, exited"
     #except gevent.hub.LoopExit: pass
 
@@ -345,7 +347,7 @@ if __name__ == '__main__':
     clientChannels = [Queue(1) for x in range(N)]
     clients = []
     clientInstance = Greenlet(broadcastClient, clientChannels)
-    clientInstance.start()
+    clientInstance.start_later(0)
     clients.append(clientInstance)
     print '[!] Starting raft...'
     runRaft([0]*N, clientChannels, 0, 100, 200, myGetTime)
