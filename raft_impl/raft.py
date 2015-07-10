@@ -1,17 +1,29 @@
 import gevent
 from gevent import Greenlet
 from gevent.queue import Queue
-from collections import defaultdict
+#from collections import defaultdict
 import random
-import json
+#import json
+import yaml
 
 INF = 1e40
 RPC_TIMEOUT = 50000
-MIN_RPC_LATENCY = 10000
-MAX_RPC_LATENCY = 15000
-ELECTION_TIMEOUT = 100000
+MIN_RPC_LATENCY = 10.000
+MAX_RPC_LATENCY = 15.000
+ELECTION_TIMEOUT = 100.000
+CLIENT_DELAY = 6
 BATCH_SIZE = 1
-RECV_TIMEOUT = 50
+RECV_TIMEOUT = 0.05
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 # The BV_Broadcast algorithm from [MMR13]
 # recvClient can block
 def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime, getElectionTimeDelay):
@@ -23,168 +35,202 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
     def makeElectionTime():
         return getTime() + getElectionTimeDelay()
     def run(v):
-        global pid
+        run.pid = pid
         # Here we just ignore the input
-        state = 'follower'
-        term = 1
-        votedFor = None
-        electionTimeout = makeElectionTime()
-        voteGranted = [False]*N
-        matchIndex = [0]*N
-        nextIndex = [1]*N
-        rpcDue = [0]*N
-        log = []
-        commitIndex = 0
-        heartbeatDue = [0]*N
+        run.state = 'follower'
+        run.term = 1
+        run.votedFor = None
+        run.electionTimeout = makeElectionTime()
+        run.voteGranted = [False]*N
+        run.matchIndex = [0]*N
+        run.nextIndex = [1]*N
+        run.rpcDue = [0]*N
+        run.log = []
+        run.commitIndex = 0
+        run.heartbeatDue = [0]*N
+        def displayInfo():
+            info = dict(
+                now=getTime(),
+                state=run.state,
+                term=run.term,
+                votedFor=run.votedFor,
+                electionTimeout=run.electionTimeout,
+                voteGranted =run.voteGranted,
+                matchIndex = run.matchIndex,
+                nextIndex = run.nextIndex,
+                rpcDue = run.rpcDue,
+                log = run.log,
+                commitIndex = run.commitIndex,
+                heartbeatDue = run.heartbeatDue
+            )
+            print yaml.dump(info)
+        print "[%d] Initing..." % run.pid
+        displayInfo()
         # Setup the client-msg monitor
+        print "[%d] Raft server started." % (run.pid)
         def clientCallBack(msg):
-            if state=='leader':
-                log.append(dict(term=term, msg=msg))
-            Greenlet(clientMonitor, {}).start_later(0)
+            if run.state=='leader':
+                print bcolors.WARNING + "\b[%d] received msg from client: %s" % (run.pid, repr(msg)) + bcolors.ENDC
+                run.log.append(dict(term=run.term, msg=msg))
+            Greenlet(clientMonitor).start_later(0)
             ############################## Send msg to the leader
         def clientMonitor():
             msg = recvClient()
             clientCallBack(msg)
-        Greenlet(clientMonitor, {}).start_later(0)
+        print "[%d] starts listening..." % (run.pid)
+        Greenlet(clientMonitor).start_later(0)
         ##########################
         def accessLog(index):
-            if index<1 or index>len(log):
+            if index<1 or index>len(run.log):
                 return None
-            return log[index-1]
+            return run.log[index-1]
         def stepDown(newTerm):
-            global term, state, votedFor, electionTimeout
-            term = newTerm
-            state = 'follower'
-            votedFor = None
-            if electionTimeout <= getTime() or electionTimeout == INF:
-                electionTimeout = makeElectionTime()
+            run.term = newTerm
+            run.state = 'follower'
+            run.votedFor = None
+            if run.electionTimeout <= getTime() or run.electionTimeout == INF:
+                run.electionTimeout = makeElectionTime()
         #############################
         def startNewElection():
-            if (state == 'follower' or state == 'candidate') and electionTimeout <= getTime():
-                global state, term, votedFor, electionTimeout, voteGranted, matchIndex, rpcDue, heartbeatDue, nextIndex
-                electionTimeout = makeElectionTime()
-                term += 1
-                votedFor = pid
-                state = 'candidate'
-                voteGranted = [False]*N
-                matchIndex = [0]*N
-                nextIndex = [1]*N
-                rpcDue = [0]*N
-                heartbeatDue = [0]*N
+            if (run.state == 'follower' or run.state == 'candidate') and run.electionTimeout <= getTime():
+                print bcolors.OKBLUE + "[%d] Starting a new election." % run.pid + bcolors.ENDC
+                run.electionTimeout = makeElectionTime()
+                run.term += 1
+                run.votedFor = run.pid
+                run.state = 'candidate'
+                run.voteGranted = [False]*N
+                run.matchIndex = [0]*N
+                run.nextIndex = [1]*N
+                run.rpcDue = [0]*N
+                run.heartbeatDue = [0]*N
 
         def sendRequestVote(j):
-            if (state=='candidate' and rpcDue[j] <= getTime()):
-                rpcDue[j] = getTime() + RPC_TIMEOUT
+            if (run.state=='candidate' and run.rpcDue[j] <= getTime()):
+                run.rpcDue[j] = getTime() + RPC_TIMEOUT
                 sendRequest(j, {
-                    'from':pid,
+                    'from':run.pid,
                     'to':j,
                     'type':'RequestVote',
-                    'term':term,
-                    'lastLogTerm':log[-1],
-                    'lastLogIndex':len(log)
+                    'term':run.term,
+                    'lastLogTerm':accessLog(len(run.log)),
+                    'lastLogIndex':len(run.log)
                 })
 
         def count(container, value):
             return len([1 for x in container if container[x]==value])
 
         def becomeLeader():
-            global state, nextIndex, rpcDue, heartbeatDue, electionTimeout
-            if (state=='candidate' and count(voteGranted, True)+1 > N/2):
-                state = 'leader'
-                nextIndex = [len(log)+1]*N
-                rpcDue = [INF]*N
-                heartbeatDue = [0]*N
-                electionTimeout = INF
+            if (run.state=='candidate' and count(run.voteGranted, True)+1 > N/2):
+                print bcolors.OKGREEN + "[%d] is now the leader." % run.pid + bcolors.ENDC
+                run.state = 'leader'
+                run.nextIndex = [len(run.log)+1]*N
+                run.rpcDue = [INF]*N
+                run.heartbeatDue = [0]*N
+                run.electionTimeout = INF
 
         def sendAppendEntries(j):
-            if (state=='leader' and
-                    (heartbeatDue[j]<=getTime() or
-                         (nextIndex[j] <= len(log) and rpcDue[j] <= getTime()))):
-                prevIndex = nextIndex[j] - 1
-                lastIndex = min(prevIndex + BATCH_SIZE, len(log))
-                if (matchIndex[j] + 1 < nextIndex[j]):
+            if (run.state=='leader' and
+                    (run.heartbeatDue[j]<=getTime() or
+                         (run.nextIndex[j] <= len(run.log) and run.rpcDue[j] <= getTime()))):
+                displayInfo()
+                prevIndex = run.nextIndex[j] - 1
+                lastIndex = min(prevIndex + BATCH_SIZE, len(run.log))
+                if (run.matchIndex[j] + 1 < run.nextIndex[j]):
                     lastIndex = prevIndex
                 sendRequest(j, {
-                    'from': pid,
+                    'from': run.pid,
                     'to': j,
                     'type': 'AppendEntries',
-                    'term': term,
+                    'term': run.term,
                     'prevIndex': prevIndex,
                     'prevTerm': accessLog(prevIndex),
-                    'entries': log[prevIndex:lastIndex], # To create a copy
-                    'commitIndex': min(commitIndex, lastIndex)
+                    'entries': run.log[prevIndex:lastIndex], # To create a copy
+                    'commitIndex': min(run.commitIndex, lastIndex)
                 })
-                rpcDue[j] = getTime() + RPC_TIMEOUT
-                heartbeatDue[j] = getTime() + ELECTION_TIMEOUT / 2
+                run.rpcDue[j] = getTime() + RPC_TIMEOUT
+                run.heartbeatDue[j] = getTime() + ELECTION_TIMEOUT / 2
 
         def advanceCommitIndex():
-            global commitIndex
-            matchIndexArray = matchIndex[:]
-            matchIndexArray[pid] = len(log)
+            print "[%d] advancing commitment: %s" % (run.pid, run.matchIndex)
+            print "[%d] has self committed to the first %d log items" % (run.pid, run.commitIndex)
+            print "[%d] log: %s" % (run.pid, repr(run.log))
+            matchIndexArray = run.matchIndex[:]
+            matchIndexArray[run.pid] = len(run.log)
+            print matchIndexArray
             n = sorted(matchIndexArray)[N/2]
-            if (state=='leader' and accessLog(n)['term']==term):
-                commitIndex = max(commitIndex, n)
+            if (run.state=='leader' and (accessLog(n)==None or accessLog(n)['term']==run.term)):
+                run.commitIndex = max(run.commitIndex, n)
 
         def handleRequestVoteRequest(request):
-            global votedFor, electionTimeout
-            if term<request['term']:
+            if run.term<request['term']:
                 stepDown(request['term'])
             granted=False
-            if (term == request['term'] and
-                    (votedFor == None or votedFor == request['from']) and
-                    (request['lastLogTerm'] > log[-1]['term'] or
-                        (request['lastLogTerm'] == log[-1]['term'] and
-                            request['lastLogIndex'] >= len(log)))):
+            if (run.term == request['term'] and
+                    (run.votedFor == None or run.votedFor == request['from']) and
+                    (accessLog(len(run.log))==None or request['lastLogTerm'] > run.log[-1]['term'] or
+                        (request['lastLogTerm'] == run.log[-1]['term'] and
+                            request['lastLogIndex'] >= len(run.log)))):
                 granted = True
-                votedFor = request['from']
-                electionTimeout = makeElectionTime()
-            sendResponse(request['from'], dict(term=term, granted=granted))
+                run.votedFor = request['from']
+                run.electionTimeout = makeElectionTime()
+            sendResponse(request['from'], {
+                'type':"RequestVote",
+                'from':run.pid,
+                'term':run.term,
+                'granted':granted
+            })
 
         def handleRequestVoteReply(reply):
-            if (term < reply['term']):
+            if (run.term < reply['term']):
                 stepDown(reply['term'])
-            if (state == 'candidate' and term==reply['term']):
-                rpcDue[reply['from']] = INF
-                voteGranted[reply['from']] = reply['granted']
+            if (run.state == 'candidate' and run.term==reply['term']):
+                run.rpcDue[reply['from']] = INF
+                run.voteGranted[reply['from']] = reply['granted']
 
         def handleAppendEntriesRequest(req):
-            global log, commitIndex, state, electionTimeout
             success = False
             matchIndex = 0
-            if term < req['term']:
+            if run.term < req['term']:
                 stepDown(req['term'])
-            if term == req['term']:
-                state = 'follower'
-                electionTimeout = makeElectionTime()
-                if (req['prevIndex']==0 or (req['prevIndex']<len(log) and accessLog(req['prevIndex'])['term'] == req['prevTerm'])):
+            if run.term == req['term']:
+                run.state = 'follower'
+                run.electionTimeout = makeElectionTime()
+                if (req['prevIndex']==0 or
+                        (req['prevIndex']<=len(run.log) and
+                             (accessLog(req['prevIndex'])==None or accessLog(req['prevIndex'])['term'] == req['prevTerm']))):
                     success = True
                     index = req['prevIndex']
-                    for i in range(len(log)):
+                    for i in range(len(req['entries'])):
                         index += 1
-                        if accessLog(index)!= req['entries'][i]['term']:
-                            while len(log) > index - 1:
-                                log.pop()
-                            log.append(req['entries'][i])
+                        if (not run.log) or accessLog(index)['term']!= req['entries'][i]['term']:
+                            while len(run.log) > index - 1:
+                                run.log.pop()
+                            run.log.append(req['entries'][i])
                     matchIndex = index
-                    commitIndex = max([commitIndex, req['commitIndex']])
-            sendResponse(req['from'], dict(term=term, success=success, matchIndex=matchIndex))
+                    run.commitIndex = max(run.commitIndex, req['commitIndex'])
+            sendResponse(req['from'], {
+                'type':"AppendEntries",
+                'from':run.pid,
+                'term':run.term,
+                'success':success,
+                'matchIndex':matchIndex})
 
         def handleAppendEntriesReply(rep):
-            if term < rep['term']:
+            if run.term < rep['term']:
                 stepDown(rep['term'])
-            if state == 'leader' and term==rep['term']:
+            if run.state == 'leader' and run.term==rep['term']:
                 if rep['success']:
-                    matchIndex[rep['from']] = max(matchIndex[rep['from']], rep['matchIndex'])
-                    nextIndex[rep['from']] = rep['matchIndex'] + 1
+                    run.matchIndex[rep['from']] = max(run.matchIndex[rep['from']], rep['matchIndex'])
+                    run.nextIndex[rep['from']] = rep['matchIndex'] + 1
                 else:
-                    nextIndex[rep['from']] = max([1, nextIndex[rep['from']]-1])
-            rpcDue[rep['from']] = 0
+                    run.nextIndex[rep['from']] = max(1, run.nextIndex[rep['from']]-1)
+                run.rpcDue[rep['from']] = 0
 
         def handleMessage(packedMsg):
-            if state == 'stopped':
+            if run.state == 'stopped':
                 return
             direction, msg=packedMsg
-            if msg['type'] == 'requestVote':
+            if msg['type'] == 'RequestVote':
                 if direction == 'request':
                     handleRequestVoteRequest(msg)
                 else:
@@ -194,20 +240,23 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
                     handleAppendEntriesRequest(msg)
                 else:
                     handleAppendEntriesReply(msg)
-
+        print "[%d] Counting down...\n\n" % run.pid
         while True:
-            global pid
             startNewElection()
             becomeLeader()
             advanceCommitIndex()
             for i in range(N):
-                if i != pid:
+                if i != run.pid:
                     sendRequestVote(i)
                     sendAppendEntries(i)
-            result = receive(timeout=RECV_TIMEOUT)
-            if result:
+            try:
+                print "[%d] tries to fetch a msg" % run.pid
+                result = receive(timeout=RECV_TIMEOUT)
+                print "[%d] got a msg: %s" % (run.pid, repr(result))
                 senderID, packedMSG = result
                 handleMessage(packedMSG)
+            except gevent.queue.Empty:
+                pass #Idle
 
     return run
 
@@ -232,6 +281,7 @@ def runRaft(inputs, clientsChannel, t, tMin, tMax, getTime): # Everyone broadcas
 
     def makeSend(i):
         def _send(j,v):
+            print bcolors.OKGREEN + "[m] %d -> %d\n\t\t%s" % (i,j, repr(v)) + bcolors.ENDC
             buffers[j].put((i,v))
         return _send
 
@@ -240,7 +290,7 @@ def runRaft(inputs, clientsChannel, t, tMin, tMax, getTime): # Everyone broadcas
 
     def makeOutput(i):
         def _output(v):
-            print '[%d]' % (i, 'output:', v)
+            print '[%d]' % i, 'output:', v
         return _output
 
     def makeReceive(i):
@@ -256,23 +306,30 @@ def runRaft(inputs, clientsChannel, t, tMin, tMax, getTime): # Everyone broadcas
         snd = makeSend(i)
         inp = raftServer(i, N, t, bc, snd, recv, client, outp, getTime, getElectionTime)
         th = Greenlet(inp, inputs[i])
-        th.start_later(0)
+        th.start()
         ts.append(th)
     try:
         gevent.joinall(ts)
-    except gevent.hub.LoopExit: pass
+    except:
+        print "No more msgs, exited"
+    #except gevent.hub.LoopExit: pass
 
 def broadcastClient(channels):
 # In this implementation, if a 'follower' server receives a msg from a client, it will just ignore it.
 # So a client needs to manually broadcast the msg to everyone.
+    print "[!] Client Started..."
     def mannualBr(msg):
+        print "[*] Doing dispatching msg:", msg
         for channel in channels:
             channel.put(msg) # change to asynchronous?
+    print "[*] Broadcasting client starting..."
     MSG_TOTAL = 5
     mailDispatchers = []
     for i in range(MSG_TOTAL):
-        t = Greenlet(mannualBr, i)
-        t.start_later(random.random() * CLIENT_DELAY)
+        t = Greenlet(mannualBr, "Message %d" % i)
+        delay = random.random() * CLIENT_DELAY
+        print bcolors.WARNING + "\b[*] Msg dispatch %d will start in %f(s)..." % (i, delay) + bcolors.ENDC
+        t.start_later(delay)
         mailDispatchers.append(t)
     gevent.joinall(mailDispatchers)
     return
@@ -281,13 +338,15 @@ def broadcastClient(channels):
 if __name__ == '__main__':
     import time
     def myGetTime():
+        print "[C] Now is", int(time.time() * 1000)
         return int(time.time() * 1000)
+    print '[!] Initiating clients...'
     N = 5
-    CLIENT_DELAY = 3000
     clientChannels = [Queue(1) for x in range(N)]
     clients = []
     clientInstance = Greenlet(broadcastClient, clientChannels)
-    clientInstance.start_later(random.random() * CLIENT_DELAY)
+    clientInstance.start()
     clients.append(clientInstance)
-    gevent.joinall(clients)
+    print '[!] Starting raft...'
     runRaft([0]*N, clientChannels, 0, 100, 200, myGetTime)
+    gevent.joinall(clients)
