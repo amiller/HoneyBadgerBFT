@@ -307,7 +307,10 @@ def runRaft(inputs, clientsChannel, t, tMin, tMax, getTime): # Everyone broadcas
                     break
                 except gevent.queue.Full:
                     pass
-        return _send
+        def _async_send(j,v):
+            Greenlet(_send, j, v).start()
+        #return _send
+        return _async_send
 
     def makeReceiveFromClient(i):
         return clientsChannel[i].get
