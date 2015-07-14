@@ -4,16 +4,29 @@ from gevent.queue import Queue
 #from collections import defaultdict
 import random
 #import json
+import sys
 import yaml
+import time
+from gevent import monkey
+monkey.patch_all()
 
 INF = 1e40
 RPC_TIMEOUT = 50.000
 MIN_RPC_LATENCY = 10.000
 MAX_RPC_LATENCY = 15.000
 ELECTION_TIMEOUT = 100.000
-CLIENT_DELAY = 6
+CLIENT_DELAY = 3
 BATCH_SIZE = 1
 RECV_TIMEOUT = 0.05
+SEND_TIMEOUT = 0.05
+RECV_CLIENT_TIMEOUT = 0.1
+
+TIME_START = 0
+
+def mylog(*args):
+    print " ".join([isinstance(arg, str) and arg or repr(arg) for arg in args])
+    sys.stdout.flush()
+    sys.stderr.flush()
 
 class bcolors:
     HEADER = '\033[95m'
@@ -64,25 +77,30 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
                 heartbeatDue = run.heartbeatDue
             )
             print yaml.dump(info)
-        print "[%d] Initing..." % run.pid
+        mylog("[%d] Initing..." % run.pid)
         displayInfo()
         # Setup the client-msg monitor
-        print "[%d] Raft server started." % (run.pid)
+        mylog("[%d] Raft server started." % (run.pid))
         def clientCallBack(msg):
             if run.state=='leader':
-                print bcolors.WARNING + "\b[%d] received msg from client: %s" % (run.pid, repr(msg)) + bcolors.ENDC
+                mylog(bcolors.WARNING + "\b[%d] received msg from client: %s" % (run.pid, repr(msg)) + bcolors.ENDC)
                 run.log.append(dict(term=run.term, msg=msg))
-            Greenlet(clientMonitor).start_later(0)
+            #Greenlet(clientMonitor).start_later(0)
             ############################## Send msg to the leader
         def clientMonitor():
-            msg = recvClient()
-            clientCallBack(msg)
-        print "[%d] starts listening..." % (run.pid)
+            while True:
+                try:
+                    msg = recvClient(timeout=RECV_CLIENT_TIMEOUT)
+                    clientCallBack(msg)
+                except gevent.queue.Empty:
+                    mylog("[%d] no client msg" % run.pid)
+
+        mylog("[%d] starts listening..." % (run.pid))
         Greenlet(clientMonitor).start_later(0)
         ##########################
         def accessLog(index):
             if index<1 or index>len(run.log):
-                return None
+                return {'term':0}
             return run.log[index-1]
         def stepDown(newTerm):
             run.term = newTerm
@@ -94,7 +112,7 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
         def startNewElection():
             if (run.state == 'follower' or run.state == 'candidate') \
                     and run.electionTimeout <= getTime():
-                print bcolors.OKBLUE + "[%d] Starting a new election." % run.pid + bcolors.ENDC
+                mylog(bcolors.OKBLUE + "[%d] Starting a new election." % run.pid + bcolors.ENDC)
                 run.electionTimeout = makeElectionTime()
                 run.term += 1
                 run.votedFor = run.pid
@@ -122,14 +140,14 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
 
         def becomeLeader():
             if (run.state=='candidate' and count(run.voteGranted, True)+1 > N/2):
-                print bcolors.OKGREEN + "[%d] is now the leader." % run.pid + bcolors.ENDC
+                mylog(bcolors.OKGREEN + "[%d] is now the leader." % run.pid + bcolors.ENDC)
                 run.state = 'leader'
                 run.nextIndex = [len(run.log)+1]*N
                 run.rpcDue = [INF]*N
                 run.heartbeatDue = [0]*N
                 run.electionTimeout = INF
 
-        def sendAppendEntries(j):
+        def sendAppendEntries(j): # Act as heart beats also
             if (run.state=='leader' and
                     (run.heartbeatDue[j]<=getTime() or
                          (run.nextIndex[j] <= len(run.log) and run.rpcDue[j] <= getTime()))):
@@ -152,12 +170,12 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
                 run.heartbeatDue[j] = getTime() + ELECTION_TIMEOUT / 2
 
         def advanceCommitIndex():
-            print "[%d] advancing commitment: %s" % (run.pid, run.matchIndex)
-            print "[%d] has self committed to the first %d log items" % (run.pid, run.commitIndex)
-            print "[%d] log: %s" % (run.pid, repr(run.log))
+            mylog("[%d] advancing commitment: %s" % (run.pid, run.matchIndex))
+            mylog("[%d] has self committed to the first %d log items" % (run.pid, run.commitIndex))
+            mylog("[%d] log: %s" % (run.pid, repr(run.log)))
             matchIndexArray = run.matchIndex[:]
             matchIndexArray[run.pid] = len(run.log)
-            print matchIndexArray
+            mylog(matchIndexArray)
             n = sorted(matchIndexArray)[N/2]
             if (run.state=='leader' and (accessLog(n)==None or accessLog(n)['term']==run.term)):
                 run.commitIndex = max(run.commitIndex, n)
@@ -168,7 +186,7 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
             granted=False
             if (run.term == request['term'] and
                     (run.votedFor == None or run.votedFor == request['from']) and
-                    (accessLog(len(run.log))==None or request['lastLogTerm'] > run.log[-1]['term'] or
+                    (accessLog(len(run.log))==None or run.log==[] or request['lastLogTerm'] > run.log[-1]['term'] or
                         (request['lastLogTerm'] == run.log[-1]['term'] and
                             request['lastLogIndex'] >= len(run.log)))):
                 granted = True
@@ -242,7 +260,7 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
                     handleAppendEntriesRequest(msg)
                 else:
                     handleAppendEntriesReply(msg)
-        print "[%d] Counting down...\n\n" % run.pid
+        mylog("[%d] Counting down...\n\n" % run.pid)
         while True:
             startNewElection()
             becomeLeader()
@@ -252,13 +270,14 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
                     sendRequestVote(i)
                     sendAppendEntries(i)
             try:
-                print "[%d] tries to fetch a msg" % run.pid
+                mylog("[%d] tries to fetch a msg" % run.pid)
                 result = receive(timeout=RECV_TIMEOUT)
-                print "[%d] got a msg: %s" % (run.pid, repr(result))
+                mylog("[%d] got a msg: %s" % (run.pid, repr(result)))
                 senderID, packedMSG = result
                 handleMessage(packedMSG)
             except gevent.queue.Empty:
                 pass #Idle
+        mylog("[%d] Reaches the end of the [run] function" % run.pid)
 
     return run
 
@@ -269,8 +288,6 @@ def runRaft(inputs, clientsChannel, t, tMin, tMax, getTime): # Everyone broadcas
 
     N = len(inputs)
     buffers = map(lambda _: Queue(1), inputs)
-
-
     # Instantiate the "broadcast" instruction for node i
     def makeBroadcast(i):
         def _broadcast(v):
@@ -283,8 +300,13 @@ def runRaft(inputs, clientsChannel, t, tMin, tMax, getTime): # Everyone broadcas
 
     def makeSend(i):
         def _send(j,v):
-            print bcolors.OKGREEN + "[m] %d -> %d\n\t\t%s" % (i,j, repr(v)) + bcolors.ENDC
-            buffers[j].put((i,v))
+            mylog(bcolors.OKGREEN + "[m] %d -> %d\n\t\t%s" % (i, j, repr(v)) + bcolors.ENDC)
+            while True:
+                try:
+                    buffers[j].put((i,v), timeout=SEND_TIMEOUT)
+                    break
+                except gevent.queue.Full:
+                    pass
         return _send
 
     def makeReceiveFromClient(i):
@@ -292,7 +314,7 @@ def runRaft(inputs, clientsChannel, t, tMin, tMax, getTime): # Everyone broadcas
 
     def makeOutput(i):
         def _output(v):
-            print '[%d]' % i, 'output:', v
+            mylog('[%d]' % i, 'output:', v)
         return _output
 
     def makeReceive(i):
@@ -313,42 +335,41 @@ def runRaft(inputs, clientsChannel, t, tMin, tMax, getTime): # Everyone broadcas
     try:
         gevent.joinall(ts)
     except gevent.hub.LoopExit:
-        print "No more msgs, exited"
+        mylog("No more msgs, exited")
     #except gevent.hub.LoopExit: pass
 
 def broadcastClient(channels):
 # In this implementation, if a 'follower' server receives a msg from a client, it will just ignore it.
 # So a client needs to manually broadcast the msg to everyone.
-    print "[!] Client Started..."
+    mylog("[!] Client Started...")
     def mannualBr(msg):
-        print "[*] Doing dispatching msg:", msg
+        mylog("[*] Doing dispatching msg:", msg)
         for channel in channels:
             channel.put(msg) # change to asynchronous?
-    print "[*] Broadcasting client starting..."
+    mylog("[*] Broadcasting client starting...")
     MSG_TOTAL = 5
     mailDispatchers = []
     for i in range(MSG_TOTAL):
         t = Greenlet(mannualBr, "Message %d" % i)
         delay = random.random() * CLIENT_DELAY
-        print bcolors.WARNING + "\b[*] Msg dispatch %d will start in %f(s)..." % (i, delay) + bcolors.ENDC
+        mylog(bcolors.WARNING + "\b[*] Msg dispatch %d will start in %f(s)..." % (i, delay) + bcolors.ENDC)
         t.start_later(delay)
         mailDispatchers.append(t)
     gevent.joinall(mailDispatchers)
     return
 
-
 if __name__ == '__main__':
-    import time
     def myGetTime():
-        print "[C] Now is", int(time.time() * 1000)
-        return int(time.time() * 1000)
-    print '[!] Initiating clients...'
+        #print "[C] Now is", int(time.time() * 1000)
+        return int(time.time() * 1000) - TIME_START
+    TIME_START = myGetTime()
+    mylog('[!] Initiating clients...')
     N = 5
     clientChannels = [Queue(1) for x in range(N)]
     clients = []
     clientInstance = Greenlet(broadcastClient, clientChannels)
     clientInstance.start_later(0)
     clients.append(clientInstance)
-    print '[!] Starting raft...'
-    runRaft([0]*N, clientChannels, 0, 100, 200, myGetTime)
+    mylog('[!] Starting raft...')
+    runRaft([0]*N, clientChannels, 0, 200, 400, myGetTime)
     gevent.joinall(clients)
