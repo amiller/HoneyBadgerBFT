@@ -287,7 +287,7 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
 def runRaft(inputs, clientsChannel, t, tMin, tMax, getTime): # Everyone broadcasts a msg in different delay
 
     N = len(inputs)
-    buffers = map(lambda _: Queue(1), inputs)
+    buffers = map(lambda _: Queue(), inputs)
     # Instantiate the "broadcast" instruction for node i
     def makeBroadcast(i):
         def _broadcast(v):
