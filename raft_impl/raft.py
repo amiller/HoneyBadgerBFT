@@ -1,34 +1,51 @@
+#!/Users/aluex/anaconda/bin/python
+##################################
 import gevent
 from gevent import Greenlet
 from gevent.queue import Queue
 # from collections import defaultdict
 import random
-#import json
+# import json
 import sys
 import yaml
 import time
 from gevent import monkey
+from gevent.lock import Semaphore
 
 monkey.patch_all()
 
 INF = 1e40
-RPC_TIMEOUT = 50.000
-MIN_RPC_LATENCY = 10.000
-MAX_RPC_LATENCY = 15.000
-ELECTION_TIMEOUT = 100.000
-CLIENT_DELAY = 3
+RPC_TIMEOUT = 0.05
+ELECTION_TIMEOUT = 0.3000  # 0.1: repeat election, 0.5: unstable (leader may appear, but can be replaced), 1.0: stable leadership
+# When DELAY_MAX = 0.4, DELAY_MIN = 0.02
+CLIENT_DELAY = 3  # the maximum client delay
 BATCH_SIZE = 1
-RECV_TIMEOUT = 0.05
-SEND_TIMEOUT = 0.05
+RECV_TIMEOUT = 0.02
+SEND_TIMEOUT = 0.02
 RECV_CLIENT_TIMEOUT = 0.1
+
+NETWORK_DELAY_MAX = 0.5  # seconds
+NETWORK_DELAY_MIN = 0.3
 
 TIME_START = 0
 
+MSG_TOTAL = 5
+ELECTION_TOTAL = 0
+ELECTION_SUCCEED = 0
 
-def mylog(*args):
-    print " ".join([isinstance(arg, str) and arg or repr(arg) for arg in args])
-    sys.stdout.flush()
-    sys.stderr.flush()
+lock_total = Semaphore()
+lock_succeed = Semaphore()
+verbose = 0
+
+sys.stderr = open('log', 'w') # re-direct stderr
+
+def mylog(*args, **kargs):
+    if not 'verboseLevel' in kargs:
+        kargs['verboseLevel'] = 0
+    if kargs['verboseLevel'] <= verbose:
+        print " ".join([isinstance(arg, str) and arg or repr(arg) for arg in args])
+        sys.stdout.flush()
+        sys.stderr.flush()
 
 
 class bcolors:
@@ -42,8 +59,6 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
-# The BV_Broadcast algorithm from [MMR13]
-# recvClient can block
 def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime, getElectionTimeDelay):
     def sendRequest(j, m):
         send(j, ('request', m))
@@ -69,29 +84,39 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
         run.commitIndex = 0
         run.heartbeatDue = [0] * N
 
-        def displayInfo():
-            info = dict(
-                now=getTime(),
-                state=run.state,
-                term=run.term,
-                votedFor=run.votedFor,
-                electionTimeout=run.electionTimeout,
-                voteGranted=run.voteGranted,
-                matchIndex=run.matchIndex,
-                nextIndex=run.nextIndex,
-                rpcDue=run.rpcDue,
-                log=run.log,
-                commitIndex=run.commitIndex,
-                heartbeatDue=run.heartbeatDue
-            )
-            print yaml.dump(info)
+        def displayInfo(verboseLevel=0):
+            if verbose >= verboseLevel:
+                info = dict(
+                    now=getTime(),
+                    state=run.state,
+                    term=run.term,
+                    votedFor=run.votedFor,
+                    electionTimeout=run.electionTimeout,
+                    voteGranted=run.voteGranted,
+                    matchIndex=run.matchIndex,
+                    nextIndex=run.nextIndex,
+                    rpcDue=run.rpcDue,
+                    log=run.log,
+                    commitIndex=run.commitIndex,
+                    heartbeatDue=run.heartbeatDue
+                )
+                print yaml.dump(info)
 
         mylog("[%d] Initing..." % run.pid)
         displayInfo()
         # Setup the client-msg monitor
         mylog("[%d] Raft server started." % (run.pid))
 
+        def onLeave():
+            # Now we are done, in case that we didn't lose messages
+            mylog(bcolors.BOLD + '[%d] Total election: %d, success election: %d' % (
+                run.pid, ELECTION_TOTAL, ELECTION_SUCCEED) + bcolors.ENDC, verboseLevel=-1)
+            sys.exit(0)
+
         def clientCallBack(msg):
+            if msg == '#':
+                onLeave()
+
             if run.state == 'leader':
                 mylog(bcolors.WARNING + "\b[%d] received msg from client: %s" % (run.pid, repr(msg)) + bcolors.ENDC)
                 run.log.append(dict(term=run.term, msg=msg))
@@ -104,10 +129,10 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
                     msg = recvClient(timeout=RECV_CLIENT_TIMEOUT)
                     clientCallBack(msg)
                 except gevent.queue.Empty:
-                    mylog("[%d] no client msg" % run.pid)
+                    mylog("[%d] no client msg" % run.pid, verboseLevel=1)
 
         mylog("[%d] starts listening..." % (run.pid))
-        Greenlet(clientMonitor).start_later(0)
+        Greenlet(clientMonitor).start()
         ##########################
         def accessLog(index):
             if index < 1 or index > len(run.log):
@@ -126,6 +151,10 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
             if (run.state == 'follower' or run.state == 'candidate') \
                     and run.electionTimeout <= getTime():
                 mylog(bcolors.OKBLUE + "[%d] Starting a new election." % run.pid + bcolors.ENDC)
+                global ELECTION_TOTAL
+                lock_total.acquire()
+                ELECTION_TOTAL += 1
+                lock_total.release()
                 run.electionTimeout = makeElectionTime()
                 run.term += 1
                 run.votedFor = run.pid
@@ -153,7 +182,13 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
 
         def becomeLeader():
             if (run.state == 'candidate' and count(run.voteGranted, True) + 1 > N / 2):
-                mylog(bcolors.OKGREEN + "[%d] is now the leader." % run.pid + bcolors.ENDC)
+                mylog("=" * 30)  # decorating
+                mylog(bcolors.WARNING + "[%d] is now the leader." % run.pid + bcolors.ENDC)
+                mylog("=" * 30)
+                global ELECTION_SUCCEED
+                lock_succeed.acquire()
+                ELECTION_SUCCEED += 1
+                lock_succeed.release()
                 run.state = 'leader'
                 run.nextIndex = [len(run.log) + 1] * N
                 run.rpcDue = [INF] * N
@@ -183,15 +218,18 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
                 run.heartbeatDue[j] = getTime() + ELECTION_TIMEOUT / 2
 
         def advanceCommitIndex():
-            mylog("[%d] advancing commitment: %s" % (run.pid, run.matchIndex))
-            mylog("[%d] has self committed to the first %d log items" % (run.pid, run.commitIndex))
-            mylog("[%d] log: %s" % (run.pid, repr(run.log)))
+            mylog("[%d] advancing commitment: %s" % (run.pid, run.matchIndex), verboseLevel=1)
+            mylog("[%d] has self committed to the first %d log items" % (run.pid, run.commitIndex), verboseLevel=1)
+            mylog("[%d] log: %s" % (run.pid, repr(run.log)), verboseLevel=1)
             matchIndexArray = run.matchIndex[:]
             matchIndexArray[run.pid] = len(run.log)
             #mylog(matchIndexArray)
             n = sorted(matchIndexArray)[N / 2]
             if (run.state == 'leader' and (accessLog(n) == None or accessLog(n)['term'] == run.term)):
                 run.commitIndex = max(run.commitIndex, n)
+                if run.commitIndex == MSG_TOTAL - 1:
+                    mylog(bcolors.BOLD + '[%d] All messages are committed, we are done!' % run.pid + bcolors.ENDC)
+                    onLeave()
 
         def handleRequestVoteRequest(request):
             if run.term < request['term']:
@@ -326,7 +364,8 @@ def runRaft(inputs, clientsChannel, t, tMin, tMax, getTime):  # Everyone broadca
                     pass
 
         def _async_send(j, v):
-            Greenlet(_send, j, v).start()
+            #Greenlet(_send, j, v).start()
+            Greenlet(_send, j, v).start_later(tMin + random.random() * (tMax - tMin))
 
         #return _send
         return _async_send
@@ -344,7 +383,7 @@ def runRaft(inputs, clientsChannel, t, tMin, tMax, getTime):  # Everyone broadca
         return buffers[i].get
 
     def getElectionTime():
-        return tMin + random.random() * (tMax - tMin)
+        return (1 + random.random()) * ELECTION_TIMEOUT
 
     ts = []
     for i in range(N):
@@ -375,7 +414,6 @@ def broadcastClient(channels):
             channel.put(msg)  # change to asynchronous?
 
     mylog("[*] Broadcasting client starting...")
-    MSG_TOTAL = 5
     mailDispatchers = []
     for i in range(MSG_TOTAL):
         t = Greenlet(mannualBr, "Message %d" % i)
@@ -384,6 +422,7 @@ def broadcastClient(channels):
         t.start_later(delay)
         mailDispatchers.append(t)
     gevent.joinall(mailDispatchers)
+    mannualBr("#")
     return
 
 
@@ -391,21 +430,37 @@ if __name__ == '__main__':
     from optparse import OptionParser
 
     parser = OptionParser()
-    parser.add_option("-v", "--verbose", dest="verbose", help="Set verbose level", metavar="VERBOSE")
+    parser.add_option("-v", "--verbose", dest="verbose", default=0, type="int", help="Set verbose level",
+                      metavar="VERBOSE")
+    parser.add_option("-m", "--network-delay-min", dest="netmin", default=NETWORK_DELAY_MIN, type="float",
+                      help="Set the min delay time of the network", metavar="TMIN")
+    parser.add_option("-M", "--network-delay-max", dest="netmax", default=NETWORK_DELAY_MAX, type="float",
+                      help="Set the max delay time of the network", metavar="TMAX")
+    parser.add_option("-c", "--client-delay", dest="clientDelay", default=CLIENT_DELAY, type="float",
+                      help="Set max delay time of the client", metavar="CLIENT_DELAY")
+    parser.add_option("-n", "--message-number", dest="msgNum", default=MSG_TOTAL, type="int",
+                      help="Set the number of messages", metavar="MSG_TOTAL")
     options, args = parser.parse_args()
+
+    NETWORK_DELAY_MIN = options.netmin
+    NETWORK_DELAY_MAX = options.netmax
+    CLIENT_DELAY = options.clientDelay
+    MSG_TOTAL = options.msgNum
+    verbose = options.verbose
 
     def myGetTime():
         #print "[C] Now is", int(time.time() * 1000)
-        return int(time.time() * 1000) - TIME_START
+        #return int(time.time() * 1000) - TIME_START
+        return time.time() - TIME_START
 
     TIME_START = myGetTime()
     mylog('[!] Initiating clients...')
-    N = 5
+    N = 10
     clientChannels = [Queue(1) for x in range(N)]
     clients = []
     clientInstance = Greenlet(broadcastClient, clientChannels)
     clientInstance.start_later(0)
     clients.append(clientInstance)
     mylog('[!] Starting raft...')
-    runRaft([0] * N, clientChannels, 0, 200, 400, myGetTime)
+    runRaft([0] * N, clientChannels, 0, NETWORK_DELAY_MIN, NETWORK_DELAY_MAX, myGetTime)
     gevent.joinall(clients)
