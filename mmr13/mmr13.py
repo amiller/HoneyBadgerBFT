@@ -124,16 +124,32 @@ def binary_consensus(pid, N, t, vi, broadcast, receive):
             broadcast( ('BC', (r, m)) )
         return _bc
 
+    def make_bvbc_aux(r):
+        def _aux(m):
+            broadcast( ('AUX', (r,m)))
+        return _aux
+
     Greenlet(_recv).start()
     
     round = 0
     est = vi
+
     while True:
+        round += 1
         # Broadcast EST
         # TODO: let bv_broadcast receive
-        bv_broadcast(pid, N, t, vi, make_bvbc_bc(round), None)(est)
+        bvOutputHolder = Queue(2) # 2 possile values
+        def bvOutput(m):
+            bvOutputHolder.put(m)
+        bv_broadcast(pid, N, t, vi, make_bvbc_bc(round), bvOutput)(est)
+        w = bvOutputHolder.get() # Wait until output is not empty
+        bv_broadcast(pid, N, t, vi, make_bvbc_aux(round), bvOutput)(w)
+        while True:
+            # receive and check conditions
+            pass
+
 
         # TODO: fork to collect values output by bv_broadcast
         # TODO: wait for one value to be collected by bv_broadcast
 
-        round += 1
+
