@@ -6,8 +6,7 @@ import random
 
 import mmr13
 reload(mmr13)
-from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy
-
+from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus
 
 
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
@@ -68,7 +67,7 @@ def random_delay_sharedcoin_dummy(N, t):
         # Party i, continue to run the shared coin
         r = 0
         while r < 5:
-            gevent.sleep(random.random()*maxdelay)
+            gevent.sleep(random.random() * maxdelay)
             print '[',i,'] at round ', r
             b = next(coin)
             print '[',i,'] bit[%d]:'%r, b
@@ -81,9 +80,41 @@ def random_delay_sharedcoin_dummy(N, t):
         recv = buffers[i].get
         coin = shared_coin_dummy(i, N, t, bc, recv)
         th = Greenlet(_run, i, coin)
-        th.start_later(random.random()*maxdelay)
+        th.start_later(random.random() * maxdelay)
         ts.append(th)
 
     try:
         gevent.joinall(ts)
     except gevent.hub.LoopExit: pass
+
+# Run the BV_broadcast protocol with no corruptions and uniform random message delays
+def random_delay_binary_consensus(N, t):
+    maxdelay = 0.01
+
+    buffers = map(lambda _: Queue(1), range(N))
+
+    # Instantiate the "broadcast" instruction
+    def makeBroadcast(i):
+        def _broadcast(v):
+            def _deliver(j):
+                #print 'Delivering', v, 'from', i, 'to', j
+                buffers[j].put((i,v))
+            for j in range(N):
+                Greenlet(_deliver, j).start_later(random.random()*maxdelay)
+        return _broadcast
+
+    ts = []
+    for i in range(N):
+        bc = makeBroadcast(i)
+        recv = buffers[i].get
+        vi = random.randint(0, 1)
+        th = Greenlet(binary_consensus, i, N, t, vi, bc, recv)
+        th.start_later(random.random() * maxdelay)
+        ts.append(th)
+
+    try:
+        gevent.joinall(ts)
+    except gevent.hub.LoopExit: pass
+
+if __name__=='__main__':
+    random_delay_binary_consensus(5,1)
