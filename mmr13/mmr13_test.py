@@ -6,7 +6,7 @@ import random
 
 import mmr13
 reload(mmr13)
-from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus
+from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, MVBroadcast
 
 
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
@@ -98,7 +98,9 @@ def random_delay_binary_consensus(N, t):
         def _broadcast(v):
             def _deliver(j):
                 #print 'Delivering', v, 'from', i, 'to', j
+                mylog(bcolors.OKGREEN + "MSG: [%d] -> [%d]: %s" % (i, j, repr(v)) + bcolors.ENDC)
                 buffers[j].put((i,v))
+                mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
             for j in range(N):
                 Greenlet(_deliver, j).start_later(random.random()*maxdelay)
         return _broadcast
@@ -112,9 +114,68 @@ def random_delay_binary_consensus(N, t):
         th.start_later(random.random() * maxdelay)
         ts.append(th)
 
+    #if True:
     try:
         gevent.joinall(ts)
-    except gevent.hub.LoopExit: pass
+    except gevent.hub.LoopExit: # Manual fix for early stop
+        agreed = ""
+        for key, value in mmr13.globalState.items():
+            if mmr13.globalState[key] != "":
+                agreed = mmr13.globalState[key]
+        for key,  value in mmr13.globalState.items():
+            if mmr13.globalState[key] == "":
+                mmr13.globalState[key] = agreed
+            if mmr13.globalState[key] != agreed:
+                print "Consensus Error"
+
+    print mmr13.globalState
+    #pass
+
+# Run the BV_broadcast protocol with no corruptions and uniform random message delays
+def random_delay_multivalue_consensus(N, t):
+    maxdelay = 0.01
+
+    buffers = map(lambda _: Queue(1), range(N))
+
+    # Instantiate the "broadcast" instruction
+    def makeBroadcast(i):
+        def _broadcast(v):
+            def _deliver(j):
+                #print 'Delivering', v, 'from', i, 'to', j
+                mylog(bcolors.OKGREEN + "MSG: [%d] -> [%d]: %s" % (i, j, repr(v)) + bcolors.ENDC)
+                buffers[j].put((i,v))
+                mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
+            for j in range(N):
+                Greenlet(_deliver, j).start_later(random.random()*maxdelay)
+        return _broadcast
+
+    ts = []
+    cid = 1
+    for i in range(N):
+        bc = makeBroadcast(i)
+        recv = buffers[i].get
+        vi = random.randint(0, 10)
+        th = Greenlet(MVBroadcast, i, N, t, vi, cid, bc, recv)
+        th.start_later(random.random() * maxdelay)
+        ts.append(th)
+
+    #if True:
+    try:
+        gevent.joinall(ts)
+    except gevent.hub.LoopExit: # Manual fix for early stop
+        agreed = ""
+        for key, value in mmr13.globalState.items():
+            if mmr13.globalState[key] != "":
+                agreed = mmr13.globalState[key]
+        for key,  value in mmr13.globalState.items():
+            if mmr13.globalState[key] == "":
+                mmr13.globalState[key] = agreed
+            if mmr13.globalState[key] != agreed:
+                print "Consensus Error"
+
+    print mmr13.globalState
+    #pass
 
 if __name__=='__main__':
     random_delay_binary_consensus(5,1)
+    #random_delay_multivalue_consensus(5, 1)
