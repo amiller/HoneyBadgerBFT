@@ -160,10 +160,10 @@ def random_delay_multivalue_consensus(N, t, inputs):
         th.start_later(random.random() * maxdelay)
         ts.append(th)
 
-    if True:
-    #try:
+    #if True:
+    try:
         gevent.joinall(ts)
-    comment = '''except gevent.hub.LoopExit: # Manual fix for early stop
+    except gevent.hub.LoopExit: # Manual fix for early stop
         agreed = ""
         for key, value in mmr13.globalState.items():
             if mmr13.globalState[key] != "":
@@ -173,7 +173,7 @@ def random_delay_multivalue_consensus(N, t, inputs):
                 mmr13.globalState[key] = agreed
             if mmr13.globalState[key] != agreed:
                 print "Consensus Error"
-    '''
+
 
     print mmr13.globalState
     #pass
