@@ -101,7 +101,7 @@ def bv_broadcast(pid, N, t, broadcast, receive, output):
                 if not v in outputed:
                     outputed.append(v)
                 mylog('[%d] done with writing %d into output' % (pid, v))
-                if len(outputed)==2:
+                if len(outputed) == 2:
                     return # We don't have to wait more
 
     return input
@@ -155,6 +155,89 @@ mvWaiterLock3 = defaultdict(lambda: Queue(1))
 V = defaultdict(lambda: defaultdict(lambda: 'bottom'))
 w = defaultdict(lambda:'bottom')
 W = defaultdict(lambda: defaultdict(lambda: 'bottom'))
+finished = defaultdict(lambda: False)
+globalState = defaultdict(str)
+
+def initBeforeBinaryConsensus():
+    global initDelivered, vectDelivered, vectDeliveredConsensus, mvWaiterLock, mvWaiterLock2, mvWaiterLock3, V, w, W, finished, globalState
+    initDelivered = defaultdict(set)
+    vectDelivered = defaultdict(set)
+    vectDeliveredConsensus = defaultdict(set)
+    #initReceived = defaultdict(set)
+    mvWaiterLock = defaultdict(lambda: Queue(1))
+    mvWaiterLock2 = defaultdict(lambda: Queue(1))
+    mvWaiterLock3 = defaultdict(lambda: Queue(1))
+    V = defaultdict(lambda: defaultdict(lambda: 'bottom'))
+    w = defaultdict(lambda:'bottom')
+    W = defaultdict(lambda: defaultdict(lambda: 'bottom'))
+    finished = defaultdict(lambda: False)
+    globalState = defaultdict(str)
+
+def mv84consensus(pid, N, t, vi, broadcast, receive):
+    mv84v = defaultdict(lambda: 'Empty')
+    mv84p = defaultdict(lambda: False)
+    alert = False
+    def make_mvbc_value():
+        def _bc(m):
+            broadcast(
+                ('VAL', m)
+            )
+        return _bc
+    def make_mvbc_perp():
+        def _bc(m):
+            broadcast(
+                ('BOOL', m)
+            )
+        return _bc
+
+    mv84WaiterLock = Queue()
+    mv84WaiterLock2 = Queue()
+    mv84ReceiveDiff = set()
+    mv84GetPerplex = set()
+    reliableBroadcastReceiveQueue = Queue()
+
+    def _listener():
+        while True:
+            sender, (tag, m) = receive()
+            mylog("[%d] received %s" % (pid, repr((sender, (tag, m)))))
+            if tag=='VAL':
+                mv84v[sender] = m
+                if m != vi:
+                    mv84ReceiveDiff.add(sender)
+                    if len(mv84ReceiveDiff) >= (N-t)/2:
+                        mv84WaiterLock.put(True)
+                if len(mv84v.keys()) >= N-t:
+                    mv84WaiterLock.put(False)
+            elif tag=='BOOL':
+                mv84p[sender] = m
+                if m:
+                    mv84GetPerplex.add(sender)
+                    if len(mv84GetPerplex) >= N - 2*t:
+                        mv84WaiterLock2.put(True)
+                if len(mv84p.keys()) >= N-t:
+                    mv84WaiterLock2.put(False)
+            else:
+                reliableBroadcastReceiveQueue.put(
+                    (sender, (tag, m))
+                )
+
+    Greenlet(_listener).start()
+    mylog(bcolors.FAIL + "[%d] Starting Phase 1" % pid)
+    make_mvbc_value()(vi)
+    perplexed = mv84WaiterLock.get()
+    mylog(bcolors.FAIL + "[%d] Starting Phase 2" % pid)
+    make_mvbc_perp()(perplexed)
+    alert = mv84WaiterLock2.get() and 1 or 0
+    mylog(bcolors.FAIL + "[%d] Starting binary consensus on alert: %d" % (pid, alert))
+    agreedAlert = binary_consensus(pid, N, t, alert, broadcast, reliableBroadcastReceiveQueue.get)
+    if agreedAlert:
+        mylog(bcolors.FAIL + "[%d] agreed on Alert = True" % pid)
+        return 0 # pre-defined default consensus value
+    else:
+        mylog(bcolors.FAIL + "[%d] agreed on %s" % (pid, repr(vi)))
+        return vi
+
+
 
 def MVBroadcast(pid, N, t, vi, cid, broadcast, receive):
     def make_mvbc_init():
@@ -225,7 +308,7 @@ def MVBroadcast(pid, N, t, vi, cid, broadcast, receive):
 
     def T2(): ######### Message Router
         while True:
-            tag, m = receive()
+            sender, (tag, m) = receive()
             if tag=='INIT':
                 vj, cid, j = m
                 initDelivered[pid].add((tag, vj, cid, j))
@@ -238,7 +321,7 @@ def MVBroadcast(pid, N, t, vi, cid, broadcast, receive):
                         mvWaiterLock2[pid].put('ticket')
                 if wj == vCandidatesBeyondThreshold[0]:
                     vectDeliveredConsensus[pid].add((tag, wj, Vj, cid, j))
-                    if len(vectDelivered[pid]) >= threshold - f:
+                    if len(vectDelivered[pid]) >= threshold - t:
                         mvWaiterLock3[pid].put('ticket')
             else:
                 reliableBroadcastReceiveQueue.put((pid, (tag, m)))
@@ -246,9 +329,6 @@ def MVBroadcast(pid, N, t, vi, cid, broadcast, receive):
 
     Greenlet(T1).start()
     Greenlet(T2).start()
-
-finished = defaultdict(lambda: False)
-globalState = defaultdict(str)
 
 def binary_consensus(pid, N, t, vi, broadcast, receive):
     # Messages received are routed to either a shared coin, the broadcast, or AUX
@@ -310,7 +390,7 @@ def binary_consensus(pid, N, t, vi, broadcast, receive):
             # Check if conditions are satisfied
             mylog("[%d] beginChecking..." % pid)
             mylog("[%d] binValues %s" % (pid, repr(binValues)))
-            mylog("[%d] received. 0: %s, 1: %s" % (pid, repr(received[(0,r)]), repr(received[(1,r)])))
+            mylog("[%d] received. 0: %s, 1: %s" % (pid, repr(received[(0, r)]), repr(received[(1, r)])))
             threshold = N-t #2*t + 1 # N - t
             if not finished[pid]:
                 if len(binValues) == 1:

@@ -6,7 +6,7 @@ import random
 
 import mmr13
 reload(mmr13)
-from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, MVBroadcast
+from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, MVBroadcast, mv84consensus, initBeforeBinaryConsensus
 
 
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
@@ -132,7 +132,7 @@ def random_delay_binary_consensus(N, t):
     #pass
 
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
-def random_delay_multivalue_consensus(N, t):
+def random_delay_multivalue_consensus(N, t, inputs):
     maxdelay = 0.01
 
     buffers = map(lambda _: Queue(1), range(N))
@@ -150,19 +150,20 @@ def random_delay_multivalue_consensus(N, t):
         return _broadcast
 
     ts = []
-    cid = 1
+    #cid = 1
     for i in range(N):
         bc = makeBroadcast(i)
         recv = buffers[i].get
-        vi = random.randint(0, 10)
-        th = Greenlet(MVBroadcast, i, N, t, vi, cid, bc, recv)
+        #vi = random.randint(0, 10)
+        vi = inputs[i]
+        th = Greenlet(mv84consensus, i, N, t, vi, bc, recv)
         th.start_later(random.random() * maxdelay)
         ts.append(th)
 
-    #if True:
-    try:
+    if True:
+    #try:
         gevent.joinall(ts)
-    except gevent.hub.LoopExit: # Manual fix for early stop
+    comment = '''except gevent.hub.LoopExit: # Manual fix for early stop
         agreed = ""
         for key, value in mmr13.globalState.items():
             if mmr13.globalState[key] != "":
@@ -172,10 +173,18 @@ def random_delay_multivalue_consensus(N, t):
                 mmr13.globalState[key] = agreed
             if mmr13.globalState[key] != agreed:
                 print "Consensus Error"
+    '''
 
     print mmr13.globalState
     #pass
 
 if __name__=='__main__':
-    random_delay_binary_consensus(5,1)
-    #random_delay_multivalue_consensus(5, 1)
+    print "[ =========== ]"
+    print "Testing binary consensus..."
+    #random_delay_binary_consensus(5,1)
+    print "Testing multivalue consensus with different inputs..."
+    random_delay_multivalue_consensus(5, 1, [random.randint(0, 10) for x in range(5)])
+    print "[ =========== ]"
+    print "Testing multivalue consensus with identical inputs..."
+    initBeforeBinaryConsensus()
+    random_delay_multivalue_consensus(5, 1, [10]*5)
