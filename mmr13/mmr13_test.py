@@ -188,3 +188,7 @@ if __name__=='__main__':
     print "Testing multivalue consensus with identical inputs..."
     initBeforeBinaryConsensus()
     random_delay_multivalue_consensus(5, 1, [10]*5)
+    print "[ =========== ]"
+    print "Testing multivalue consensus with byzantine inputs..."
+    initBeforeBinaryConsensus()
+    random_delay_multivalue_consensus(5, 1, [10,10,10,10,5])

@@ -204,7 +204,7 @@ def mv84consensus(pid, N, t, vi, broadcast, receive):
                 mv84v[sender] = m
                 if m != vi:
                     mv84ReceiveDiff.add(sender)
-                    if len(mv84ReceiveDiff) >= (N-t)/2:
+                    if len(mv84ReceiveDiff) > (N-t)/2:
                         mv84WaiterLock.put(True)
                 if len(mv84v.keys()) >= N-t:
                     mv84WaiterLock.put(False)
