@@ -32,7 +32,7 @@ def listen_to_channel(port):
 
 def connect_to_channel(hostname, port):
     s = socks.socksocket()
-    s.connect((hostname,port))
+    s.connect((hostname, port))
     q = Queue(1)
     def _handle():
         while True:

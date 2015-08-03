@@ -200,7 +200,7 @@ def mv84consensus(pid, N, t, vi, broadcast, receive):
         while True:
             sender, (tag, m) = receive()
             mylog("[%d] received %s" % (pid, repr((sender, (tag, m)))))
-            if tag=='VAL':
+            if tag == 'VAL':
                 mv84v[sender] = m
                 if m != vi:
                     mv84ReceiveDiff.add(sender)
@@ -208,7 +208,7 @@ def mv84consensus(pid, N, t, vi, broadcast, receive):
                         mv84WaiterLock.put(True)
                 if len(mv84v.keys()) >= N-t:
                     mv84WaiterLock.put(False)
-            elif tag=='BOOL':
+            elif tag == 'BOOL':
                 mv84p[sender] = m
                 if m:
                     mv84GetPerplex.add(sender)
