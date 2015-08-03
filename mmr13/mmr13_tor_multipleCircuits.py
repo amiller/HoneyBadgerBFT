@@ -3,13 +3,14 @@ from gevent import Greenlet
 from gevent.server import StreamServer
 from gevent.queue import Queue
 import json
+
 from collections import defaultdict
 import random
 
 import mmr13
 reload(mmr13)
 from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, MVBroadcast, mv84consensus, initBeforeBinaryConsensus
-import stem.control
+import stem.control, stem.ControllerError
 
 import socks
 socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9050, True)
@@ -193,7 +194,7 @@ def random_delay_multivalue_consensus(N, t, inputs):
                 circuit_id = controller.new_circuit([random.choice(nodesList), random.choice(
                     nodesList)], await_build=True)
                 break
-            except:
+            except stem.ControllerError:
                 print "Requesting Circuit Failed. Re-Trying..."
                 pass
         circuit_ids.append(circuit_id)
