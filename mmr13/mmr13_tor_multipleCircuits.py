@@ -49,7 +49,7 @@ za44dm5gbhkzif24.onion
 
 
 
-TOR_MAPPINGS = [(host, BASE_PORT+i) for host, i in enumerate(TOR_MAPPING_LIST) ]
+TOR_MAPPINGS = [(host, BASE_PORT+i) for i, host in enumerate(TOR_MAPPING_LIST)]
 
 
 controller = stem.control.Controller.from_port('127.0.0.1',9051)
@@ -188,8 +188,14 @@ def random_delay_multivalue_consensus(N, t, inputs):
     circuit_ids = []
 
     for i in range(N*N):
-        circuit_ids.append(controller.new_circuit([random.choice(nodesList), random.choice(
-                nodesList)], await_build=True))
+        while True:
+            try:
+                circuit_id = controller.new_circuit([random.choice(nodesList), random.choice(
+                    nodesList)], await_build=True)
+                break
+            except:
+                pass
+        circuit_ids.append(circuit_id)
 
     def attach_stream(stream):
         if stream.status == 'NEW':
