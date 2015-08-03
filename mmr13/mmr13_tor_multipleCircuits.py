@@ -9,7 +9,7 @@ import random
 import mmr13
 reload(mmr13)
 from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, MVBroadcast, mv84consensus, initBeforeBinaryConsensus
-import stem.controller
+import stem.control
 
 import socks
 socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9050, True)
@@ -37,13 +37,19 @@ def connect_to_channel(hostname, port):
     Greenlet(_handle).start()
     return q
 
-TOR_MAPPINGS = [
-    ('t6wgydamj55qs7do.onion',49500),
-    ('qk7v4tpkwnslwfvb.onion',49501),
-    ('cs25ak52h4efslwp.onion',49502),
-    ('7vcug2izpf5psowt.onion',49503),
-    ('7vcug2izpf5psowt.onion',49504)
-]
+BASE_PORT = 49500
+
+TOR_MAPPING_LIST = """
+3lejkcwieaamk2ea.onion
+l2y6c2tztpjbcjv5.onion
+cystbatihmcyj6nf.onion
+hhhegzzwem6v2rpx.onion
+za44dm5gbhkzif24.onion
+""".strip().split('\n')
+
+
+
+TOR_MAPPINGS = [(host, BASE_PORT+i) for host, i in enumerate(TOR_MAPPING_LIST) ]
 
 
 controller = stem.control.Controller.from_port('127.0.0.1',9051)
