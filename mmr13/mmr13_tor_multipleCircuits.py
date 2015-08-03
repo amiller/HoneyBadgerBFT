@@ -194,7 +194,7 @@ def random_delay_multivalue_consensus(N, t, inputs):
             try:
                 circuit_id = controller.new_circuit(await_build=True)
                 #circuit_id = controller.new_circuit([random.choice(nodesList), random.choice(
-                    nodesList)], await_build=True)
+                #    nodesList)], await_build=True)
                 break
             except ControllerError:
                 print "Requesting Circuit Failed. Re-Trying..."
