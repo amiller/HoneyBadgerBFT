@@ -10,7 +10,8 @@ import random
 import mmr13
 reload(mmr13)
 from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, MVBroadcast, mv84consensus, initBeforeBinaryConsensus
-import stem.control, stem.ControllerError
+import stem.control
+import stem.ControllerError
 
 import socks
 socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9050, True)
