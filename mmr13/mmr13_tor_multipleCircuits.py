@@ -194,6 +194,7 @@ def random_delay_multivalue_consensus(N, t, inputs):
                     nodesList)], await_build=True)
                 break
             except:
+                print "Requesting Circuit Failed. Re-Trying..."
                 pass
         circuit_ids.append(circuit_id)
 
