@@ -64,7 +64,7 @@ controller.authenticate('HoneyBadger')
 mylog(bcolors.OKGREEN + "[Tor] Retriving destination fingerprints..." + bcolors.ENDC)
 
 nodesList = [desc.fingerprint for desc in controller.get_network_statuses()]
-controller.set_conf('__LeaveStreamsUnattached', '1')  # leave stream management to us
+# controller.set_conf('__LeaveStreamsUnattached', '1')  # leave stream management to us
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
 def random_delay_broadcast1(inputs, t):
     maxdelay = 0.01
