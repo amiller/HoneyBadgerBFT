@@ -16,6 +16,8 @@ from stem import ControllerError
 import socks
 socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9050, True)
 
+TOR_SOCKSPORT = range(9050, 9055)
+
 def listen_to_channel(port):
     q = Queue(1)
     def _handle(socket, address):
@@ -28,8 +30,9 @@ def listen_to_channel(port):
     server.start()
     return q
 
-def connect_to_channel(hostname, port):
+def connect_to_channel(hostname, port, party):
     s = socks.socksocket()
+    s.setproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", TOR_SOCKSPORT[party], True)
     s.connect((hostname, port))
     q = Queue(1)
     def _handle():
@@ -48,6 +51,7 @@ cystbatihmcyj6nf.onion
 hhhegzzwem6v2rpx.onion
 za44dm5gbhkzif24.onion
 """.strip().split('\n')
+
 
 
 
@@ -204,8 +208,9 @@ def random_delay_multivalue_consensus(N, t, inputs):
     def attach_stream(stream):
         if stream.status == 'NEW':
             controller.attach_stream(stream.id, random.choice(circuit_ids))
-
-    controller.add_event_listener(attach_stream, stem.control.EventType.STREAM)
+    
+    # Now we don't use stem
+    #controller.add_event_listener(attach_stream, stem.control.EventType.STREAM)
 
     maxdelay = 0.01
 
@@ -230,7 +235,7 @@ def random_delay_multivalue_consensus(N, t, inputs):
         # First establish N connections (including a self connection)
         for j in range(N):
             host, port = TOR_MAPPINGS[j]
-            chans.append(connect_to_channel(host, port))
+            chans.append(connect_to_channel(host, port, i))
         def _broadcast(v):
             for j in range(N):
                 chans[j].put( (i,v) )
