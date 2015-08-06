@@ -56,7 +56,7 @@ za44dm5gbhkzif24.onion
 
 
 TOR_MAPPINGS = [(host, BASE_PORT+i) for i, host in enumerate(TOR_MAPPING_LIST)]
-
+mylog("[INIT] TOR_MAPPINGS: %s" % repr(TOR_MAPPINGS))
 
 controller = stem.control.Controller.from_port('127.0.0.1', 19051)
 controller.authenticate('HoneyBadger')
