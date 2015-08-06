@@ -193,7 +193,7 @@ def random_delay_multivalue_consensus(N, t, inputs):
     mylog("[Tor] Making circuits...")
     circuit_ids = []
 
-    for i in range(N*N):
+    comments = '''for i in range(N*N):
         while True:
             try:
                 circuit_id = controller.new_circuit(await_build=True)
@@ -203,7 +203,7 @@ def random_delay_multivalue_consensus(N, t, inputs):
             except ControllerError:
                 print "Requesting Circuit Failed. Re-Trying..."
                 pass
-        circuit_ids.append(circuit_id)
+        circuit_ids.append(circuit_id)'''
 
     def attach_stream(stream):
         if stream.status == 'NEW':
@@ -237,6 +237,7 @@ def random_delay_multivalue_consensus(N, t, inputs):
             host, port = TOR_MAPPINGS[j]
             chans.append(connect_to_channel(host, port, i))
         def _broadcast(v):
+            mylog(bcolors.OKGREEN + "[%d] Broadcasted %s" % (i, repr(v)) + bcolors.ENDC)
             for j in range(N):
                 chans[j].put( (i,v) )
         return _broadcast
