@@ -58,7 +58,7 @@ za44dm5gbhkzif24.onion
 TOR_MAPPINGS = [(host, BASE_PORT+i) for i, host in enumerate(TOR_MAPPING_LIST)]
 
 
-controller = stem.control.Controller.from_port('127.0.0.1',9051)
+controller = stem.control.Controller.from_port('127.0.0.1', 19051)
 controller.authenticate('HoneyBadger')
 
 mylog(bcolors.OKGREEN + "[Tor] Retriving destination fingerprints..." + bcolors.ENDC)
@@ -208,7 +208,7 @@ def random_delay_multivalue_consensus(N, t, inputs):
     def attach_stream(stream):
         if stream.status == 'NEW':
             controller.attach_stream(stream.id, random.choice(circuit_ids))
-    
+
     # Now we don't use stem
     #controller.add_event_listener(attach_stream, stem.control.EventType.STREAM)
 
