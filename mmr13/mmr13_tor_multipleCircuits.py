@@ -14,7 +14,7 @@ from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensu
 #from stem import ControllerError
 
 import socks
-socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9050, True)
+#socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9050, True)
 
 TOR_SOCKSPORT = range(9050, 9055)
 
