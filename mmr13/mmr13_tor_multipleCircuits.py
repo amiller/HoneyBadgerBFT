@@ -10,7 +10,7 @@ import random
 import mmr13
 reload(mmr13)
 from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, MVBroadcast, mv84consensus, initBeforeBinaryConsensus
-import stem.control
+#import stem.control
 #from stem import ControllerError
 
 import socks
