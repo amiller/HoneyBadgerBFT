@@ -11,7 +11,7 @@ import mmr13
 reload(mmr13)
 from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, MVBroadcast, mv84consensus, initBeforeBinaryConsensus
 import stem.control
-from stem import ControllerError
+#from stem import ControllerError
 
 import socks
 socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9050, True)
@@ -59,12 +59,12 @@ za44dm5gbhkzif24.onion
 TOR_MAPPINGS = [(host, BASE_PORT+i) for i, host in enumerate(TOR_MAPPING_LIST)]
 mylog("[INIT] TOR_MAPPINGS: %s" % repr(TOR_MAPPINGS))
 
-controller = stem.control.Controller.from_port('127.0.0.1', 19051)
-controller.authenticate('HoneyBadger')
+#controller = stem.control.Controller.from_port('127.0.0.1', 19051)
+#controller.authenticate('HoneyBadger')
 
-mylog(bcolors.OKGREEN + "[Tor] Retriving destination fingerprints..." + bcolors.ENDC)
+#mylog(bcolors.OKGREEN + "[Tor] Retriving destination fingerprints..." + bcolors.ENDC)
 
-nodesList = [desc.fingerprint for desc in controller.get_network_statuses()]
+#nodesList = [desc.fingerprint for desc in controller.get_network_statuses()]
 # controller.set_conf('__LeaveStreamsUnattached', '1')  # leave stream management to us
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
 def random_delay_broadcast1(inputs, t):
@@ -204,11 +204,11 @@ def random_delay_multivalue_consensus(N, t, inputs):
             except ControllerError:
                 print "Requesting Circuit Failed. Re-Trying..."
                 pass
-        circuit_ids.append(circuit_id)'''
+        circuit_ids.append(circuit_id)
 
     def attach_stream(stream):
         if stream.status == 'NEW':
-            controller.attach_stream(stream.id, random.choice(circuit_ids))
+            controller.attach_stream(stream.id, random.choice(circuit_ids))'''
 
     # Now we don't use stem
     #controller.add_event_listener(attach_stream, stem.control.EventType.STREAM)
