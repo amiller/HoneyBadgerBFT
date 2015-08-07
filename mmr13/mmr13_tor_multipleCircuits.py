@@ -19,6 +19,7 @@ socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9050, True)
 TOR_SOCKSPORT = range(9050, 9055)
 
 def listen_to_channel(port):
+    mylog('Preparing server on %d...' % port)
     q = Queue(1)
     def _handle(socket, address):
         f = socket.makefile()
@@ -245,7 +246,7 @@ def random_delay_multivalue_consensus(N, t, inputs):
     # Create the servers
     servers = []
     for i in range(N):
-        _,port = TOR_MAPPINGS[i]
+        _, port = TOR_MAPPINGS[i]
         servers.append(listen_to_channel(port))
     gevent.sleep(2)
     print 'servers started'
