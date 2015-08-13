@@ -4,11 +4,23 @@ import random
 from gevent import Greenlet
 import gevent
 from gevent.queue import Queue
+from utils import callBackWrap
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
+from utils import MonitoredInt
 
 def acs(pid, N, t, Q, broadcast, receive):
     assert(isinstance(Q, list))
-    assert(len(Q) >= N)
+    assert(len(Q) == N)
+
+    def callbackFactory(i):
+        def _callback(): # Get notified for i
+            Greenlet(callBackWrap(binary_consensus, callbackFactory(i)), pid,
+                     N, t, 1, make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
+        return _callback
+
+    for i, q in enumerate(Q):
+        assert(isinstance(q, MonitoredInt))
+        q.registerSetCallBack(callbackFactory(i))
 
     def make_bc(i):
         def _bc(m):
@@ -29,12 +41,6 @@ def acs(pid, N, t, Q, broadcast, receive):
 
     Greenlet(_listener).start()
 
-    def callBackWrap(func, callback):
-        def _callBackWrap(*args, **kargs):
-            result = func(*args, **kargs)
-            callback(result)
-        return _callBackWrap
-
     BA = [0]*N
     locker = Queue(1)
     acs.callbackCounter = 0
@@ -48,12 +54,54 @@ def acs(pid, N, t, Q, broadcast, receive):
                 acs.callbackCounter += 1
         return _callback
 
+    locker.get()
+    mylog(bcolors.UNDERLINE + "[%d] Get subset %s" % (pid, BA) + bcolors.ENDC)
+    return BA
+    #open('result','a').write("[%d] Get subset %s" % (pid, BA))
+
+def acs_mapping(pid, N, t, Q, broadcast, receive):
+    assert(isinstance(Q, list))
+    assert(len(Q) == N)
+
+    def make_bc(i):
+        def _bc(m):
+            broadcast(
+                (i, m)
+            )
+        return _bc
+
+    reliableBroadcastReceiveQueue = [Queue() for x in range(N)]
+
+    def _listener():
+        while True:
+            sender, (instance, m) = receive()
+            mylog("[%d] received %s on instance %d" % (pid, repr((sender, m)), instance))
+            reliableBroadcastReceiveQueue[instance].put(
+                    (sender, m)
+                )
+
+    Greenlet(_listener).start()
+
+    BA = [0]*N
+    locker = Queue(1)
+    acs_mapping.callbackCounter = 0
+
+    def callbackFactory(i):
+        def _callback(result):
+            BA[i] = result
+            if result:
+                if acs.callbackCounter >= 2*t:
+                        locker.put("Key") # Now we've got 2t+1 1's
+                acs_mapping.callbackCounter += 1
+        return _callback
+
 
     for i in range(N):
         Greenlet(callBackWrap(binary_consensus, callbackFactory(i)), pid,
                      N, t, Q[i], make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
     locker.get()
     mylog(bcolors.UNDERLINE + "[%d] Get subset %s" % (pid, BA) + bcolors.ENDC)
+    return BA
     #open('result','a').write("[%d] Get subset %s" % (pid, BA))
 
 def random_delay_acs(N, t, inputs):
