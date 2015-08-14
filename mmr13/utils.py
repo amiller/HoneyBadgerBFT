@@ -1,5 +1,9 @@
 __author__ = 'aluex'
+import sys
+from gevent.queue import Queue
+from gevent import Greenlet
 
+verbose = 0
 
 def callBackWrap(func, callback):
     def _callBackWrap(*args, **kargs):
