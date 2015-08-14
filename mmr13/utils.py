@@ -45,13 +45,13 @@ def joinQueues(a, b):
 
 
 # Returns an idempotent function that only
-def makeCallOnce(callback, *args):
+def makeCallOnce(callback, *args, **kargs):
     called = [False]
 
     def callOnce():
         if called[0]: return
         called[0] = True
-        callback(*args)
+        callback(*args, **kargs)
 
     return callOnce
 
