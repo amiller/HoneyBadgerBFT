@@ -5,16 +5,52 @@ from gevent.queue import Queue
 from mmr13 import binary_consensus
 from bkr_acs import acs
 from utils import bcolors, mylog, MonitoredInt, callBackWrap
+from collections import defaultdict
+
 
 class Transaction:
     def __init__(self):
-        self.from = 'Unknown'
+        self.from='Unknown'
         self.to = 'Unknown'
         self.amount = 0
         #### TODO: Define a detailed transaction
 
-def consensusBroadcast(pid, N, t, msg, broadcast, receive):
-    pass
+def calcSum(dd):
+    return sum([x for _, x in dd.items()])
+
+def calcMajority(dd):
+    maxvalue = -1
+    maxkey = dd.values()[0]
+    for key, value in dd.items():
+        if value > maxvalue:
+            maxvalue = value
+            maxkey = key
+    return maxkey
+
+def consensusBroadcast(pid, N, t, msg, broadcast, send, receive):
+    assert(isinstance(msg, str))
+    msg_count = defaultdict(lambda _: 0)
+    echo_count = [defaultdict(lambda _: 0)]*N
+    phaseno = 0
+    msgDict = {}
+    broadcast(('initial', pid, msg, phaseno))
+    while sum(msg_count) < N - t:
+        msg = receive()
+        if not (msg[0], msg[1], msg[3]) in msgDict:
+            msgDict[(msg[0], msg[1], msg[3])] = 1
+            if msg[0] == 'initial':
+                broadcast(('echo', msg[1], msg[2], msg[3]))
+            elif msg[1] == 'echo' and msg[3] == phaseno:
+                echo_count[msg[1]][msg[2]] = echo_count[msg[1]][msg[2]] + 1
+                if echo_count[msg[1]][msg[2]] == (N + t)/2 + 1:
+                    msg_count[msg[2]] = msg_count[msg[2]] + 1
+            elif msg[1] == 'echo' and msg[3] > phaseno:
+                send(pid, msg) # return the msg to the queue until we are at the same phaseno
+        value = calcMajority(msg_count)
+        if msg_count[value] > (N+t)/2:
+            return value # now we can decide
+        phaseno = phaseno + 1
+
 
 def union(listOfTXSet):
     result = set() # Informal Union: actually we don't know how it compares ...
