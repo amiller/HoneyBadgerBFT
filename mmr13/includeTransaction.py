@@ -6,7 +6,7 @@ from mmr13 import binary_consensus
 from bkr_acs import acs
 from utils import bcolors, mylog, MonitoredInt, callBackWrap
 from collections import defaultdict
-
+from ecdsa import SigningKey
 
 class Transaction:
     def __init__(self):
@@ -27,7 +27,11 @@ def calcMajority(dd):
             maxkey = key
     return maxkey
 
-def consensusBroadcast(pid, N, t, msg, broadcast, send, receive):
+
+comment = '''def bracha_85(pid, N, t, msg, broadcast, send, receive, outputs): # TODO: May not work!!!
+    assert(isinstance(outputs, list))
+    for i in outputs:
+        assert(isinstance(i, Queue))
     assert(isinstance(msg, str))
     msg_count = defaultdict(lambda _: 0)
     echo_count = [defaultdict(lambda _: 0)]*N
@@ -49,7 +53,39 @@ def consensusBroadcast(pid, N, t, msg, broadcast, send, receive):
         value = calcMajority(msg_count)
         if msg_count[value] > (N+t)/2:
             return value # now we can decide
-        phaseno = phaseno + 1
+        phaseno = phaseno + 1'''
+
+Pubkeys = defaultdict(lambda : Queue(1) )
+
+def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
+    # Since all the parties we have are symmetric, so I implement this function for N instances of A-cast as a whole
+    assert(isinstance(outputs, list))
+    for i in outputs:
+        assert(isinstance(i, Queue))
+    sk = SigningKey.generate() # uses NIST192p
+    Pubkeys[pid].put(sk.get_verifying_key())
+    def Listener():
+        opinions = [defaultdict(lambda: 0) for _ in range(N)]
+        signed = [False]*N
+        while True:
+            msgBundle = receive()
+            vki = Pubkeys[msgBundle[1]].get()
+            Pubkeys[msgBundle[1]].put(vki)
+            if vki.verify(msgBundle[3], repr(msgBundle[2])):
+                if msgBundle[0] == 'initial' and not signed[msgBundle[1]]:
+                    broadcast(('echo', pid, msgBundle, sk.sign(repr(msgBundle))))
+                    signed[msgBundle[1]] = True
+                elif msgBundle[0] == 'echo':
+                    opinions[msgBundle[1]][msgBundle[2]] += 1
+                    if opinions[msgBundle[1]][msgBundle[2]] > (N+t)/2:
+                        outputs[msgBundle[1]].put(msgBundle[2])
+
+    Greenlet(Listener).start()
+    broadcast(('initial', pid, msg, sk.sign(repr(msg))))
+
+
+def consensusBroadcast(pid, N, t, msg, broadcast, send, receive, outputs, method=multiSigBr):
+    return method(pid, N, t, msg, broadcast, send, receive, outputs)
 
 
 def union(listOfTXSet):
@@ -88,12 +124,14 @@ def includeTransaction(pid, N, t, TXSet, broadcast, receive):
                     (sender, m)
                 )
 
-    def callbackFactoryBC():
-        def _callback(packedNum): # now I know player j has succeeded in broadcasting
-            j, txj = packedNum
-            monitoredIntList[j].data = 1
-            TXSet[j] = txj
-        return _callback
+    outputChannel = [Queue(1) for _ in range(N)]
+
+    def outputCallBack(i):
+        TXSet[i] = outputChannel[i].get()
+        monitoredIntList[i].data = 1
+
+    for i in range(N):
+        Greenlet(outputCallBack, i).start()
 
     def callbackFactoryACS():
         def _callback(commonSet): # now I know player j has succeeded in broadcasting
@@ -107,8 +145,10 @@ def includeTransaction(pid, N, t, TXSet, broadcast, receive):
     includeTransaction.callbackCounter = 0
     monitoredIntList = [MonitoredInt() for _ in range(N)]
 
-    Greenlet(callBackWrap(consensusBroadcast, callbackFactoryBC()), pid, N, t, TXSet, make_bc_br(pid), CBChannel.get).start()
+    Greenlet(consensusBroadcast, pid, N, t, TXSet, make_bc_br(pid), CBChannel.get, outputChannel).start()
+
     Greenlet(callBackWrap(acs, callbackFactoryACS()), pid, N, t, monitoredIntList, make_acs_br(pid), ACSChannel.get).start()
+
     commonSet = locker.get()
 
     return union([TXSet[x] for x in range(N) if commonSet[x]==1])
