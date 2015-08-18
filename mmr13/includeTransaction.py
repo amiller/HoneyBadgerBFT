@@ -153,5 +153,22 @@ def includeTransaction(pid, N, t, TXSet, broadcast, receive):
 
     return union([TXSet[x] for x in range(N) if commonSet[x]==1])
 
+HONEST_PARTY_TIMEOUT = 1
 
+def honestParty(pid, N, t, controlChannel, broadcast, receive):
+    # RequestChannel is called by the client and it is the client's duty to broadcast the tx it wants to include
+    transactionCache = set()
+    while True:
+        try:
+            op, msg = controlChannel.get(timeout=HONEST_PARTY_TIMEOUT)
+            mylog("[%d] gets some msg %s" % (pid, repr(msg)))
+            if op == "IncludeTransaction":
+                transactionCache.add(msg)
+            elif op == "Halt":
+                break
+        finally:
+            syncedTXSet = includeTransaction(pid, N, t, transactionCache, broadcast, receive)
+            transactionCache = transactionCache.difference(syncedTXSet)
+            mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)))
+    mylog("[%d] Now halting..." % (pid))
 
