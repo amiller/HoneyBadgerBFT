@@ -166,6 +166,8 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
                 transactionCache.add(msg)
             elif op == "Halt":
                 break
+            elif op == "Msg":
+                broadcast(eval(msg)) # now the msg is something we mannually send
         finally:
             syncedTXSet = includeTransaction(pid, N, t, transactionCache, broadcast, receive)
             transactionCache = transactionCache.difference(syncedTXSet)
