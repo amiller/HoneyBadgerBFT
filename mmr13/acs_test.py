@@ -4,7 +4,7 @@ from gevent.queue import Queue
 from gevent import Greenlet
 from utils import bcolors, mylog
 from includeTransaction import honestParty, Transaction
-from container import defaultdict
+from collections import defaultdict
 import gevent
 import os
 import random
@@ -17,11 +17,24 @@ def exception(msg):
 
 def randomTransaction():
     tx = Transaction()
-    tx.from = random.choice(nameList)
-    tx.to = random.choice(nameList)
+    tx.source = random.choice(nameList)
+    tx.target = random.choice(nameList)
     tx.amout = random.randint(1, 100)
 
 def client_test_random_delay(N, t):
+    '''
+    Test for the client with random delay channels
+
+    command list
+        i [target]: send a transaction to include for some particular party
+        h [target]: stop some particular party
+        m [target]: manually make particular party send some message
+        help: show the help screen
+
+    :param N: the number of parties
+    :param t: the number of malicious parties
+    :return None:
+    '''
     maxdelay = 0.01
 
     buffers = map(lambda _: Queue(1), range(N))
@@ -45,8 +58,14 @@ def client_test_random_delay(N, t):
             controlChannels[target].put(('Msg', tokens[2]))
         else:
             exception("Bad Arguments")
+    def help(tokens):
+        mylog("%s\n" % client_test_random_delay.__doc__)
+
     parser["it"] = parser["i"] = it
-    parser["halt"] = halt
+    parser["halt"] = parser["h"] = halt
+    parser["msg"] = parser["m"] = msg
+    parser["help"] = help
+
     # Instantiate the "broadcast" instruction
     def makeBroadcast(i):
         def _broadcast(v):
@@ -79,3 +98,5 @@ def client_test_random_delay(N, t):
     except gevent.hub.LoopExit: # Manual fix for early stop
         print "Consensus Error"
 
+if __name__ == '__main__':
+    client_test_random_delay(5,1)

@@ -10,8 +10,8 @@ from ecdsa import SigningKey
 
 class Transaction:
     def __init__(self):
-        self.from='Unknown'
-        self.to = 'Unknown'
+        self.source='Unknown'
+        self.target = 'Unknown'
         self.amount = 0
         #### TODO: Define a detailed transaction
 
@@ -84,8 +84,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
     broadcast(('initial', pid, msg, sk.sign(repr(msg))))
 
 
-def consensusBroadcast(pid, N, t, msg, broadcast, send, receive, outputs, method=multiSigBr):
-    return method(pid, N, t, msg, broadcast, send, receive, outputs)
+def consensusBroadcast(pid, N, t, msg, broadcast, receive, outputs, method=multiSigBr):
+    return method(pid, N, t, msg, broadcast, receive, outputs)
 
 
 def union(listOfTXSet):
@@ -106,12 +106,12 @@ def includeTransaction(pid, N, t, TXSet, broadcast, receive):
 
     def make_bc_br(i):
         def _bc_br(m):
-            broadcast(i, ('BC', m))
+            broadcast((i, ('BC', m)))
         return _bc_br
 
     def make_acs_br(i):
         def _acs_br(m):
-            broadcast(i, ('ACS', m))
+            broadcast((i, ('ACS', m)))
         return _acs_br
 
     def _listener():
