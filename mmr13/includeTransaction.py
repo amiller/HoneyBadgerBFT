@@ -80,9 +80,12 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     broadcast(('echo', pid, newBundle, sk.sign(repr(newBundle))))
                     signed[msgBundle[1]] = True
                 elif msgBundle[0] == 'echo':
-                    opinions[msgBundle[1]][repr(msgBundle[2])] += 1
-                    if opinions[msgBundle[1]][repr(msgBundle[2])] > (N+t)/2:
-                        outputs[msgBundle[1]].put(msgBundle[2])
+                    originBundle = msgBundle[2]
+                    opinions[originBundle[0]][repr(originBundle[1])] += 1
+                    mylog("[%d] counter for (%d, %s) is now %d" % (pid, originBundle[0],
+                        repr(originBundle[1]), opinions[originBundle[0]][repr(originBundle[1])]))
+                    if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2:
+                        outputs[originBundle[0]].put(originBundle[1])
 
     Greenlet(Listener).start()
     broadcast(('initial', pid, msg, sk.sign(repr(msg))))  # Kick Off!
