@@ -64,24 +64,28 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         assert(isinstance(i, Queue))
     sk = SigningKey.generate() # uses NIST192p
     Pubkeys[pid].put(sk.get_verifying_key())
+
     def Listener():
         opinions = [defaultdict(lambda: 0) for _ in range(N)]
         signed = [False]*N
         while True:
-            msgBundle = receive()
-            vki = Pubkeys[msgBundle[1]].get()
-            Pubkeys[msgBundle[1]].put(vki)
+            sender, msgBundle = receive()
+            mylog("[%d] received msgBundle %s" % (pid, msgBundle))
+            vki = Pubkeys[msgBundle[1]].peek()
             if vki.verify(msgBundle[3], repr(msgBundle[2])):
+                # mylog("[%d] Signature passed, msgBundle: %s" % (pid, repr(msgBundle)))
                 if msgBundle[0] == 'initial' and not signed[msgBundle[1]]:
-                    broadcast(('echo', pid, msgBundle, sk.sign(repr(msgBundle))))
+                    # Here we should remove the randomness of the signature
+                    newBundle = (msgBundle[1], msgBundle[2])
+                    broadcast(('echo', pid, newBundle, sk.sign(repr(newBundle))))
                     signed[msgBundle[1]] = True
                 elif msgBundle[0] == 'echo':
-                    opinions[msgBundle[1]][msgBundle[2]] += 1
-                    if opinions[msgBundle[1]][msgBundle[2]] > (N+t)/2:
+                    opinions[msgBundle[1]][repr(msgBundle[2])] += 1
+                    if opinions[msgBundle[1]][repr(msgBundle[2])] > (N+t)/2:
                         outputs[msgBundle[1]].put(msgBundle[2])
 
     Greenlet(Listener).start()
-    broadcast(('initial', pid, msg, sk.sign(repr(msg))))
+    broadcast(('initial', pid, msg, sk.sign(repr(msg))))  # Kick Off!
 
 
 def consensusBroadcast(pid, N, t, msg, broadcast, receive, outputs, method=multiSigBr):
@@ -106,20 +110,22 @@ def includeTransaction(pid, N, t, TXSet, broadcast, receive):
 
     def make_bc_br(i):
         def _bc_br(m):
-            broadcast((i, ('BC', m)))
+            broadcast(('BC', m))
         return _bc_br
 
     def make_acs_br(i):
         def _acs_br(m):
-            broadcast((i, ('ACS', m)))
+            broadcast(('ACS', m))
         return _acs_br
 
     def _listener():
         while True:
             sender, (tag, m) = receive()
+            #mylog("[%d] got a msg from %s\n %s" % (pid, repr(sender), repr((tag, m))))
             if tag == 'BC':
-                CBChannel.put(sender, m)
-            elif tag=='ACS':
+                #mylog("[%d] CBChannel put %s" % (pid, repr((sender, m))))
+                CBChannel.put((sender, m))
+            elif tag == 'ACS':
                 ACSChannel.put(
                     (sender, m)
                 )
@@ -128,6 +134,7 @@ def includeTransaction(pid, N, t, TXSet, broadcast, receive):
 
     def outputCallBack(i):
         TXSet[i] = outputChannel[i].get()
+        mylog(bcolors.OKGREEN + "[%d] get output(%d) as TXSet: %s" % (pid, i, repr(TXSet[i])) + bcolors.ENDC)
         monitoredIntList[i].data = 1
 
     for i in range(N):
@@ -169,6 +176,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             elif op == "Msg":
                 broadcast(eval(msg)) # now the msg is something we mannually send
         finally:
+
             syncedTXSet = includeTransaction(pid, N, t, transactionCache, broadcast, receive)
             transactionCache = transactionCache.difference(syncedTXSet)
             mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)))
