@@ -5,11 +5,14 @@ from gevent import Greenlet
 
 verbose = 0
 
+
 def callBackWrap(func, callback):
     def _callBackWrap(*args, **kargs):
         result = func(*args, **kargs)
         callback(result)
+
     return _callBackWrap
+
 
 class bcolors:
     HEADER = '\033[95m'
@@ -21,6 +24,7 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+
 def mylog(*args, **kargs):
     if not 'verboseLevel' in kargs:
         kargs['verboseLevel'] = 0
@@ -28,6 +32,7 @@ def mylog(*args, **kargs):
         print " ".join([isinstance(arg, str) and arg or repr(arg) for arg in args])
         sys.stdout.flush()
         sys.stderr.flush()
+
 
 def joinQueues(a, b):
     # Return an element from either a or b
@@ -55,16 +60,23 @@ def makeCallOnce(callback, *args, **kargs):
 
     return callOnce
 
-class MonitoredInt:
-    def __init__(self, getCallback=lambda: None, setCallback=lambda: None):
-        self._data = 0
-        self._getcallback = getCallback
-        self._setcallback = setCallback
 
-    def __setattr__(self, key, value):
-        if key == 'data':
-            self._data = value
-            self._setcallback()
+class MonitoredInt(object):
+    _getcallback = lambda _: None
+    _setcallback = lambda _: None
+
+    def _getdata(self):
+        self._getcallback()
+        return self.__data
+
+    def _setdata(self, value):
+        self.__data = value
+        self._setcallback(value)
+
+    def __init__(self, getCallback=lambda _: None, setCallback=lambda _: None):
+        self._getcallback = lambda _: None
+        self._setcallback = lambda _: None
+        self._data = 0
 
     def registerGetCallBack(self, getCallBack):
         self._getcallback = getCallBack
@@ -72,7 +84,15 @@ class MonitoredInt:
     def registerSetCallBack(self, setCallBack):
         self._setcallback = setCallBack
 
-    def __getattr__(self, item):
-        if item == 'data':
-            self._getcallback()
-            return self._data
+    data = property(_getdata, _setdata)
+
+
+if __name__ == '__main__':
+    a = MonitoredInt()
+    a.data = 1
+
+    def callback(val):
+        print "Callback called with", val
+
+    a.registerSetCallBack(callback)
+    a.data = 2
