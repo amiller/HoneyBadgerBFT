@@ -13,7 +13,7 @@ def acs(pid, N, t, Q, broadcast, receive):
     assert(len(Q) == N)
 
     def callbackFactory(i):
-        def _callback(): # Get notified for i
+        def _callback(val): # Get notified for i
             Greenlet(callBackWrap(binary_consensus, callbackFactory(i)), pid,
                      N, t, 1, make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
         return _callback
@@ -110,20 +110,22 @@ def random_delay_acs(N, t, inputs):
 
     maxdelay = 0.01
 
-
-
     # Instantiate the "broadcast" instruction
     def makeBroadcast(i):
         def _broadcast(v):
            def _deliver(j):
-               #print 'Delivering', v, 'from', i, 'to', j
+               # print 'Delivering', v, 'from', i, 'to', j
                mylog(bcolors.OKGREEN + "MSG: [%d] -> [%d]: %s" % (i, j, repr(v)) + bcolors.ENDC)
                buffers[j].put((i,v))
                mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
+
            for j in range(N):
                Greenlet(_deliver, j).start_later(random.random()*maxdelay)
 
         return _broadcast
+
+    def modifyMonitoredInt(monitoredInt):
+        monitoredInt.data = 1
 
     while True:
         initBeforeBinaryConsensus()
@@ -134,7 +136,9 @@ def random_delay_acs(N, t, inputs):
             bc = makeBroadcast(i)
             recv = buffers[i].get #buffers[i].get
             #vi = random.randint(0, 10)
-            input_clone = [x for x in inputs]
+            input_clone = [MonitoredInt() for _ in range(N)]
+            for j in range(N):
+                Greenlet(modifyMonitoredInt, input_clone[j]).start_later(maxdelay * random.random())
             th = Greenlet(acs, i, N, t, input_clone, bc, recv)
             th.start() # start_later(random.random() * maxdelay)
             ts.append(th)
@@ -150,7 +154,6 @@ if __name__=='__main__':
     #initTor()
     print "[ =========== ]"
     print "Testing binary consensus..."
-    #random_delay_binary_consensus(5,1)
     print "Testing ACS with different inputs..."
     Q = [1]*(2*1+1+1)+[0]*1
     random.shuffle(Q)

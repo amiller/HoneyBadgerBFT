@@ -92,11 +92,11 @@ def client_test_random_delay(N, t):
             tokens = [s for s in raw_input().strip().split() if s]
             mylog(">>> %s\n" % repr(parser[tokens[0]](tokens)))
 
-    #if True:
+    Greenlet(monitorUserInput).start()
     try:
         gevent.joinall(ts)
     except gevent.hub.LoopExit: # Manual fix for early stop
         print "Consensus Error"
 
 if __name__ == '__main__':
-    client_test_random_delay(5,1)
+    client_test_random_delay(5, 1)

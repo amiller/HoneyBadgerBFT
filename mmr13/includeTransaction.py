@@ -1,7 +1,7 @@
 __author__ = 'aluex'
 
 from gevent import Greenlet
-from gevent.queue import Queue
+from gevent.queue import Queue, Empty
 from mmr13 import binary_consensus
 from bkr_acs import acs
 from utils import bcolors, mylog, MonitoredInt, callBackWrap
@@ -59,6 +59,7 @@ Pubkeys = defaultdict(lambda : Queue(1) )
 
 def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
     # Since all the parties we have are symmetric, so I implement this function for N instances of A-cast as a whole
+    # Here msg is a set of transactions
     assert(isinstance(outputs, list))
     for i in outputs:
         assert(isinstance(i, Queue))
@@ -102,9 +103,9 @@ def union(listOfTXSet):
     return result
 
 # tx is the transaction we are going to include
-def includeTransaction(pid, N, t, TXSet, broadcast, receive):
+def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
 
-    for tx in TXSet:
+    for tx in setToInclude:
         assert(isinstance(tx, Transaction))
 
     CBChannel = Queue()
@@ -155,7 +156,7 @@ def includeTransaction(pid, N, t, TXSet, broadcast, receive):
     includeTransaction.callbackCounter = 0
     monitoredIntList = [MonitoredInt() for _ in range(N)]
 
-    Greenlet(consensusBroadcast, pid, N, t, TXSet, make_bc_br(pid), CBChannel.get, outputChannel).start()
+    Greenlet(consensusBroadcast, pid, N, t, setToInclude, make_bc_br(pid), CBChannel.get, outputChannel).start()
 
     Greenlet(callBackWrap(acs, callbackFactoryACS()), pid, N, t, monitoredIntList, make_acs_br(pid), ACSChannel.get).start()
 
@@ -168,6 +169,7 @@ HONEST_PARTY_TIMEOUT = 1
 def honestParty(pid, N, t, controlChannel, broadcast, receive):
     # RequestChannel is called by the client and it is the client's duty to broadcast the tx it wants to include
     transactionCache = set()
+    sessionID = 0
     while True:
         try:
             op, msg = controlChannel.get(timeout=HONEST_PARTY_TIMEOUT)
@@ -178,10 +180,14 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
                 break
             elif op == "Msg":
                 broadcast(eval(msg)) # now the msg is something we mannually send
+        except Empty:
+            print ">>>"
         finally:
 
             syncedTXSet = includeTransaction(pid, N, t, transactionCache, broadcast, receive)
+            assert(isinstance(syncedTXSet, set))
             transactionCache = transactionCache.difference(syncedTXSet)
             mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)))
+        sessionID = sessionID + 1
     mylog("[%d] Now halting..." % (pid))
 
