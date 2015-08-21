@@ -1,4 +1,4 @@
-from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, MVBroadcast, mv84consensus, initBeforeBinaryConsensus
+from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, mv84consensus, initBeforeBinaryConsensus
 
 #import random
 from utils import myRandom as random
@@ -18,7 +18,7 @@ def checkBA(BA, N, t):
     global defaultBA
     if sum(BA) <= 2*t:  # If acs failed, we use a preset default common subset
         raise ACSException
-        # This part should not be executed
+        # This part should never be executed
         if not defaultBA:
             lockBA.get()
             num = random.randint(2*t+1, N)

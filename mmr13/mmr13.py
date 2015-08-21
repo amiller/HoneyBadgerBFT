@@ -6,19 +6,29 @@ from collections import defaultdict
 #import random
 import sys
 verbose = 0
-from utils import bcolors, mylog, joinQueues, makeCallOnce
+from utils import bcolors, mylog, joinQueues, makeCallOnce, makeBroadcastWithTag
 
-
-# The BV_Broadcast algorithm [MMR13]
 # Input: a binary value
 # Output: outputs one binary value, and thereafter possibly a second
 # - If at least (t+1) of the honest parties input v, then v will be output by all honest parties
 # (Note: it requires up to 2*t honest parties to deliver their messages. At the highest tolerance setting, this means *all* the honest parties)
 # - If any honest party outputs a value, then it must have been input by some honest party. If only corrupted parties propose a value, it will never be output. 
 def bv_broadcast(pid, N, t, broadcast, receive, output):
+    '''
+    The BV_Broadcast algorithm [MMR13]
+    :param pid: my id number
+    :param N: the number of parties
+    :param t: the number of byzantine parties
+    :param broadcast: broadcast channel
+    :param receive: receive channel
+    :param output: output channel
+    :return: None
+    '''
     assert N > 3 * t
 
     def input(my_v):
+        # my_v : input value
+
         # My initial input value is v in (0,1)
         #assert my_v in (0, 1)
 
@@ -30,7 +40,7 @@ def bv_broadcast(pid, N, t, broadcast, receive, output):
         received = defaultdict(set)
 
         def _bc(v):
-            print '[%d]' % pid, 'Relaying', v
+            mylog('[%d]' % pid, 'Relaying', v)
             broadcast(v)
 
         relay = (makeCallOnce(lambda: _bc(0)),
@@ -64,8 +74,16 @@ def bv_broadcast(pid, N, t, broadcast, receive, output):
     return input
 
 
-# A dummy version of the Shared Coin
 def shared_coin_dummy(pid, N, t, broadcast, receive):
+    '''
+    A dummy version of the Shared Coin
+    :param pid: my id number
+    :param N: the number of parties
+    :param t: the number of byzantine parties
+    :param broadcast: broadcast channel
+    :param receive: receive channel
+    :return: yield values b
+    '''
     received = defaultdict(set)
     outputQueue = defaultdict(lambda: Queue(1))
 
@@ -99,23 +117,33 @@ def shared_coin_dummy(pid, N, t, broadcast, receive):
         round += 1
         yield b
 
+
 def arbitary_adversary(pid, N, t, vi, broadcast, receive):
     pass
 
-initDelivered = defaultdict(set)
-vectDelivered = defaultdict(set)
-vectDeliveredConsensus = defaultdict(set)
-#initReceived = defaultdict(set)
-mvWaiterLock = defaultdict(lambda: Queue(1))
-mvWaiterLock2 = defaultdict(lambda: Queue(1))
-mvWaiterLock3 = defaultdict(lambda: Queue(1))
-V = defaultdict(lambda: defaultdict(lambda: 'bottom'))
-w = defaultdict(lambda:'bottom')
-W = defaultdict(lambda: defaultdict(lambda: 'bottom'))
-finished = defaultdict(lambda: False)
-globalState = defaultdict(str)
+# initDelivered = defaultdict(set)
+# vectDelivered = defaultdict(set)
+# vectDeliveredConsensus = defaultdict(set)
+# initReceived = defaultdict(set)
+# mvWaiterLock = defaultdict(lambda: Queue(1))
+# mvWaiterLock2 = defaultdict(lambda: Queue(1))
+# mvWaiterLock3 = defaultdict(lambda: Queue(1))
+# V = defaultdict(lambda: defaultdict(lambda: 'bottom'))
+# w = defaultdict(lambda:'bottom')
+# W = defaultdict(lambda: defaultdict(lambda: 'bottom'))
+
+finished = defaultdict(lambda: False)  # For the short cut
+globalState = defaultdict(str)  # Just for debugging
+
 
 def initBeforeBinaryConsensus():
+    '''
+    Initialize all the variables used by binary consensus.
+    Actually these variables should be described as local variables.
+    :return: None
+    '''
+    # This function is just for temporary use. It will be deprecated in the future.
+    comment = '''
     global initDelivered, vectDelivered, vectDeliveredConsensus, mvWaiterLock, mvWaiterLock2, mvWaiterLock3, V, w, W, finished, globalState
     initDelivered = defaultdict(set)
     vectDelivered = defaultdict(set)
@@ -129,24 +157,25 @@ def initBeforeBinaryConsensus():
     W = defaultdict(lambda: defaultdict(lambda: 'bottom'))
     finished = defaultdict(lambda: False)
     globalState = defaultdict(str)
+    '''
+
 
 def mv84consensus(pid, N, t, vi, broadcast, receive):
+    '''
+    Implementation of the multivalue consensus of [TURPIN, COAN, 1984]
+    This will achieve a consensus among all the inputs provided by honest parties
+    :param pid: my id number
+    :param N: the number of parties
+    :param t: the number of byzantine parties
+    :param vi: input value, an integer
+    :param broadcast: broadcast channel
+    :param receive: receive channel
+    :return: decided value or 0 (default value if failed to reach a concensus)
+    '''
+    # initialize v and p (same meaning as in the paper)
     mv84v = defaultdict(lambda: 'Empty')
     mv84p = defaultdict(lambda: False)
-    alert = False
-    def make_mvbc_value():
-        def _bc(m):
-            broadcast(
-                ('VAL', m)
-            )
-        return _bc
-    def make_mvbc_perp():
-        def _bc(m):
-            broadcast(
-                ('BOOL', m)
-            )
-        return _bc
-
+    # Initialize the locks and local variables
     mv84WaiterLock = Queue()
     mv84WaiterLock2 = Queue()
     mv84ReceiveDiff = set()
@@ -180,22 +209,22 @@ def mv84consensus(pid, N, t, vi, broadcast, receive):
 
     Greenlet(_listener).start()
     mylog(bcolors.FAIL + "[%d] Starting Phase 1" % pid)
-    make_mvbc_value()(vi)
+    makeBroadcastWithTag('VAL', broadcast)(vi)
     perplexed = mv84WaiterLock.get()
     mylog(bcolors.FAIL + "[%d] Starting Phase 2" % pid)
-    make_mvbc_perp()(perplexed)
+    makeBroadcastWithTag('BOOL', broadcast)(perplexed)
     alert = mv84WaiterLock2.get() and 1 or 0
     mylog(bcolors.FAIL + "[%d] Starting binary consensus on alert: %d" % (pid, alert))
     agreedAlert = binary_consensus(pid, N, t, alert, broadcast, reliableBroadcastReceiveQueue.get)
     if agreedAlert:
         mylog(bcolors.FAIL + "[%d] agreed on Alert = True" % pid)
-        return 0 # pre-defined default consensus value
+        return 0  # pre-defined default consensus value
     else:
         mylog(bcolors.FAIL + "[%d] agreed on %s" % (pid, repr(vi)))
         return vi
 
 
-
+comment = '''
 def MVBroadcast(pid, N, t, vi, cid, broadcast, receive):
     def make_mvbc_init():
         def _bc(m):
@@ -283,9 +312,9 @@ def MVBroadcast(pid, N, t, vi, cid, broadcast, receive):
             else:
                 reliableBroadcastReceiveQueue.put((pid, (tag, m)))
 
-
     Greenlet(T1).start()
     Greenlet(T2).start()
+'''
 
 def binary_consensus(pid, N, t, vi, broadcast, receive):
     # Messages received are routed to either a shared coin, the broadcast, or AUX

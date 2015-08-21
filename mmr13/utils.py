@@ -63,6 +63,14 @@ def makeCallOnce(callback, *args, **kargs):
     return callOnce
 
 
+def makeBroadcastWithTag(tag, broadcast):
+    def _bc(m):
+        broadcast(
+            (tag, m)
+        )
+    return _bc
+
+
 class MonitoredInt(object):
     _getcallback = lambda _: None
     _setcallback = lambda _: None
