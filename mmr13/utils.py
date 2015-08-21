@@ -2,9 +2,11 @@ __author__ = 'aluex'
 import sys
 from gevent.queue import Queue
 from gevent import Greenlet
+import random
 
 verbose = 0
-
+goodseed = random.randint(1, 10000)
+myRandom = random.Random(goodseed)
 
 def callBackWrap(func, callback):
     def _callBackWrap(*args, **kargs):
@@ -86,6 +88,12 @@ class MonitoredInt(object):
 
     data = property(_getdata, _setdata)
 
+class ACSException(Exception):
+    pass
+
+def greenletFunction(func):
+    func.at_exit = lambda: None  # manual at_exit since Greenlet does not provide this event by default
+    return func
 
 if __name__ == '__main__':
     a = MonitoredInt()

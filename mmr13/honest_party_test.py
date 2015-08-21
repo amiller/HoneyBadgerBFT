@@ -5,9 +5,13 @@ from gevent import Greenlet
 from utils import bcolors, mylog
 from includeTransaction import honestParty, Transaction
 from collections import defaultdict
+from bkr_acs import initBeforeBinaryConsensus
+from utils import ACSException
 import gevent
 import os
-import random
+#import random
+from utils import myRandom as random
+#print state
 
 nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 
@@ -19,7 +23,8 @@ def randomTransaction():
     tx = Transaction()
     tx.source = random.choice(nameList)
     tx.target = random.choice(nameList)
-    tx.amout = random.randint(1, 100)
+    tx.amount = random.randint(1, 100)
+    return tx
 
 def client_test_random_delay(N, t):
     '''
@@ -78,25 +83,34 @@ def client_test_random_delay(N, t):
                 Greenlet(_deliver, j).start_later(random.random()*maxdelay)
         return _broadcast
 
-    ts = []
-    controlChannels = [Queue() for _ in range(N)]
-    for i in range(N):
-        bc = makeBroadcast(i)
-        recv = buffers[i].get
-        th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
-        th.start_later(random.random() * maxdelay)
-        ts.append(th)
+    while True:
+        initBeforeBinaryConsensus()
+        ts = []
+        controlChannels = [Queue() for _ in range(N)]
+        for i in range(N):
+            bc = makeBroadcast(i)
+            recv = buffers[i].get
+            th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
+            controlChannels[i].put(('IncludeTransaction', randomTransaction()))
+            th.start_later(random.random() * maxdelay)
+            ts.append(th)
 
-    def monitorUserInput():
-        while True:
+        def monitorUserInput(): # No idea why raw_input will block the whole gevent, need some investigation
+            while True:
+                mylog(">>>")
+                tokens = [s for s in raw_input().strip().split() if s]
+                mylog("= %s\n" % repr(parser[tokens[0]](tokens)))
+
+        #Greenlet(monitorUserInput).start()
+        try:
+            gevent.joinall(ts)
+        except ACSException:
+            gevent.killall(ts)
+        except gevent.hub.LoopExit: # Manual fix for early stop
+            print "Concensus Finished"
+            mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
             tokens = [s for s in raw_input().strip().split() if s]
-            mylog(">>> %s\n" % repr(parser[tokens[0]](tokens)))
-
-    Greenlet(monitorUserInput).start()
-    try:
-        gevent.joinall(ts)
-    except gevent.hub.LoopExit: # Manual fix for early stop
-        print "Consensus Error"
+            mylog("= %s\n" % repr(parser[tokens[0]](tokens)))  # In case the parser has an output
 
 if __name__ == '__main__':
     client_test_random_delay(5, 1)

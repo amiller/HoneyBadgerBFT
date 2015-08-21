@@ -3,10 +3,11 @@ __author__ = 'aluex'
 from gevent import Greenlet
 from gevent.queue import Queue, Empty
 from mmr13 import binary_consensus
-from bkr_acs import acs
-from utils import bcolors, mylog, MonitoredInt, callBackWrap
+from bkr_acs import acs, initBeforeBinaryConsensus
+from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction
 from collections import defaultdict
 from ecdsa import SigningKey
+
 
 class Transaction:
     def __init__(self):
@@ -14,6 +15,9 @@ class Transaction:
         self.target = 'Unknown'
         self.amount = 0
         #### TODO: Define a detailed transaction
+
+    def __repr__(self):
+        return bcolors.OKBLUE + "{{Transaction from %s to %s with %d}}" % (self.source, self.target, self.amount) + bcolors.ENDC
 
 def calcSum(dd):
     return sum([x for _, x in dd.items()])
@@ -57,6 +61,7 @@ comment = '''def bracha_85(pid, N, t, msg, broadcast, send, receive, outputs): #
 
 Pubkeys = defaultdict(lambda : Queue(1) )
 
+@greenletFunction
 def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
     # Since all the parties we have are symmetric, so I implement this function for N instances of A-cast as a whole
     # Here msg is a set of transactions
@@ -91,7 +96,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
     Greenlet(Listener).start()
     broadcast(('initial', pid, msg, sk.sign(repr(msg))))  # Kick Off!
 
-
+@greenletFunction
 def consensusBroadcast(pid, N, t, msg, broadcast, receive, outputs, method=multiSigBr):
     return method(pid, N, t, msg, broadcast, receive, outputs)
 
@@ -99,10 +104,12 @@ def consensusBroadcast(pid, N, t, msg, broadcast, receive, outputs, method=multi
 def union(listOfTXSet):
     result = set() # Informal Union: actually we don't know how it compares ...
     for s in listOfTXSet:
-        result.union(s)
+        result = result.union(s)
+    mylog("Union on %s gives %s" % (repr(listOfTXSet), repr(result)))
     return result
 
 # tx is the transaction we are going to include
+@greenletFunction
 def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
 
     for tx in setToInclude:
@@ -161,11 +168,13 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
     Greenlet(callBackWrap(acs, callbackFactoryACS()), pid, N, t, monitoredIntList, make_acs_br(pid), ACSChannel.get).start()
 
     commonSet = locker.get()
+    subTXSet = [TXSet[x] for x in range(N) if commonSet[x]==1]
 
-    return union([TXSet[x] for x in range(N) if commonSet[x]==1])
+    return union(subTXSet)
 
 HONEST_PARTY_TIMEOUT = 1
 
+@greenletFunction
 def honestParty(pid, N, t, controlChannel, broadcast, receive):
     # RequestChannel is called by the client and it is the client's duty to broadcast the tx it wants to include
     transactionCache = set()
@@ -175,6 +184,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             op, msg = controlChannel.get(timeout=HONEST_PARTY_TIMEOUT)
             mylog("[%d] gets some msg %s" % (pid, repr(msg)))
             if op == "IncludeTransaction":
+                assert(isinstance(msg, Transaction))
                 transactionCache.add(msg)
             elif op == "Halt":
                 break
@@ -183,11 +193,11 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
         except Empty:
             print ">>>"
         finally:
-
             syncedTXSet = includeTransaction(pid, N, t, transactionCache, broadcast, receive)
             assert(isinstance(syncedTXSet, set))
             transactionCache = transactionCache.difference(syncedTXSet)
             mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)))
+            raw_input()
         sessionID = sessionID + 1
     mylog("[%d] Now halting..." % (pid))
 

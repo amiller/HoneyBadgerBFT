@@ -1,12 +1,31 @@
 from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, MVBroadcast, mv84consensus, initBeforeBinaryConsensus
 
-import random
+#import random
+from utils import myRandom as random
 from gevent import Greenlet
 import gevent
 from gevent.queue import Queue
 from utils import callBackWrap
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
-from utils import MonitoredInt
+from utils import MonitoredInt, ACSException
+
+lockBA = Queue(1)
+defaultBA = []
+lockBA.put(1)
+
+
+def checkBA(BA, N, t):
+    global defaultBA
+    if sum(BA) <= 2*t:  # If acs failed, we use a preset default common subset
+        raise ACSException
+        # This part should not be executed
+        if not defaultBA:
+            lockBA.get()
+            num = random.randint(2*t+1, N)
+            defaultBA = random.shuffle([1]*num+[0]*(N-num))
+            lockBA.put(1)
+        BA = defaultBA
+    return BA
 
 def acs(pid, N, t, Q, broadcast, receive):
     assert(isinstance(Q, list))
@@ -55,9 +74,9 @@ def acs(pid, N, t, Q, broadcast, receive):
         return _callback
 
     locker.get()
+    BA = checkBA(BA, N, t)
     mylog(bcolors.UNDERLINE + "[%d] Get subset %s" % (pid, BA) + bcolors.ENDC)
     return BA
-    #open('result','a').write("[%d] Get subset %s" % (pid, BA))
 
 def acs_mapping(pid, N, t, Q, broadcast, receive):
     assert(isinstance(Q, list))

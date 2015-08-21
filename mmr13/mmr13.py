@@ -3,7 +3,7 @@ import gevent
 from gevent import Greenlet
 from gevent.queue import Queue
 from collections import defaultdict
-import random
+#import random
 import sys
 verbose = 0
 from utils import bcolors, mylog, joinQueues, makeCallOnce
