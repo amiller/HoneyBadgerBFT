@@ -76,7 +76,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         signed = [False]*N
         while True:
             sender, msgBundle = receive()
-            mylog("[%d] received msgBundle %s" % (pid, msgBundle))
+            # mylog("[%d] received msgBundle %s" % (pid, msgBundle))
             vki = Pubkeys[msgBundle[1]].peek()
             if vki.verify(msgBundle[3], repr(msgBundle[2])):
                 # mylog("[%d] Signature passed, msgBundle: %s" % (pid, repr(msgBundle)))
@@ -88,8 +88,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 elif msgBundle[0] == 'echo':
                     originBundle = msgBundle[2]
                     opinions[originBundle[0]][repr(originBundle[1])] += 1
-                    mylog("[%d] counter for (%d, %s) is now %d" % (pid, originBundle[0],
-                        repr(originBundle[1]), opinions[originBundle[0]][repr(originBundle[1])]))
+                    # mylog("[%d] counter for (%d, %s) is now %d" % (pid, originBundle[0],
+                    #    repr(originBundle[1]), opinions[originBundle[0]][repr(originBundle[1])]))
                     if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2:
                         outputs[originBundle[0]].put(originBundle[1])
 
@@ -163,12 +163,13 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
     includeTransaction.callbackCounter = 0
     monitoredIntList = [MonitoredInt() for _ in range(N)]
 
+    mylog("[%d] Beginning A-Cast on %s" % (pid, repr(setToInclude)))
     Greenlet(consensusBroadcast, pid, N, t, setToInclude, make_bc_br(pid), CBChannel.get, outputChannel).start()
-
+    mylog("[%d] Beginning ACS" % pid)
     Greenlet(callBackWrap(acs, callbackFactoryACS()), pid, N, t, monitoredIntList, make_acs_br(pid), ACSChannel.get).start()
 
     commonSet = locker.get()
-    subTXSet = [TXSet[x] for x in range(N) if commonSet[x]==1]
+    subTXSet = [TXSet[x] for x in range(N) if commonSet[x] == 1]
 
     return union(subTXSet)
 
@@ -177,6 +178,7 @@ HONEST_PARTY_TIMEOUT = 1
 @greenletFunction
 def honestParty(pid, N, t, controlChannel, broadcast, receive):
     # RequestChannel is called by the client and it is the client's duty to broadcast the tx it wants to include
+    mylog("[%d] Honesy party started." % (pid))
     transactionCache = set()
     sessionID = 0
     while True:

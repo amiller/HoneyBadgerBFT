@@ -180,13 +180,13 @@ def random_delay_multivalue_consensus(N, t, inputs):
 if __name__=='__main__':
     print "[ =========== ]"
     print "Testing binary consensus..."
-    #random_delay_binary_consensus(5,1)
-    print "Testing multivalue consensus with different inputs..."
-    random_delay_multivalue_consensus(5, 1, [random.randint(0, 10) for x in range(5)])
-    print "[ =========== ]"
-    print "Testing multivalue consensus with identical inputs..."
-    initBeforeBinaryConsensus()
-    random_delay_multivalue_consensus(5, 1, [10]*5)
+    random_delay_binary_consensus(5,1)
+    #print "Testing multivalue consensus with different inputs..."
+    #random_delay_multivalue_consensus(5, 1, [random.randint(0, 10) for x in range(5)])
+    #print "[ =========== ]"
+    #print "Testing multivalue consensus with identical inputs..."
+    #initBeforeBinaryConsensus()
+    #random_delay_multivalue_consensus(5, 1, [10]*5)
     #print "[ =========== ]"
     #print "Testing multivalue consensus with byzantine inputs..."
     #initBeforeBinaryConsensus()

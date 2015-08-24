@@ -17,14 +17,16 @@ lockBA.put(1)
 def checkBA(BA, N, t):
     global defaultBA
     if sum(BA) <= 2*t:  # If acs failed, we use a preset default common subset
-        raise ACSException
+        # raise ACSException
         # This part should never be executed
         if not defaultBA:
             lockBA.get()
-            num = random.randint(2*t+1, N)
-            defaultBA = random.shuffle([1]*num+[0]*(N-num))
+            if not defaultBA:
+                num = random.randint(2*t+1, N)
+                defaultBA = [1]*num+[0]*(N-num)
+                random.shuffle(defaultBA)
             lockBA.put(1)
-        BA = defaultBA
+        return [_ for _ in defaultBA]  # Clone
     return BA
 
 def acs(pid, N, t, Q, broadcast, receive):
@@ -53,7 +55,7 @@ def acs(pid, N, t, Q, broadcast, receive):
     def _listener():
         while True:
             sender, (instance, m) = receive()
-            mylog("[%d] received %s on instance %d" % (pid, repr((sender, m)), instance))
+            #mylog("[%d] received %s on instance %d" % (pid, repr((sender, m)), instance))
             reliableBroadcastReceiveQueue[instance].put(
                     (sender, m)
                 )

@@ -76,9 +76,9 @@ def client_test_random_delay(N, t):
         def _broadcast(v):
             def _deliver(j):
                 #print 'Delivering', v, 'from', i, 'to', j
-                mylog(bcolors.OKGREEN + "MSG: [%d] -> [%d]: %s" % (i, j, repr(v)) + bcolors.ENDC)
+                # mylog(bcolors.OKGREEN + "MSG: [%d] -> [%d]: %s" % (i, j, repr(v)) + bcolors.ENDC)
                 buffers[j].put((i,v))
-                mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
+                # mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
             for j in range(N):
                 Greenlet(_deliver, j).start_later(random.random()*maxdelay)
         return _broadcast

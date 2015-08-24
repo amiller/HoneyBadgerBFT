@@ -40,7 +40,7 @@ def bv_broadcast(pid, N, t, broadcast, receive, output):
         received = defaultdict(set)
 
         def _bc(v):
-            mylog('[%d]' % pid, 'Relaying', v)
+            # mylog('[%d]' % pid, 'Relaying', v)
             broadcast(v)
 
         relay = (makeCallOnce(lambda: _bc(0)),
@@ -50,9 +50,9 @@ def bv_broadcast(pid, N, t, broadcast, receive, output):
         relay[my_v]()
         outputed = []
         while True:
-            mylog('[%d] Now executing receive at line 86' % pid)
+            #mylog('[%d] Now executing receive at line 86' % pid)
             (sender, v) = receive()
-            mylog('[%d] finished 86' % pid)
+            #mylog('[%d] finished 86' % pid)
             assert v in (0, 1)
             assert sender in range(N)
             received[v].add(sender)
@@ -63,13 +63,13 @@ def bv_broadcast(pid, N, t, broadcast, receive, output):
 
             # Output after reaching second threshold
             if len(received[v]) >= 2 * t + 1:
-                mylog('[%d] writing %d into output' % (pid, v))
+                #mylog('[%d] writing %d into output' % (pid, v))
                 out[v]()
                 if not v in outputed:
                     outputed.append(v)
-                mylog('[%d] done with writing %d into output' % (pid, v))
+                #mylog('[%d] done with writing %d into output' % (pid, v))
                 if len(outputed) == 2:
-                    return # We don't have to wait more
+                    return  # We don't have to wait more
 
     return input
 
@@ -90,9 +90,9 @@ def shared_coin_dummy(pid, N, t, broadcast, receive):
     def _recv():
         while True:
             # New shares for some round r
-            mylog('[%d] Now executing receive at line 114' % pid)
+            #mylog('[%d] Now executing receive at line 114' % pid)
             (i, r) = receive()
-            mylog('[%d] finished line 114' % pid)
+            #mylog('[%d] finished line 114' % pid)
             assert i in range(N)
             assert r >= 0
             if i in received[r]:
@@ -186,9 +186,9 @@ def mv84consensus(pid, N, t, vi, broadcast, receive):
     def _listener():  # Hard-working Router for this layer
         while True:
             sender, (tag, m) = receive()
-            mylog("[%d] received %s" % (pid, repr(
-                (sender, (tag, m))
-            )))
+            # mylog("[%d] received %s" % (pid, repr(
+            #     (sender, (tag, m))
+            # )))
             if tag == 'VAL':
                 mv84v[sender] = m
                 if m != vi:
@@ -330,15 +330,16 @@ def MVBroadcast(pid, N, t, vi, cid, broadcast, receive):
 
 def binary_consensus(pid, N, t, vi, broadcast, receive):
     # Messages received are routed to either a shared coin, the broadcast, or AUX
+    finished[pid] = False
     coinQ = Queue(1)
     bcQ = defaultdict(lambda: Queue())
     auxQ = defaultdict(lambda: Queue())
 
     def _recv():
         while not finished[pid]:
-            mylog('[%d] Now executing receive at line 151' % pid)
+            # mylog('[%d] Now executing receive at line 151' % pid)
             (i, (tag, m)) = receive()
-            mylog('[%d] finished 151 with msg %s' % (pid, repr((tag, m))))
+            # mylog('[%d] finished 151 with msg %s' % (pid, repr((tag, m))))
             if tag == 'BC':
                 # Broadcast message
                 r, msg = m
@@ -369,19 +370,19 @@ def binary_consensus(pid, N, t, vi, broadcast, receive):
             assert sender in range(N)
             received[(v, r)].add(sender)
             # Check if conditions are satisfied
-            mylog("[%d] beginChecking..." % pid)
-            mylog("[%d] binValues %s" % (pid, repr(binValues)))
-            mylog("[%d] received. 0: %s, 1: %s" % (pid, repr(received[(0, r)]), repr(received[(1, r)])))
+            # mylog("[%d] beginChecking..." % pid)
+            #mylog("[%d] binValues %s" % (pid, repr(binValues)))
+            #mylog("[%d] received. 0: %s, 1: %s" % (pid, repr(received[(0, r)]), repr(received[(1, r)])))
             threshold = N-t  # 2*t + 1 # N - t
             if not finished[pid]:
                 if len(binValues) == 1:
-                    print len(received[(binValues[0], r)])
+                    #print len(received[(binValues[0], r)])
                     if len(received[(binValues[0], r)]) >= threshold:
                         # Check passed
-                        mylog("[%d] Writing callBackWaiter" % pid)
+                        # mylog("[%d] Writing callBackWaiter" % pid)
                         callBackWaiter[pid].put(binValues)
-                        mylog("[%d] Done with writing callBackWaiter" % pid)
-                else:
+                        # mylog("[%d] Done with writing callBackWaiter" % pid)
+                elif len(binValues) == 2:
                     if len(received[(0, r)].union(received[(1, r)])) >= threshold:
                         callBackWaiter[pid].put(binValues)
                     elif len(received[(0, r)]) >= threshold:
@@ -399,20 +400,20 @@ def binary_consensus(pid, N, t, vi, broadcast, receive):
         mylog(bcolors.WARNING + '[%d]m enters round %d' % (pid, round) + bcolors.ENDC)
         # Broadcast EST
         # TODO: let bv_broadcast receive
-        bvOutputHolder = Queue(2)  # 2 possile values
-        # bvAuxHolder = Queue(2) # turns out we dont need the output of aux
+        bvOutputHolder = Queue(2)  # 2 possible values
+        # bvAuxHolder = Queue(2) # turns out we don't need the output of aux
         binValues = []
 
         def bvOutput(m):
             if not m in binValues:
                 binValues.append(m)
-                mylog("[%d]" % pid + ' has bin_values: ' + repr(binValues))
-                mylog(bcolors.OKGREEN + "[%d] Output holder received new value" % pid + bcolors.ENDC)
+                # mylog("[%d]" % pid + ' has bin_values: ' + repr(binValues))
+                # mylog(bcolors.OKGREEN + "[%d] Output holder received new value" % pid + bcolors.ENDC)
                 bvOutputHolder.put(m)
-                mylog(bcolors.OKGREEN + "Done putting" + bcolors.ENDC)
+                # mylog(bcolors.OKGREEN + "Done putting" + bcolors.ENDC)
 
         mylog('[%d]m begin phase 1 broadcasting' % pid)
-        br1 = Greenlet(bv_broadcast(pid, N, t, makeBroadcastWithTagAndRound('BC', broadcast, round), brcast_get(round), bvOutput),est)
+        br1 = Greenlet(bv_broadcast(pid, N, t, makeBroadcastWithTagAndRound('BC', broadcast, round), brcast_get(round), bvOutput), est)
         br1.start()
         mylog('[%d]m is waiting for phase 1' % pid)
         w = bvOutputHolder.get()  # Wait until output is not empty
@@ -433,6 +434,6 @@ def binary_consensus(pid, N, t, vi, broadcast, receive):
                 globalState[pid] = "decides on %d" % s
                 finished[pid] = True
                 return s
-        est = s
-
-
+            est = values[0]
+        else:
+            est = s
