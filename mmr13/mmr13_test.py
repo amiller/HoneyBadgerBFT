@@ -6,7 +6,7 @@ import random
 
 import mmr13
 reload(mmr13)
-from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, MVBroadcast, mv84consensus, initBeforeBinaryConsensus
+from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, mv84consensus, initBeforeBinaryConsensus
 
 
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
@@ -40,7 +40,6 @@ def random_delay_broadcast1(inputs, t):
         th = Greenlet(inp, inputs[i])
         th.start_later(random.random()*maxdelay)
         ts.append(th)
-
 
     try:
         gevent.joinall(ts)

@@ -6,7 +6,7 @@ from collections import defaultdict
 #import random
 import sys
 verbose = 0
-from utils import bcolors, mylog, joinQueues, makeCallOnce, makeBroadcastWithTag
+from utils import bcolors, mylog, joinQueues, makeCallOnce, makeBroadcastWithTag, makeBroadcastWithTagAndRound
 
 # Input: a binary value
 # Output: outputs one binary value, and thereafter possibly a second
@@ -163,7 +163,8 @@ def initBeforeBinaryConsensus():
 def mv84consensus(pid, N, t, vi, broadcast, receive):
     '''
     Implementation of the multivalue consensus of [TURPIN, COAN, 1984]
-    This will achieve a consensus among all the inputs provided by honest parties
+    This will achieve a consensus among all the inputs provided by honest parties,
+    or raise an alert if failed to achieve one.
     :param pid: my id number
     :param N: the number of parties
     :param t: the number of byzantine parties
@@ -182,16 +183,20 @@ def mv84consensus(pid, N, t, vi, broadcast, receive):
     mv84GetPerplex = set()
     reliableBroadcastReceiveQueue = Queue()
 
-    def _listener():
+    def _listener():  # Hard-working Router for this layer
         while True:
             sender, (tag, m) = receive()
-            mylog("[%d] received %s" % (pid, repr((sender, (tag, m)))))
+            mylog("[%d] received %s" % (pid, repr(
+                (sender, (tag, m))
+            )))
             if tag == 'VAL':
                 mv84v[sender] = m
                 if m != vi:
                     mv84ReceiveDiff.add(sender)
-                    if len(mv84ReceiveDiff) > (N-t)/2:
+                    if len(mv84ReceiveDiff) >= (N-t)/2.0:
                         mv84WaiterLock.put(True)
+                # Fast-Stop: We don't need to wait for the rest (possibly)
+                # malicious parties.
                 if len(mv84v.keys()) >= N-t:
                     mv84WaiterLock.put(False)
             elif tag == 'BOOL':
@@ -200,25 +205,31 @@ def mv84consensus(pid, N, t, vi, broadcast, receive):
                     mv84GetPerplex.add(sender)
                     if len(mv84GetPerplex) >= N - 2*t:
                         mv84WaiterLock2.put(True)
+                # Fast-Stop: We don't need to wait for the rest (possibly)
+                # malicious parties.
                 if len(mv84p.keys()) >= N-t:
                     mv84WaiterLock2.put(False)
-            else:
+            else:  # Re-route the msg to inner layer
                 reliableBroadcastReceiveQueue.put(
                     (sender, (tag, m))
                 )
 
     Greenlet(_listener).start()
+
     mylog(bcolors.FAIL + "[%d] Starting Phase 1" % pid)
     makeBroadcastWithTag('VAL', broadcast)(vi)
-    perplexed = mv84WaiterLock.get()
+    perplexed = mv84WaiterLock.get()  # See if I am perplexed
+
     mylog(bcolors.FAIL + "[%d] Starting Phase 2" % pid)
     makeBroadcastWithTag('BOOL', broadcast)(perplexed)
-    alert = mv84WaiterLock2.get() and 1 or 0
+    alert = mv84WaiterLock2.get() and 1 or 0  # See if we should alert
+
     mylog(bcolors.FAIL + "[%d] Starting binary consensus on alert: %d" % (pid, alert))
     agreedAlert = binary_consensus(pid, N, t, alert, broadcast, reliableBroadcastReceiveQueue.get)
+
     if agreedAlert:
         mylog(bcolors.FAIL + "[%d] agreed on Alert = True" % pid)
-        return 0  # pre-defined default consensus value
+        return 0  # some pre-defined default consensus value
     else:
         mylog(bcolors.FAIL + "[%d] agreed on %s" % (pid, repr(vi)))
         return vi
@@ -316,6 +327,7 @@ def MVBroadcast(pid, N, t, vi, cid, broadcast, receive):
     Greenlet(T2).start()
 '''
 
+
 def binary_consensus(pid, N, t, vi, broadcast, receive):
     # Messages received are routed to either a shared coin, the broadcast, or AUX
     coinQ = Queue(1)
@@ -340,24 +352,7 @@ def binary_consensus(pid, N, t, vi, broadcast, receive):
                 auxQ[r].put((i, msg))
                 pass
 
-
     Greenlet(_recv).start()
-
-    def make_bvbc_bc(r):
-        def _bc(m):
-            broadcast(
-                ('BC', (r, m))
-            )
-
-        return _bc
-
-    def make_bvbc_aux(r):
-        def _aux(m):
-            broadcast(
-                ('AUX', (r, m))
-            )
-
-        return _aux
 
     def brcast_get(r):
         def _recv(*args, **kargs):
@@ -377,7 +372,7 @@ def binary_consensus(pid, N, t, vi, broadcast, receive):
             mylog("[%d] beginChecking..." % pid)
             mylog("[%d] binValues %s" % (pid, repr(binValues)))
             mylog("[%d] received. 0: %s, 1: %s" % (pid, repr(received[(0, r)]), repr(received[(1, r)])))
-            threshold = N-t #2*t + 1 # N - t
+            threshold = N-t  # 2*t + 1 # N - t
             if not finished[pid]:
                 if len(binValues) == 1:
                     print len(received[(binValues[0], r)])
@@ -388,13 +383,10 @@ def binary_consensus(pid, N, t, vi, broadcast, receive):
                         mylog("[%d] Done with writing callBackWaiter" % pid)
                 else:
                     if len(received[(0, r)].union(received[(1, r)])) >= threshold:
-                        # Check passed
                         callBackWaiter[pid].put(binValues)
                     elif len(received[(0, r)]) >= threshold:
-                        # Check passed
                         callBackWaiter[pid].put([0])
                     elif len(received[(1, r)]) >= threshold:
-                        # Check passed
                         callBackWaiter[pid].put([1])
             return sender, v
         return _recv
@@ -411,7 +403,6 @@ def binary_consensus(pid, N, t, vi, broadcast, receive):
         # bvAuxHolder = Queue(2) # turns out we dont need the output of aux
         binValues = []
 
-
         def bvOutput(m):
             if not m in binValues:
                 binValues.append(m)
@@ -421,13 +412,13 @@ def binary_consensus(pid, N, t, vi, broadcast, receive):
                 mylog(bcolors.OKGREEN + "Done putting" + bcolors.ENDC)
 
         mylog('[%d]m begin phase 1 broadcasting' % pid)
-        br1 = Greenlet(bv_broadcast(pid, N, t, make_bvbc_bc(round), brcast_get(round), bvOutput),est)
+        br1 = Greenlet(bv_broadcast(pid, N, t, makeBroadcastWithTagAndRound('BC', broadcast, round), brcast_get(round), bvOutput),est)
         br1.start()
         mylog('[%d]m is waiting for phase 1' % pid)
         w = bvOutputHolder.get()  # Wait until output is not empty
         #br1.kill(block=False)
         mylog(bcolors.OKBLUE + '[%d]m Phase 1 done and starts phase 2 broadcasting' % pid + bcolors.ENDC)
-        br2 = Greenlet(bv_broadcast(pid, N, t, make_bvbc_aux(round), getWithProcessing(round, binValues), lambda _: None), w)
+        br2 = Greenlet(bv_broadcast(pid, N, t, makeBroadcastWithTagAndRound('AUX', broadcast, round), getWithProcessing(round, binValues), lambda _: None), w)
         br2.start()
         #if len(binValues)
 

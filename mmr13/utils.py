@@ -71,6 +71,14 @@ def makeBroadcastWithTag(tag, broadcast):
     return _bc
 
 
+def makeBroadcastWithTagAndRound(tag, broadcast, round):
+    def _bc(m):
+        broadcast(
+            (tag, (round, m))
+        )
+    return _bc
+
+
 class MonitoredInt(object):
     _getcallback = lambda _: None
     _setcallback = lambda _: None
