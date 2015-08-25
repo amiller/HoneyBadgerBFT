@@ -87,7 +87,7 @@ def random_delay_sharedcoin_dummy(N, t):
     except gevent.hub.LoopExit: pass
 
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
-def random_delay_binary_consensus(N, t):
+def random_delay_binary_consensus(N, t, inputs):
     maxdelay = 0.01
 
     buffers = map(lambda _: Queue(1), range(N))
@@ -98,7 +98,7 @@ def random_delay_binary_consensus(N, t):
             def _deliver(j):
                 #print 'Delivering', v, 'from', i, 'to', j
                 mylog(bcolors.OKGREEN + "MSG: [%d] -> [%d]: %s" % (i, j, repr(v)) + bcolors.ENDC)
-                buffers[j].put((i,v))
+                buffers[j].put((i, v))
                 mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
             for j in range(N):
                 Greenlet(_deliver, j).start_later(random.random()*maxdelay)
@@ -108,7 +108,7 @@ def random_delay_binary_consensus(N, t):
     for i in range(N):
         bc = makeBroadcast(i)
         recv = buffers[i].get
-        vi = random.randint(0, 1)
+        vi = inputs[i]  #random.randint(0, 1)
         th = Greenlet(binary_consensus, i, N, t, vi, bc, recv)
         th.start_later(random.random() * maxdelay)
         ts.append(th)
@@ -180,7 +180,9 @@ def random_delay_multivalue_consensus(N, t, inputs):
 if __name__=='__main__':
     print "[ =========== ]"
     print "Testing binary consensus..."
-    random_delay_binary_consensus(5,1)
+    inputs = [random.randint(0, 1) for _ in range(5)]
+    print "Inputs:", inputs
+    random_delay_binary_consensus(5, 1, inputs)
     #print "Testing multivalue consensus with different inputs..."
     #random_delay_multivalue_consensus(5, 1, [random.randint(0, 10) for x in range(5)])
     #print "[ =========== ]"
