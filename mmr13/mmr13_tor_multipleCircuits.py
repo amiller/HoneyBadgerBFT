@@ -167,7 +167,8 @@ def random_delay_binary_consensus(N, t):
         bc = makeBroadcast(i)
         recv = buffers[i].get
         vi = random.randint(0, 1)
-        th = Greenlet(binary_consensus, i, N, t, vi, bc, recv)
+        decideChannel = Queue(1)
+        th = Greenlet(binary_consensus, i, N, t, vi, decideChannel, bc, recv)
         th.start_later(random.random() * maxdelay)
         ts.append(th)
 

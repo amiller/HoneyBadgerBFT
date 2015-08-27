@@ -135,11 +135,12 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
             #mylog("[%d] got a msg from %s\n %s" % (pid, repr(sender), repr((tag, m))))
             if tag == 'BC':
                 #mylog("[%d] CBChannel put %s" % (pid, repr((sender, m))))
-                CBChannel.put((sender, m))
+
+                Greenlet(CBChannel.put, (sender, m)).start()
             elif tag == 'ACS':
-                ACSChannel.put(
+                Greenlet(ACSChannel.put,
                     (sender, m)
-                )
+                ).start()
 
     outputChannel = [Queue(1) for _ in range(N)]
 

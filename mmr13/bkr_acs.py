@@ -29,14 +29,18 @@ def checkBA(BA, N, t):
         return [_ for _ in defaultBA]  # Clone
     return BA
 
+
 def acs(pid, N, t, Q, broadcast, receive):
     assert(isinstance(Q, list))
     assert(len(Q) == N)
+    decideChannel = [Queue(1) for _ in range(N)]
 
     def callbackFactory(i):
         def _callback(val): # Get notified for i
-            Greenlet(callBackWrap(binary_consensus, callbackFactory(i)), pid,
-                     N, t, 1, make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
+            # Greenlet(callBackWrap(binary_consensus, callbackFactory(i)), pid,
+            #         N, t, 1, make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
+            Greenlet(binary_consensus, pid,
+                     N, t, 1, decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
         return _callback
 
     for i, q in enumerate(Q):
@@ -66,20 +70,33 @@ def acs(pid, N, t, Q, broadcast, receive):
     locker = Queue(1)
     acs.callbackCounter = 0
 
-    def callbackFactory(i):
+    comment = '''def callbackFactory(i):
         def _callback(result):
             BA[i] = result
             if result:
                 if acs.callbackCounter >= 2*t:
                         locker.put("Key") # Now we've got 2t+1 1's
                 acs.callbackCounter += 1
-        return _callback
+        return _callback'''
+
+    def listenerFactory(i, channel):
+        def _listener():
+            BA[i] = channel.get()
+            if BA[i]:
+                if acs.callbackCounter >= 2*t:
+                        locker.put("Key") # Now we've got 2t+1 1's
+                acs.callbackCounter += 1
+        return _listener
+
+    for i in range(N):
+        Greenlet(listenerFactory(i, decideChannel[i])).start()
 
     locker.get()
     BA = checkBA(BA, N, t)
     mylog(bcolors.UNDERLINE + "[%d] Get subset %s" % (pid, BA) + bcolors.ENDC)
     return BA
 
+comment = '''
 def acs_mapping(pid, N, t, Q, broadcast, receive):
     assert(isinstance(Q, list))
     assert(len(Q) == N)
@@ -124,6 +141,7 @@ def acs_mapping(pid, N, t, Q, broadcast, receive):
     mylog(bcolors.UNDERLINE + "[%d] Get subset %s" % (pid, BA) + bcolors.ENDC)
     return BA
     #open('result','a').write("[%d] Get subset %s" % (pid, BA))
+'''
 
 def random_delay_acs(N, t, inputs):
 

@@ -90,18 +90,25 @@ def random_delay_sharedcoin_dummy(N, t):
 def random_delay_binary_consensus(N, t, inputs):
     maxdelay = 0.01
 
-    buffers = map(lambda _: Queue(1), range(N))
+    # msgThreads = []
 
+    buffers = map(lambda _: Queue(1), range(N))
+    random_delay_binary_consensus.msgCount = 0
     # Instantiate the "broadcast" instruction
     def makeBroadcast(i):
         def _broadcast(v):
             def _deliver(j):
                 #print 'Delivering', v, 'from', i, 'to', j
-                mylog(bcolors.OKGREEN + "MSG: [%d] -> [%d]: %s" % (i, j, repr(v)) + bcolors.ENDC)
+                random_delay_binary_consensus.msgCount += 1
+                tmpCount = random_delay_binary_consensus.msgCount
+                mylog(bcolors.OKGREEN + "MSG: [%d] -[%d]-> [%d]: %s" % (i, tmpCount, j, repr(v)) + bcolors.ENDC)
                 buffers[j].put((i, v))
-                mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
+                mylog(bcolors.OKGREEN + "     [%d] -[%d]-> [%d]: Finish" % (i, tmpCount, j) + bcolors.ENDC)
             for j in range(N):
                 Greenlet(_deliver, j).start_later(random.random()*maxdelay)
+                #g = Greenlet(_deliver, j)
+                #g.start()  #.start_later(random.random()*maxdelay)
+                # msgThreads.append(g)  # keep references
         return _broadcast
 
     ts = []
@@ -109,23 +116,19 @@ def random_delay_binary_consensus(N, t, inputs):
         bc = makeBroadcast(i)
         recv = buffers[i].get
         vi = inputs[i]  #random.randint(0, 1)
-        th = Greenlet(binary_consensus, i, N, t, vi, bc, recv)
+        decideChannel = Queue(1)
+        th = Greenlet(binary_consensus, i, N, t, vi, decideChannel, bc, recv)
         th.start_later(random.random() * maxdelay)
         ts.append(th)
 
-    #if True:
-    try:
+    if True:
+    #try:
         gevent.joinall(ts)
-    except gevent.hub.LoopExit: # Manual fix for early stop
+    #except gevent.hub.LoopExit: # Manual fix for early stop
         agreed = ""
-        for key, value in mmr13.globalState.items():
-            if mmr13.globalState[key] != "":
-                agreed = mmr13.globalState[key]
-        for key,  value in mmr13.globalState.items():
-            if mmr13.globalState[key] == "":
-                mmr13.globalState[key] = agreed
-            if mmr13.globalState[key] != agreed:
-                print "Consensus Error"
+        for key, item in mmr13.globalState.items():
+            if item != mmr13.globalState[0]:
+                mylog(bcolors.FAIL + 'Bad Concensus!' + bcolors.ENDC)
 
     print mmr13.globalState
     #pass
@@ -134,18 +137,26 @@ def random_delay_binary_consensus(N, t, inputs):
 def random_delay_multivalue_consensus(N, t, inputs):
     maxdelay = 0.01
 
+    msgThreads = []
+
     buffers = map(lambda _: Queue(1), range(N))
 
+    random_delay_multivalue_consensus.msgCount = 0
     # Instantiate the "broadcast" instruction
     def makeBroadcast(i):
         def _broadcast(v):
             def _deliver(j):
                 #print 'Delivering', v, 'from', i, 'to', j
-                mylog(bcolors.OKGREEN + "MSG: [%d] -> [%d]: %s" % (i, j, repr(v)) + bcolors.ENDC)
+                random_delay_multivalue_consensus.msgCount += 1
+                tmpCount = random_delay_multivalue_consensus.msgCount
+                mylog(bcolors.OKGREEN + "MSG: [%d] -[%d]-> [%d]: %s" % (i, tmpCount, j, repr(v)) + bcolors.ENDC)
                 buffers[j].put((i,v))
-                mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
+                mylog(bcolors.OKGREEN + "     [%d] -[%d]-> [%d]: Finish" % (i, tmpCount, j) + bcolors.ENDC)
+
             for j in range(N):
-                Greenlet(_deliver, j).start_later(random.random()*maxdelay)
+                g = Greenlet(_deliver, j)
+                g.start_later(random.random()*maxdelay)
+                msgThreads.append(g)  # Keep reference
         return _broadcast
 
     ts = []

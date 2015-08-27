@@ -1,8 +1,11 @@
 __author__ = 'aluex'
 import sys
+import gevent.monkey
 from gevent.queue import Queue
 from gevent import Greenlet
-import random
+import random, hashlib
+
+gevent.monkey.patch_all()
 
 verbose = 0
 goodseed = random.randint(1, 10000)
@@ -79,6 +82,10 @@ def makeBroadcastWithTagAndRound(tag, broadcast, round):
     return _bc
 
 
+def dummyCoin(round):
+    return int(hashlib.md5(str(round)).hexdigest(), 16) % 2
+
+
 class MonitoredInt(object):
     _getcallback = lambda _: None
     _setcallback = lambda _: None
@@ -104,8 +111,22 @@ class MonitoredInt(object):
 
     data = property(_getdata, _setdata)
 
+
+def garbageCleaner(channel):  # Keep cleaning the channel
+    while True:
+        channel.get()
+
+
+def loopWrapper(func):
+    def _loop(*args, **kargs):
+        while True:
+            func(*args, **kargs)
+    return _loop
+
+
 class ACSException(Exception):
     pass
+
 
 def greenletFunction(func):
     func.at_exit = lambda: None  # manual at_exit since Greenlet does not provide this event by default
