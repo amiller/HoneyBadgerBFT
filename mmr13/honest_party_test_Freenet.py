@@ -44,6 +44,7 @@ def generateFreenetKeys(N):
     mylog("Initiating ...")
     privateList = []
     USKPrivateList = []
+    jobList = []
     for i in range(N * CONCURRENT_NUM):
         mylog("Registering node %d" % i)
         n = fcp.node.FCPNode()
@@ -53,14 +54,18 @@ def generateFreenetKeys(N):
             public, private, USKPublic, USKPrivate))
         mylog("Initializing msg_count for node %d" % i)
         # Set the initial counter
-        n.put(uri=USKPrivate, data="0",
-            mimetype="application/octet-stream", realtime=True, priority=0)
+        j = n.put(uri=USKPrivate, data="0",
+            mimetype="application/octet-stream", realtime=True, priority=0, async=True)
+        jobList.append(j)
         # Update the lists
         publicKeys.append(public)
         USKPublicKeys.append(USKPublic)
         privateList.append(private)
         USKPrivateList.append(USKPrivate)
         nodeList.append(n)
+    for index, job in enumerate(jobList):
+        job.wait()
+        mylog("Finished msg_count for node %d" % index)
     return privateList, USKPrivateList
 
 def shutdownNodes(nodeList):
