@@ -96,8 +96,10 @@ def client_test_freenet(N, t):
         def _broadcast(v):
             # deliever
             counter[i] += 1
+            mylog("[%d] writing msg %s..." % (i, encode(v)))
             nodeList[i].put(uri=privateList[i]+str(counter[i]), data=encode(v),
                             mimetype="application/octet-stream", realtime=True, priority=0)
+            mylog("[%d] Updating msg_counter to %d..." % (i, counter[i]))
             nodeList[i].put(uri=USKPrivateList[i], #.replace('/0', '/'+str(counter[i])),
                             data=str(counter[i]),
                             mimetype="application/octet-stream", realtime=True, priority=0)
@@ -109,10 +111,12 @@ def client_test_freenet(N, t):
         recvCounter = [0] * N
         def listener(j, recvCounter):
             while True:
+                mylog("[%d] Updating msg_counter of %d..." % (i, j))
                 uskjob = nodeList[i].get(uri=USKPublicKeys[j], async=True, realtime=True, priority=0)
                 # The reason I use async here is that from the tutorial it is said this would be faster
                 mime, data, meta = uskjob.wait()
                 newestNum = int(data)
+                mylog("[%d] found msg_counter of %d is %d..." % (i, j, newestNum))
                 if newestNum > recvCounter[j]:
                     for c in range(recvCounter[j], newestNum):
                         job = nodeList[i].get(uri=publicKeys[j]+str(c+1),
