@@ -18,6 +18,9 @@ import pickle
 
 nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 
+CONCURRENT_NUM = 2
+# CONCURRENT = True
+
 def exception(msg):
     mylog(bcolors.WARNING + "Exception: %s\n" % msg + bcolors.ENDC)
     os.exit(1)
@@ -41,7 +44,7 @@ def generateFreenetKeys(N):
     mylog("Initiating ...")
     privateList = []
     USKPrivateList = []
-    for i in range(N):
+    for i in range(N * CONCURRENT_NUM):
         mylog("Registering node %d" % i)
         n = fcp.node.FCPNode()
         public, private = n.genkey()
@@ -92,23 +95,29 @@ def client_test_freenet(N, t):
 
     # Instantiate the "broadcast" instruction
     def makeBroadcast(i):
-        counter = [0] * N
+        counter = [0] * (N * CONCURRENT_NUM)
+        workchannel = Queue()
+        def writeWorker(workno):
+            actuall_i = CONCURRENT_NUM * i + workno
+            while True:
+                message = workchannel.get()
+                counter[actuall_i] += 1
+                mylog("[%d] writing msg %s..." % (i, repr(encode(message))))
+                nodeList[actuall_i].put(uri=privateList[actuall_i] + str(counter[actuall_i]), data=encode(message),
+                                mimetype="application/octet-stream", realtime=True, priority=0)
+                mylog("[%d] Updating msg_counter[%d] to %d..." % (i, workno, counter[actuall_i]))
+                nodeList[actuall_i].put(uri=USKPrivateList[actuall_i], #.replace('/0', '/'+str(counter[i])),
+                                data=str(counter[actuall_i]),
+                                mimetype="application/octet-stream", realtime=True, priority=0)
+        for x in range(CONCURRENT_NUM):
+            Greenlet(writeWorker, x).start()
         def _broadcast(v):
-            # deliever
-            counter[i] += 1
-            mylog("[%d] writing msg %s..." % (i, repr(encode(v))))
-            nodeList[i].put(uri=privateList[i]+str(counter[i]), data=encode(v),
-                            mimetype="application/octet-stream", realtime=True, priority=0)
-            mylog("[%d] Updating msg_counter to %d..." % (i, counter[i]))
-            nodeList[i].put(uri=USKPrivateList[i], #.replace('/0', '/'+str(counter[i])),
-                            data=str(counter[i]),
-                            mimetype="application/octet-stream", realtime=True, priority=0)
-            # mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
+            workchannel.put(v)
         return _broadcast
 
     def makeListen(i):
         recvChannel = Queue()
-        recvCounter = [0] * N
+        recvCounter = [0] * (N * CONCURRENT_NUM)
         def listener(j, recvCounter):
             while True:
                 mylog("[%d] Updating msg_counter of %d..." % (i, j))
@@ -117,16 +126,17 @@ def client_test_freenet(N, t):
                 # The reason I use async here is that from the tutorial it is said this would be faster
                 mime, data, meta = uskjob.wait()
                 newestNum = int(data)
-                mylog("[%d] found msg_counter of %d is %d..." % (i, j, newestNum))
+                mylog("[%d] found msg_counter[%d] of %d is %d..." % (
+                    i, j % CONCURRENT_NUM, j / CONCURRENT_NUM, newestNum))
                 if newestNum > recvCounter[j]:
                     for c in range(recvCounter[j], newestNum):
                         job = nodeList[i].get(uri=publicKeys[j]+str(c+1),
                                               async=True, realtime=True, priority=0)
                         mime, data, meta = job.wait()
                         recvCounter += 1
-                        recvChannel.put((j, decode(data)))
+                        recvChannel.put((j / CONCURRENT_NUM, decode(data)))
                     recvCounter[j] = newestNum
-        for k in range(N):
+        for k in range(N * CONCURRENT_NUM):
             Greenlet(listener, k, recvCounter).start()
         def _recv():
             recvChannel.get()
