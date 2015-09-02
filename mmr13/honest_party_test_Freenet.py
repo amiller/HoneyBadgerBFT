@@ -85,7 +85,7 @@ def client_test_freenet(N, t):
     :return None:
     '''
     maxdelay = 0.01
-
+    global publicKeys, nodeList
     privateList, USKPrivateList = generateFreenetKeys(N)
 
     #buffers = map(lambda _: Queue(1), range(N))
@@ -96,7 +96,7 @@ def client_test_freenet(N, t):
         def _broadcast(v):
             # deliever
             counter[i] += 1
-            mylog("[%d] writing msg %s..." % (i, encode(v)))
+            mylog("[%d] writing msg %s..." % (i, repr(encode(v))))
             nodeList[i].put(uri=privateList[i]+str(counter[i]), data=encode(v),
                             mimetype="application/octet-stream", realtime=True, priority=0)
             mylog("[%d] Updating msg_counter to %d..." % (i, counter[i]))
@@ -112,7 +112,8 @@ def client_test_freenet(N, t):
         def listener(j, recvCounter):
             while True:
                 mylog("[%d] Updating msg_counter of %d..." % (i, j))
-                uskjob = nodeList[i].get(uri=USKPublicKeys[j], async=True, realtime=True, priority=0)
+                uskjob = nodeList[i].get(uri=USKPublicKeys[j],
+                                         async=True, realtime=True, priority=0, followRedirect=True)
                 # The reason I use async here is that from the tutorial it is said this would be faster
                 mime, data, meta = uskjob.wait()
                 newestNum = int(data)
