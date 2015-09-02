@@ -13,6 +13,7 @@ import os
 from utils import myRandom as random
 import fcp
 import json
+import pickle
 #print state
 
 nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
@@ -28,21 +29,30 @@ def randomTransaction():
     tx.amount = random.randint(1, 100)
     return tx
 
+def randomTransactionStr():
+    return repr(randomTransaction())
+
 publicKeys = []
 USKPublicKeys = []
 nodeList = []
 
 def generateFreenetKeys(N):
     global publicKeys, nodeList
+    mylog("Initiating ...")
     privateList = []
     USKPrivateList = []
-    jobList = []
     for i in range(N):
+        mylog("Registering node %d" % i)
         n = fcp.node.FCPNode()
         public, private = n.genkey()
-        USKPublic, USKPrivate = n.genkey('badger', usk=True)
-        nodeList[i].put(uri=USKPrivateList[i], data="0",
+        USKPublic, USKPrivate = n.genkey(name='badger', usk=True)
+        mylog("Got public key %s, private key %s, USKPublic key %s, USKPrivate key %s" % (
+            public, private, USKPublic, USKPrivate))
+        mylog("Initializing msg_count for node %d" % i)
+        # Set the initial counter
+        n.put(uri=USKPrivate, data="0",
             mimetype="application/octet-stream", realtime=True, priority=0)
+        # Update the lists
         publicKeys.append(public)
         USKPublicKeys.append(USKPublic)
         privateList.append(private)
@@ -54,7 +64,13 @@ def shutdownNodes(nodeList):
     for node in nodeList:
         node.shutdown()
 
-def client_test_random_delay(N, t):
+def encode(m):
+    return pickle.dumps(m)
+
+def decode(s):
+    return pickle.loads(s)
+
+def client_test_freenet(N, t):
     '''
     Test for the client with random delay channels
 
@@ -80,7 +96,7 @@ def client_test_random_delay(N, t):
         def _broadcast(v):
             # deliever
             counter[i] += 1
-            nodeList[i].put(uri=privateList[i]+str(counter[i]), data=json.dumps(v),
+            nodeList[i].put(uri=privateList[i]+str(counter[i]), data=encode(v),
                             mimetype="application/octet-stream", realtime=True, priority=0)
             nodeList[i].put(uri=USKPrivateList[i], #.replace('/0', '/'+str(counter[i])),
                             data=str(counter[i]),
@@ -94,14 +110,16 @@ def client_test_random_delay(N, t):
         def listener(j, recvCounter):
             while True:
                 uskjob = nodeList[i].get(uri=USKPublicKeys[j], async=True, realtime=True, priority=0)
-                newestNum = uskjob.wait()
+                # The reason I use async here is that from the tutorial it is said this would be faster
+                mime, data, meta = uskjob.wait()
+                newestNum = int(data)
                 if newestNum > recvCounter[j]:
                     for c in range(recvCounter[j], newestNum):
                         job = nodeList[i].get(uri=publicKeys[j]+str(c+1),
                                               async=True, realtime=True, priority=0)
                         mime, data, meta = job.wait()
                         recvCounter += 1
-                        recvChannel.put((j, json.loads(data)))
+                        recvChannel.put((j, decode(data)))
                     recvCounter[j] = newestNum
         for k in range(N):
             Greenlet(listener, k, recvCounter).start()
@@ -117,7 +135,8 @@ def client_test_random_delay(N, t):
             bc = makeBroadcast(i)
             recv = makeListen(i)
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
-            controlChannels[i].put(('IncludeTransaction', randomTransaction()))
+            #controlChannels[i].put(('IncludeTransaction', randomTransaction()))
+            controlChannels[i].put(('IncludeTransaction', randomTransactionStr()))
             th.start_later(random.random() * maxdelay)
             ts.append(th)
 
@@ -133,4 +152,4 @@ def client_test_random_delay(N, t):
     shutdownNodes()
 
 if __name__ == '__main__':
-    client_test_random_delay(5, 1)
+    client_test_freenet(5, 1)
