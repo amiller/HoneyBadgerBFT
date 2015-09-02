@@ -17,7 +17,7 @@ lockBA.put(1)
 def checkBA(BA, N, t):
     global defaultBA
     if sum(BA) <= 2*t:  # If acs failed, we use a preset default common subset
-        # raise ACSException
+        raise ACSException
         # This part should never be executed
         if not defaultBA:
             lockBA.get()
