@@ -125,15 +125,15 @@ def client_test_freenet(N, t):
         recvCounter = [0] * (N * CONCURRENT_NUM)
         def listener(j, recvCounter):
             while True:
-                mylog("[%d] Updating msg_counter of %d..." % (i, j))
+                # mylog("[%d] Updating msg_counter of %d..." % (i, j))
                 uskjob = nodeList[i].get(uri=USKPublicKeys[j],
-                                         async=True, realtime=True, priority=0, followRedirect=True)
+                                         async=True, realtime=True, priority=2, followRedirect=True)
                 # The reason I use async here is that from the tutorial it is said this would be faster
                 mime, data, meta = uskjob.wait()
                 newestNum = int(data)
-                mylog("[%d] found msg_counter[%d] of %d is %d..." % (
-                    i, j % CONCURRENT_NUM, j / CONCURRENT_NUM, newestNum))
                 if newestNum > recvCounter[j]:
+                    mylog("[%d] found msg_counter[%d] of %d is %d..." % (
+                        i, j % CONCURRENT_NUM, j / CONCURRENT_NUM, newestNum))
                     for c in range(recvCounter[j], newestNum):
                         job = nodeList[i].get(uri=publicKeys[j]+str(c+1),
                                               async=True, realtime=True, priority=0)
