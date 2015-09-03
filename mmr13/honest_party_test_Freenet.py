@@ -138,7 +138,7 @@ def client_test_freenet(N, t):
                         job = nodeList[i].get(uri=publicKeys[j]+str(c+1),
                                               async=True, realtime=True, priority=0)
                         mime, data, meta = job.wait()
-                        recvCounter += 1
+                        #recvCounter[j] += 1
                         recvChannel.put((j / CONCURRENT_NUM, decode(data)))
                     recvCounter[j] = newestNum
         for k in range(N * CONCURRENT_NUM):
