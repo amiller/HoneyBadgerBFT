@@ -144,7 +144,7 @@ def client_test_freenet(N, t):
         for k in range(N * CONCURRENT_NUM):
             Greenlet(listener, k, recvCounter).start()
         def _recv():
-            recvChannel.get()
+            return recvChannel.get()
         return _recv
 
     while True:
