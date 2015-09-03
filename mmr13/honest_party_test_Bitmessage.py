@@ -11,10 +11,10 @@ import gevent
 import os
 #import random
 from utils import myRandom as random
-import fcp
+import xmlrpclib
+import time
 import json
 import pickle
-import zlib
 #print state
 
 nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
@@ -36,69 +36,11 @@ def randomTransaction():
 def randomTransactionStr():
     return repr(randomTransaction())
 
-publicKeys = []
-USKPublicKeys = []
-nodeList = []
-
-def generateFreenetKeys(N):
-    global publicKeys, nodeList
-    mylog("Initiating ...")
-    privateList = []
-    USKPrivateList = []
-    jobList = []
-    for i in range(N * CONCURRENT_NUM):
-        mylog("Registering node %d" % i)
-        n = fcp.node.FCPNode()
-        public, private = n.genkey()
-        USKPublic, USKPrivate = n.genkey(name='badger', usk=True)
-        mylog("Got public key %s, private key %s, USKPublic key %s, USKPrivate key %s" % (
-            public, private, USKPublic, USKPrivate))
-        mylog("Initializing msg_count for node %d" % i)
-        # Set the initial counter
-        j = n.put(uri=USKPrivate, data="0",
-            mimetype="application/octet-stream", realtime=True, priority=0, async=True)
-        jobList.append(j)
-        # Update the lists
-        publicKeys.append(public)
-        USKPublicKeys.append(USKPublic)
-        privateList.append(private)
-        USKPrivateList.append(USKPrivate)
-        nodeList.append(n)
-    for index, job in enumerate(jobList):
-        job.wait()
-        mylog("Finished msg_count for node %d" % index)
-    return privateList, USKPrivateList
-
-def shutdownNodes(nodeList):
-    for node in nodeList:
-        node.shutdown()
-
-msgCounter = 0
-starting_time = dict()
-ending_time = dict()
-logChannel = Queue()
-
-def logWriter(fileHandler):
-    while True:
-        msgCounter, st, et, content = logChannel.get()
-        fileHandler.write("%d[%s]-[%s]%s\n" % (msgCounter, st, et, content))
-        fileHandler.flush()
-
 def encode(m):
-    global msgCounter
-    msgCounter += 1
-    starting_time[msgCounter] = time.strftime('[%m-%d-%y|%H:%M:%S]')
-    result = zlib.compress(
-        pickle.dumps((msgCounter, m)),
-    9)  # Highest compression level
-    return result
+    return pickle.dumps(m)
 
 def decode(s):
-    result = pickle.loads(zlib.decompress(s))
-    assert(isinstance(result, tuple))
-    ending_time[result[0]] = time.strftime('[%m-%d-%y|%H:%M:%S]')
-    logChannel.put((result[0], starting_time[result[0]], ending_time[result[0]], result[1]))
-    return result[1]
+    return pickle.loads(s)
 
 def client_test_freenet(N, t):
     '''
@@ -117,7 +59,7 @@ def client_test_freenet(N, t):
     maxdelay = 0.01
     global publicKeys, nodeList
     privateList, USKPrivateList = generateFreenetKeys(N)
-    Greenlet(logWriter, open('msglog','w')).start()
+
     #buffers = map(lambda _: Queue(1), range(N))
 
     # Instantiate the "broadcast" instruction
@@ -169,8 +111,7 @@ def client_test_freenet(N, t):
             return recvChannel.get()
         return _recv
 
-    #while True:
-    if True: # We only test for once
+    while True:
         initBeforeBinaryConsensus()
         ts = []
         controlChannels = [Queue() for _ in range(N)]
