@@ -66,10 +66,10 @@ def client_test_freenet(N, t):
     :return None:
     '''
     maxdelay = 0.01
-    assert(8337+N < 8444)
-    bitmessageServers = [('127.0.0.1', 8337+x) for x in range(N)]  # From 8337, 8338, ...
+    assert(8445 + N < 8545)
+    bitmessageServers = [('127.0.0.1', 8545+x) for x in range(N)]  # From 8337, 8338, ...
 
-    api = [xmlrpclib.ServerProxy("http://username:password@%s:%d" % (_[0], _[1])) for _ in bitmessageServers]
+    api = [xmlrpclib.ServerProxy("http://user:badger@%s:%d" % (_[0], _[1])) for _ in bitmessageServers]
     mylog("Generating addresses...")
     address = []
     for i in range(N):  # In case we run it for the first time
