@@ -15,10 +15,13 @@ import xmlrpclib
 import time
 import json
 import pickle
+import zlib
+import base64
 #print state
 
 nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 
+SLEEP_TIME = 1
 CONCURRENT_NUM = 2
 # CONCURRENT = True
 
@@ -37,10 +40,16 @@ def randomTransactionStr():
     return repr(randomTransaction())
 
 def encode(m):
-    return pickle.dumps(m)
+    return zlib.compress(pickle.dumps(m), 9)
 
 def decode(s):
-    return pickle.loads(s)
+    # mylog('decoding %s' % repr(s))
+    #if True:
+    try:
+        result = pickle.loads(zlib.decompress(s))
+    except:
+        result = None
+    return result
 
 def client_test_freenet(N, t):
     '''
@@ -57,58 +66,55 @@ def client_test_freenet(N, t):
     :return None:
     '''
     maxdelay = 0.01
-    global publicKeys, nodeList
-    privateList, USKPrivateList = generateFreenetKeys(N)
 
-    #buffers = map(lambda _: Queue(1), range(N))
+    api = [xmlrpclib.ServerProxy("http://user:pass@127.0.0.1:8442") for _ in range(N * CONCURRENT_NUM +1)]
+    mylog("Generating addresses...")
+    address = [ m['address'] for m in json.loads(api[0].listAddresses2())['addresses']]
+    mylog('Got addresses :%s' % repr(address))
 
     # Instantiate the "broadcast" instruction
     def makeBroadcast(i):
-        counter = [0] * (N * CONCURRENT_NUM)
         workchannel = Queue()
         def writeWorker(workno):
             actuall_i = CONCURRENT_NUM * i + workno
             while True:
                 message = workchannel.get()
-                counter[actuall_i] += 1
                 mylog("[%d] writing msg %s..." % (i, repr(encode(message))))
-                nodeList[actuall_i].put(uri=privateList[actuall_i] + str(counter[actuall_i]), data=encode(message),
-                                mimetype="application/octet-stream", realtime=True, priority=0)
-                mylog("[%d] Updating msg_counter[%d] to %d..." % (i, workno, counter[actuall_i]))
-                nodeList[actuall_i].put(uri=USKPrivateList[actuall_i], #.replace('/0', '/'+str(counter[i])),
-                                data=str(counter[actuall_i]),
-                                mimetype="application/octet-stream", realtime=True, priority=0)
+                for k in range(N):
+                    target = k * CONCURRENT_NUM + random.randint(0, CONCURRENT_NUM - 1)
+                    api[actuall_i].sendMessage(address[target], address[actuall_i],
+                                    base64.b64encode('badger'), base64.b64encode(base64.b64encode(encode(message))))
         for x in range(CONCURRENT_NUM):
             Greenlet(writeWorker, x).start()
         def _broadcast(v):
             workchannel.put(v)
         return _broadcast
 
+    recvChannel = [Queue() for _ in range(N)]
+
+    def Listener():
+        while True:
+            gevent.sleep(SLEEP_TIME)
+            msgs = json.loads(api[N * CONCURRENT_NUM].getAllInboxMessages())['inboxMessages']
+            for msg in msgs:
+                receipt_no = address.index(msg['toAddress'])
+                result = decode(
+                    base64.b64decode(
+                        base64.b64decode(msg['message'])
+                    )
+                )
+                if result:
+                    mylog('[%d] got message %s' % (receipt_no / CONCURRENT_NUM, result))
+                    recvChannel[receipt_no / CONCURRENT_NUM].put((
+                        address.index(msg['fromAddress']) / CONCURRENT_NUM, result
+                    ))
+                api[N].trashMessage(msg['msgid'])
+
+    Greenlet(Listener).start()
+
     def makeListen(i):
-        recvChannel = Queue()
-        recvCounter = [0] * (N * CONCURRENT_NUM)
-        def listener(j, recvCounter):
-            while True:
-                # mylog("[%d] Updating msg_counter of %d..." % (i, j))
-                uskjob = nodeList[i].get(uri=USKPublicKeys[j],
-                                         async=True, realtime=True, priority=2, followRedirect=True)
-                # The reason I use async here is that from the tutorial it is said this would be faster
-                mime, data, meta = uskjob.wait()
-                newestNum = int(data)
-                if newestNum > recvCounter[j]:
-                    mylog("[%d] found msg_counter[%d] of %d is %d..." % (
-                        i, j % CONCURRENT_NUM, j / CONCURRENT_NUM, newestNum))
-                    for c in range(recvCounter[j], newestNum):
-                        job = nodeList[i].get(uri=publicKeys[j]+str(c+1),
-                                              async=True, realtime=True, priority=0)
-                        mime, data, meta = job.wait()
-                        #recvCounter[j] += 1
-                        recvChannel.put((j / CONCURRENT_NUM, decode(data)))
-                    recvCounter[j] = newestNum
-        for k in range(N * CONCURRENT_NUM):
-            Greenlet(listener, k, recvCounter).start()
         def _recv():
-            return recvChannel.get()
+            return recvChannel[i].get()
         return _recv
 
     while True:
@@ -133,7 +139,7 @@ def client_test_freenet(N, t):
             print "Concensus Finished"
             mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
 
-    shutdownNodes()
+    #   shutdownNodes()
 
 if __name__ == '__main__':
     client_test_freenet(5, 1)
