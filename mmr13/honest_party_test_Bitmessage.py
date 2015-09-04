@@ -83,7 +83,7 @@ def client_test_freenet(N, t):
                 for k in range(N):
                     target = k * CONCURRENT_NUM + random.randint(0, CONCURRENT_NUM - 1)
                     api[actuall_i].sendMessage(address[target], address[actuall_i],
-                                    base64.b64encode('badger'), base64.b64encode(base64.b64encode(encode(message))))
+                                    base64.b64encode('badger'), base64.b64encode('HB-' + base64.b64encode(encode(message))))
         for x in range(CONCURRENT_NUM):
             Greenlet(writeWorker, x).start()
         def _broadcast(v):
@@ -98,16 +98,18 @@ def client_test_freenet(N, t):
             msgs = json.loads(api[N * CONCURRENT_NUM].getAllInboxMessages())['inboxMessages']
             for msg in msgs:
                 receipt_no = address.index(msg['toAddress'])
-                result = decode(
-                    base64.b64decode(
-                        base64.b64decode(msg['message'])
+                tmpvar = base64.b64decode(msg['message'])
+                if tmpvar[:3] == 'HB-':
+                    result = decode(
+                        base64.b64decode(
+                            tmpvar[3:]
+                        )
                     )
-                )
-                if result:
-                    mylog('[%d] got message %s' % (receipt_no / CONCURRENT_NUM, result))
-                    recvChannel[receipt_no / CONCURRENT_NUM].put((
-                        address.index(msg['fromAddress']) / CONCURRENT_NUM, result
-                    ))
+                    if result:
+                        mylog('[%d] got message %s' % (receipt_no / CONCURRENT_NUM, result))
+                        recvChannel[receipt_no / CONCURRENT_NUM].put((
+                            address.index(msg['fromAddress']) / CONCURRENT_NUM, result
+                        ))
                 api[N].trashMessage(msg['msgid'])
 
     Greenlet(Listener).start()
