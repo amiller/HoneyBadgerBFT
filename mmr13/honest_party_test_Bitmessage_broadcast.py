@@ -81,6 +81,7 @@ def client_test_freenet(N, t):
     bitmessageServers = [('127.0.0.1', 8545+x) for x in range(N)]  # From 8337, 8338, ...
 
     api = [xmlrpclib.ServerProxy("http://user:badger@%s:%d" % (_[0], _[1])) for _ in bitmessageServers]
+    api_Read = [xmlrpclib.ServerProxy("http://user:badger@%s:%d" % (_[0], _[1])) for _ in bitmessageServers]
     mylog("Generating addresses...")
     address = []
     for i in range(N):  # In case we run it for the first time
@@ -110,7 +111,7 @@ def client_test_freenet(N, t):
         def Listener():
             while True:
                 gevent.sleep(SLEEP_TIME)
-                msgs = json.loads(api[i].getAllInboxMessages())['inboxMessages']
+                msgs = json.loads(api_Read[i].getAllInboxMessages())['inboxMessages']
                 for msg in msgs:
                     receipt_no = address.index(msg['toAddress'])
                     tmpvar = base64.b64decode(msg['message'])
@@ -125,7 +126,7 @@ def client_test_freenet(N, t):
                             recvChannel[receipt_no].put((
                                 address.index(msg['fromAddress']), result
                             ))
-                    api[i].trashMessage(msg['msgid'])
+                    api_Read[i].trashMessage(msg['msgid'])
 
         Greenlet(Listener).start()
         def _recv():
