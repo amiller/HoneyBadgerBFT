@@ -51,6 +51,16 @@ def decode(s):
         result = None
     return result
 
+
+def trashAllMessages(N):
+    apis = [xmlrpclib.ServerProxy("http://user:badger@%s:%d" % (_[0], _[1])) for _ in bitmessageServers]
+    for api in apis:
+        msgs = json.loads(api.getAllInboxMessageIDs())['inboxMessageIds']
+        for msg in msgs:
+            api.trashMessage(msg['msgid'])
+    mylog('Done with trashing.')
+
+
 def client_test_freenet(N, t):
     '''
     Test for the client with random delay channels
@@ -76,14 +86,14 @@ def client_test_freenet(N, t):
         mylog('Creating address for %d..' % i)
         api[i].createDeterministicAddresses(base64.b64encode('123'), 1)
     for i in range(N):
-        address.append([m['address'] for m in json.loads(api[i].listAddresses())['addresses']][0])
+        address.append([m['address'] for m in json.loads(api[i].listAddresses())['addresses']][-1])
         # listAddresses here instead of listAddresses2 ** The 0.4.4 version is not compatible with 0.4 !!!
     mylog('Got addresses :%s' % repr(address))
     mylog('Creating subscription...')
     for i in range(N):
         for j, addr in enumerate(address):
             api[i].addSubscription(addr, base64.b64encode(str(j)))
-    
+
     recvChannel = [Queue() for _ in range(N)]
     def makeBroadcast(i):
         def _deliver(j, v):
@@ -114,7 +124,7 @@ def client_test_freenet(N, t):
                             recvChannel[receipt_no].put((
                                 address.index(msg['fromAddress']), result
                             ))
-                    api[N].trashMessage(msg['msgid'])
+                    api[i].trashMessage(msg['msgid'])
 
         Greenlet(Listener).start()
         def _recv():
