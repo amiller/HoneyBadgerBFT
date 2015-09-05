@@ -53,6 +53,7 @@ def decode(s):
 
 
 def trashAllMessages(N):
+    bitmessageServers = [('127.0.0.1', 8545+x) for x in range(N)]  # From 8337, 8338, ...
     apis = [xmlrpclib.ServerProxy("http://user:badger@%s:%d" % (_[0], _[1])) for _ in bitmessageServers]
     for api in apis:
         msgs = json.loads(api.getAllInboxMessageIDs())['inboxMessageIds']
