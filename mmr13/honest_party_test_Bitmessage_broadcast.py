@@ -73,18 +73,17 @@ def client_test_freenet(N, t):
     mylog("Generating addresses...")
     address = []
     for i in range(N):  # In case we run it for the first time
+        mylog('Creating address for %d..' % i)
         api[i].createDeterministicAddresses(base64.b64encode('123'), 1)
     for i in range(N):
         address.append([m['address'] for m in json.loads(api[i].listAddresses())['addresses']][0])
         # listAddresses here instead of listAddresses2 ** The 0.4.4 version is not compatible with 0.4 !!!
+    mylog('Got addresses :%s' % repr(address))
+    mylog('Creating subscription...')
     for i in range(N):
         for j, addr in enumerate(address):
             api[i].addSubscription(addr, base64.b64encode(str(j)))
-    #address = [m['address'] for m in json.loads(api[0].listAddresses2())['addresses']]
-    mylog('Got addresses :%s' % repr(address))
-
-    # Instantiate the "broadcast" instruction
-
+    
     recvChannel = [Queue() for _ in range(N)]
     def makeBroadcast(i):
         def _deliver(j, v):
