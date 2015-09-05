@@ -75,7 +75,8 @@ def client_test_freenet(N, t):
     for i in range(N):  # In case we run it for the first time
         api[i].createDeterministicAddresses(base64.b64encode('123'), 1)
     for i in range(N):
-        address.append([m['address'] for m in json.loads(api[i].listAddresses2())['addresses']][0])
+        address.append([m['address'] for m in json.loads(api[i].listAddresses())['addresses']][0])
+        # listAddresses here instead of listAddresses2 ** The 0.4.4 version is not compatible with 0.4 !!!
     for i in range(N):
         for j, addr in enumerate(address):
             api[i].addSubscription(addr, base64.b64encode(str(j)))
