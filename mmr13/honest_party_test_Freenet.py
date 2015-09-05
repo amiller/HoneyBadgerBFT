@@ -14,6 +14,7 @@ from utils import myRandom as random
 import fcp
 import json
 import pickle
+import time
 import zlib
 #print state
 
@@ -117,7 +118,7 @@ def client_test_freenet(N, t):
     maxdelay = 0.01
     global publicKeys, nodeList
     privateList, USKPrivateList = generateFreenetKeys(N)
-    Greenlet(logWriter, open('msglog','w')).start()
+    Greenlet(logWriter, open('msglog', 'w')).start()
     #buffers = map(lambda _: Queue(1), range(N))
 
     # Instantiate the "broadcast" instruction
