@@ -113,7 +113,7 @@ def client_test_freenet(N, t):
                 gevent.sleep(SLEEP_TIME)
                 msgs = json.loads(api_Read[i].getAllInboxMessages())['inboxMessages']
                 for msg in msgs:
-                    receipt_no = address.index(msg['toAddress'])
+                    receipt_no = i  # address.index(msg['toAddress'])
                     tmpvar = base64.b64decode(msg['message'])
                     if tmpvar[:3] == 'HB-':
                         result = decode(
