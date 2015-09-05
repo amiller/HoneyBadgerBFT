@@ -39,17 +39,47 @@ def randomTransaction():
 def randomTransactionStr():
     return repr(randomTransaction())
 
-def encode(m):
-    return zlib.compress(pickle.dumps(m), 9)
+# def encode(m):
+#    return zlib.compress(pickle.dumps(m), 9)
 
-def decode(s):
+# def decode(s):
     # mylog('decoding %s' % repr(s))
     #if True:
-    try:
-        result = pickle.loads(zlib.decompress(s))
-    except:
-        result = None
+#    try:
+#        result = pickle.loads(zlib.decompress(s))
+#    except:
+#        result = None
+#    return result
+
+msgCounter = 0
+starting_time = dict()
+ending_time = dict()
+logChannel = Queue()
+
+
+def logWriter(fileHandler):
+    while True:
+        msgCounter, st, et, content = logChannel.get()
+        fileHandler.write("%d[%s]-[%s]%s\n" % (msgCounter, st, et, content))
+        fileHandler.flush()
+
+
+def encode(m):
+    global msgCounter
+    msgCounter += 1
+    starting_time[msgCounter] = time.strftime('[%m-%d-%y|%H:%M:%S]')
+    result = zlib.compress(
+        pickle.dumps((msgCounter, m)),
+        9)  # Highest compression level
     return result
+
+
+def decode(s):
+    result = pickle.loads(zlib.decompress(s))
+    assert(isinstance(result, tuple))
+    ending_time[result[0]] = time.strftime('[%m-%d-%y|%H:%M:%S]')
+    logChannel.put((result[0], starting_time[result[0]], ending_time[result[0]], result[1]))
+    return result[1]
 
 
 def trashAllMessages(N):
@@ -78,6 +108,8 @@ def client_test_freenet(N, t):
     '''
     maxdelay = 0.01
     assert(8445 + N < 8545)
+    Greenlet(logWriter, open('msglog.BitmessageBroadcast', 'w')).start()
+
     bitmessageServers = [('127.0.0.1', 8545+x) for x in range(N)]  # From 8337, 8338, ...
 
     api = [xmlrpclib.ServerProxy("http://user:badger@%s:%d" % (_[0], _[1])) for _ in bitmessageServers]
