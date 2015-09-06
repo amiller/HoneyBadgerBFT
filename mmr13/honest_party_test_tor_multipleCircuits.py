@@ -18,7 +18,7 @@ import pickle
 import time
 import zlib
 #print state
-
+import base64
 import socks
 
 TOR_SOCKSPORT = range(9050, 9055)
@@ -30,7 +30,7 @@ def listen_to_channel(port):
         f = socket.makefile()
         for line in f:
             #print 'line read from socket', line
-            obj = decode(line)
+            obj = decode(base64.b64decode(line))
             q.put(obj)
     server = StreamServer(('127.0.0.1', port), _handle)
     server.start()
@@ -44,7 +44,7 @@ def connect_to_channel(hostname, port, party):
     def _handle():
         while True:
             obj = q.get()
-            s.sendall(encode(obj) + '\n')
+            s.sendall(base64.b64encode(encode(obj)) + '\n')
     Greenlet(_handle).start()
     return q
 
