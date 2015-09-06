@@ -196,4 +196,5 @@ def client_test_freenet(N, t):
     #   shutdownNodes()
 
 if __name__ == '__main__':
+    trashAllMessages(5)
     client_test_freenet(5, 1)
