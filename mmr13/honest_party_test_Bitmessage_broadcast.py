@@ -130,11 +130,17 @@ def client_test_freenet(N, t):
 
     recvChannel = [Queue() for _ in range(N)]
     def makeBroadcast(i):
+        broadcastChannel = Queue()
         def _deliver(j, v):
             recvChannel[j].put((i, v))
+        def _broadcastDealer():  # We have to make sure that at any time, there is only 1 instance of api[i] working
+            while True:
+                v = broadcastChannel.get()
+                api[i].sendBroadcast(address[i], base64.b64encode('badger'),
+                    base64.b64encode('HB-' + base64.b64encode(encode(v))))
+        Greenlet(_broadcastDealer).start()
         def _broadcast(v):
-            api[i].sendBroadcast(address[i], base64.b64encode('badger'),
-                base64.b64encode('HB-' + base64.b64encode(encode(v))))
+            broadcastChannel.put(v)
             # Also we need to send to ourself
             Greenlet(_deliver, i, v).start()  # Can be start_later()
         return _broadcast
