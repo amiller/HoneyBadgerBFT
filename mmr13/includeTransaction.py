@@ -200,7 +200,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             assert(isinstance(syncedTXSet, set))
             transactionCache = transactionCache.difference(syncedTXSet)
             mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)))
-            raw_input()
+            # raw_input()
         sessionID = sessionID + 1
     mylog("[%d] Now halting..." % (pid))
 
