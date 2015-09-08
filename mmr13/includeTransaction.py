@@ -187,7 +187,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             op, msg = controlChannel.get(timeout=HONEST_PARTY_TIMEOUT)
             mylog("[%d] gets some msg %s" % (pid, repr(msg)))
             if op == "IncludeTransaction":
-                assert(isinstance(msg, Transaction))
+                # assert(isinstance(msg, Transaction))  # Now we allow non-transaction, like str
                 transactionCache.add(msg)
             elif op == "Halt":
                 break
@@ -200,7 +200,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             assert(isinstance(syncedTXSet, set))
             transactionCache = transactionCache.difference(syncedTXSet)
             mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)))
-            # raw_input()
+            raw_input()
         sessionID = sessionID + 1
     mylog("[%d] Now halting..." % (pid))
 

@@ -34,11 +34,13 @@ def acs(pid, N, t, Q, broadcast, receive):
     assert(isinstance(Q, list))
     assert(len(Q) == N)
     decideChannel = [Queue(1) for _ in range(N)]
+    receivedChannelsFlags = []
 
     def callbackFactory(i):
         def _callback(val): # Get notified for i
             # Greenlet(callBackWrap(binary_consensus, callbackFactory(i)), pid,
             #         N, t, 1, make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
+            receivedChannelsFlags.append(i)
             Greenlet(binary_consensus, pid,
                      N, t, 1, decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
         return _callback
@@ -68,6 +70,7 @@ def acs(pid, N, t, Q, broadcast, receive):
 
     BA = [0]*N
     locker = Queue(1)
+    locker2 = Queue(1)
     acs.callbackCounter = 0
 
     comment = '''def callbackFactory(i):
@@ -84,15 +87,24 @@ def acs(pid, N, t, Q, broadcast, receive):
             BA[i] = channel.get()
             if BA[i]:
                 if acs.callbackCounter >= 2*t:
-                        locker.put("Key") # Now we've got 2t+1 1's
+                        locker2.put("Key")  # Now we've got 2t+1 1's, gonna to put all the other to be zero
                 acs.callbackCounter += 1
+                if acs.callbackCounter == N:  # if we have all of them responded
+                        locker.put("Key")
         return _listener
 
     for i in range(N):
         Greenlet(listenerFactory(i, decideChannel[i])).start()
 
-    locker.get()
+    locker2.get()
+    # Now we feed 0 to all the other binary consensus protocols
+    comment = '''for i in range(N):
+        if not i in receivedChannelsFlags:
+            Greenlet(binary_consensus, pid, N, t, 0,
+                     decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
+    locker.get()  # Now we can check'''
     BA = checkBA(BA, N, t)
+    gevent.sleep(1)
     mylog(bcolors.UNDERLINE + "[%d] Get subset %s" % (pid, BA) + bcolors.ENDC)
     return BA
 
