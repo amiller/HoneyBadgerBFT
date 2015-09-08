@@ -77,29 +77,35 @@ def shutdownNodes(nodeList):
 msgCounter = 0
 starting_time = dict()
 ending_time = dict()
+msgSize = dict()
 logChannel = Queue()
+
 
 def logWriter(fileHandler):
     while True:
-        msgCounter, st, et, content = logChannel.get()
-        fileHandler.write("%d[%s]-[%s]%s\n" % (msgCounter, st, et, content))
+        msgCounter, msgSize, st, et, content = logChannel.get()
+        fileHandler.write("%d:%d[%s]-[%s]%s\n" % (msgCounter, msgSize, st, et, content))
         fileHandler.flush()
+
 
 def encode(m):
     global msgCounter
     msgCounter += 1
-    starting_time[msgCounter] = time.strftime('[%m-%d-%y|%H:%M:%S]')
+    starting_time[msgCounter] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
     result = zlib.compress(
         pickle.dumps((msgCounter, m)),
     9)  # Highest compression level
+    msgSize[msgCounter] = len(result)
     return result
+
 
 def decode(s):
     result = pickle.loads(zlib.decompress(s))
     assert(isinstance(result, tuple))
-    ending_time[result[0]] = time.strftime('[%m-%d-%y|%H:%M:%S]')
-    logChannel.put((result[0], starting_time[result[0]], ending_time[result[0]], result[1]))
+    ending_time[result[0]] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
+    logChannel.put((result[0], msgSize[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
     return result[1]
+
 
 def client_test_freenet(N, t):
     '''
@@ -130,7 +136,7 @@ def client_test_freenet(N, t):
             while True:
                 message = workchannel.get()
                 counter[actuall_i] += 1
-                mylog("[%d] writing msg %s..." % (i, repr(encode(message))))
+                mylog("[%d] writing msg %s..." % (i, repr(message)))
                 nodeList[actuall_i].put(uri=privateList[actuall_i] + str(counter[actuall_i]), data=encode(message),
                                 mimetype="application/octet-stream", realtime=True, priority=0)
                 mylog("[%d] Updating msg_counter[%d] to %d..." % (i, workno, counter[actuall_i]))

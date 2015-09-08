@@ -187,7 +187,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             op, msg = controlChannel.get(timeout=HONEST_PARTY_TIMEOUT)
             mylog("[%d] gets some msg %s" % (pid, repr(msg)))
             if op == "IncludeTransaction":
-                # assert(isinstance(msg, Transaction))  # Now we allow non-transaction, like str
+                assert(isinstance(msg, Transaction))  # Now we allow non-transaction, like str
                 transactionCache.add(msg)
             elif op == "Halt":
                 break
