@@ -1,3 +1,4 @@
+#!/usr/bin/python
 __author__ = 'aluex'
 
 from gevent.queue import Queue
@@ -80,13 +81,11 @@ ending_time = dict()
 msgSize = dict()
 logChannel = Queue()
 
-
 def logWriter(fileHandler):
     while True:
         msgCounter, msgSize, st, et, content = logChannel.get()
         fileHandler.write("%d:%d[%s]-[%s]%s\n" % (msgCounter, msgSize, st, et, content))
         fileHandler.flush()
-
 
 def encode(m):
     global msgCounter
@@ -98,14 +97,12 @@ def encode(m):
     msgSize[msgCounter] = len(result)
     return result
 
-
 def decode(s):
     result = pickle.loads(zlib.decompress(s))
     assert(isinstance(result, tuple))
     ending_time[result[0]] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
     logChannel.put((result[0], msgSize[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
     return result[1]
-
 
 def client_test_freenet(N, t):
     '''
@@ -186,7 +183,7 @@ def client_test_freenet(N, t):
             recv = makeListen(i)
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
             controlChannels[i].put(('IncludeTransaction', randomTransaction()))
-            # controlChannels[i].put(('IncludeTransaction', randomTransactionStr()))
+            #controlChannels[i].put(('IncludeTransaction', randomTransactionStr()))
             th.start_later(random.random() * maxdelay)
             ts.append(th)
 

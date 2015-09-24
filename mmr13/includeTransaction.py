@@ -1,4 +1,4 @@
-__author__ = 'aluex'
+__author__ = 'aluex' 
 
 from gevent import Greenlet
 from gevent.queue import Queue, Empty
@@ -78,12 +78,12 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
             sender, msgBundle = receive()
             # mylog("[%d] received msgBundle %s" % (pid, msgBundle))
             vki = Pubkeys[msgBundle[1]].peek()
-            if vki.verify(msgBundle[3], repr(msgBundle[2])):
+            if True:  # vki.verify(msgBundle[3], repr(msgBundle[2])):
                 # mylog("[%d] Signature passed, msgBundle: %s" % (pid, repr(msgBundle)))
                 if msgBundle[0] == 'initial' and not signed[msgBundle[1]]:
                     # Here we should remove the randomness of the signature
                     newBundle = (msgBundle[1], msgBundle[2])
-                    broadcast(('echo', pid, newBundle, sk.sign(repr(newBundle))))
+                    broadcast(('echo', pid, newBundle))  #, sk.sign(repr(newBundle))))
                     signed[msgBundle[1]] = True
                 elif msgBundle[0] == 'echo':
                     originBundle = msgBundle[2]
@@ -94,7 +94,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         outputs[originBundle[0]].put(originBundle[1])
 
     Greenlet(Listener).start()
-    broadcast(('initial', pid, msg, sk.sign(repr(msg))))  # Kick Off!
+    broadcast(('initial', pid, msg))  # , sk.sign(repr(msg))))  # Kick Off!
 
 @greenletFunction
 def consensusBroadcast(pid, N, t, msg, broadcast, receive, outputs, method=multiSigBr):
@@ -176,18 +176,25 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
 
 HONEST_PARTY_TIMEOUT = 1
 
+import time, sys
+lock = Queue()
+finishcount = 0
+lock.put(1)
+
 @greenletFunction
 def honestParty(pid, N, t, controlChannel, broadcast, receive):
     # RequestChannel is called by the client and it is the client's duty to broadcast the tx it wants to include
-    mylog("[%d] Honesy party started." % (pid))
+    mylog("[%d] Honesy party started at %f." % (pid, time.time()), verboseLevel=-1)
     transactionCache = set()
     sessionID = 0
+    global finishcount
     while True:
         try:
-            op, msg = controlChannel.get(timeout=HONEST_PARTY_TIMEOUT)
+            # op, msg = controlChannel.get(timeout=HONEST_PARTY_TIMEOUT)
+            op, msg = controlChannel.get()
             mylog("[%d] gets some msg %s" % (pid, repr(msg)))
             if op == "IncludeTransaction":
-                assert(isinstance(msg, Transaction))  # Now we allow non-transaction, like str
+                assert(isinstance(msg, Transaction))
                 transactionCache.add(msg)
             elif op == "Halt":
                 break
@@ -199,8 +206,13 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             syncedTXSet = includeTransaction(pid, N, t, transactionCache, broadcast, receive)
             assert(isinstance(syncedTXSet, set))
             transactionCache = transactionCache.difference(syncedTXSet)
-            mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)))
-            raw_input()
+            mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)), verboseLevel=-1)
+            lock.get()
+            finishcount += 1
+            lock.put(1)
+            if finishcount >= N - t:
+                sys.exit()
+            # raw_input()
         sessionID = sessionID + 1
     mylog("[%d] Now halting..." % (pid))
 

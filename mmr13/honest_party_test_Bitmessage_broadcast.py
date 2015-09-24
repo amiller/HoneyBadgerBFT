@@ -1,3 +1,4 @@
+#!/usr/bin/python
 __author__ = 'aluex'
 
 from gevent.queue import Queue
@@ -68,10 +69,10 @@ def logWriter(fileHandler):
 def encode(m):
     global msgCounter
     msgCounter += 1
-    starting_time[msgCounter] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
+    starting_time[msgCounter] = str(time.time())  #time.strftime('[%m-%d-%y|%H:%M:%S]')
     result = zlib.compress(
         pickle.dumps((msgCounter, m)),
-    9)  # Highest compression level
+        9)  # Highest compression level
     msgSize[msgCounter] = len(result)
     return result
 
@@ -79,7 +80,7 @@ def encode(m):
 def decode(s):
     result = pickle.loads(zlib.decompress(s))
     assert(isinstance(result, tuple))
-    ending_time[result[0]] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
+    ending_time[result[0]] = str(time.time())  #time.strftime('[%m-%d-%y|%H:%M:%S]')
     logChannel.put((result[0], msgSize[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
     return result[1]
 
@@ -198,5 +199,6 @@ def client_test_freenet(N, t):
     #   shutdownNodes()
 
 if __name__ == '__main__':
-    trashAllMessages(5)
-    client_test_freenet(5, 1)
+    # utils.verbose = -1
+    trashAllMessages(10)
+    client_test_freenet(10, 2)

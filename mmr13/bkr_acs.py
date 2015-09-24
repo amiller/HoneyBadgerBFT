@@ -8,26 +8,11 @@ from gevent.queue import Queue
 from utils import callBackWrap
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
 from utils import MonitoredInt, ACSException
+import time
 
 lockBA = Queue(1)
 defaultBA = []
 lockBA.put(1)
-
-
-def checkBA(BA, N, t):
-    global defaultBA
-    if sum(BA) <= 2*t:  # If acs failed, we use a preset default common subset
-        raise ACSException
-        # This part should never be executed
-        if not defaultBA:
-            lockBA.get()
-            if not defaultBA:
-                num = random.randint(2*t+1, N)
-                defaultBA = [1]*num+[0]*(N-num)
-                random.shuffle(defaultBA)
-            lockBA.put(1)
-        return [_ for _ in defaultBA]  # Clone
-    return BA
 
 
 def acs(pid, N, t, Q, broadcast, receive):
@@ -41,6 +26,7 @@ def acs(pid, N, t, Q, broadcast, receive):
             # Greenlet(callBackWrap(binary_consensus, callbackFactory(i)), pid,
             #         N, t, 1, make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
             receivedChannelsFlags.append(i)
+            mylog('B[%d]binary consensus_%d_starts with 1 at %f' % (pid, i, time.time()), verboseLevel=-1)
             Greenlet(binary_consensus, pid,
                      N, t, 1, decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
         return _callback
@@ -71,25 +57,26 @@ def acs(pid, N, t, Q, broadcast, receive):
     BA = [0]*N
     locker = Queue(1)
     locker2 = Queue(1)
-    acs.callbackCounter = 0
+    callbackCounter = [0]
 
     comment = '''def callbackFactory(i):
         def _callback(result):
             BA[i] = result
             if result:
-                if acs.callbackCounter >= 2*t:
+                if callbackCounter[0] >= 2*t:
                         locker.put("Key") # Now we've got 2t+1 1's
-                acs.callbackCounter += 1
+                callbackCounter[0] += 1
         return _callback'''
 
     def listenerFactory(i, channel):
         def _listener():
             BA[i] = channel.get()
             if BA[i]:
-                if acs.callbackCounter >= 2*t:
-                        locker2.put("Key")  # Now we've got 2t+1 1's, gonna to put all the other to be zero
-                acs.callbackCounter += 1
-                if acs.callbackCounter == N:  # if we have all of them responded
+                mylog('B[%d]binary consensus_%d_ends at %f' % (pid, i, time.time()), verboseLevel=-1)
+                if callbackCounter[0] >= 2*t:
+                        locker2.put("Key") # Now we've got 2t+1 1's
+                callbackCounter[0] += 1
+                if callbackCounter[0] >= N-t:  # if we have all of them responded
                         locker.put("Key")
         return _listener
 
@@ -98,13 +85,14 @@ def acs(pid, N, t, Q, broadcast, receive):
 
     locker2.get()
     # Now we feed 0 to all the other binary consensus protocols
-    comment = '''for i in range(N):
+    for i in range(N):
         if not i in receivedChannelsFlags:
+            mylog('B[%d]binary_%d_starts with 0 at %f' % (pid, i, time.time()))
             Greenlet(binary_consensus, pid, N, t, 0,
                      decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
     locker.get()  # Now we can check'''
     BA = checkBA(BA, N, t)
-    gevent.sleep(1)
+    # gevent.sleep(1)
     mylog(bcolors.UNDERLINE + "[%d] Get subset %s" % (pid, BA) + bcolors.ENDC)
     return BA
 
@@ -134,15 +122,15 @@ def acs_mapping(pid, N, t, Q, broadcast, receive):
 
     BA = [0]*N
     locker = Queue(1)
-    acs_mapping.callbackCounter = 0
+    callbackCounter = [0]
 
     def callbackFactory(i):
         def _callback(result):
             BA[i] = result
             if result:
-                if acs.callbackCounter >= 2*t:
+                if callbackCounter[0] >= 2*t:
                         locker.put("Key") # Now we've got 2t+1 1's
-                acs_mapping.callbackCounter += 1
+                callbackCounter[0] += 1
         return _callback
 
 
@@ -154,6 +142,22 @@ def acs_mapping(pid, N, t, Q, broadcast, receive):
     return BA
     #open('result','a').write("[%d] Get subset %s" % (pid, BA))
 '''
+
+def checkBA(BA, N, t):
+    global defaultBA
+    if sum(BA) <= 2*t:  # If acs failed, we use a preset default common subset
+        raise ACSException
+        # This part should never be executed
+        if not defaultBA:
+            lockBA.get()
+            if not defaultBA:
+                num = random.randint(2*t+1, N)
+                defaultBA = [1]*num+[0]*(N-num)
+                random.shuffle(defaultBA)
+            lockBA.put(1)
+        return [_ for _ in defaultBA]  # Clone
+    return BA
+
 
 def random_delay_acs(N, t, inputs):
 

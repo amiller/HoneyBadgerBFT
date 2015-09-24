@@ -2,4 +2,11 @@
 .idea/*
 *.pyc
 tmp*
+mmr13/msglog*
+mmr13/visual*
+mmr13/benchmark*
+mmr13/bin*
+thoughts
+mmr13/server_code*
+mmr13/tor*
 

@@ -7,7 +7,7 @@ import random, hashlib
 
 gevent.monkey.patch_all()
 
-verbose = 0
+verbose = -1
 goodseed = random.randint(1, 10000)
 myRandom = random.Random(goodseed)
 

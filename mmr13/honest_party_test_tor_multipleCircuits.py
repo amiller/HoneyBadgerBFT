@@ -1,3 +1,4 @@
+#!/usr/bin/python
 __author__ = 'aluex'
 
 from gevent.queue import Queue
@@ -14,15 +15,14 @@ from utils import myRandom as random
 from gevent.server import StreamServer
 import fcp
 import json
-import pickle
+import cPickle as pickle
 import time
-import datetime
 import zlib
 #print state
 import base64
 import socks
 
-TOR_SOCKSPORT = range(9050, 9055)
+TOR_SOCKSPORT = range(9050, 9070)
 
 def listen_to_channel(port):
     mylog('Preparing server on %d...' % port)
@@ -32,20 +32,33 @@ def listen_to_channel(port):
         for line in f:
             #print 'line read from socket', line
             obj = decode(base64.b64decode(line))
-            q.put(obj)
+            q.put(obj[1:])
     server = StreamServer(('127.0.0.1', port), _handle)
     server.start()
     return q
 
 def connect_to_channel(hostname, port, party):
-    s = socks.socksocket()
-    s.setproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", TOR_SOCKSPORT[party], True)
-    s.connect((hostname, port))
+    retry = True
+    if True:  #while retry:
+      #try:
+        s = socks.socksocket()
+        s.setproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", TOR_SOCKSPORT[party], True)
+        s.connect((hostname, port))
+        retry = False
+      #except:  # socks.SOCKS5Error:
+      #  retry = True
+      #  mylog('retrying...', verboseLevel=-1)
     q = Queue(1)
     def _handle():
         while True:
             obj = q.get()
+            retry = True
             s.sendall(base64.b64encode(encode(obj)) + '\n')
+            #        retry = False
+            #    except:
+            #        retry = True
+            #        mylog('retrying...', verboseLevel=-1)
+                
     Greenlet(_handle).start()
     return q
 
@@ -57,6 +70,21 @@ l2y6c2tztpjbcjv5.onion
 cystbatihmcyj6nf.onion
 hhhegzzwem6v2rpx.onion
 za44dm5gbhkzif24.onion
+gjbcxcdek272x5kv.onion
+bgge235qrp2vc67b.onion
+qd5pf7tlzv7tgvfm.onion
+2gexsunkq5bruu2q.onion
+alh6vi2fwxobluq5.onion
+f3oqs4hq6lo6a7xl.onion
+5hrnuw7iz2fnfgkv.onion
+ijjkdw6fnrdhgt3d.onion
+l5yd4jelejc2gl3i.onion
+yyrdvlvucwbig56a.onion
+fpcak233m6ohegms.onion
+p2wvpc3tkdfqog6j.onion
+5phvu6syhjbm7n3w.onion
+hcgkkdxwvsc5qswe.onion
+udaba767u7aocmty.onion
 """.strip().split('\n')
 
 TOR_MAPPINGS = [(host, BASE_PORT+i) for i, host in enumerate(TOR_MAPPING_LIST)]
@@ -82,34 +110,34 @@ msgCounter = 0
 starting_time = dict()
 ending_time = dict()
 msgSize = dict()
+msgFrom = dict()
+msgTo = dict()
 logChannel = Queue()
-
 
 def logWriter(fileHandler):
     while True:
-        msgCounter, msgSize, st, et, content = logChannel.get()
-        fileHandler.write("%d:%d[%s]-[%s]%s\n" % (msgCounter, msgSize, st, et, content))
+        msgCounter, msgSize, msgFrom, msgTo, st, et, content = logChannel.get()
+        fileHandler.write("%d:%d(%d->%d)[%s]-[%s]%s\n" % (msgCounter, msgSize, msgFrom, msgTo, st, et, content))
         fileHandler.flush()
-
 
 def encode(m):
     global msgCounter
     msgCounter += 1
     starting_time[msgCounter] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
     result = zlib.compress(
-        pickle.dumps((msgCounter, m)),
+        pickle.dumps((msgCounter, m[2])),
     9)  # Highest compression level
     msgSize[msgCounter] = len(result)
+    msgFrom[msgCounter] = m[1]
+    msgTo[msgCounter] = m[0]
     return result
-
 
 def decode(s):
     result = pickle.loads(zlib.decompress(s))
     assert(isinstance(result, tuple))
     ending_time[result[0]] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
-    logChannel.put((result[0], msgSize[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
+    logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
     return result[1]
-
 
 def client_test_freenet(N, t):
     '''
@@ -136,9 +164,9 @@ def client_test_freenet(N, t):
             host, port = TOR_MAPPINGS[j]
             chans.append(connect_to_channel(host, port, i))
         def _broadcast(v):
-            mylog(bcolors.OKGREEN + "[%d] Broadcasted %s" % (i, repr(v)) + bcolors.ENDC)
+            mylog(bcolors.OKGREEN + "[%d] Broadcasted %s" % (i, repr(v)) + bcolors.ENDC, verboseLevel=-1)
             for j in range(N):
-                chans[j].put((i, v))
+                chans[j].put((j, i, v))  # from i to j
         return _broadcast
 
     servers = []
@@ -157,10 +185,12 @@ def client_test_freenet(N, t):
             bc = makeBroadcast(i)
             recv = servers[i].get
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
-            controlChannels[i].put(('IncludeTransaction', randomTransaction()))
             # controlChannels[i].put(('IncludeTransaction', randomTransactionStr()))
             th.start()
+            mylog('Summoned party %i at time %f' % (i, time.time()), verboseLevel=-1)
             ts.append(th)
+        for i in range(N):
+            controlChannels[i].put(('IncludeTransaction', randomTransaction()))
 
         #Greenlet(monitorUserInput).start()
         try:
@@ -171,5 +201,17 @@ def client_test_freenet(N, t):
             print "Concensus Finished"
             mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
 
+import GreenletProfiler
+import atexit
+def exit():
+    GreenletProfiler.stop()
+    stats = GreenletProfiler.get_func_stats()
+    stats.print_all()
+    stats.save('profile.callgrind', type='callgrind')
+
 if __name__ == '__main__':
-    client_test_freenet(5, 1)
+    GreenletProfiler.set_clock_type('cpu')
+    # GreenletProfiler.start()
+    # atexit.register(exit)
+    client_test_freenet(6, 0)
+
