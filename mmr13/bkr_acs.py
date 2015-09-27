@@ -145,7 +145,7 @@ def acs_mapping(pid, N, t, Q, broadcast, receive):
 
 def checkBA(BA, N, t):
     global defaultBA
-    if sum(BA) <= 2*t:  # If acs failed, we use a preset default common subset
+    if sum(BA) <= 2*t:  # If acs failed, we use a pre-set default common subset
         raise ACSException
         # This part should never be executed
         if not defaultBA:

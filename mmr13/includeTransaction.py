@@ -131,6 +131,8 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
 
     def _listener():
         while True:
+            # a = receive()
+            # mylog(a, verboseLevel=-1)
             sender, (tag, m) = receive()
             #mylog("[%d] got a msg from %s\n %s" % (pid, repr(sender), repr((tag, m))))
             if tag == 'BC':
