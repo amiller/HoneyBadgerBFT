@@ -330,7 +330,7 @@ def exit():
     mylog('%d extra log exported.' % halfmsgCounter, verboseLevel=-1)
 
     for ob in gc.get_objects():
-        if not isinstance(ob, greenlet):
+        if not hasattr(ob, 'parent_args'):
             continue
         if not ob:
             continue
