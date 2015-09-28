@@ -3,7 +3,7 @@ import gevent
 from gevent import Greenlet
 from gevent.queue import Queue
 from collections import defaultdict
-from utils import dummyCoin
+from utils import dummyCoin, greenletPacker
 # import random
 import sys
 
@@ -111,7 +111,7 @@ def shared_coin_dummy(pid, N, t, broadcast, receive):
                 b = hash(r) % 2
                 outputQueue[r].put(b)
 
-    Greenlet(_recv).start()
+    greenletPacker(Greenlet(_recv), 'shared_coin_dummy', (pid, N, t, broadcast, receive)).start()
 
     # Broadcast our share
     round = 0
@@ -221,7 +221,7 @@ def mv84consensus(pid, N, t, vi, broadcast, receive):
                     (sender, (tag, m))
                 )
 
-    Greenlet(_listener).start()
+    greenletPacker(Greenlet(_listener), 'mv84consensus._listener', (pid, N, t, vi, broadcast, receive)).start()
 
     mylog(bcolors.FAIL + "[%d] Starting Phase 1" % pid)
     makeBroadcastWithTag('VAL', broadcast)(vi)
@@ -234,7 +234,8 @@ def mv84consensus(pid, N, t, vi, broadcast, receive):
     mylog(bcolors.FAIL + "[%d] Starting binary consensus on alert: %d" % (pid, alert))
 
     decideChannel = Queue(1)
-    Greenlet(binary_consensus, pid, N, t, alert, decideChannel, broadcast, reliableBroadcastReceiveQueue.get).start()
+    greenletPacker(Greenlet(binary_consensus, pid, N, t, alert, decideChannel, broadcast, reliableBroadcastReceiveQueue.get),
+        'mv84consensus.binary_consensus', (pid, N, t, vi, broadcast, receive)).start()
     agreedAlert = decideChannel.get()
 
     if agreedAlert:
@@ -377,17 +378,20 @@ def binary_consensus(pid, N, t, vi, decide, broadcast, receive):
             if tag == 'BC':
                 # Broadcast message
                 r, msg = m
-                Greenlet(bcQ[r].put, (i, msg)).start() # In case they block the router
+                greenletPacker(Greenlet(bcQ[r].put, (i, msg)),
+                    'binary_consensus.bcQ[%d].put' % r, (pid, N, t, vi, decide, broadcast, receive)).start() # In case they block the router
             elif tag == 'COIN':
                 # A share of a coin
-                Greenlet(coinQ.put, m).start()
+                greenletPacker(Greenlet(coinQ.put, m),
+                    'binary_consensus.coinQ.put', (pid, N, t, vi, decide, broadcast, receive)).start()
             elif tag == 'AUX':
                 # Aux message
                 r, msg = m
-                Greenlet(auxQ[r].put, (i, msg)).start()
+                greenletPacker(Greenlet(auxQ[r].put, (i, msg)),
+                      'binary_consensus.auxQ[%d].put' % r, (pid, N, t, vi, decide, broadcast, receive)).start()
                 pass
 
-    Greenlet(_recv).start()
+    greenletPacker(Greenlet(_recv), 'binary_consensus._recv', (pid, N, t, vi, decide, broadcast, receive)).start()
 
     def brcast_get(r):
         def _recv(*args, **kargs):
@@ -454,15 +458,16 @@ def binary_consensus(pid, N, t, vi, decide, broadcast, receive):
         def getRelease(channel):
             def _release():
                 #channel.maxsize = None
-                Greenlet(garbageCleaner, channel).start()
+                greenletPacker(Greenlet(garbageCleaner, channel),
+                    'binary_consensus.garbageCleaner', (pid, N, t, vi, decide, broadcast, receive)).start()
             return _release
 
         mylog('[%d]b begin phase 1 broadcasting' % pid)
-        br1 = Greenlet(
+        br1 = greenletPacker(Greenlet(
             bv_broadcast(
                 pid, N, t, makeBroadcastWithTagAndRound('BC', broadcast, round),
                 brcast_get(round), bvOutput, getRelease(bcQ[round])),
-            est)
+            est), 'binary_consensus.bv_broadcast(%d, %d, %d)' % (pid, N, t), (pid, N, t, vi, decide, broadcast, receive))
         br1.start()
         mylog('[%d]b is waiting for phase 1' % pid)
         w = bvOutputHolder.get()  # Wait until output is not empty
@@ -470,14 +475,16 @@ def binary_consensus(pid, N, t, vi, decide, broadcast, receive):
         mylog(bcolors.OKBLUE + '[%d]b Phase 1 done and starts phase 2 broadcasting' % pid + bcolors.ENDC)
 
         broadcast(('AUX', (round, w)))
-        Greenlet(loopWrapper(getWithProcessing(round, binValues, callBackWaiter))).start()
+        greenletPacker(Greenlet(loopWrapper(getWithProcessing(round, binValues, callBackWaiter))),
+            'binary_consensus.loopWrapper(getWithProcessing(round, binValues, callBackWaiter))',
+                    (pid, N, t, vi, decide, broadcast, receive)).start()
 
-        comment = '''br2 = Greenlet(
+        comment = '''br2 = greenletPacker(Greenlet(
             bv_broadcast(
                 pid, N, t, makeBroadcastWithTagAndRound('AUX', broadcast, round),
                 getWithProcessing(round, binValues, callBackWaiter), lambda _: None, getRelease(auxQ[round])
-            ), w)
-        br2.start()'''
+            ), w), 'binary_consensus.bv_broadcast(%d, %d, %d)' % (pid, N, t), (pid, N, t, vi, decide, broadcast, receive))
+        br2.start() #'''
 
         values = callBackWaiter[round].get()  # wait until the conditions are satisfied
         # br2.kill(block=False)

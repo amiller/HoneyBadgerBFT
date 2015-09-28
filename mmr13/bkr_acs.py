@@ -7,7 +7,7 @@ import gevent
 from gevent.queue import Queue
 from utils import callBackWrap
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
-from utils import MonitoredInt, ACSException
+from utils import MonitoredInt, ACSException, greenletPacker
 import time
 
 lockBA = Queue(1)
@@ -27,8 +27,9 @@ def acs(pid, N, t, Q, broadcast, receive):
             #         N, t, 1, make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
             receivedChannelsFlags.append(i)
             mylog('B[%d]binary consensus_%d_starts with 1 at %f' % (pid, i, time.time()), verboseLevel=-1)
-            Greenlet(binary_consensus, pid,
-                     N, t, 1, decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
+            greenletPacker(Greenlet(binary_consensus, pid,
+                N, t, 1, decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get),
+                    'acs.callbackFactory.binary_consensus', (pid, N, t, Q, broadcast, receive)).start()
         return _callback
 
     for i, q in enumerate(Q):
@@ -52,7 +53,7 @@ def acs(pid, N, t, Q, broadcast, receive):
                     (sender, m)
                 )
 
-    Greenlet(_listener).start()
+    greenletPacker(Greenlet(_listener), 'acs._listener', (pid, N, t, Q, broadcast, receive)).start()
 
     BA = [0]*N
     locker = Queue(1)
@@ -81,15 +82,17 @@ def acs(pid, N, t, Q, broadcast, receive):
         return _listener
 
     for i in range(N):
-        Greenlet(listenerFactory(i, decideChannel[i])).start()
+        greenletPacker(Greenlet(listenerFactory(i, decideChannel[i])),
+            'acs.listenerFactory(i, decideChannel[i])', (pid, N, t, Q, broadcast, receive)).start()
 
     locker2.get()
     # Now we feed 0 to all the other binary consensus protocols
     for i in range(N):
         if not i in receivedChannelsFlags:
             mylog('B[%d]binary_%d_starts with 0 at %f' % (pid, i, time.time()))
-            Greenlet(binary_consensus, pid, N, t, 0,
-                     decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
+            greenletPacker(Greenlet(binary_consensus, pid, N, t, 0,
+                     decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get),
+                           'acs.binary_consensus', (pid, N, t, Q, broadcast, receive)).start()
     locker.get()  # Now we can check'''
     BA = checkBA(BA, N, t)
     # gevent.sleep(1)
@@ -175,7 +178,8 @@ def random_delay_acs(N, t, inputs):
                mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
 
            for j in range(N):
-               Greenlet(_deliver, j).start_later(random.random()*maxdelay)
+               greenletPacker(Greenlet(_deliver, j),
+                   'random_delay_acs._deliver', (N, t, inputs)).start_later(random.random()*maxdelay)
 
         return _broadcast
 
@@ -193,8 +197,9 @@ def random_delay_acs(N, t, inputs):
             #vi = random.randint(0, 10)
             input_clone = [MonitoredInt() for _ in range(N)]
             for j in range(N):
-                Greenlet(modifyMonitoredInt, input_clone[j]).start_later(maxdelay * random.random())
-            th = Greenlet(acs, i, N, t, input_clone, bc, recv)
+                greenletPacker(Greenlet(modifyMonitoredInt, input_clone[j]),
+                    'random_delay_acs.modifyMonitoredInt', (N, t, inputs)).start_later(maxdelay * random.random())
+            th = greenletPacker(Greenlet(acs, i, N, t, input_clone, bc, recv), 'random_delay_acs.acs', (N, t, inputs))
             th.start() # start_later(random.random() * maxdelay)
             ts.append(th)
 

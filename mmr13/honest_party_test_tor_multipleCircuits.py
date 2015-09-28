@@ -65,7 +65,10 @@ def connect_to_channel(hostname, port, party):
             #        retry = True
             #        mylog('retrying...', verboseLevel=-1)
                 
-    Greenlet(_handle).start()
+    gtemp = Greenlet(_handle)
+    gtemp.parent_args = (hostname, port, party)
+    gtemp.name = 'connect_to_channel._handle'
+    gtemp.start()
     return q
 
 BASE_PORT = 49500
@@ -244,7 +247,10 @@ def client_test_freenet(N, t):
     '''
 
     #buffers = map(lambda _: Queue(1), range(N))
-    Greenlet(logWriter, open('msglog.TorMultiple', 'w')).start()
+    gtemp = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
+    gtemp.parent_args = (N, t)
+    gtemp.name = 'client_test_freenet.logWriter'
+    gtemp.start()
     # Instantiate the "broadcast" instruction
     def makeBroadcast(i):
         chans = []
@@ -277,6 +283,8 @@ def client_test_freenet(N, t):
             bcList[x] = bc
         for i in range(N):
             tmp_t = Greenlet(_makeBroadcast, i)
+            tmp_t.parent_args = (N, t)
+            tmp_t.name = 'client_test_freenet._makeBroadcast(%d)' % i
             tmp_t.start()
             tList.append(tmp_t)
         gevent.joinall(tList)
@@ -284,6 +292,8 @@ def client_test_freenet(N, t):
             bc = bcList[i]  # makeBroadcast(i)
             recv = servers[i].get
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
+            th.parent_args = (N, t)
+            th.name = 'client_test_freenet.honestParty(%d)' % i
             # controlChannels[i].put(('IncludeTransaction', randomTransactionStr()))
             th.start()
             mylog('Summoned party %i at time %f' % (i, time.time()), verboseLevel=-1)
@@ -303,16 +313,29 @@ def client_test_freenet(N, t):
 
 import GreenletProfiler
 import atexit
+import gc
+import traceback
+from greenlet import greenlet
 
 USE_PROFILE = False
 
 
 def exit():
+    halfmsgCounter = 0
     for msgindex in starting_time.keys():
         if msgindex not in ending_time.keys():
             logChannel.put((msgindex, msgSize[msgindex], msgFrom[msgindex],
                             msgTo[msgindex], starting_time[msgindex], time.time(), '[UNRECEIVED]' + msgContent[msgindex]))
+            halfmsgCounter += 1
+    mylog('%d extra log exported.' % halfmsgCounter, verboseLevel=-1)
 
+    for ob in gc.get_objects():
+        if not isinstance(ob, greenlet):
+            continue
+        if not ob:
+            continue
+        mylog(''.join(traceback.format_stack(ob.gr_frame)), verboseLevel=-1)
+    
     if USE_PROFILE:
         GreenletProfiler.stop()
         stats = GreenletProfiler.get_func_stats()

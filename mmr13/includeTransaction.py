@@ -4,7 +4,7 @@ from gevent import Greenlet
 from gevent.queue import Queue, Empty
 from mmr13 import binary_consensus
 from bkr_acs import acs, initBeforeBinaryConsensus
-from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction
+from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, greenletPacker
 from collections import defaultdict
 from ecdsa import SigningKey
 
@@ -93,7 +93,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2:
                         outputs[originBundle[0]].put(originBundle[1])
 
-    Greenlet(Listener).start()
+    greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()
     broadcast(('initial', pid, msg))  # , sk.sign(repr(msg))))  # Kick Off!
 
 @greenletFunction
@@ -138,11 +138,12 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
             if tag == 'BC':
                 #mylog("[%d] CBChannel put %s" % (pid, repr((sender, m))))
 
-                Greenlet(CBChannel.put, (sender, m)).start()
+                greenletPacker(Greenlet(CBChannel.put, (sender, m)),
+                    'includeTransaction.CBChannel.put', (pid, N, t, setToInclude, broadcast, receive)).start()
             elif tag == 'ACS':
-                Greenlet(ACSChannel.put,
+                greenletPacker(Greenlet(ACSChannel.put,
                     (sender, m)
-                ).start()
+                ), 'includeTransaction.ACSChannel.put', (pid, N, t, setToInclude, broadcast, receive)).start()
 
     outputChannel = [Queue(1) for _ in range(N)]
 
@@ -152,7 +153,8 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
         monitoredIntList[i].data = 1
 
     for i in range(N):
-        Greenlet(outputCallBack, i).start()
+        greenletPacker(Greenlet(outputCallBack, i),
+            'includeTransaction.outputCallBack', (pid, N, t, setToInclude, broadcast, receive)).start()
 
     def callbackFactoryACS():
         def _callback(commonSet): # now I know player j has succeeded in broadcasting
@@ -160,16 +162,19 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
             locker.put(commonSet)
         return _callback
 
-    Greenlet(_listener).start()
+    greenletPacker(Greenlet(_listener),
+        'includeTransaction._listener', (pid, N, t, setToInclude, broadcast, receive)).start()
 
     locker = Queue(1)
     includeTransaction.callbackCounter = 0
     monitoredIntList = [MonitoredInt() for _ in range(N)]
 
     mylog("[%d] Beginning A-Cast on %s" % (pid, repr(setToInclude)))
-    Greenlet(consensusBroadcast, pid, N, t, setToInclude, make_bc_br(pid), CBChannel.get, outputChannel).start()
+    greenletPacker(Greenlet(consensusBroadcast, pid, N, t, setToInclude, make_bc_br(pid), CBChannel.get, outputChannel),
+        'includeTransaction.consensusBroadcast', (pid, N, t, setToInclude, broadcast, receive)).start()
     mylog("[%d] Beginning ACS" % pid)
-    Greenlet(callBackWrap(acs, callbackFactoryACS()), pid, N, t, monitoredIntList, make_acs_br(pid), ACSChannel.get).start()
+    greenletPacker(Greenlet(callBackWrap(acs, callbackFactoryACS()), pid, N, t, monitoredIntList, make_acs_br(pid), ACSChannel.get),
+        'includeTransaction.callBackWrap(acs, callbackFactoryACS())', (pid, N, t, setToInclude, broadcast, receive)).start()
 
     commonSet = locker.get()
     subTXSet = [TXSet[x] for x in range(N) if commonSet[x] == 1]

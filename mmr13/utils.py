@@ -3,7 +3,8 @@ import sys
 import gevent.monkey
 from gevent.queue import Queue
 from gevent import Greenlet
-import random, hashlib
+import random
+import hashlib
 
 gevent.monkey.patch_all()
 
@@ -127,6 +128,10 @@ def loopWrapper(func):
 class ACSException(Exception):
     pass
 
+def greenletPacker(greenlet, name, parent_arguments):
+    greenlet.name = name
+    greenlet.parent_args = parent_arguments
+    return greenlet
 
 def greenletFunction(func):
     func.at_exit = lambda: None  # manual at_exit since Greenlet does not provide this event by default
