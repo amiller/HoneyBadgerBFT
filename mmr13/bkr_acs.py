@@ -74,10 +74,10 @@ def acs(pid, N, t, Q, broadcast, receive):
             BA[i] = channel.get()
             if BA[i]:
                 mylog('B[%d]binary consensus_%d_ends at %f' % (pid, i, time.time()), verboseLevel=-1)
-                if callbackCounter[0] >= 2*t:
-                        locker2.put("Key") # Now we've got 2t+1 1's
+                if callbackCounter[0] >= 2*t and (not locker2.full()):
+                        locker2.put("Key")  # Now we've got 2t+1 1's
                 callbackCounter[0] += 1
-                if callbackCounter[0] >= N-t:  # if we have all of them responded
+                if callbackCounter[0] >= N-t and (not locker.full()):  # if we have all of them responded
                         locker.put("Key")
         return _listener
 

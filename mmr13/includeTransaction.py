@@ -90,7 +90,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     opinions[originBundle[0]][repr(originBundle[1])] += 1
                     # mylog("[%d] counter for (%d, %s) is now %d" % (pid, originBundle[0],
                     #    repr(originBundle[1]), opinions[originBundle[0]][repr(originBundle[1])]))
-                    if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2:
+                    if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2 and not outputs[originBundle[0]].full():
                         outputs[originBundle[0]].put(originBundle[1])
 
     greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()
