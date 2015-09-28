@@ -334,7 +334,8 @@ def exit():
             continue
         if not ob:
             continue
-        mylog(''.join(traceback.format_stack(ob.gr_frame)), verboseLevel=-1)
+        mylog('%s(%s) called with parent arg (%s)\n%s' % (ob.name, repr(ob.parent_args), repr(ob.args),
+            ''.join(traceback.format_stack(ob.gr_frame))), verboseLevel=-1)
     
     if USE_PROFILE:
         GreenletProfiler.stop()
