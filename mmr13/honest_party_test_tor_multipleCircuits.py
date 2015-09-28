@@ -334,7 +334,7 @@ def exit():
             continue
         if not ob:
             continue
-        mylog('%s(%s) called with parent arg (%s)\n%s' % (ob.name, repr(ob.parent_args), repr(ob.args),
+        mylog('%s[%s] called with parent arg\n(%s)\n%s' % (ob.name, repr(ob.args), repr(ob.parent_args),
             ''.join(traceback.format_stack(ob.gr_frame))), verboseLevel=-1)
     
     if USE_PROFILE:
