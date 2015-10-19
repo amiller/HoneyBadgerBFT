@@ -248,7 +248,7 @@ def deepEncode(mc, m):
         p1, (t2, (p2, p3)) = c
         if t2 == 'B':
             buf.write('\x03')
-        elif:
+        elif t2 == 'A':
             buf.write('\x04')
         else:
             raise deepEncodeException()
