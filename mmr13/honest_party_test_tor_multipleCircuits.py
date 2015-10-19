@@ -22,6 +22,8 @@ import zlib
 #print state
 import base64
 import socks
+import struct
+from io import BytesIO
 
 TOR_SOCKSPORT = range(9050, 9150)
 
@@ -211,21 +213,108 @@ def logWriter(fileHandler):
         fileHandler.write("%d:%d(%d->%d)[%s]-[%s]%s\n" % (msgCounter, msgSize, msgFrom, msgTo, st, et, content))
         fileHandler.flush()
 
-def encode(m):
+class deepEncodeException(Exception):
+    pass
+
+class deepDecodeException(Exception):
+    pass
+
+def encodeTransaction(tr):
+    sourceInd = nameList.index(tr.source)
+    targetInd = nameList.index(tr.target)
+    return struct.pack(
+        '<BBH', sourceInd, targetInd, tr.amount
+    )
+
+def deepEncode(mc, m):
+    buf = BytesIO()
+    buf.write(struct.pack('<I', mc))
+    f, t, (tag, c) = m
+    buf.write(struct.pack('BB', f, t))
+    # totally we have 4 msg types
+    if c[0]=='i':
+        buf.write('\x01')
+        t2, p1, s = c
+        buf.write(struct.pack('B', p1))
+        for tr in s:
+            buf.write(tr.getBitsRepr())
+    elif c[0]=='e':
+        buf.write('\x02')
+        t2, p1, (p2, s) = c
+        buf.write(struct.pack('BB', p1, p2))
+        for tr in s:
+            buf.write(encodeTransaction(tr))
+    else:
+        p1, (t2, (p2, p3)) = c
+        if t2 == 'B':
+            buf.write('\x03')
+        elif:
+            buf.write('\x04')
+        else:
+            raise deepEncodeException()
+        buf.write(struct.pack('BBB', p1, p2, p3))
+    buf.seek(0)
+    return buf.read()
+
+def constructTransactionFromRepr(r):
+    sourceInd, targetInd, amount = struct.unpack('<BBH', r)
+    tr = Transaction()
+    tr.source = nameList[sourceInd]
+    tr.target = nameList[targetInd]
+    tr.amount = amount
+    return tr
+
+# Msg Types:
+# 1:(3, 1, ('B', ('i', 1, set([{{Transaction from Francis to Eco with 86}}]))))
+# 2:(1, 0, ('B', ('e', 0, (2, set([{{Transaction from Bob to Jessica with 65}}])))))
+# 3:(0, 3, ('A', (1, ('B', (1, 1)))))
+# 4:(0, 3, ('A', (2, ('A', (1, 1)))))
+
+def deepDecode(m):
+    buf = BytesIO(m)
+    mc, f, t, msgtype = struct.unpack('<IBBB', buf.read(7))
+    trSet = set()
+    if msgtype == 1:
+        p1 = struct.unpack('B', buf.read(1))
+        trRepr = buf.read(4)
+        while trRepr:
+            trSet.add(constructTransactionFromRepr(trRepr))
+            trRepr = buf.read(4)
+        return mc, (f, t, ('B', ('i', p1, trSet)),)
+    elif msgtype == 2:
+        p1, p2 = struct.unpack('BB', buf.read(2))
+        trRepr = buf.read(4)
+        while trRepr:
+            trSet.add(constructTransactionFromRepr(trRepr))
+            trRepr = buf.read(4)
+        return mc, (f, t, ('B', ('e', p1, (p2, trSet))),)
+    elif msgtype == 3:
+        p1, p2, p3 = struct.unpack('BBB', buf.read(3))
+        return mc, (f, t, ('A', (p1, ('B', (p2, p3)))),)
+    elif msgtype == 4:
+        p1, p2, p3 = struct.unpack('BBB', buf.read(3))
+        return mc, (f, t, ('A', (p1, ('A', (p2, p3)))),)
+    else:
+        raise deepDecodeException()
+
+def encode(m):  # TODO
     global msgCounter
     msgCounter += 1
     starting_time[msgCounter] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
+    intermediate = deepEncode(msgCounter, m)
     result = zlib.compress(
-        pickle.dumps((msgCounter, m)),
+        #pickle.dumps(deepEncode(msgCounter, m)),
+        intermediate,
     9)  # Highest compression level
+    print 'intermediateLen', len(intermediate), 'compressed', len(result)
     msgSize[msgCounter] = len(result)
     msgFrom[msgCounter] = m[1]
     msgTo[msgCounter] = m[0]
     msgContent[msgCounter] = m
     return result
 
-def decode(s):
-    result = pickle.loads(zlib.decompress(s))
+def decode(s):  # TODO
+    result = deepDecode(zlib.decompress(s)) #pickle.loads(zlib.decompress(s))
     assert(isinstance(result, tuple))
     ending_time[result[0]] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
     msgContent[result[0]] = None

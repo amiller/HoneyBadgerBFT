@@ -7,9 +7,9 @@ from bkr_acs import acs, initBeforeBinaryConsensus
 from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, greenletPacker
 from collections import defaultdict
 from ecdsa import SigningKey
+import struct
 
-
-class Transaction:
+class Transaction:  # assume amout is in term of short
     def __init__(self):
         self.source='Unknown'
         self.target = 'Unknown'
@@ -18,6 +18,11 @@ class Transaction:
 
     def __repr__(self):
         return bcolors.OKBLUE + "{{Transaction from %s to %s with %d}}" % (self.source, self.target, self.amount) + bcolors.ENDC
+
+    #def getBitsRepr(self):
+    #    return struct.pack('BBH', int(self.source.encode('hex'), 16) & 255, int(self.target.encode('hex'), 16) & 255,
+    #                       self.amount)
+
 
 def calcSum(dd):
     return sum([x for _, x in dd.items()])
