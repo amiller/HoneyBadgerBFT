@@ -23,7 +23,7 @@ import zlib
 import base64
 import socks
 
-TOR_SOCKSPORT = range(9050, 9100)
+TOR_SOCKSPORT = range(9050, 9150)
 
 def listen_to_channel(port):
     mylog('Preparing server on %d...' % port)
@@ -52,6 +52,7 @@ def connect_to_channel(hostname, port, party):
         retry = False
       except Exception, e:  # socks.SOCKS5Error:
         retry = True
+        gevent.sleep(1)
         s.close()
         mylog('retrying (%s, %d) caused by %s...' % (hostname, port, str(e)) , verboseLevel=-1)
     q = Queue(1)
@@ -350,5 +351,5 @@ if __name__ == '__main__':
     atexit.register(exit)
     if USE_PROFILE:
         GreenletProfiler.start()
-    client_test_freenet(6, 0)
+    client_test_freenet(20, 05)
 

@@ -196,7 +196,7 @@ def mv84consensus(pid, N, t, vi, broadcast, receive):
             # mylog("[%d] received %s" % (pid, repr(
             #     (sender, (tag, m))
             # )))
-            if tag == 'VAL':
+            if tag == 'V':
                 mv84v[sender] = m
                 if m != vi:
                     mv84ReceiveDiff.add(sender)
@@ -206,7 +206,7 @@ def mv84consensus(pid, N, t, vi, broadcast, receive):
                 # malicious parties.
                 if len(mv84v.keys()) >= N - t:
                     mv84WaiterLock.put(False)
-            elif tag == 'BOOL':
+            elif tag == 'B':
                 mv84p[sender] = m
                 if m:
                     mv84GetPerplex.add(sender)
@@ -224,11 +224,11 @@ def mv84consensus(pid, N, t, vi, broadcast, receive):
     greenletPacker(Greenlet(_listener), 'mv84consensus._listener', (pid, N, t, vi, broadcast, receive)).start()
 
     mylog(bcolors.FAIL + "[%d] Starting Phase 1" % pid)
-    makeBroadcastWithTag('VAL', broadcast)(vi)
+    makeBroadcastWithTag('V', broadcast)(vi)
     perplexed = mv84WaiterLock.get()  # See if I am perplexed
 
     mylog(bcolors.FAIL + "[%d] Starting Phase 2" % pid)
-    makeBroadcastWithTag('BOOL', broadcast)(perplexed)
+    makeBroadcastWithTag('B', broadcast)(perplexed)
     alert = mv84WaiterLock2.get() and 1 or 0  # See if we should alert
 
     mylog(bcolors.FAIL + "[%d] Starting binary consensus on alert: %d" % (pid, alert))
@@ -375,16 +375,16 @@ def binary_consensus(pid, N, t, vi, decide, broadcast, receive):
             # mylog('[%d] Now executing receive at line 151' % pid)
             (i, (tag, m)) = receive()
             # mylog('[%d] finished 151 with msg %s' % (pid, repr((tag, m))))
-            if tag == 'BC':
+            if tag == 'B':
                 # Broadcast message
                 r, msg = m
                 greenletPacker(Greenlet(bcQ[r].put, (i, msg)),
                     'binary_consensus.bcQ[%d].put' % r, (pid, N, t, vi, decide, broadcast, receive)).start() # In case they block the router
-            elif tag == 'COIN':
+            elif tag == 'C':
                 # A share of a coin
                 greenletPacker(Greenlet(coinQ.put, m),
                     'binary_consensus.coinQ.put', (pid, N, t, vi, decide, broadcast, receive)).start()
-            elif tag == 'AUX':
+            elif tag == 'A':
                 # Aux message
                 r, msg = m
                 greenletPacker(Greenlet(auxQ[r].put, (i, msg)),
@@ -465,7 +465,7 @@ def binary_consensus(pid, N, t, vi, decide, broadcast, receive):
         mylog('[%d]b begin phase 1 broadcasting' % pid)
         br1 = greenletPacker(Greenlet(
             bv_broadcast(
-                pid, N, t, makeBroadcastWithTagAndRound('BC', broadcast, round),
+                pid, N, t, makeBroadcastWithTagAndRound('B', broadcast, round),
                 brcast_get(round), bvOutput, getRelease(bcQ[round])),
             est), 'binary_consensus.bv_broadcast(%d, %d, %d)' % (pid, N, t), (pid, N, t, vi, decide, broadcast, receive))
         br1.start()
@@ -474,7 +474,7 @@ def binary_consensus(pid, N, t, vi, decide, broadcast, receive):
         # br1.kill(block=False)
         mylog(bcolors.OKBLUE + '[%d]b Phase 1 done and starts phase 2 broadcasting' % pid + bcolors.ENDC)
 
-        broadcast(('AUX', (round, w)))
+        broadcast(('A', (round, w)))
         greenletPacker(Greenlet(loopWrapper(getWithProcessing(round, binValues, callBackWaiter))),
             'binary_consensus.loopWrapper(getWithProcessing(round, binValues, callBackWaiter))',
                     (pid, N, t, vi, decide, broadcast, receive)).start()

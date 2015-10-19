@@ -80,12 +80,12 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
             vki = Pubkeys[msgBundle[1]].peek()
             if True:  # vki.verify(msgBundle[3], repr(msgBundle[2])):
                 # mylog("[%d] Signature passed, msgBundle: %s" % (pid, repr(msgBundle)))
-                if msgBundle[0] == 'initial' and not signed[msgBundle[1]]:
+                if msgBundle[0] == 'i' and not signed[msgBundle[1]]:
                     # Here we should remove the randomness of the signature
                     newBundle = (msgBundle[1], msgBundle[2])
-                    broadcast(('echo', pid, newBundle))  #, sk.sign(repr(newBundle))))
+                    broadcast(('e', pid, newBundle))  #, sk.sign(repr(newBundle))))
                     signed[msgBundle[1]] = True
-                elif msgBundle[0] == 'echo':
+                elif msgBundle[0] == 'e':
                     originBundle = msgBundle[2]
                     opinions[originBundle[0]][repr(originBundle[1])] += 1
                     # mylog("[%d] counter for (%d, %s) is now %d" % (pid, originBundle[0],
@@ -94,7 +94,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         outputs[originBundle[0]].put(originBundle[1])
 
     greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()
-    broadcast(('initial', pid, msg))  # , sk.sign(repr(msg))))  # Kick Off!
+    broadcast(('i', pid, msg))  # , sk.sign(repr(msg))))  # Kick Off!
 
 @greenletFunction
 def consensusBroadcast(pid, N, t, msg, broadcast, receive, outputs, method=multiSigBr):
@@ -121,12 +121,12 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
 
     def make_bc_br(i):
         def _bc_br(m):
-            broadcast(('BC', m))
+            broadcast(('B', m))
         return _bc_br
 
     def make_acs_br(i):
         def _acs_br(m):
-            broadcast(('ACS', m))
+            broadcast(('A', m))
         return _acs_br
 
     def _listener():
@@ -135,12 +135,12 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
             # mylog(a, verboseLevel=-1)
             sender, (tag, m) = receive()
             #mylog("[%d] got a msg from %s\n %s" % (pid, repr(sender), repr((tag, m))))
-            if tag == 'BC':
+            if tag == 'B':
                 #mylog("[%d] CBChannel put %s" % (pid, repr((sender, m))))
 
                 greenletPacker(Greenlet(CBChannel.put, (sender, m)),
                     'includeTransaction.CBChannel.put', (pid, N, t, setToInclude, broadcast, receive)).start()
-            elif tag == 'ACS':
+            elif tag == 'A':
                 greenletPacker(Greenlet(ACSChannel.put,
                     (sender, m)
                 ), 'includeTransaction.ACSChannel.put', (pid, N, t, setToInclude, broadcast, receive)).start()

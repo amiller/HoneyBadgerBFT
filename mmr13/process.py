@@ -27,10 +27,10 @@ def main(filename):
         time_diff = float(res['end_time']) - float(res['start_time'])
         timelap.append(time_diff)
         msgsize.append(int(res['bytes']))
-        print res
-        print [
-            res['from'], "(%s->%s)%s" % (res['from'], res['to'], res['content']), '|'+str(float(res['start_time']))+'|', '|'+str(float(res['end_time']))+'|'
-            ]
+#        print res
+#        print [
+#            res['from'], "(%s->%s)%s" % (res['from'], res['to'], res['content']), '|'+str(float(res['start_time']))+'|', '|'+str(float(res['end_time']))+'|'
+#            ]
         #assert(res['sender'] == res['from'])
         outputObj.append([
             res['from'], "(%s->%s)%s" % (res['from'], res['to'], res['content']), '|'+str(float(res['start_time']))+'|', '|'+str(float(res['end_time']))+'|'
