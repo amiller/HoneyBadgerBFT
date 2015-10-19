@@ -237,7 +237,7 @@ def deepEncode(mc, m):
         t2, p1, s = c
         buf.write(struct.pack('B', p1))
         for tr in s:
-            buf.write(tr.getBitsRepr())
+            buf.write(encodeTransaction(tr))
     elif c[0]=='e':
         buf.write('\x02')
         t2, p1, (p2, s) = c
@@ -440,5 +440,5 @@ if __name__ == '__main__':
     atexit.register(exit)
     if USE_PROFILE:
         GreenletProfiler.start()
-    client_test_freenet(20, 05)
+    client_test_freenet(5, 1)
 
