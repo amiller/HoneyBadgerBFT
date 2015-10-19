@@ -275,7 +275,7 @@ def deepDecode(m):
     mc, f, t, msgtype = struct.unpack('<IBBB', buf.read(7))
     trSet = set()
     if msgtype == 1:
-        p1 = struct.unpack('B', buf.read(1))
+        p1, = struct.unpack('B', buf.read(1))
         trRepr = buf.read(4)
         while trRepr:
             trSet.add(constructTransactionFromRepr(trRepr))
@@ -301,12 +301,13 @@ def encode(m):  # TODO
     global msgCounter
     msgCounter += 1
     starting_time[msgCounter] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
-    intermediate = deepEncode(msgCounter, m)
-    result = zlib.compress(
-        #pickle.dumps(deepEncode(msgCounter, m)),
-        intermediate,
-    9)  # Highest compression level
-    print 'intermediateLen', len(intermediate), 'compressed', len(result)
+    #intermediate = deepEncode(msgCounter, m)
+    result = deepEncode(msgCounter, m)
+    #result = zlib.compress(
+    #    #pickle.dumps(deepEncode(msgCounter, m)),
+    #    intermediate,
+    #9)  # Highest compression level
+    #print 'intermediateLen', len(intermediate), 'compressed', len(result)
     msgSize[msgCounter] = len(result)
     msgFrom[msgCounter] = m[1]
     msgTo[msgCounter] = m[0]
@@ -314,7 +315,8 @@ def encode(m):  # TODO
     return result
 
 def decode(s):  # TODO
-    result = deepDecode(zlib.decompress(s)) #pickle.loads(zlib.decompress(s))
+    result = deepDecode(s)
+    #result = deepDecode(zlib.decompress(s)) #pickle.loads(zlib.decompress(s))
     assert(isinstance(result, tuple))
     ending_time[result[0]] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
     msgContent[result[0]] = None
