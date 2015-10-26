@@ -192,7 +192,7 @@ def client_test_freenet(N, t):
             def _deliver(j):
                 #print 'Delivering', v, 'from', i, 'to', j
                 # mylog(bcolors.OKGREEN + "MSG: [%d] -> [%d]: %s" % (i, j, repr(v)) + bcolors.ENDC)
-                buffers[j].put(encode((i, v)))
+                buffers[j].put(encode((j, i, v)))
                 # mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
             for j in range(N):
                 Greenlet(_deliver, j).start_later(random.random()*maxdelay)
@@ -273,5 +273,5 @@ if __name__ == '__main__':
     atexit.register(exit)
     if USE_PROFILE:
         GreenletProfiler.start()
-    client_test_freenet(5, 1)
+    client_test_freenet(20, 4)
 
