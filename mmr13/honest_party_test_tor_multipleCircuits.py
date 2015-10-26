@@ -410,6 +410,7 @@ import traceback
 from greenlet import greenlet
 
 USE_PROFILE = False
+GEVENT_DEBUG = False
 
 
 def exit():
@@ -421,16 +422,17 @@ def exit():
             halfmsgCounter += 1
     mylog('%d extra log exported.' % halfmsgCounter, verboseLevel=-1)
 
-    for ob in gc.get_objects():
-        if not hasattr(ob, 'parent_args'):
-            continue
-        if not ob:
-            continue
-        if not ob.exception:
-            continue
-        mylog('%s[%s] called with parent arg\n(%s)\n%s' % (ob.name, repr(ob.args), repr(ob.parent_args),
-            ''.join(traceback.format_stack(ob.gr_frame))), verboseLevel=-1)
-    
+    if GEVENT_DEBUG:
+        for ob in gc.get_objects():
+            if not hasattr(ob, 'parent_args'):
+                continue
+            if not ob:
+                continue
+            if not ob.exception:
+                continue
+            mylog('%s[%s] called with parent arg\n(%s)\n%s' % (ob.name, repr(ob.args), repr(ob.parent_args),
+                ''.join(traceback.format_stack(ob.gr_frame))), verboseLevel=-1)
+
     if USE_PROFILE:
         GreenletProfiler.stop()
         stats = GreenletProfiler.get_func_stats()
