@@ -201,7 +201,7 @@ def client_test_freenet(N, t):
     def recvWithDecode(buf):
         def recv():
             s = buf.get()
-            return decode(s)
+            return decode(s)[1:]
         return recv
 
     #while True:
