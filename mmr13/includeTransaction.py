@@ -206,8 +206,10 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             op, msg = controlChannel.get()
             mylog("[%d] gets some msg %s" % (pid, repr(msg)))
             if op == "IncludeTransaction":
-                assert(isinstance(msg, Transaction))
-                transactionCache.add(msg)
+                if isinstance(msg, Transaction):
+                    transactionCache.add(msg)
+                elif isinstance(msg, set):
+                    transactionCache.update(msg)
             elif op == "Halt":
                 break
             elif op == "Msg":
