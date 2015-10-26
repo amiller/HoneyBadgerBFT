@@ -411,16 +411,17 @@ from greenlet import greenlet
 
 USE_PROFILE = False
 GEVENT_DEBUG = False
-
+OUTPUT_HALF_MSG = False
 
 def exit():
-    halfmsgCounter = 0
-    for msgindex in starting_time.keys():
-        if msgindex not in ending_time.keys():
-            logChannel.put((msgindex, msgSize[msgindex], msgFrom[msgindex],
-                msgTo[msgindex], starting_time[msgindex], time.time(), '[UNRECEIVED]' + repr(msgContent[msgindex])))
-            halfmsgCounter += 1
-    mylog('%d extra log exported.' % halfmsgCounter, verboseLevel=-1)
+    if OUTPUT_HALF_MSG:
+        halfmsgCounter = 0
+        for msgindex in starting_time.keys():
+            if msgindex not in ending_time.keys():
+                logChannel.put((msgindex, msgSize[msgindex], msgFrom[msgindex],
+                    msgTo[msgindex], starting_time[msgindex], time.time(), '[UNRECEIVED]' + repr(msgContent[msgindex])))
+                halfmsgCounter += 1
+        mylog('%d extra log exported.' % halfmsgCounter, verboseLevel=-1)
 
     if GEVENT_DEBUG:
         for ob in gc.get_objects():
