@@ -195,7 +195,8 @@ def client_test_freenet(N, t):
                 buffers[j].put(encode((j, i, v)))
                 # mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
             for j in range(N):
-                Greenlet(_deliver, j).start_later(random.random()*maxdelay)
+                Greenlet(_deliver, j).start()
+                # Greenlet(_deliver, j).start_later(random.random()*maxdelay)
         return _broadcast
 
     def recvWithDecode(buf):
@@ -213,7 +214,7 @@ def client_test_freenet(N, t):
             bc = makeBroadcast(i)
             recv = recvWithDecode(buffers[i])
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
-            controlChannels[i].put(('IncludeTransaction', randomTransaction()))
+            controlChannels[i].put(('IncludeTransaction', set([randomTransaction(), randomTransaction()])))
             th.start_later(random.random() * maxdelay)
             ts.append(th)
 
@@ -228,9 +229,9 @@ def client_test_freenet(N, t):
             gevent.joinall(ts)
         except ACSException:
             gevent.killall(ts)
-        except gevent.hub.LoopExit: # Manual fix for early stop
+        # except gevent.hub.LoopExit: # Manual fix for early stop
             print "Concensus Finished"
-            mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
+            # mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
             #tokens = [s for s in raw_input().strip().split() if s]
             #mylog("= %s\n" % repr(parser[tokens[0]](tokens)))  # In case the parser has an output
 
@@ -241,10 +242,12 @@ import traceback
 from greenlet import greenlet
 
 USE_PROFILE = False
-GEVENT_DEBUG = False
+# GEVENT_DEBUG = False
+GEVENT_DEBUG = True
 OUTPUT_HALF_MSG = False
 
 def exit():
+    print "Entering atexit()"
     if OUTPUT_HALF_MSG:
         halfmsgCounter = 0
         for msgindex in starting_time.keys():
@@ -276,5 +279,5 @@ if __name__ == '__main__':
     atexit.register(exit)
     if USE_PROFILE:
         GreenletProfiler.start()
-    client_test_freenet(20, 4)
+    client_test_freenet(90, 18)
 
