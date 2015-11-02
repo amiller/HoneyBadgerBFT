@@ -277,8 +277,12 @@ def client_test_freenet(N, t):
                 chans[j].put((j, i, v))  # from i to j
         return _broadcast
 
+
+    localIP = socket.gethostbyname(socket.gethostname())
+    myID = IP_LIST.index(localIP)
+    iterList = [myID] #range(N)
     servers = []
-    for i in range(N):
+    for i in iterList:
         _, port = IP_MAPPINGS[i] # TOR_MAPPINGS[i]
         servers.append(listen_to_channel(port))
     #gevent.sleep(2)
@@ -297,11 +301,6 @@ def client_test_freenet(N, t):
         def _makeBroadcast(x):
             bc = makeBroadcast(x)
             bcList[x] = bc
-
-        localIP = socket.gethostbyname(socket.gethostname())
-        myID = IP_LIST.index(localIP)
-
-        iterList = [myID] #range(N)
 
         for i in iterList:
             tmp_t = Greenlet(_makeBroadcast, i)
