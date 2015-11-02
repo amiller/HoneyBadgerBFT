@@ -25,6 +25,7 @@ import socks, socket
 import struct
 from io import BytesIO
 import sys
+from subprocess import check_output
 
 TOR_SOCKSPORT = range(9050, 9150)
 WAITING_SETUP_TIME_IN_SEC = 3
@@ -276,9 +277,8 @@ def client_test_freenet(N, t):
             for j in range(N):
                 chans[j].put((j, i, v))  # from i to j
         return _broadcast
-
-
-    localIP = socket.gethostbyname(socket.gethostname())
+    # query amazon meta-data
+    localIP = check_output(['curl', 'http://169.254.169.254/latest/meta-data/public-ipv4'])  #  socket.gethostbyname(socket.gethostname())
     myID = IP_LIST.index(localIP)
     iterList = [myID] #range(N)
     servers = []
