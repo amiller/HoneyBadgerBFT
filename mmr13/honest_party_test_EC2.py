@@ -319,12 +319,10 @@ def client_test_freenet(N, t):
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
             th.parent_args = (N, t)
             th.name = 'client_test_freenet.honestParty(%d)' % i
-            # controlChannels[i].put(('IncludeTransaction', randomTransactionStr()))
+            controlChannels[i].put(('IncludeTransaction', randomTransactionStr()))
             th.start()
             mylog('Summoned party %i at time %f' % (i, time.time()), verboseLevel=-1)
             ts.append(th)
-        for i in iterList:
-            controlChannels[i].put(('IncludeTransaction', randomTransaction()))
 
         #Greenlet(monitorUserInput).start()
         try:
