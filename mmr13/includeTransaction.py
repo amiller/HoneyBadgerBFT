@@ -212,7 +212,7 @@ lock.put(1)
 @greenletFunction
 def honestParty(pid, N, t, controlChannel, broadcast, receive):
     # RequestChannel is called by the client and it is the client's duty to broadcast the tx it wants to include
-    mylog("[%d] Honesy party started at %f." % (pid, time.time()), verboseLevel=-1)
+    mylog("[%d] Honest party started at %f." % (pid, time.time()), verboseLevel=-1)
     transactionCache = set()
     sessionID = 0
     global finishcount
