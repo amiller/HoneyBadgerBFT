@@ -36,7 +36,7 @@ def listen_to_channel(port):
     def _handle(socket, address):
         f = socket.makefile()
         for line in f:
-            #print 'line read from socket', line
+            print 'line read from socket', line
             obj = decode(base64.b64decode(line))
             # mylog('decoding')
             # mylog(obj, verboseLevel=-1)
