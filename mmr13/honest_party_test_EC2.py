@@ -329,7 +329,6 @@ def client_test_freenet(N, t):
             mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
 
 
-import GreenletProfiler
 import atexit
 import gc
 import traceback
@@ -338,6 +337,9 @@ from greenlet import greenlet
 USE_PROFILE = False
 GEVENT_DEBUG = False
 OUTPUT_HALF_MSG = False
+
+if USE_PROFILE:
+    import GreenletProfiler
 
 def exit():
     if OUTPUT_HALF_MSG:
@@ -367,7 +369,8 @@ def exit():
         stats.save('profile.callgrind', type='callgrind')
 
 if __name__ == '__main__':
-    GreenletProfiler.set_clock_type('cpu')
+    if USE_PROFILE:
+        GreenletProfiler.set_clock_type('cpu')
     atexit.register(exit)
     prepareIPList(open(sys.argv[1], 'r').read())
     if USE_PROFILE:
