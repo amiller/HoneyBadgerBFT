@@ -93,6 +93,7 @@ IP_LIST = []
 def prepareIPList(content):
     global IP_LIST
     IP_LIST = content.split('\n')  # getAddrFromEC2Summary(content)
+    print IP_LIST
 
 # TOR_MAPPINGS = [(host, BASE_PORT+i) for i, host in enumerate(TOR_MAPPING_LIST)]
 IP_MAPPINGS = [(host, BASE_PORT) for i, host in enumerate(IP_LIST)]
