@@ -89,17 +89,21 @@ def getAddrFromEC2Summary(s):
 ).strip().split('\n')]
 
 IP_LIST = []
+IP_MAPPINGS = [(host, BASE_PORT) for i, host in enumerate(IP_LIST)]
+
 
 def prepareIPList(content):
-    global IP_LIST
+    global IP_LIST, IP_MAPPINGS
     IP_LIST = content.split('\n')  # getAddrFromEC2Summary(content)
-    print IP_LIST
+    IP_MAPPINGS = [(host, BASE_PORT) for i, host in enumerate(IP_LIST)]
+    #print IP_LIST
 
 # TOR_MAPPINGS = [(host, BASE_PORT+i) for i, host in enumerate(TOR_MAPPING_LIST)]
-IP_MAPPINGS = [(host, BASE_PORT) for i, host in enumerate(IP_LIST)]
+
 mylog("[INIT] IP_MAPPINGS: %s" % repr(IP_MAPPINGS))
 
 nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
+
 
 def exception(msg):
     mylog(bcolors.WARNING + "Exception: %s\n" % msg + bcolors.ENDC)
