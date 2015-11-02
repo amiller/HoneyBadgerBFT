@@ -13,18 +13,21 @@ import gevent
 import os
 #import random
 from utils import myRandom as random
-import fcp
+from utils import checkExceptionPerGreenlet
+# import fcp
 import json
 import cPickle as pickle
 import time
 import zlib
 #print state
 import base64
-import socks
+# import socks
 import struct
 from io import BytesIO
 
 nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
+
+USE_DEEP_ENCODE = True
 
 def exception(msg):
     mylog(bcolors.WARNING + "Exception: %s\n" % msg + bcolors.ENDC)
@@ -61,6 +64,8 @@ class deepEncodeException(Exception):
 class deepDecodeException(Exception):
     pass
 
+
+# assumptions: amount of the money transferred can be expressed in 2 bytes.
 def encodeTransaction(tr):
     sourceInd = nameList.index(tr.source)
     targetInd = nameList.index(tr.target)
@@ -68,6 +73,8 @@ def encodeTransaction(tr):
         '<BBH', sourceInd, targetInd, tr.amount
     )
 
+
+# assumptions: mc can be expressed in 4 bytes and party index can be expressed in 1 byte.
 def deepEncode(mc, m):
     buf = BytesIO()
     buf.write(struct.pack('<I', mc))
@@ -97,6 +104,7 @@ def deepEncode(mc, m):
         buf.write(struct.pack('BBB', p1, p2, p3))
     buf.seek(0)
     return buf.read()
+
 
 def constructTransactionFromRepr(r):
     sourceInd, targetInd, amount = struct.unpack('<BBH', r)
@@ -139,12 +147,16 @@ def deepDecode(m):
     else:
         raise deepDecodeException()
 
+
 def encode(m):  # TODO
     global msgCounter
     msgCounter += 1
     starting_time[msgCounter] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
     #intermediate = deepEncode(msgCounter, m)
-    result = deepEncode(msgCounter, m)
+    if USE_DEEP_ENCODE:
+        result = deepEncode(msgCounter, m)
+    else:
+        result = (msgCounter, m)
     #result = zlib.compress(
     #    #pickle.dumps(deepEncode(msgCounter, m)),
     #    intermediate,
@@ -157,7 +169,10 @@ def encode(m):  # TODO
     return result
 
 def decode(s):  # TODO
-    result = deepDecode(s)
+    if USE_DEEP_ENCODE:
+        result = deepDecode(s)
+    else:
+        result = s
     #result = deepDecode(zlib.decompress(s)) #pickle.loads(zlib.decompress(s))
     assert(isinstance(result, tuple))
     ending_time[result[0]] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
@@ -214,7 +229,9 @@ def client_test_freenet(N, t):
             bc = makeBroadcast(i)
             recv = recvWithDecode(buffers[i])
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
-            controlChannels[i].put(('IncludeTransaction', set([randomTransaction(), randomTransaction()])))
+            controlChannels[i].put(('IncludeTransaction',
+                set([randomTransaction() for trC in range(1)])))
+            #controlChannels[i].put(('IncludeTransaction', randomTransaction()))
             th.start_later(random.random() * maxdelay)
             ts.append(th)
 
@@ -229,13 +246,16 @@ def client_test_freenet(N, t):
             gevent.joinall(ts)
         except ACSException:
             gevent.killall(ts)
-        # except gevent.hub.LoopExit: # Manual fix for early stop
+        except gevent.hub.LoopExit: # Manual fix for early stop
+            while True:
+                gevent.sleep(1)
+            checkExceptionPerGreenlet()
             print "Concensus Finished"
             # mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
             #tokens = [s for s in raw_input().strip().split() if s]
             #mylog("= %s\n" % repr(parser[tokens[0]](tokens)))  # In case the parser has an output
 
-import GreenletProfiler
+# import GreenletProfiler
 import atexit
 import gc
 import traceback
@@ -243,7 +263,7 @@ from greenlet import greenlet
 
 USE_PROFILE = False
 # GEVENT_DEBUG = False
-GEVENT_DEBUG = True
+GEVENT_DEBUG = False
 OUTPUT_HALF_MSG = False
 
 def exit():
@@ -258,15 +278,7 @@ def exit():
         mylog('%d extra log exported.' % halfmsgCounter, verboseLevel=-1)
 
     if GEVENT_DEBUG:
-        for ob in gc.get_objects():
-            if not hasattr(ob, 'parent_args'):
-                continue
-            if not ob:
-                continue
-            if not ob.exception:
-                continue
-            mylog('%s[%s] called with parent arg\n(%s)\n%s' % (ob.name, repr(ob.args), repr(ob.parent_args),
-                ''.join(traceback.format_stack(ob.gr_frame))), verboseLevel=-1)
+        checkExceptionPerGreenlet()
 
     if USE_PROFILE:
         GreenletProfiler.stop()
@@ -275,9 +287,9 @@ def exit():
         stats.save('profile.callgrind', type='callgrind')
 
 if __name__ == '__main__':
-    GreenletProfiler.set_clock_type('cpu')
+    # GreenletProfiler.set_clock_type('cpu')
     atexit.register(exit)
     if USE_PROFILE:
         GreenletProfiler.start()
-    client_test_freenet(90, 18)
+    client_test_freenet(70, 14)
 

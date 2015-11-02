@@ -6,7 +6,7 @@ from mmr13 import binary_consensus
 from bkr_acs import acs, initBeforeBinaryConsensus
 from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, greenletPacker
 from collections import defaultdict
-from ecdsa import SigningKey
+# from ecdsa import SigningKey
 import struct
 
 class Transaction:  # assume amout is in term of short
@@ -18,6 +18,17 @@ class Transaction:  # assume amout is in term of short
 
     def __repr__(self):
         return bcolors.OKBLUE + "{{Transaction from %s to %s with %d}}" % (self.source, self.target, self.amount) + bcolors.ENDC
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.source == other.source and self.target == other.target and self.amount == other.amount
+        return False
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __hash__(self):
+        return hash(self.source) ^ hash(self.target) ^ hash(self.amount)
 
     #def getBitsRepr(self):
     #    return struct.pack('BBH', int(self.source.encode('hex'), 16) & 255, int(self.target.encode('hex'), 16) & 255,
@@ -66,6 +77,11 @@ comment = '''def bracha_85(pid, N, t, msg, broadcast, send, receive, outputs): #
 
 Pubkeys = defaultdict(lambda : Queue(1) )
 
+class dummyPKI(object):
+    @staticmethod
+    def get_verifying_key():
+        return None
+
 @greenletFunction
 def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
     # Since all the parties we have are symmetric, so I implement this function for N instances of A-cast as a whole
@@ -73,7 +89,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
     assert(isinstance(outputs, list))
     for i in outputs:
         assert(isinstance(i, Queue))
-    sk = SigningKey.generate() # uses NIST192p
+    sk = dummyPKI() # SigningKey.generate() # uses NIST192p
     Pubkeys[pid].put(sk.get_verifying_key())
 
     def Listener():
