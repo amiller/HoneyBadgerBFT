@@ -121,12 +121,12 @@ def randomTransactionStr():
     return repr(randomTransaction())
 
 msgCounter = 0
-starting_time = dict()
-ending_time = dict()
-msgSize = dict()
-msgFrom = dict()
-msgTo = dict()
-msgContent = dict()
+starting_time = defaultdict(lambda: 0.0)
+ending_time = defaultdict(lambda: 0.0)
+msgSize = defaultdict(lambda: 0)
+msgFrom = defaultdict(lambda: 0)
+msgTo = defaultdict(lambda: 0)
+msgContent = defaultdict(lambda: '')
 logChannel = Queue()
 
 def logWriter(fileHandler):
@@ -242,6 +242,8 @@ def decode(s):  # TODO
     assert(isinstance(result, tuple))
     ending_time[result[0]] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
     msgContent[result[0]] = None
+    msgFrom[result[0]] = result[1][0]
+    msgTo[result[0]] = result[1][1]
     logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
     return result[1]
 
