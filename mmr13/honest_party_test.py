@@ -291,5 +291,5 @@ if __name__ == '__main__':
     atexit.register(exit)
     if USE_PROFILE:
         GreenletProfiler.start()
-    client_test_freenet(70, 14)
+    client_test_freenet(4, 1)
 

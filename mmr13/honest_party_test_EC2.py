@@ -375,5 +375,5 @@ if __name__ == '__main__':
     prepareIPList(open(sys.argv[1], 'r').read())
     if USE_PROFILE:
         GreenletProfiler.start()
-    client_test_freenet(5, 1)
+    client_test_freenet(4, 1)
 
