@@ -190,10 +190,10 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
     includeTransaction.callbackCounter = 0
     monitoredIntList = [MonitoredInt() for _ in range(N)]
 
-    mylog("[%d] Beginning A-Cast on %s" % (pid, repr(setToInclude)))
+    mylog("[%d] Beginning A-Cast on %s" % (pid, repr(setToInclude)), verboseLevel=-1)
     greenletPacker(Greenlet(consensusBroadcast, pid, N, t, setToInclude, make_bc_br(pid), CBChannel.get, outputChannel),
         'includeTransaction.consensusBroadcast', (pid, N, t, setToInclude, broadcast, receive)).start()
-    mylog("[%d] Beginning ACS" % pid)
+    mylog("[%d] Beginning ACS" % pid, verboseLevel=-1)
     greenletPacker(Greenlet(callBackWrap(acs, callbackFactoryACS()), pid, N, t, monitoredIntList, make_acs_br(pid), ACSChannel.get),
         'includeTransaction.callBackWrap(acs, callbackFactoryACS())', (pid, N, t, setToInclude, broadcast, receive)).start()
 

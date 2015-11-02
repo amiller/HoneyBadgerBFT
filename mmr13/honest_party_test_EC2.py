@@ -242,8 +242,8 @@ def decode(s):  # TODO
     assert(isinstance(result, tuple))
     ending_time[result[0]] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
     msgContent[result[0]] = None
-    msgFrom[result[0]] = result[1][0]
-    msgTo[result[0]] = result[1][1]
+    msgFrom[result[0]] = result[1][1]
+    msgTo[result[0]] = result[1][0]
     logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
     return result[1]
 
