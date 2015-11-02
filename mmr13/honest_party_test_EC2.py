@@ -14,11 +14,11 @@ import os
 #import random
 from utils import myRandom as random
 from gevent.server import StreamServer
-import fcp
-import json
-import cPickle as pickle
+#import fcp
+#import json
+#import cPickle as pickle
 import time
-import zlib
+#import zlib
 #print state
 import base64
 import socks, socket
