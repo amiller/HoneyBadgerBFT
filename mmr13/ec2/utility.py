@@ -1,8 +1,10 @@
 import argparse
 import boto.ec2
+boto.config.add_section('ec2')
+boto.config.setbool('ec2','use-sigv4',True)
 
 regions = ['us-east-1','us-west-1','us-west-2','eu-west-1','sa-east-1',
-    'ap-southeast-1','ap-southeast-2','ap-northeast-1'] ##, 'eu-central-1b']
+    'ap-southeast-1','ap-southeast-2','ap-northeast-1','eu-central-1']
     
 def getAddrFromEC2Summary(s):
     return [
@@ -78,7 +80,7 @@ def launch_new_instances(region, number):
                                  key_name='amiller-mc2ec2', 
                                  instance_type='t2.micro',
                                  security_groups = ['sg-7b34651e', ],
-                                 subnet_id = 'vpc-037ab266'
+                                 subnet_id = 'vpc-037ab266',
                                  block_device_mappings = [bdm])
     return reservation
 
