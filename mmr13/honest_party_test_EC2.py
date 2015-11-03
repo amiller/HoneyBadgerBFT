@@ -36,11 +36,12 @@ def listen_to_channel(port):
     def _handle(socket, address):
         f = socket.makefile()
         for line in f:
-            print 'line read from socket', line
+            # print 'line read from socket', line
             obj = decode(base64.b64decode(line))
             # mylog('decoding')
             # mylog(obj, verboseLevel=-1)
             q.put(obj[1:])
+            mylog(bcolors.OKBLUE + 'received %s' % repr(obj[1:]) + bcolors.ENDC, verboseLevel=-1)
     server = StreamServer(('0.0.0.0', port), _handle)
     server.start()
     return q
@@ -275,7 +276,7 @@ def client_test_freenet(N, t):
             host, port = IP_MAPPINGS[j] # TOR_MAPPINGS[j]
             chans.append(connect_to_channel(host, port, i))
         def _broadcast(v):
-            # mylog(bcolors.OKGREEN + "[%d] Broadcasted %s" % (i, repr(v)) + bcolors.ENDC, verboseLevel=-1)
+            mylog(bcolors.OKGREEN + "[%d] Broadcasted %s" % (i, repr(v)) + bcolors.ENDC, verboseLevel=-1)
             for j in range(N):
                 chans[j].put((j, i, v))  # from i to j
         return _broadcast
