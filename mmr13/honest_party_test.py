@@ -230,7 +230,7 @@ def client_test_freenet(N, t):
             recv = recvWithDecode(buffers[i])
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
             controlChannels[i].put(('IncludeTransaction',
-                set([randomTransaction() for trC in range(1)])))
+                set([randomTransaction() for trC in range(4)])))
             #controlChannels[i].put(('IncludeTransaction', randomTransaction()))
             th.start_later(random.random() * maxdelay)
             ts.append(th)
@@ -291,5 +291,5 @@ if __name__ == '__main__':
     atexit.register(exit)
     if USE_PROFILE:
         GreenletProfiler.start()
-    client_test_freenet(4, 1)
+    client_test_freenet(90, 18)
 
