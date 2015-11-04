@@ -490,7 +490,7 @@ def binary_consensus(pid, N, t, vi, decide, broadcast, receive):
         # br2.kill(block=False)
         mylog(bcolors.OKBLUE + '[%d]b Phase 2 done' % pid + bcolors.ENDC)
         #s = hash(round) % 2  ## TODO: Change this to dummy coin
-        s = dummyCoin(round) % 2  ## TODO: Change this to dummy coin
+        s = dummyCoin(round)  ## TODO: Change this to dummy coin
         if len(values) == 1:
             if values[0] == s:
                 # decide s
