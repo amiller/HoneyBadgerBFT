@@ -86,8 +86,8 @@ def makeBroadcastWithTagAndRound(tag, broadcast, round):
 
 
 def dummyCoin(round):
-    # return int(hashlib.md5(str(round)).hexdigest(), 16) % 2
-    return round % 2   # Somehow hashlib does not work well on EC2. I always get 0 from this function.
+    return int(hashlib.md5(str(round)).hexdigest(), 16) % 2
+    # return round % 2   # Somehow hashlib does not work well on EC2. I always get 0 from this function.
 
 
 class MonitoredInt(object):

@@ -51,6 +51,7 @@ msgFrom = dict()
 msgTo = dict()
 msgContent = dict()
 logChannel = Queue()
+msgTypeCounter = [0]*5
 
 def logWriter(fileHandler):
     while True:
@@ -124,6 +125,7 @@ def deepDecode(m):
     buf = BytesIO(m)
     mc, f, t, msgtype = struct.unpack('<IBBB', buf.read(7))
     trSet = set()
+    msgCounter[msgtype] += 1
     if msgtype == 1:
         p1, = struct.unpack('B', buf.read(1))
         trRepr = buf.read(4)
@@ -250,6 +252,8 @@ def client_test_freenet(N, t):
             while True:
                 gevent.sleep(1)
             checkExceptionPerGreenlet()
+        finally:
+            print msgTypeCounter
             print "Concensus Finished"
             # mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
             #tokens = [s for s in raw_input().strip().split() if s]
