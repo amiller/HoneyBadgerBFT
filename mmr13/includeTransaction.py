@@ -104,8 +104,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 if msgBundle[0] == 'i' and not signed[msgBundle[1]]:
                     # Here we should remove the randomness of the signature
                     newBundle = (msgBundle[1], msgBundle[2])
-                    mylog("[%d] we are to echo for %d, msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
-                    mylog("[%d] and now signed is %s" % signed, verboseLevel=-1)
+                    mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
+                    mylog("[%d] and now signed is %s" % repr(signed), verboseLevel=-1)
                     broadcast(('e', pid, newBundle))  #, sk.sign(repr(newBundle))))
                     signed[msgBundle[1]] = True
                 elif msgBundle[0] == 'e':
