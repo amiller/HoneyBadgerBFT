@@ -502,8 +502,11 @@ def binary_consensus(pid, N, t, vi, decide, broadcast, receive):
                     # raw_input()
                 # finished[pid] = True
                 # return s
+            else:
+                mylog('[%d] continue rounds caused by values[0](%d)!=s(%d)' % (pid, values[0], s))
             est = values[0]
         else:
+            mylog('[%d] continue rounds caused by len(values)>1 where values=%s' % (pid, repr(values)))
             est = s
 
     mylog("[%d]b exits binary consensus" % pid)
