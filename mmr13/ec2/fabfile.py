@@ -13,16 +13,16 @@ def cloneRepo():
 
 @parallel
 def install_dependencies():
-    run('sudo apt-get update')
-    run('sudo apt-get -y install python-gevent')
-    run('sudo apt-get -y install git')
-    run('sudo apt-get -y install subversion')
-    run('sudo apt-get install python-socksipy')
-    run('sudo apt-get -y install python-pip')
-    run('sudo apt-get -y install python-dev')
-    run('sudo apt-get -y install dtach')
-    run('sudo pip install pycrypto')
-    run('sudo pip install ecdsa')
+    sudo('apt-get update')
+    sudo('apt-get -y install python-gevent')
+    sudo('apt-get -y install git')
+    sudo('apt-get -y install subversion')
+    sudo('apt-get -y install python-socksipy')
+    sudo('apt-get -y install python-pip')
+    sudo('apt-get -y install python-dev')
+    sudo('apt-get -y install dtach')
+    sudo('pip install pycrypto')
+    sudo('pip install ecdsa')
 
 @parallel
 def stopProtocols():
@@ -76,7 +76,7 @@ def runbg(cmd, sockname="dtach"):
 @parallel
 def startPBFT(): ######## THIS SHOULD BE CALLED IN REVERSED HOST ORDER
     with cd('~/ktc-scratch'):
-        run('python server.py')
+        runbg('python server.py')
         #run('sleep 10')
 
 def startClient():
