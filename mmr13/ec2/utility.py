@@ -1,8 +1,22 @@
 import argparse
 import boto.ec2
+if not boto.config.has_section('ec2'):
+    boto.config.add_section('ec2')
+    boto.config.setbool('ec2','use-sigv4',True)
 
-regions = ['us-east-1','us-west-1','us-west-2','eu-west-1','sa-east-1',
-    'ap-southeast-1','ap-southeast-2','ap-northeast-1'] ##, 'eu-central-1b']
+secgroups = {
+    'us-east-1':'sg-6c4dfe0a',
+    'us-west-1':'sg-7b34651e',
+    'us-west-2':'sg-8f067ceb',
+    'eu-west-1':'sg-368c3152',
+    'sa-east-1':'sg-2a1f744f',
+    'ap-southeast-1':'sg-2d491c48',
+#    'ap-southeast-2':'sg-d58dd4b0',
+    'ap-northeast-1':'sg-499fb02c',
+    'eu-central-1':'sg-2bfe9342'}
+regions = sorted(secgroups.keys())[::-1]
+
+
     
 def getAddrFromEC2Summary(s):
     return [
@@ -13,9 +27,6 @@ def getAddrFromEC2Summary(s):
                     ).replace(
                         '-', '.'
                         ).strip().split('\n')]
-
-access_key = ''
-secret_key = ''
 
 def get_ec2_instances_ip(region):
     ec2_conn = boto.ec2.connect_to_region(region,
@@ -61,8 +72,20 @@ def stop_all_instances(region):
         reservations = ec2_conn.get_all_reservations(filters={'tag:Name':'pbft'})
         for reservation in reservations:    
             for ins in reservation.instances:
-                idList.append(ins.instance_id)
+                idList.append(ins.id)
     ec2_conn.stop_instances(instance_ids=idList)
+
+def terminate_all_instances(region):
+    ec2_conn = boto.ec2.connect_to_region(region,
+                aws_access_key_id=access_key,
+                aws_secret_access_key=secret_key)
+    idList = []
+    if ec2_conn:
+        reservations = ec2_conn.get_all_reservations(filters={'tag:Name':'pbft'})
+        for reservation in reservations:    
+            for ins in reservation.instances:
+                idList.append(ins.id)
+    ec2_conn.terminate_instances(instance_ids=idList)
 
 def launch_new_instances(region, number):
     ec2_conn = boto.ec2.connect_to_region(region,
@@ -72,14 +95,17 @@ def launch_new_instances(region, number):
     dev_sda1.size = 8 # size in Gigabytes
     bdm = boto.ec2.blockdevicemapping.BlockDeviceMapping()
     bdm['/dev/sda1'] = dev_sda1
-    reservation = ec2_conn.run_instances(image_id='ami-df6a8b9b', 
+    img = ec2_conn.get_all_images(filters={'name':'ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-20150325'})[0].id
+    reservation = ec2_conn.run_instances(image_id=img, #'ami-df6a8b9b', 
                                  min_count=number,
                                  max_count=number,
                                  key_name='amiller-mc2ec2', 
-                                 instance_type='t2.micro',
-                                 security_groups = ['sg-7b34651e', ],
-                                 subnet_id = 'vpc-037ab266'
-                                 block_device_mappings = [bdm])
+                                 instance_type='t2.medium',
+                                 security_group_ids = [secgroups[region], ],
+                                 #subnet_id = 'vpc-037ab266',
+                                 block_device_map = bdm)
+    for instance in reservation.instances:
+        instance.add_tag("Name","pbft")
     return reservation
 
 def start_all_instances(region):
@@ -99,8 +125,8 @@ def ipAll():
     for region in regions:
         result += get_ec2_instances_ip(region) or []
     open('hosts','w').write('\n'.join(result))
-    callFabFromIPList(result, 'removeHosts', iC=True)
-    callFabFromIPList(result, 'writeHosts', iC=True)
+    callFabFromIPList(result, 'removeHosts')
+    callFabFromIPList(result, 'writeHosts')
     return result
 
 def getIP():
@@ -120,29 +146,14 @@ def stopAll():
     for region in regions:
         stop_all_instances(region)
 
-from subprocess import check_output, Popen
+from subprocess import check_output, Popen, call
 
-def callFabFromIPList(l, work, iC=False):
-    # open('hosts','w').write('\n'.join(l))
-    if iC:
-        print Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem', 
-            '-u', 'ubuntu', '-H', ','.join(l), # We rule out the client
-            work])
-    else:
-        print Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem', 
-            '-u', 'ubuntu', '-H', ','.join(l[:-1]), # We rule out the client
-            work])
+def callFabFromIPList(l, work):
+    call('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work), shell=True)
+        #print Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem', 
+        #    '-u', 'ubuntu', '-H', ','.join(l), # We rule out the client
+        #    work])
 
-def callFabFromIPListREV(l, work, iC=False):  ### This is just for PBFT start the protocol
-    # open('hosts','w').write('\n'.join(l))
-    if iC:
-        print Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem', 
-            '-u', 'ubuntu', '-H', ','.join(l[::-1]), # We rule out the client
-            work])
-    else:
-        print Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem', 
-            '-u', 'ubuntu', '-H', ','.join(l[::-1][1:]), # We rule out the client
-            work])
 
 def callFab(s, work):
     # open('hosts','w').write('\n'.join(getAddrFromEC2Summary(s)))
@@ -151,6 +162,8 @@ def callFab(s, work):
             work])
 
 if  __name__ =='__main__':
+  try: __IPYTHON__
+  except NameError:
     parser = argparse.ArgumentParser()
     parser.add_argument('access_key', help='Access Key');
     parser.add_argument('secret_key', help='Secret Key');

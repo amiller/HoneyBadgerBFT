@@ -13,16 +13,16 @@ def cloneRepo():
 
 @parallel
 def install_dependencies():
-    run('sudo apt-get update')
-    run('sudo apt-get -y install python-gevent')
-    run('sudo apt-get -y install git')
-    run('sudo apt-get -y install subversion')
-    run('sudo apt-get install python-socksipy')
-    run('sudo apt-get -y install python-pip')
-    run('sudo apt-get -y install python-dev')
-    run('sudo apt-get -y install dtach')
-    run('sudo pip install pycrypto')
-    run('sudo pip install ecdsa')
+    sudo('apt-get update')
+    sudo('apt-get -y install python-gevent')
+    sudo('apt-get -y install git')
+    sudo('apt-get -y install subversion')
+    sudo('apt-get -y install python-socksipy')
+    sudo('apt-get -y install python-pip')
+    sudo('apt-get -y install python-dev')
+    sudo('apt-get -y install dtach')
+    sudo('pip install pycrypto')
+    sudo('pip install ecdsa')
 
 @parallel
 def stopProtocols():
@@ -46,15 +46,15 @@ def runProtocol():
 
 @parallel
 def checkout():
-    run('svn checkout --username aluex --password JkJ-3pc-s3Y-prp https://subversion.assembla.com/svn/ktc-scratch/')
+    run('svn checkout --no-auth-cache --username aluex --password JkJ-3pc-s3Y-prp https://subversion.assembla.com/svn/ktc-scratch/')
 
 @parallel
 def svnUpdate():
     with settings(warn_only=True):
         if run('test -d ktc-scratch').failed:
-            run('svn checkout --username aluex --password JkJ-3pc-s3Y-prp https://subversion.assembla.com/svn/ktc-scratch/')
+            run('svn checkout  --no-auth-cache --username aluex --password JkJ-3pc-s3Y-prp https://subversion.assembla.com/svn/ktc-scratch/')
     with cd('~/ktc-scratch'):
-        run('svn up --username aluex --password JkJ-3pc-s3Y-prp')
+        run('svn up  --no-auth-cache --username aluex --password JkJ-3pc-s3Y-prp')
 
 @parallel
 def svnClean():
@@ -76,8 +76,20 @@ def runbg(cmd, sockname="dtach"):
 @parallel
 def startPBFT(): ######## THIS SHOULD BE CALLED IN REVERSED HOST ORDER
     with cd('~/ktc-scratch'):
-        run('python server.py')
+        runbg('python server.py')
         #run('sleep 10')
+
+def startClient():
+    with cd('~/ktc-scratch'):
+        #batch_size = 1024
+        #batch_size = 2048
+        #batch_size = 4096
+        #batch_size = 8192
+        batch_size = 16384
+        #batch_size = 65536
+        run('python gen_requests.py 1000 %d' % (batch_size,))
+        run('python client.py 40')
+        run('python parse_client_log.py %d' % (batch_size,))
 
 def git_pull():
     with settings(warn_only=True):
