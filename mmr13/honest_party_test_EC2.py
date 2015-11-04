@@ -90,8 +90,8 @@ def getAddrFromEC2Summary(s):
     '-', '.'
 ).strip().split('\n')]
 
-IP_LIST = []
-IP_MAPPINGS = []  # [(host, BASE_PORT) for i, host in enumerate(IP_LIST)]
+IP_LIST = None
+IP_MAPPINGS = None  # [(host, BASE_PORT) for i, host in enumerate(IP_LIST)]
 
 
 def prepareIPList(content):
