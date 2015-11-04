@@ -98,12 +98,14 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         while True:
             sender, msgBundle = receive()
             mylog("[%d] multiSigBr received msgBundle %s" % (pid, msgBundle), verboseLevel=-1)
-            vki = Pubkeys[msgBundle[1]].peek()
+            # vki = Pubkeys[msgBundle[1]].peek()
             if True:  # vki.verify(msgBundle[3], repr(msgBundle[2])):
                 # mylog("[%d] Signature passed, msgBundle: %s" % (pid, repr(msgBundle)))
                 if msgBundle[0] == 'i' and not signed[msgBundle[1]]:
                     # Here we should remove the randomness of the signature
                     newBundle = (msgBundle[1], msgBundle[2])
+                    mylog("[%d] we are to echo for %d, msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
+                    mylog("[%d] and now signed is %s" % signed, verboseLevel=-1)
                     broadcast(('e', pid, newBundle))  #, sk.sign(repr(newBundle))))
                     signed[msgBundle[1]] = True
                 elif msgBundle[0] == 'e':

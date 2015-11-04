@@ -262,7 +262,10 @@ def client_test_freenet(N, t):
     :param t: the number of malicious parties
     :return None:
     '''
-
+    # query amazon meta-data
+    localIP = check_output(['curl', 'http://169.254.169.254/latest/meta-data/public-ipv4'])  #  socket.gethostbyname(socket.gethostname())
+    myID = IP_LIST.index(localIP)
+    N = len(IP_LIST)
     #buffers = map(lambda _: Queue(1), range(N))
     gtemp = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
     gtemp.parent_args = (N, t)
@@ -280,9 +283,6 @@ def client_test_freenet(N, t):
             for j in range(N):
                 chans[j].put((j, i, v))  # from i to j
         return _broadcast
-    # query amazon meta-data
-    localIP = check_output(['curl', 'http://169.254.169.254/latest/meta-data/public-ipv4'])  #  socket.gethostbyname(socket.gethostname())
-    myID = IP_LIST.index(localIP)
     iterList = [myID] #range(N)
     servers = []
     for i in iterList:
@@ -381,5 +381,5 @@ if __name__ == '__main__':
     prepareIPList(open(sys.argv[1], 'r').read())
     if USE_PROFILE:
         GreenletProfiler.start()
-    client_test_freenet(4, 1)
+    client_test_freenet(4, 1)  # Here N is no longer used
 
