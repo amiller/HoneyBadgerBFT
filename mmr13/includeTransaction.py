@@ -155,7 +155,7 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
             # a = receive()
             # mylog(a, verboseLevel=-1)
             sender, (tag, m) = receive()
-            #mylog("[%d] got a msg from %s\n %s" % (pid, repr(sender), repr((tag, m))))
+            mylog("[%d] got a msg from %s\n %s" % (pid, repr(sender), repr((tag, m))), verboseLevel=-1)
             if tag == 'B':
                 #mylog("[%d] CBChannel put %s" % (pid, repr((sender, m))))
 
