@@ -41,7 +41,7 @@ def listen_to_channel(port):
             # mylog('decoding')
             # mylog(obj, verboseLevel=-1)
             q.put(obj[1:])
-            mylog(bcolors.OKBLUE + 'received %s' % repr(obj[1:]) + bcolors.ENDC, verboseLevel=-1)
+            # mylog(bcolors.OKBLUE + 'received %s' % repr(obj[1:]) + bcolors.ENDC, verboseLevel=-1)
     server = StreamServer(('0.0.0.0', port), _handle)
     server.start()
     return q
@@ -266,7 +266,8 @@ def client_test_freenet(N, t):
     localIP = check_output(['curl', 'http://169.254.169.254/latest/meta-data/public-ipv4'])  #  socket.gethostbyname(socket.gethostname())
     myID = IP_LIST.index(localIP)
     N = len(IP_LIST)
-    mylog("[+] Parameters: N %d, t %d" % (N, t), verboseLevel=-1)
+    mylog("[%d] Parameters: N %d, t %d" % (myID, N, t), verboseLevel=-1)
+    mylog("[%d] IP_LIST: %s" % (myID, IP_LIST), verboseLevel=-1)
     #buffers = map(lambda _: Queue(1), range(N))
     gtemp = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
     gtemp.parent_args = (N, t)
