@@ -46,15 +46,15 @@ def runProtocol():
 
 @parallel
 def checkout():
-    run('svn checkout --username aluex --password JkJ-3pc-s3Y-prp https://subversion.assembla.com/svn/ktc-scratch/')
+    run('svn checkout --no-auth-cache --username aluex --password JkJ-3pc-s3Y-prp https://subversion.assembla.com/svn/ktc-scratch/')
 
 @parallel
 def svnUpdate():
     with settings(warn_only=True):
         if run('test -d ktc-scratch').failed:
-            run('svn checkout --username aluex --password JkJ-3pc-s3Y-prp https://subversion.assembla.com/svn/ktc-scratch/')
+            run('svn checkout  --no-auth-cache --username aluex --password JkJ-3pc-s3Y-prp https://subversion.assembla.com/svn/ktc-scratch/')
     with cd('~/ktc-scratch'):
-        run('svn up --username aluex --password JkJ-3pc-s3Y-prp')
+        run('svn up  --no-auth-cache --username aluex --password JkJ-3pc-s3Y-prp')
 
 @parallel
 def svnClean():
@@ -81,9 +81,15 @@ def startPBFT(): ######## THIS SHOULD BE CALLED IN REVERSED HOST ORDER
 
 def startClient():
     with cd('~/ktc-scratch'):
-        run('python gen_requests.py 1000')
-        run('python client.py 1000')
-        run('python parse_client_log.py')
+        #batch_size = 1024
+        #batch_size = 2048
+        #batch_size = 4096
+        #batch_size = 8192
+        batch_size = 16384
+        #batch_size = 65536
+        run('python gen_requests.py 1000 %d' % (batch_size,))
+        run('python client.py 40')
+        run('python parse_client_log.py %d' % (batch_size,))
 
 def git_pull():
     with settings(warn_only=True):

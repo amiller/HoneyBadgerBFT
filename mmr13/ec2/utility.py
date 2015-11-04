@@ -125,8 +125,8 @@ def ipAll():
     for region in regions:
         result += get_ec2_instances_ip(region) or []
     open('hosts','w').write('\n'.join(result))
-    callFabFromIPList(result, 'removeHosts', iC=True)
-    callFabFromIPList(result, 'writeHosts', iC=True)
+    callFabFromIPList(result, 'removeHosts')
+    callFabFromIPList(result, 'writeHosts')
     return result
 
 def getIP():
