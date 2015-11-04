@@ -97,7 +97,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         signed = [False]*N
         while True:
             sender, msgBundle = receive()
-            # mylog("[%d] received msgBundle %s" % (pid, msgBundle))
+            mylog("[%d] multiSigBr received msgBundle %s" % (pid, msgBundle), verboseLevel=-1)
             vki = Pubkeys[msgBundle[1]].peek()
             if True:  # vki.verify(msgBundle[3], repr(msgBundle[2])):
                 # mylog("[%d] Signature passed, msgBundle: %s" % (pid, repr(msgBundle)))
