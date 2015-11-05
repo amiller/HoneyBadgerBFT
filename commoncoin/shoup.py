@@ -11,6 +11,7 @@ import random
 import millerrabin
 import gmpy
 import math
+from fractions import gcd
 
 # To generate safe primes: 
 # $ openssl gendh 1024 | openssl dh -noout -text
@@ -120,7 +121,7 @@ def dealer(bits=2048, players=10, k=5):
         S = set(range(1,k+1))
         lhs = (public_key.Delta() * f(i)) % m
         rhs = sum(public_key.lambdaS(S,i,j) * f(j) for j in S) % m
-        #assert lhs == rhs
+        assert lhs == rhs
         #print i, 'ok'
 
     return public_key, secret_keys
@@ -146,7 +147,7 @@ class ShoupPublicKey(object):
         assert j in S
         assert 1 <= j <= self.l
         mul = lambda a,b: a*b
-        num = reduce(mul, [i - jj for jj in S if jj != i], 1)
+        num = reduce(mul, [i - jj for jj in S if jj != j], 1)
         den = reduce(mul, [j - jj for jj in S if jj != j], 1)
         print 'num', num
         print 'den', den
