@@ -14,6 +14,8 @@ verbose = -1
 goodseed = random.randint(1, 10000)
 myRandom = random.Random(goodseed)
 
+signatureCost = 0
+
 def callBackWrap(func, callback):
     def _callBackWrap(*args, **kargs):
         result = func(*args, **kargs)
@@ -84,8 +86,12 @@ def makeBroadcastWithTagAndRound(tag, broadcast, round):
         )
     return _bc
 
+def getSignatureCost():
+    return signatureCost
 
-def dummyCoin(round):
+def dummyCoin(round, N):
+    global signatureCost
+    signatureCost += 2048 / 8 * N
     return int(hashlib.md5(str(round)).hexdigest(), 16) % 2
     # return round % 2   # Somehow hashlib does not work well on EC2. I always get 0 from this function.
 
