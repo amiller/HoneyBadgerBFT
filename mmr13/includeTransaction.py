@@ -4,7 +4,8 @@ from gevent import Greenlet
 from gevent.queue import Queue, Empty
 from mmr13 import binary_consensus
 from bkr_acs import acs, initBeforeBinaryConsensus
-from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, greenletPacker, PK, SKs, Transaction
+from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, \
+    greenletPacker, PK, SKs, Transaction, getECDSAKeys, sha1hash
 from collections import defaultdict
 # from ecdsa import SigningKey
 import struct
@@ -67,6 +68,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
     #sk = dummyPKI() # SigningKey.generate() # uses NIST192p
     #Pubkeys[pid].put(sk.get_verifying_key())
 
+    keys = getECDSAKeys()
+
     def Listener():
         opinions = [defaultdict(lambda: 0) for _ in range(N)]
         signed = [False]*N
@@ -74,14 +77,14 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
             sender, msgBundle = receive()  # TODO: Add Signature here
             #mylog("[%d] multiSigBr received msgBundle %s" % (pid, msgBundle), verboseLevel=-1)
             # vki = Pubkeys[msgBundle[1]].peek()
-            if True:  # vki.verify(msgBundle[3], repr(msgBundle[2])):
+            if keys[msgBundle[1]].verify(sha1hash(hash(msgBundle[2])), msgBundle[3]):  # vki.verify(msgBundle[3], repr(msgBundle[2])):
                 # mylog("[%d] Signature passed, msgBundle: %s" % (pid, repr(msgBundle)))
                 if msgBundle[0] == 'i' and not signed[msgBundle[1]]:
                     # Here we should remove the randomness of the signature
                     newBundle = (msgBundle[1], msgBundle[2])
                     #mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
                     #mylog("[%d] and now signed is %s" % (pid, repr(signed)), verboseLevel=-1)
-                    broadcast(('e', pid, newBundle))  #, sk.sign(repr(newBundle))))
+                    broadcast(('e', pid, newBundle, keys[pid].sign(sha1hash(repr(newBundle)))))
                     signed[msgBundle[1]] = True
                 elif msgBundle[0] == 'e':
                     originBundle = msgBundle[2]
@@ -92,7 +95,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         outputs[originBundle[0]].put(originBundle[1])
 
     greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()
-    broadcast(('i', pid, msg))  # , sk.sign(repr(msg))))  # Kick Off!
+    broadcast(('i', pid, msg, keys[pid].sign(sha1hash(repr(msg)))))  # Kick Off!
 
 @greenletFunction
 def consensusBroadcast(pid, N, t, msg, broadcast, receive, outputs, method=multiSigBr):

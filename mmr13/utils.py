@@ -11,6 +11,7 @@ import cPickle as pickle
 from io import BytesIO
 import struct
 import gmpy2
+from ecdsa_ssl import KEY
 
 gevent.monkey.patch_all()
 
@@ -30,6 +31,10 @@ def callBackWrap(func, callback):
     return _callBackWrap
 
 PK, SKs = None, None
+ecdsa_key_list = []
+
+from Crypto.Hash import SHA256
+sha1hash = lambda x: SHA256.new(x).digest()
 
 import sys
 import os
@@ -184,8 +189,21 @@ def initiateThresholdSig(contents):
     #print PK
     #print SKs
 
+def initiateECDSAKeys(contents):
+    global ecdsa_key_list
+    ecdsa_key_list = []
+    ecdsa_sec_list = pickle.loads(contents)
+    for secret in ecdsa_sec_list:
+        k = KEY()
+        k.generate(secret)
+        ecdsa_key_list.append(k)
+
+
 def getKeys():
     return PK, SKs
+
+def getECDSAKeys():
+    return ecdsa_key_list
 
 class bcolors:
     HEADER = '\033[95m'

@@ -13,7 +13,7 @@ import gevent
 import os
 #import random
 from utils import myRandom as random
-from utils import checkExceptionPerGreenlet, getSignatureCost, deepEncode, deepDecode, randomTransaction
+from utils import checkExceptionPerGreenlet, getSignatureCost, deepEncode, deepDecode, randomTransaction, initiateECDSAKeys
 # import fcp
 import json
 import cPickle as pickle
@@ -98,6 +98,7 @@ def client_test_freenet(N, t):
     '''
     maxdelay = 0.01
     initiateThresholdSig(open(sys.argv[1], 'r').read())
+    initiateECDSAKeys(open(sys.argv[2], 'r').read())
     buffers = map(lambda _: Queue(1), range(N))
     global logGreenlet
     logGreenlet = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
