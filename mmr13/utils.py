@@ -97,6 +97,7 @@ def encodeTransaction(tr):
 # + mc can be expressed in 4 bytes.
 # + party index can be expressed in 1 byte.
 # + round index can be expressed in 2 bytes.
+# + transactions with ammount > 0 [THIS IS IMPORTANT for separation]
 
 def deepEncode(mc, m):
     buf = BytesIO()
@@ -106,16 +107,20 @@ def deepEncode(mc, m):
     # totally we have 4 msg types
     if c[0]=='i':
         buf.write('\x01')
-        t2, p1, s = c
+        t2, p1, s, sig = c
         buf.write(struct.pack('B', p1))
         for tr in s:
             buf.write(encodeTransaction(tr))
+        buf.write('\x00'*4)
+        buf.write(sig)
     elif c[0]=='e':
         buf.write('\x02')
-        t2, p1, (p2, s) = c
+        t2, p1, (p2, s), sig = c
         buf.write(struct.pack('BB', p1, p2))
         for tr in s:
             buf.write(encodeTransaction(tr))
+        buf.write('\x00'*4)
+        buf.write(sig)
     else:
         p1, (t2, m2) = c
         if t2 == 'B':
@@ -145,7 +150,7 @@ def constructTransactionFromRepr(r):
     return tr
 
 # Msg Types:
-# (0, 0, ('B', ('i', 0, set([{{Transaction from Alice to Gerald with 22}}]),
+# 1':(0, 0, ('B', ('i', 0, set([{{Transaction from Alice to Gerald with 22}}]),
 # '0E\x02 T\xf3\x05\xdc\xc6\xd8\x02\xa3\xb3D\xb4\xba\xe3\xd7<\xb1z\xb2\x9c/\x1a\xfdB\x9cZj\xe6\xbc\x9e\x16\x85\x05\x02!\x00\xd5\xee\xa2\xf1\xe7-\xbe\xb9\xefE\x8d\x12\xc4*\xe4D\x96\xa7\xa5\xbe\x13\xaa\x87\x93\x94c\xc4et\xa5\x1a\xc4')))
 # 1:(3, 1, ('B', ('i', 1, set([{{Transaction from Francis to Eco with 86}}]))))
 # 2:(1, 0, ('B', ('e', 0, (2, set([{{Transaction from Bob to Jessica with 65}}])))))
@@ -164,14 +169,20 @@ def deepDecode(m, msgTypeCounter):
         while trRepr:
             trSet.add(constructTransactionFromRepr(trRepr))
             trRepr = buf.read(4)
-        return mc, (f, t, ('B', ('i', p1, trSet)),)
+            if trRepr=='\x00'*4:
+                break
+        sig = buf.read()
+        return mc, (f, t, ('B', ('i', p1, trSet, sig)),)
     elif msgtype == 2:
         p1, p2 = struct.unpack('BB', buf.read(2))
         trRepr = buf.read(4)
         while trRepr:
             trSet.add(constructTransactionFromRepr(trRepr))
             trRepr = buf.read(4)
-        return mc, (f, t, ('B', ('e', p1, (p2, trSet))),)
+            if trRepr=='\x00'*4:
+                break
+        sig = buf.read()
+        return mc, (f, t, ('B', ('e', p1, (p2, trSet), sig)),)
     elif msgtype == 3:
         p1, p2, p3 = struct.unpack('BBB', buf.read(3))
         return mc, (f, t, ('A', (p1, ('B', (p2, p3)))),)
