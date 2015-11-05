@@ -166,21 +166,17 @@ def deepDecode(m, msgTypeCounter):
     if msgtype == 1:
         p1, = struct.unpack('B', buf.read(1))
         trRepr = buf.read(4)
-        while trRepr:
+        while trRepr != '\x00'*4:
             trSet.add(constructTransactionFromRepr(trRepr))
             trRepr = buf.read(4)
-            if trRepr=='\x00'*4:
-                break
         sig = buf.read()
         return mc, (f, t, ('B', ('i', p1, trSet, sig)),)
     elif msgtype == 2:
         p1, p2 = struct.unpack('BB', buf.read(2))
         trRepr = buf.read(4)
-        while trRepr:
+        while trRepr != '\x00'*4:
             trSet.add(constructTransactionFromRepr(trRepr))
             trRepr = buf.read(4)
-            if trRepr=='\x00'*4:
-                break
         sig = buf.read()
         return mc, (f, t, ('B', ('e', p1, (p2, trSet), sig)),)
     elif msgtype == 3:

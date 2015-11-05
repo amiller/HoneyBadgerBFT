@@ -58,6 +58,9 @@ class dummyPKI(object):
     def get_verifying_key():
         return None
 
+class ECDSASignatureError(Exception):
+    pass
+
 @greenletFunction
 def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
     # Since all the parties we have are symmetric, so I implement this function for N instances of A-cast as a whole
@@ -93,6 +96,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     #    repr(originBundle[1]), opinions[originBundle[0]][repr(originBundle[1])]))
                     if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2 and not outputs[originBundle[0]].full():
                         outputs[originBundle[0]].put(originBundle[1])
+            else:
+                raise ECDSASignatureError()
 
     greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()
     broadcast(('i', pid, msg, keys[pid].sign(sha1hash(repr(msg)))))  # Kick Off!
