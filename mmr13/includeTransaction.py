@@ -77,7 +77,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
             sender, msgBundle = receive()  # TODO: Add Signature here
             #mylog("[%d] multiSigBr received msgBundle %s" % (pid, msgBundle), verboseLevel=-1)
             # vki = Pubkeys[msgBundle[1]].peek()
-            if keys[msgBundle[1]].verify(sha1hash(hash(msgBundle[2])), msgBundle[3]):  # vki.verify(msgBundle[3], repr(msgBundle[2])):
+            if keys[msgBundle[1]].verify(sha1hash(repr(msgBundle[2])), msgBundle[3]):  # vki.verify(msgBundle[3], repr(msgBundle[2])):
                 # mylog("[%d] Signature passed, msgBundle: %s" % (pid, repr(msgBundle)))
                 if msgBundle[0] == 'i' and not signed[msgBundle[1]]:
                     # Here we should remove the randomness of the signature
