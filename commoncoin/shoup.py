@@ -9,7 +9,7 @@
 
 import random
 import millerrabin
-import gmpy
+import gmpy2
 import math
 from fractions import gcd
 
@@ -77,7 +77,7 @@ def dealer(bits=2048, players=10, k=5):
     e = millerrabin.generateLargePrime(players.bit_length()+1) 
 
     # Compute d such that de == 1 mod m
-    d = long(gmpy.divm(1, e, m))
+    d = gmpy2.divm(1, e, m)
     assert (d*e) % m == 1
 
     public_key = (n,e)
@@ -111,7 +111,7 @@ def dealer(bits=2048, players=10, k=5):
     # Verification keys
     VKs = []
     for i in range(players):
-        VKs.append(pow(v, SKs[i], n))
+        VKs.append(gmpy2.powmod(v, SKs[i], n))
 
     public_key = ShoupPublicKey(n, e, players, k, VK, VKs)
     secret_keys = [ShoupPrivateKey(n, e, players, k, VK, VKs, SK, i) 
@@ -149,8 +149,6 @@ class ShoupPublicKey(object):
         mul = lambda a,b: a*b
         num = reduce(mul, [i - jj for jj in S if jj != j], 1)
         den = reduce(mul, [j - jj for jj in S if jj != j], 1)
-        print 'num', num
-        print 'den', den
         assert (self.Delta()*num) % den == 0
         return self.Delta() * num / den
 
@@ -164,12 +162,13 @@ class ShoupPublicKey(object):
 
         x = hash(m)
         
-        def ppow(x, e, n):
-            if e >= 0: return pow(x, e, n)
-            else: 
-                x_inv = long(gmpy.divm(1, x, n))
-                r = pow(x_inv, -e, n)
-                return r
+        #def ppow(x, e, n):
+        #    if e >= 0: return pow(x, e, n)
+        #    else: 
+        #        x_inv = long(gmpy.divm(1, x, n))
+        #        r = pow(x_inv, -e, n)
+        #        return r
+        def ppow(x, e, n): return gmpy2.powmod(x,e,n)
 
         w = 1L
         for i,sig in sigs.iteritems():
@@ -177,20 +176,20 @@ class ShoupPublicKey(object):
 
         ep = 4*self.Delta()**2
 
-        assert pow(w, e, self.n) == pow(x, ep, self.n)
+        #assert pow(w, e, self.n) == pow(x, ep, self.n)
         assert gcd(ep, e) == 1
 
         _, a, b = egcd(ep, self.e)
         y = (ppow(w, a, self.n) * 
              ppow(x, b, self.n)) % self.n
 
-        assert self.verify_signature(y, m)
+        #assert self.verify_signature(y, m)
         return y
 
     def verify_signature(self, sig, m):
         y = sig
         x = hash(m)
-        assert x == pow(y, e, self.n)
+        assert x == gmpy2.powmod(y, e, self.n)
         return True
 
 class ShoupPrivateKey(ShoupPublicKey):
@@ -203,13 +202,20 @@ class ShoupPrivateKey(ShoupPublicKey):
     def sign(self, m):
         # Generates a signature share on m
         x = hash(m)
-        return pow(x, 2*self.Delta()*self.SK, self.n)
+        return gmpy2.powmod(x, 2*self.Delta()*self.SK, self.n)
 
 def test():
-    PK, SKs = dealer()
-    
+    global PK, SKs
+    PK, SKs = dealer(players=100,k=35)
+
+    global sigs
     sigs = {}
-    for SK in SKs[:PK.k]:
+    for SK in SKs:
         sigs[SK.i] = SK.sign('hi')
 
-    sig = PK.combine_shares('hi', sigs)
+    SS = range(1,PK.l+1)
+    for i in range(20):
+        random.shuffle(SS)
+        S = set(SS[:PK.k])
+        sig = PK.combine_shares('hi', dict((s,sigs[s]) for s in S))
+        assert PK.verify_signature(sig, 'hi')
