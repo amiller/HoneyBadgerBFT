@@ -4,35 +4,10 @@ from gevent import Greenlet
 from gevent.queue import Queue, Empty
 from mmr13 import binary_consensus
 from bkr_acs import acs, initBeforeBinaryConsensus
-from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, greenletPacker, PK, SKs
+from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, greenletPacker, PK, SKs, Transaction
 from collections import defaultdict
 # from ecdsa import SigningKey
 import struct
-
-class Transaction:  # assume amout is in term of short
-    def __init__(self):
-        self.source='Unknown'
-        self.target = 'Unknown'
-        self.amount = 0
-        #### TODO: Define a detailed transaction
-
-    def __repr__(self):
-        return bcolors.OKBLUE + "{{Transaction from %s to %s with %d}}" % (self.source, self.target, self.amount) + bcolors.ENDC
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.source == other.source and self.target == other.target and self.amount == other.amount
-        return False
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
-    def __hash__(self):
-        return hash(self.source) ^ hash(self.target) ^ hash(self.amount)
-
-    #def getBitsRepr(self):
-    #    return struct.pack('BBH', int(self.source.encode('hex'), 16) & 255, int(self.target.encode('hex'), 16) & 255,
-    #                       self.amount)
 
 
 def calcSum(dd):
