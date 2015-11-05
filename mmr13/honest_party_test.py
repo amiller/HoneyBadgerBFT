@@ -4,7 +4,7 @@ __author__ = 'aluex'
 
 from gevent.queue import *
 from gevent import Greenlet
-from utils import bcolors, mylog
+from utils import bcolors, mylog, initiateThresholdSig
 from includeTransaction import honestParty, Transaction
 from collections import defaultdict
 from bkr_acs import initBeforeBinaryConsensus
@@ -18,6 +18,7 @@ from utils import checkExceptionPerGreenlet, getSignatureCost
 import json
 import cPickle as pickle
 import time
+import sys
 import zlib
 #print state
 import base64
@@ -27,7 +28,7 @@ from io import BytesIO
 
 nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 
-USE_DEEP_ENCODE = True
+USE_DEEP_ENCODE = False
 
 def exception(msg):
     mylog(bcolors.WARNING + "Exception: %s\n" % msg + bcolors.ENDC)
@@ -96,13 +97,17 @@ def deepEncode(mc, m):
         for tr in s:
             buf.write(encodeTransaction(tr))
     else:
-        p1, (t2, (p2, p3)) = c
+        p1, (t2, m2) = c
         if t2 == 'B':
             buf.write('\x03')
         elif t2 == 'A':
             buf.write('\x04')
+        elif t2 == 'C':
+            buf.write('\x05')
+            #r, sig = m
         else:
             raise deepEncodeException()
+        (p2, p3) = m2
         buf.write(struct.pack('BBB', p1, p2, p3))
     buf.seek(0)
     return buf.read()
@@ -199,6 +204,7 @@ def client_test_freenet(N, t):
     :return None:
     '''
     maxdelay = 0.01
+    initiateThresholdSig(open(sys.argv[1], 'r').read())
     buffers = map(lambda _: Queue(1), range(N))
     global logGreenlet
     logGreenlet = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))

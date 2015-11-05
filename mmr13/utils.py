@@ -7,6 +7,7 @@ import random
 import hashlib
 import gc
 import traceback
+import cPickle as pickle
 
 gevent.monkey.patch_all()
 
@@ -23,6 +24,21 @@ def callBackWrap(func, callback):
 
     return _callBackWrap
 
+PK, SKs = None, None
+
+import sys
+import os
+sys.path.append(os.path.abspath('../commoncoin'))
+import shoup
+
+def initiateThresholdSig(contents):
+    global PK, SKs
+    PK, SKs = pickle.loads(contents)
+    print PK
+    print SKs
+
+def getKeys():
+    return PK, SKs
 
 class bcolors:
     HEADER = '\033[95m'

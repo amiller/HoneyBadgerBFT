@@ -3,7 +3,7 @@ import gevent
 from gevent import Greenlet
 from gevent.queue import Queue
 from collections import defaultdict
-from utils import dummyCoin, greenletPacker
+from utils import dummyCoin, greenletPacker, getKeys
 # import random
 import sys
 
@@ -79,8 +79,12 @@ def bv_broadcast(pid, N, t, broadcast, receive, output, release=lambda: None):
 
     return input
 
+class CommonCoinFailureException(Exception):
+    pass
 
-def shared_coin_dummy(pid, N, t, broadcast, receive):
+#from ..commoncoin.shoup import ShoupPublicKey
+
+def shared_coin(pid, N, t, broadcast, receive):
     '''
     A dummy version of the Shared Coin
     :param pid: my id number
@@ -92,36 +96,49 @@ def shared_coin_dummy(pid, N, t, broadcast, receive):
     '''
     received = defaultdict(set)
     outputQueue = defaultdict(lambda: Queue(1))
-
+    PK, SKs = getKeys()
     def _recv():
         while True:
             # New shares for some round r
             # mylog('[%d] Now executing receive at line 114' % pid)
-            (i, r) = receive()
+            (i, (r, sig)) = receive()
             # mylog('[%d] finished line 114' % pid)
             assert i in range(N)
             assert r >= 0
-            if i in received[r]:
-                continue
-            received[r].add(i)
+            for ip, sigIp in received[r]:
+                if ip == i+1:
+                    continue
+            received[r].add((i+1, sig))
 
             # After reaching the threshold, compute the output and
             # make it available locally
-            if len(received[r]) == N - t:
-                b = hash(r) % 2
-                outputQueue[r].put(b)
+            if len(received[r]) == t + 1:  #####
+                #if True:
+                try:
+                    combsig = PK.combine_shares(str(r), dict(received[r]))
+                    assert PK.verify_signature(combsig, str(r))
+                except AssertionError, e:
+                    raise CommonCoinFailureException()
+                # b = hash(r) % 2
+                outputQueue[r].put(r % 2)
 
     greenletPacker(Greenlet(_recv), 'shared_coin_dummy', (pid, N, t, broadcast, receive)).start()
 
+    def getCoin(round):
+        broadcast((round, SKs[pid].sign(str(round))))   # I have to do mapping to 1..l
+        return outputQueue[round].get()
+
+    return getCoin
+
     # Broadcast our share
-    round = 0
-    while True:
-        broadcast(round)
-        # Wait until the value is ready
-        b = outputQueue[round].get()
-        # Advance round
-        round += 1
-        yield b
+    # round = 0
+    # while True:
+    #    broadcast(round)
+    #    # Wait until the value is ready
+    #    b = outputQueue[round].get()
+    #    # Advance round
+    #    round += 1
+    #    yield b
 
 
 def arbitary_adversary(pid, N, t, vi, broadcast, receive):
@@ -382,7 +399,7 @@ def binary_consensus(pid, N, t, vi, decide, broadcast, receive):
                     'binary_consensus.bcQ[%d].put' % r, (pid, N, t, vi, decide, broadcast, receive)).start() # In case they block the router
             elif tag == 'C':
                 # A share of a coin
-                greenletPacker(Greenlet(coinQ.put, m),
+                greenletPacker(Greenlet(coinQ.put, (i, m)),
                     'binary_consensus.coinQ.put', (pid, N, t, vi, decide, broadcast, receive)).start()
             elif tag == 'A':
                 # Aux message
@@ -400,6 +417,8 @@ def binary_consensus(pid, N, t, vi, decide, broadcast, receive):
         return _recv
 
     received = [defaultdict(set), defaultdict(set)]
+
+    coin = shared_coin(pid, N, t, makeBroadcastWithTag('C', broadcast), coinQ.get)
 
     def getWithProcessing(r, binValues, callBackWaiter):
         def _recv(*args, **kargs):
@@ -492,6 +511,7 @@ def binary_consensus(pid, N, t, vi, decide, broadcast, receive):
         mylog(bcolors.OKBLUE + '[%d]b Phase 2 done' % pid + bcolors.ENDC)
         #s = hash(round) % 2
         s = dummyCoin(round, N)  ## TODO: Change this to dummy coin
+        s = coin(round)
         # Here corresponds to a proof that if one party decides at round r,
         # then in all the following rounds, everybody will propose r as an estimation. (Lemma 2, Lemma 1)
         # An abandoned party is a party who has decided but no enough peers to help him end the loop.

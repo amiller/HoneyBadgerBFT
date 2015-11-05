@@ -4,7 +4,7 @@ from gevent import Greenlet
 from gevent.queue import Queue, Empty
 from mmr13 import binary_consensus
 from bkr_acs import acs, initBeforeBinaryConsensus
-from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, greenletPacker
+from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, greenletPacker, PK, SKs
 from collections import defaultdict
 # from ecdsa import SigningKey
 import struct
@@ -89,14 +89,14 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
     assert(isinstance(outputs, list))
     for i in outputs:
         assert(isinstance(i, Queue))
-    sk = dummyPKI() # SigningKey.generate() # uses NIST192p
-    Pubkeys[pid].put(sk.get_verifying_key())
+    #sk = dummyPKI() # SigningKey.generate() # uses NIST192p
+    #Pubkeys[pid].put(sk.get_verifying_key())
 
     def Listener():
         opinions = [defaultdict(lambda: 0) for _ in range(N)]
         signed = [False]*N
         while True:
-            sender, msgBundle = receive()
+            sender, msgBundle = receive()  # TODO: Add Signature here
             #mylog("[%d] multiSigBr received msgBundle %s" % (pid, msgBundle), verboseLevel=-1)
             # vki = Pubkeys[msgBundle[1]].peek()
             if True:  # vki.verify(msgBundle[3], repr(msgBundle[2])):
