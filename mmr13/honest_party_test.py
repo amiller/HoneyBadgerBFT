@@ -2,7 +2,7 @@
 __author__ = 'aluex'
 
 
-from gevent.queue import Queue
+from gevent.queue import *
 from gevent import Greenlet
 from utils import bcolors, mylog
 from includeTransaction import honestParty, Transaction
@@ -13,7 +13,7 @@ import gevent
 import os
 #import random
 from utils import myRandom as random
-from utils import checkExceptionPerGreenlet
+from utils import checkExceptionPerGreenlet, getSignatureCost
 # import fcp
 import json
 import cPickle as pickle
@@ -51,6 +51,8 @@ msgFrom = dict()
 msgTo = dict()
 msgContent = dict()
 logChannel = Queue()
+msgTypeCounter = [0]*5
+logGreenlet = None
 
 def logWriter(fileHandler):
     while True:
@@ -124,6 +126,7 @@ def deepDecode(m):
     buf = BytesIO(m)
     mc, f, t, msgtype = struct.unpack('<IBBB', buf.read(7))
     trSet = set()
+    msgTypeCounter[msgtype] += len(m)
     if msgtype == 1:
         p1, = struct.unpack('B', buf.read(1))
         trRepr = buf.read(4)
@@ -177,7 +180,8 @@ def decode(s):  # TODO
     assert(isinstance(result, tuple))
     ending_time[result[0]] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
     msgContent[result[0]] = None
-    logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
+    logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]],
+                    starting_time[result[0]], ending_time[result[0]], repr(result[1])))
     return result[1]
 
 def client_test_freenet(N, t):
@@ -196,10 +200,11 @@ def client_test_freenet(N, t):
     '''
     maxdelay = 0.01
     buffers = map(lambda _: Queue(1), range(N))
-    gtemp = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
-    gtemp.parent_args = (N, t)
-    gtemp.name = 'client_test_freenet.logWriter'
-    gtemp.start()
+    global logGreenlet
+    logGreenlet = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
+    logGreenlet.parent_args = (N, t)
+    logGreenlet.name = 'client_test_freenet.logWriter'
+    logGreenlet.start()
 
     # Instantiate the "broadcast" instruction
     def makeBroadcast(i):
@@ -250,6 +255,17 @@ def client_test_freenet(N, t):
             while True:
                 gevent.sleep(1)
             checkExceptionPerGreenlet()
+        finally:
+            print msgTypeCounter
+            # message id 0 (duplicated) for signatureCost
+            logChannel.put((0, getSignatureCost(), 0, 0, str(time.time()), str(time.time()), '[signature cost]'))
+            logChannel.put(StopIteration)
+            mylog("=====", verboseLevel=-1)
+            for item in logChannel:
+                mylog(item, verboseLevel=-1)
+            mylog("=====", verboseLevel=-1)
+            print getSignatureCost()
+
             print "Concensus Finished"
             # mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
             #tokens = [s for s in raw_input().strip().split() if s]
@@ -291,5 +307,5 @@ if __name__ == '__main__':
     atexit.register(exit)
     if USE_PROFILE:
         GreenletProfiler.start()
-    client_test_freenet(90, 18)
+    client_test_freenet(4, 1)
 

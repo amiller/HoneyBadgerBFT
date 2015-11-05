@@ -97,13 +97,15 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         signed = [False]*N
         while True:
             sender, msgBundle = receive()
-            # mylog("[%d] received msgBundle %s" % (pid, msgBundle))
-            vki = Pubkeys[msgBundle[1]].peek()
+            #mylog("[%d] multiSigBr received msgBundle %s" % (pid, msgBundle), verboseLevel=-1)
+            # vki = Pubkeys[msgBundle[1]].peek()
             if True:  # vki.verify(msgBundle[3], repr(msgBundle[2])):
                 # mylog("[%d] Signature passed, msgBundle: %s" % (pid, repr(msgBundle)))
                 if msgBundle[0] == 'i' and not signed[msgBundle[1]]:
                     # Here we should remove the randomness of the signature
                     newBundle = (msgBundle[1], msgBundle[2])
+                    #mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
+                    #mylog("[%d] and now signed is %s" % (pid, repr(signed)), verboseLevel=-1)
                     broadcast(('e', pid, newBundle))  #, sk.sign(repr(newBundle))))
                     signed[msgBundle[1]] = True
                 elif msgBundle[0] == 'e':
@@ -155,7 +157,7 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
             # a = receive()
             # mylog(a, verboseLevel=-1)
             sender, (tag, m) = receive()
-            #mylog("[%d] got a msg from %s\n %s" % (pid, repr(sender), repr((tag, m))))
+            # mylog("[%d] got a msg from %s\n %s" % (pid, repr(sender), repr((tag, m))), verboseLevel=-1)
             if tag == 'B':
                 #mylog("[%d] CBChannel put %s" % (pid, repr((sender, m))))
 

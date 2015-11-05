@@ -435,10 +435,11 @@ def binary_consensus(pid, N, t, vi, decide, broadcast, receive):
     round = 0
     est = vi
     decided = False
+    decidedNum = 0
 
     callBackWaiter = defaultdict(lambda: Queue(1))
 
-    while checkFinishedWithGlobalState(N):
+    while True: # checkFinishedWithGlobalState(N):
         round += 1
         mylog(bcolors.WARNING + '[%d]m enters round %d with decision %s' % (pid, round, globalState[pid] or 'None') + bcolors.ENDC, verboseLevel=-1)
         # Broadcast EST
@@ -489,8 +490,14 @@ def binary_consensus(pid, N, t, vi, decide, broadcast, receive):
         values = callBackWaiter[round].get()  # wait until the conditions are satisfied
         # br2.kill(block=False)
         mylog(bcolors.OKBLUE + '[%d]b Phase 2 done' % pid + bcolors.ENDC)
-        #s = hash(round) % 2  ## TODO: Change this to dummy coin
-        s = dummyCoin(round) % 2  ## TODO: Change this to dummy coin
+        #s = hash(round) % 2
+        s = dummyCoin(round, N)  ## TODO: Change this to dummy coin
+        # Here corresponds to a proof that if one party decides at round r,
+        # then in all the following rounds, everybody will propose r as an estimation. (Lemma 2, Lemma 1)
+        # An abandoned party is a party who has decided but no enough peers to help him end the loop.
+        # Lemma: # of abandoned party <= t
+        if decided and decidedNum == s:  # infinite-message fix
+            break
         if len(values) == 1:
             if values[0] == s:
                 # decide s
@@ -499,11 +506,15 @@ def binary_consensus(pid, N, t, vi, decide, broadcast, receive):
                     globalState[pid] = "decides on %d" % s
                     decide.put(s)
                     decided = True
+                    decidedNum = s
                     # raw_input()
                 # finished[pid] = True
                 # return s
+            else:
+                mylog('[%d] advances rounds from %d caused by values[0](%d)!=s(%d)' % (pid, round, values[0], s), verboseLevel=-1)
             est = values[0]
         else:
+            mylog('[%d] advances rounds from %d caused by len(values)>1 where values=%s' % (pid, round, repr(values)), verboseLevel=-1)
             est = s
 
     mylog("[%d]b exits binary consensus" % pid)
