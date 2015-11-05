@@ -81,7 +81,7 @@ def dealer(bits=2048, players=10, k=5):
     assert (d*e) % m == 1
 
     public_key = (n,e)
-    print 'public_key', public_key
+    #print 'public_key', public_key
 
     trapdoor = dict(d=d, p=p, q=q)
 
@@ -158,7 +158,7 @@ class ShoupPublicKey(object):
     def combine_shares(self, m, sigs):
         # sigs: a mapping from idx -> sig
         S = set(sigs.keys())
-        assert S.issubset(range(1,self.l+1))
+        assert S.issubset(range(1, self.l+1))
 
         x = hash(m)
         
@@ -177,7 +177,7 @@ class ShoupPublicKey(object):
         ep = 4*self.Delta()**2
 
         #assert pow(w, e, self.n) == pow(x, ep, self.n)
-        assert gcd(ep, e) == 1
+        assert gcd(ep, self.e) == 1
 
         _, a, b = egcd(ep, self.e)
         y = (ppow(w, a, self.n) * 
@@ -189,7 +189,7 @@ class ShoupPublicKey(object):
     def verify_signature(self, sig, m):
         y = sig
         x = hash(m)
-        assert x == gmpy2.powmod(y, e, self.n)
+        assert x == gmpy2.powmod(y, self.e, self.n)
         return True
 
 class ShoupPrivateKey(ShoupPublicKey):

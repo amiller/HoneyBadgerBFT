@@ -4,7 +4,7 @@ __author__ = 'aluex'
 
 from gevent.queue import *
 from gevent import Greenlet
-from utils import bcolors, mylog
+from utils import bcolors, mylog, initiateThresholdSig
 from includeTransaction import honestParty, Transaction
 from collections import defaultdict
 from bkr_acs import initBeforeBinaryConsensus
@@ -13,11 +13,12 @@ import gevent
 import os
 #import random
 from utils import myRandom as random
-from utils import checkExceptionPerGreenlet, getSignatureCost
+from utils import checkExceptionPerGreenlet, getSignatureCost, deepEncode, deepDecode, randomTransaction
 # import fcp
 import json
 import cPickle as pickle
 import time
+import sys
 import zlib
 #print state
 import base64
@@ -25,23 +26,11 @@ import base64
 import struct
 from io import BytesIO
 
-nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
-
 USE_DEEP_ENCODE = True
 
 def exception(msg):
     mylog(bcolors.WARNING + "Exception: %s\n" % msg + bcolors.ENDC)
     os.exit(1)
-
-def randomTransaction():
-    tx = Transaction()
-    tx.source = random.choice(nameList)
-    tx.target = random.choice(nameList)
-    tx.amount = random.randint(1, 100)
-    return tx
-
-def randomTransactionStr():
-    return repr(randomTransaction())
 
 msgCounter = 0
 starting_time = dict()
@@ -51,7 +40,7 @@ msgFrom = dict()
 msgTo = dict()
 msgContent = dict()
 logChannel = Queue()
-msgTypeCounter = [0]*5
+msgTypeCounter = [0]*6
 logGreenlet = None
 
 def logWriter(fileHandler):
@@ -59,97 +48,6 @@ def logWriter(fileHandler):
         msgCounter, msgSize, msgFrom, msgTo, st, et, content = logChannel.get()
         fileHandler.write("%d:%d(%d->%d)[%s]-[%s]%s\n" % (msgCounter, msgSize, msgFrom, msgTo, st, et, content))
         fileHandler.flush()
-
-class deepEncodeException(Exception):
-    pass
-
-class deepDecodeException(Exception):
-    pass
-
-
-# assumptions: amount of the money transferred can be expressed in 2 bytes.
-def encodeTransaction(tr):
-    sourceInd = nameList.index(tr.source)
-    targetInd = nameList.index(tr.target)
-    return struct.pack(
-        '<BBH', sourceInd, targetInd, tr.amount
-    )
-
-
-# assumptions: mc can be expressed in 4 bytes and party index can be expressed in 1 byte.
-def deepEncode(mc, m):
-    buf = BytesIO()
-    buf.write(struct.pack('<I', mc))
-    f, t, (tag, c) = m
-    buf.write(struct.pack('BB', f, t))
-    # totally we have 4 msg types
-    if c[0]=='i':
-        buf.write('\x01')
-        t2, p1, s = c
-        buf.write(struct.pack('B', p1))
-        for tr in s:
-            buf.write(encodeTransaction(tr))
-    elif c[0]=='e':
-        buf.write('\x02')
-        t2, p1, (p2, s) = c
-        buf.write(struct.pack('BB', p1, p2))
-        for tr in s:
-            buf.write(encodeTransaction(tr))
-    else:
-        p1, (t2, (p2, p3)) = c
-        if t2 == 'B':
-            buf.write('\x03')
-        elif t2 == 'A':
-            buf.write('\x04')
-        else:
-            raise deepEncodeException()
-        buf.write(struct.pack('BBB', p1, p2, p3))
-    buf.seek(0)
-    return buf.read()
-
-
-def constructTransactionFromRepr(r):
-    sourceInd, targetInd, amount = struct.unpack('<BBH', r)
-    tr = Transaction()
-    tr.source = nameList[sourceInd]
-    tr.target = nameList[targetInd]
-    tr.amount = amount
-    return tr
-
-# Msg Types:
-# 1:(3, 1, ('B', ('i', 1, set([{{Transaction from Francis to Eco with 86}}]))))
-# 2:(1, 0, ('B', ('e', 0, (2, set([{{Transaction from Bob to Jessica with 65}}])))))
-# 3:(0, 3, ('A', (1, ('B', (1, 1)))))
-# 4:(0, 3, ('A', (2, ('A', (1, 1)))))
-
-def deepDecode(m):
-    buf = BytesIO(m)
-    mc, f, t, msgtype = struct.unpack('<IBBB', buf.read(7))
-    trSet = set()
-    msgTypeCounter[msgtype] += len(m)
-    if msgtype == 1:
-        p1, = struct.unpack('B', buf.read(1))
-        trRepr = buf.read(4)
-        while trRepr:
-            trSet.add(constructTransactionFromRepr(trRepr))
-            trRepr = buf.read(4)
-        return mc, (f, t, ('B', ('i', p1, trSet)),)
-    elif msgtype == 2:
-        p1, p2 = struct.unpack('BB', buf.read(2))
-        trRepr = buf.read(4)
-        while trRepr:
-            trSet.add(constructTransactionFromRepr(trRepr))
-            trRepr = buf.read(4)
-        return mc, (f, t, ('B', ('e', p1, (p2, trSet))),)
-    elif msgtype == 3:
-        p1, p2, p3 = struct.unpack('BBB', buf.read(3))
-        return mc, (f, t, ('A', (p1, ('B', (p2, p3)))),)
-    elif msgtype == 4:
-        p1, p2, p3 = struct.unpack('BBB', buf.read(3))
-        return mc, (f, t, ('A', (p1, ('A', (p2, p3)))),)
-    else:
-        raise deepDecodeException()
-
 
 def encode(m):  # TODO
     global msgCounter
@@ -173,7 +71,7 @@ def encode(m):  # TODO
 
 def decode(s):  # TODO
     if USE_DEEP_ENCODE:
-        result = deepDecode(s)
+        result = deepDecode(s, msgTypeCounter)
     else:
         result = s
     #result = deepDecode(zlib.decompress(s)) #pickle.loads(zlib.decompress(s))
@@ -199,6 +97,7 @@ def client_test_freenet(N, t):
     :return None:
     '''
     maxdelay = 0.01
+    initiateThresholdSig(open(sys.argv[1], 'r').read())
     buffers = map(lambda _: Queue(1), range(N))
     global logGreenlet
     logGreenlet = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
@@ -258,13 +157,13 @@ def client_test_freenet(N, t):
         finally:
             print msgTypeCounter
             # message id 0 (duplicated) for signatureCost
-            logChannel.put((0, getSignatureCost(), 0, 0, str(time.time()), str(time.time()), '[signature cost]'))
+            #logChannel.put((0, getSignatureCost(), 0, 0, str(time.time()), str(time.time()), '[signature cost]'))
             logChannel.put(StopIteration)
             mylog("=====", verboseLevel=-1)
             for item in logChannel:
                 mylog(item, verboseLevel=-1)
             mylog("=====", verboseLevel=-1)
-            print getSignatureCost()
+            # print getSignatureCost()
 
             print "Concensus Finished"
             # mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
