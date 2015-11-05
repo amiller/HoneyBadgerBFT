@@ -181,8 +181,8 @@ def deepDecode(m, msgTypeCounter):
 def initiateThresholdSig(contents):
     global PK, SKs
     PK, SKs = pickle.loads(contents)
-    print PK
-    print SKs
+    #print PK
+    #print SKs
 
 def getKeys():
     return PK, SKs
