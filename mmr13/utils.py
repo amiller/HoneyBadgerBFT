@@ -208,6 +208,11 @@ def initiateECDSAKeys(contents):
         k.set_compressed(True)
         ecdsa_key_list.append(k)
 
+def setHash(s):
+    result = 0
+    for ele in s:
+        result ^= hash(ele)
+    return result
 
 def getKeys():
     return PK, SKs

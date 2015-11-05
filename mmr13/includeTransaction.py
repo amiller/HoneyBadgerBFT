@@ -5,7 +5,7 @@ from gevent.queue import Queue, Empty
 from mmr13 import binary_consensus
 from bkr_acs import acs, initBeforeBinaryConsensus
 from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, \
-    greenletPacker, PK, SKs, Transaction, getECDSAKeys, sha1hash
+    greenletPacker, PK, SKs, Transaction, getECDSAKeys, sha1hash, setHash
 from collections import defaultdict
 # from ecdsa import SigningKey
 import struct
@@ -80,27 +80,30 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
             sender, msgBundle = receive()  # TODO: Add Signature here
             #mylog("[%d] multiSigBr received msgBundle %s" % (pid, msgBundle), verboseLevel=-1)
             # vki = Pubkeys[msgBundle[1]].peek()
-            if keys[msgBundle[1]].verify(sha1hash(repr(msgBundle[2])), msgBundle[3]):  # vki.verify(msgBundle[3], repr(msgBundle[2])):
-                # mylog("[%d] Signature passed, msgBundle: %s" % (pid, repr(msgBundle)))
-                if msgBundle[0] == 'i' and not signed[msgBundle[1]]:
+            if msgBundle[0] == 'i' and not signed[msgBundle[1]]:
+                if keys[msgBundle[1]].verify(sha1hash(hex(setHash(msgBundle[2]))), msgBundle[3]):
                     # Here we should remove the randomness of the signature
                     newBundle = (msgBundle[1], msgBundle[2])
                     #mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
                     #mylog("[%d] and now signed is %s" % (pid, repr(signed)), verboseLevel=-1)
-                    broadcast(('e', pid, newBundle, keys[pid].sign(sha1hash(repr(newBundle)))))
+                    broadcast(('e', pid, newBundle, keys[pid].sign(sha1hash(hex((newBundle[0]+37)*setHash(newBundle[1]))))))
                     signed[msgBundle[1]] = True
-                elif msgBundle[0] == 'e':
+                else:
+                    raise ECDSASignatureError()
+            elif msgBundle[0] == 'e':
+                if keys[msgBundle[1]].verify(sha1hash(hex((msgBundle[2][0]+37)*setHash(msgBundle[2][1]))), msgBundle[3]):
                     originBundle = msgBundle[2]
                     opinions[originBundle[0]][repr(originBundle[1])] += 1
                     # mylog("[%d] counter for (%d, %s) is now %d" % (pid, originBundle[0],
                     #    repr(originBundle[1]), opinions[originBundle[0]][repr(originBundle[1])]))
                     if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2 and not outputs[originBundle[0]].full():
                         outputs[originBundle[0]].put(originBundle[1])
-            else:
-                raise ECDSASignatureError()
+                else:
+                    raise ECDSASignatureError()
+
 
     greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()
-    broadcast(('i', pid, msg, keys[pid].sign(sha1hash(repr(msg)))))  # Kick Off!
+    broadcast(('i', pid, msg, keys[pid].sign(sha1hash(hex(setHash(msg))))))  # Kick Off!
 
 @greenletFunction
 def consensusBroadcast(pid, N, t, msg, broadcast, receive, outputs, method=multiSigBr):

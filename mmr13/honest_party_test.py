@@ -135,7 +135,7 @@ def client_test_freenet(N, t):
             recv = recvWithDecode(buffers[i])
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
             controlChannels[i].put(('IncludeTransaction',
-                set([randomTransaction() for trC in range(4)])))
+                set([randomTransaction() for trC in range(1)])))
             #controlChannels[i].put(('IncludeTransaction', randomTransaction()))
             th.start_later(random.random() * maxdelay)
             ts.append(th)
