@@ -56,10 +56,11 @@ def generate_safe_prime(bits):
 
 def random_Qn(n):
     # Generate a square in n
-    x = random.randrange(2, n-1)
-    return pow(x, 2, n-1)
+    x = random.randrange(0, n)
+    return pow(x, 2, n)
 
 def dealer(bits=2048, players=10, k=5):
+    random.seed(1203103)
     global n, m, p, q, e, d, shares
     assert bits == 2048, 'need different parameters'
     p = safe_prime_1
@@ -76,6 +77,7 @@ def dealer(bits=2048, players=10, k=5):
 
     # Compute d such that de == 1 mod m
     d = long(gmpy.divm(1, e, m))
+    assert (d*e) % m == 1
 
     public_key = (n,e)
     print 'public_key', public_key
@@ -86,20 +88,21 @@ def dealer(bits=2048, players=10, k=5):
     a = [d]
     for i in range(1,k):
         a.append(random.randrange(0,m))
+    assert len(a) == k
 
     # Polynomial evaluation
     def f(x):
         y = 0
         xx = 1
         for coeff in a:
-            y = (y + coeff * xx)
-            xx = (xx * x)
+            y += coeff * xx
+            xx *= x
         return y
 
     # Shares of master secret key
     SKs = []
-    for i in range(players):
-        SKs.append(f(i+1))
+    for i in range(1,players+1):
+        SKs.append(f(i))
 
     # Random quadratic residue
     VK = v = random_Qn(n)
@@ -107,7 +110,7 @@ def dealer(bits=2048, players=10, k=5):
     # Verification keys
     VKs = []
     for i in range(players):
-        VKs.append(pow(v, SKs[i], m))
+        VKs.append(pow(v, SKs[i], n))
 
     public_key = ShoupPublicKey(n, e, players, k, VK, VKs)
     secret_keys = [ShoupPrivateKey(n, e, players, k, VK, VKs, SK, i) 
@@ -117,8 +120,8 @@ def dealer(bits=2048, players=10, k=5):
         S = set(range(1,k+1))
         lhs = (public_key.Delta() * f(i)) % m
         rhs = sum(public_key.lambdaS(S,i,j) * f(j) for j in S) % m
-        assert lhs == rhs
-        print i, 'ok'
+        #assert lhs == rhs
+        #print i, 'ok'
 
     return public_key, secret_keys
 
@@ -159,10 +162,17 @@ class ShoupPublicKey(object):
         assert S.issubset(range(1,self.l+1))
 
         x = hash(m)
+        
+        def ppow(x, e, n):
+            if e >= 0: return pow(x, e, n)
+            else: 
+                x_inv = long(gmpy.divm(1, x, n))
+                r = pow(x_inv, -e, n)
+                return r
 
         w = 1L
         for i,sig in sigs.iteritems():
-            w = (w * pow(sig, 2*self.lambdaS(S,0,i), self.n)) % self.n
+            w = (w * ppow(sig, 2*self.lambdaS(S,0,i), self.n)) % self.n
 
         ep = 4*self.Delta()**2
 
@@ -170,9 +180,6 @@ class ShoupPublicKey(object):
         assert gcd(ep, e) == 1
 
         _, a, b = egcd(ep, self.e)
-        def ppow(x, e, n):
-            if e >= 0: return pow(x, e, n)
-            else: return pow(long(gmpy.divm(1, x, n)), -e, n)
         y = (ppow(w, a, self.n) * 
              ppow(x, b, self.n)) % self.n
 
@@ -201,7 +208,7 @@ def test():
     PK, SKs = dealer()
     
     sigs = {}
-    for SK in SKs:
+    for SK in SKs[:PK.k]:
         sigs[SK.i] = SK.sign('hi')
 
     sig = PK.combine_shares('hi', sigs)
