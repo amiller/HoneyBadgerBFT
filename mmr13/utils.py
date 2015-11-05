@@ -145,6 +145,8 @@ def constructTransactionFromRepr(r):
     return tr
 
 # Msg Types:
+# (0, 0, ('B', ('i', 0, set([{{Transaction from Alice to Gerald with 22}}]),
+# '0E\x02 T\xf3\x05\xdc\xc6\xd8\x02\xa3\xb3D\xb4\xba\xe3\xd7<\xb1z\xb2\x9c/\x1a\xfdB\x9cZj\xe6\xbc\x9e\x16\x85\x05\x02!\x00\xd5\xee\xa2\xf1\xe7-\xbe\xb9\xefE\x8d\x12\xc4*\xe4D\x96\xa7\xa5\xbe\x13\xaa\x87\x93\x94c\xc4et\xa5\x1a\xc4')))
 # 1:(3, 1, ('B', ('i', 1, set([{{Transaction from Francis to Eco with 86}}]))))
 # 2:(1, 0, ('B', ('e', 0, (2, set([{{Transaction from Bob to Jessica with 65}}])))))
 # 3:(0, 3, ('A', (1, ('B', (1, 1)))))
@@ -196,6 +198,7 @@ def initiateECDSAKeys(contents):
     for secret in ecdsa_sec_list:
         k = KEY()
         k.generate(secret)
+        k.set_compressed(True)
         ecdsa_key_list.append(k)
 
 
