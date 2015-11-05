@@ -26,7 +26,7 @@ import base64
 import struct
 from io import BytesIO
 
-USE_DEEP_ENCODE = True
+USE_DEEP_ENCODE = False
 
 def exception(msg):
     mylog(bcolors.WARNING + "Exception: %s\n" % msg + bcolors.ENDC)
