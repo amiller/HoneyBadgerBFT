@@ -126,8 +126,8 @@ def client_test_freenet(N, t):
             return decode(s)[1:]
         return recv
 
-    #while True:
-    if True:
+    while True:
+    #if True:
         initBeforeBinaryConsensus()
         ts = []
         controlChannels = [Queue() for _ in range(N)]
@@ -167,10 +167,8 @@ def client_test_freenet(N, t):
             mylog("=====", verboseLevel=-1)
             # print getSignatureCost()
 
-            print "Concensus Finished"
-            # mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
-            #tokens = [s for s in raw_input().strip().split() if s]
-            #mylog("= %s\n" % repr(parser[tokens[0]](tokens)))  # In case the parser has an output
+        print "Concensus Finished"
+
 
 # import GreenletProfiler
 import atexit
