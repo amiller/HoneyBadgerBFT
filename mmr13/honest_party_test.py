@@ -14,7 +14,8 @@ import gevent
 import os
 #import random
 from utils import myRandom as random
-from utils import checkExceptionPerGreenlet, getSignatureCost, deepEncode, deepDecode, randomTransaction, initiateECDSAKeys
+from utils import checkExceptionPerGreenlet, getSignatureCost, \
+    deepEncode, deepDecode, randomTransaction, initiateECDSAKeys, finishTransactionLeap
 # import fcp
 import json
 import cPickle as pickle
@@ -152,11 +153,7 @@ def client_test_freenet(N, t):
             gevent.joinall(ts)
         except ACSException:
             gevent.killall(ts)
-        except gevent.hub.LoopExit: # Manual fix for early stop
-            while True:
-                gevent.sleep(1)
-            checkExceptionPerGreenlet()
-        finally:
+        except finishTransactionLeap:  ### Manually jump to this level
             print msgTypeCounter
             # message id 0 (duplicated) for signatureCost
             #logChannel.put((0, getSignatureCost(), 0, 0, str(time.time()), str(time.time()), '[signature cost]'))
@@ -167,9 +164,14 @@ def client_test_freenet(N, t):
             mylog("=====", verboseLevel=-1)
             #checkExceptionPerGreenlet()
             # print getSignatureCost()
-
-        print "Concensus Finished"
-
+            continue
+            pass
+        except gevent.hub.LoopExit: # Manual fix for early stop
+            while True:
+                gevent.sleep(1)
+            checkExceptionPerGreenlet()
+        finally:
+            print "Concensus Finished"
 
 # import GreenletProfiler
 import atexit
