@@ -165,6 +165,7 @@ def client_test_freenet(N, t):
             for item in logChannel:
                 mylog(item, verboseLevel=-1)
             mylog("=====", verboseLevel=-1)
+            checkExceptionPerGreenlet()
             # print getSignatureCost()
 
         print "Concensus Finished"
