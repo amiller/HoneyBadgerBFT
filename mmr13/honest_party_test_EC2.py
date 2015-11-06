@@ -192,7 +192,7 @@ def client_test_freenet(N, t):
             host, port = IP_MAPPINGS[j] # TOR_MAPPINGS[j]
             chans.append(connect_to_channel(host, port, i))
         def _broadcast(v):
-            mylog(bcolors.OKGREEN + "[%d] Broadcasted %s" % (i, repr(v)) + bcolors.ENDC, verboseLevel=-1)
+            # mylog(bcolors.OKGREEN + "[%d] Broadcasted %s" % (i, repr(v)) + bcolors.ENDC, verboseLevel=-1)
             for j in range(N):
                 chans[j].put((j, i, v))  # from i to j
         return _broadcast
