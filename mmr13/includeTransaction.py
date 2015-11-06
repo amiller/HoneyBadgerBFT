@@ -229,8 +229,8 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             lock.get()
             finishcount += 1
             lock.put(1)
-            if finishcount >= N - t:
-                break
+            #if finishcount >= N - t:
+            #    break
                 #raise finishTransactionLeap()  # long-jump
                 # sys.exit()
             # raw_input()
