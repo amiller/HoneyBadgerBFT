@@ -1,3 +1,6 @@
+from gevent import monkey
+monkey.patch_all()
+
 from mmr13 import makeCallOnce, bv_broadcast, shared_coin, binary_consensus, \
     bcolors, mylog, mv84consensus, initBeforeBinaryConsensus
 

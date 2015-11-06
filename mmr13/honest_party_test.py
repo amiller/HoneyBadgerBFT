@@ -1,6 +1,7 @@
 #!/usr/bin/python
 __author__ = 'aluex'
-
+from gevent import monkey
+monkey.patch_all()
 
 from gevent.queue import *
 from gevent import Greenlet

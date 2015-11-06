@@ -1,6 +1,8 @@
 __author__ = 'aluex'
+from gevent import monkey
+monkey.patch_all()
+
 import sys
-import gevent.monkey
 from gevent.queue import Queue
 from gevent import Greenlet
 import random
@@ -13,7 +15,6 @@ import struct
 import gmpy2
 from ecdsa_ssl import KEY
 
-gevent.monkey.patch_all()
 
 nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 
