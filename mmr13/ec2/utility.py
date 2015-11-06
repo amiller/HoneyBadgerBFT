@@ -1,5 +1,6 @@
 import argparse
 import boto.ec2
+import time
 if not boto.config.has_section('ec2'):
     boto.config.add_section('ec2')
     boto.config.setbool('ec2','use-sigv4',True)
@@ -16,7 +17,7 @@ secgroups = {
     'eu-central-1':'sg-2bfe9342'}
 regions = sorted(secgroups.keys())[::-1]
 
-
+NameFilter = 'Badger'
     
 def getAddrFromEC2Summary(s):
     return [
@@ -34,7 +35,7 @@ def get_ec2_instances_ip(region):
                 aws_secret_access_key=secret_key)
     if ec2_conn:
         result = []
-        reservations = ec2_conn.get_all_reservations(filters={'tag:Name':'pbft'})
+        reservations = ec2_conn.get_all_reservations(filters={'tag:Name': NameFilter})
         for reservation in reservations:    
             for ins in reservation.instances:
                 if ins.public_dns_name: 
@@ -53,7 +54,7 @@ def get_ec2_instances_id(region):
                 aws_secret_access_key=secret_key)
     if ec2_conn:
         result = []
-        reservations = ec2_conn.get_all_reservations(filters={'tag:Name':'pbft'})
+        reservations = ec2_conn.get_all_reservations(filters={'tag:Name': NameFilter})
         for reservation in reservations:    
             for ins in reservation.instances:
                 print ins.id
@@ -69,7 +70,7 @@ def stop_all_instances(region):
                 aws_secret_access_key=secret_key)
     idList = []
     if ec2_conn:
-        reservations = ec2_conn.get_all_reservations(filters={'tag:Name':'pbft'})
+        reservations = ec2_conn.get_all_reservations(filters={'tag:Name': NameFilter})
         for reservation in reservations:    
             for ins in reservation.instances:
                 idList.append(ins.id)
@@ -81,7 +82,7 @@ def terminate_all_instances(region):
                 aws_secret_access_key=secret_key)
     idList = []
     if ec2_conn:
-        reservations = ec2_conn.get_all_reservations(filters={'tag:Name':'pbft'})
+        reservations = ec2_conn.get_all_reservations(filters={'tag:Name': NameFilter})
         for reservation in reservations:    
             for ins in reservation.instances:
                 idList.append(ins.id)
@@ -91,7 +92,7 @@ def launch_new_instances(region, number):
     ec2_conn = boto.ec2.connect_to_region(region,
                 aws_access_key_id=access_key,
                 aws_secret_access_key=secret_key)
-    dev_sda1 = boto.ec2.blockdevicemapping.EBSBlockDeviceType()
+    dev_sda1 = boto.ec2.blockdevicemapping.EBSBlockDeviceType(delete_on_termination=True)
     dev_sda1.size = 8 # size in Gigabytes
     bdm = boto.ec2.blockdevicemapping.BlockDeviceMapping()
     bdm['/dev/sda1'] = dev_sda1
@@ -105,7 +106,7 @@ def launch_new_instances(region, number):
                                  #subnet_id = 'vpc-037ab266',
                                  block_device_map = bdm)
     for instance in reservation.instances:
-        instance.add_tag("Name","pbft")
+        instance.add_tag("Name", NameFilter)
     return reservation
 
 def start_all_instances(region):
@@ -114,7 +115,7 @@ def start_all_instances(region):
                 aws_secret_access_key=secret_key)
     idList = []
     if ec2_conn:
-        reservations = ec2_conn.get_all_reservations(filters={'tag:Name':'pbft'})
+        reservations = ec2_conn.get_all_reservations(filters={'tag:Name': NameFilter})
         for reservation in reservations:    
             for ins in reservation.instances:
                 idList.append(ins.instance_id)
@@ -146,13 +147,30 @@ def stopAll():
     for region in regions:
         stop_all_instances(region)
 
-from subprocess import check_output, Popen, call
+from subprocess import check_output, Popen, call, PIPE
 
 def callFabFromIPList(l, work):
     call('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work), shell=True)
         #print Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem', 
         #    '-u', 'ubuntu', '-H', ','.join(l), # We rule out the client
         #    work])
+
+def callStartProtocolAndMonitorOutput(N, t, l, work='startProtocol'):
+    starting_time = time.time()
+    popen = Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem', 
+        '-u', 'ubuntu', '-H', ','.join(l), # We rule out the client
+        work], stdout=PIPE)
+    lines_iterator = iter(popen.stdout.readline, b"")
+    counter = 0
+    for line in lines_iterator:
+        if 'synced transactions set' in line:
+            counter += 1
+        if counter >= N - t:
+            break
+        print(line) # yield line
+    ending_time = time.time()
+    print 'Latency from client scope:', ending_time - starting_time
+
 
 
 def callFab(s, work):
