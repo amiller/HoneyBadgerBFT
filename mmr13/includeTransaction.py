@@ -230,7 +230,8 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             finishcount += 1
             lock.put(1)
             if finishcount >= N - t:
-                raise finishTransactionLeap()  # long-jump
+                break
+                #raise finishTransactionLeap()  # long-jump
                 # sys.exit()
             # raw_input()
         sessionID = sessionID + 1
