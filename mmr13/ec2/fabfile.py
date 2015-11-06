@@ -1,8 +1,9 @@
 from __future__ import with_statement
 from fabric.api import *
-from fabric.operations import put
+from fabric.operations import put, get
 from fabric.contrib.console import confirm
 from fabric.contrib.files import append
+import time
 
 @parallel
 def host_type():
@@ -41,6 +42,11 @@ def removeHosts():
 def writeHosts():
     put('./hosts', '~/')
     #append('~/hosts', open('hosts','r').read().split('\n'))
+
+@parallel
+def fetchLogs():
+    get('~/HoneyBadgerBFT/mmr13/msglog.TorMultiple',
+        'logs/%(host)s' + time.strftime(time.gmtime()) + '.log')
 
 @parallel
 def syncKeys():
