@@ -59,8 +59,45 @@ def syncKeys():
     put('./keys', '~/')
     put('./ecdsa_keys', '~/')
 
+import SocketServer, time
+start_time = 0
+sync_counter = 0
+N = 1
+t = 1
+
+class MyTCPHandler(SocketServer.BaseRequestHandler):
+    """
+    The RequestHandler class for our server.
+
+    It is instantiated once per connection to the server, and must
+    override the handle() method to implement communication to the
+    client.
+    """
+    def handle(self):
+        # self.request is the TCP socket connected to the client
+        self.data = self.rfile.readline().strip()
+        print "%s finishes at %lf" % (self.client_address[0], time.time() - start_time)
+        print self.data
+        sync_counter += 1
+        if sync_counter >= N - t:
+            print "finished at %lf" % (time.time() - start_time)
+
+@parallel
+def runProtocolFromClient(client, Nstr, tstr):
+    # s = StringIO()
+    global start_time, sync_counter, N, t
+    N = int(Nstr)
+    t = int(tstr)
+    start_time = time.time()
+    sync_counter = 0
+    server = SocketServer.TCPServer(('0.0.0.0', 7997), MyTCPHandler)
+    server.serve_forever()
+    with cd('~/HoneyBadgerBFT/mmr13'):
+        run('python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys %s' % client)
+
 @parallel
 def runProtocol():
+    # s = StringIO()
     with cd('~/HoneyBadgerBFT/mmr13'):
         run('python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys')
 
