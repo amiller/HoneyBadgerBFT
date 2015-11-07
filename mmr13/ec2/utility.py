@@ -157,9 +157,10 @@ def callFabFromIPList(l, work):
 
 def callStartProtocolAndMonitorOutput(N, t, l, work='startProtocol'):
     starting_time = time.time()
-    popen = Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem', 
-        '-u', 'ubuntu', '-H', ','.join(l), # We rule out the client
-        work], stdout=PIPE)
+    # popen = Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem',
+    #     '-u', 'ubuntu', '-H', ','.join(l), # We rule out the client
+    #     work], stdout=PIPE)
+    popen = Popen('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work), stdout=PIPE)
     lines_iterator = iter(popen.stdout.readline, b"")
     counter = 0
     for line in lines_iterator:
