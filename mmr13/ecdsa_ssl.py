@@ -114,3 +114,4 @@ if __name__ == '__main__':
     print k.get_privkey ().encode('hex')
     print k.get_pubkey().encode('hex')
     print k.get_secret().encode('hex')
+
