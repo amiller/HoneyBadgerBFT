@@ -28,7 +28,7 @@ def install_dependencies():
     sudo('apt-get -y install python-socksipy')
     sudo('apt-get -y install python-pip')
     sudo('apt-get -y install python-dev')
-    sudo('apt-get -y install dtach')
+    #sudo('apt-get -y install dtach')
     sudo('apt-get -y install python-gmpy2')
     sudo('pip install pycrypto')
     sudo('pip install ecdsa')
@@ -150,6 +150,7 @@ def startClient():
         run('python client.py 40')
         run('python parse_client_log.py %d' % (batch_size,))
 
+@parallel
 def git_pull():
     with settings(warn_only=True):
         if run('test -d HoneyBadgerBFT').failed:
