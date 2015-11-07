@@ -1,3 +1,6 @@
+from gevent import monkey
+monkey.patch_all()
+
 import gevent
 from gevent import Greenlet
 from gevent.queue import Queue
@@ -6,7 +9,7 @@ import random
 
 import mmr13
 reload(mmr13)
-from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, mv84consensus, initBeforeBinaryConsensus
+from mmr13 import makeCallOnce, bv_broadcast, shared_coin, binary_consensus, bcolors, mylog, mv84consensus, initBeforeBinaryConsensus
 
 
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays

@@ -1,14 +1,15 @@
 #!/usr/bin/python
 __author__ = 'aluex'
+from gevent import monkey
+monkey.patch_all()
 
-
-from gevent.queue import Queue
+from gevent.queue import *
 from gevent import Greenlet
-from utils import bcolors, mylog
+from utils import bcolors, mylog, initiateECDSAKeys, initiateThresholdSig, checkExceptionPerGreenlet
 from includeTransaction import honestParty, Transaction
 from collections import defaultdict
 from bkr_acs import initBeforeBinaryConsensus
-from utils import ACSException, deepEncode, deepDecode, randomTransaction
+from utils import ACSException, deepEncode, deepDecode, randomTransaction, randomTransactionStr
 import gevent
 import os
 #import random
@@ -111,16 +112,6 @@ def exception(msg):
     mylog(bcolors.WARNING + "Exception: %s\n" % msg + bcolors.ENDC)
     os.exit(1)
 
-def randomTransaction():
-    tx = Transaction()
-    tx.source = random.choice(nameList)
-    tx.target = random.choice(nameList)
-    tx.amount = random.randint(1, 100)
-    return tx
-
-def randomTransactionStr():
-    return repr(randomTransaction())
-
 msgCounter = 0
 starting_time = defaultdict(lambda: 0.0)
 ending_time = defaultdict(lambda: 0.0)
@@ -179,6 +170,10 @@ def client_test_freenet(N, t):
     :param t: the number of malicious parties
     :return None:
     '''
+
+    initiateThresholdSig(open(sys.argv[2], 'r').read())
+    initiateECDSAKeys(open(sys.argv[3], 'r').read())
+
     # query amazon meta-data
     localIP = check_output(['curl', 'http://169.254.169.254/latest/meta-data/public-ipv4'])  #  socket.gethostbyname(socket.gethostname())
     myID = IP_LIST.index(localIP)
@@ -198,7 +193,7 @@ def client_test_freenet(N, t):
             host, port = IP_MAPPINGS[j] # TOR_MAPPINGS[j]
             chans.append(connect_to_channel(host, port, i))
         def _broadcast(v):
-            mylog(bcolors.OKGREEN + "[%d] Broadcasted %s" % (i, repr(v)) + bcolors.ENDC, verboseLevel=-1)
+            # mylog(bcolors.OKGREEN + "[%d] Broadcasted %s" % (i, repr(v)) + bcolors.ENDC, verboseLevel=-1)
             for j in range(N):
                 chans[j].put((j, i, v))  # from i to j
         return _broadcast
@@ -277,15 +272,7 @@ def exit():
         mylog('%d extra log exported.' % halfmsgCounter, verboseLevel=-1)
 
     if GEVENT_DEBUG:
-        for ob in gc.get_objects():
-            if not hasattr(ob, 'parent_args'):
-                continue
-            if not ob:
-                continue
-            if not ob.exception:
-                continue
-            mylog('%s[%s] called with parent arg\n(%s)\n%s' % (ob.name, repr(ob.args), repr(ob.parent_args),
-                ''.join(traceback.format_stack(ob.gr_frame))), verboseLevel=-1)
+        checkExceptionPerGreenlet()
 
     if USE_PROFILE:
         GreenletProfiler.stop()
@@ -294,11 +281,14 @@ def exit():
         stats.save('profile.callgrind', type='callgrind')
 
 if __name__ == '__main__':
-    if USE_PROFILE:
-        GreenletProfiler.set_clock_type('cpu')
-    atexit.register(exit)
-    prepareIPList(open(sys.argv[1], 'r').read())
-    if USE_PROFILE:
-        GreenletProfiler.start()
-    client_test_freenet(4, 1)  # Here N is no longer used
+    if len(sys.argv) < 4:
+        print '[Usage] %s hosts shoup_keys ecdsa_keys'
+    else:
+        if USE_PROFILE:
+            GreenletProfiler.set_clock_type('cpu')
+        atexit.register(exit)
+        prepareIPList(open(sys.argv[1], 'r').read())
+        if USE_PROFILE:
+            GreenletProfiler.start()
+        client_test_freenet(4, 1)  # Here N is no longer used
 

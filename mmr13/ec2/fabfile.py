@@ -1,7 +1,9 @@
 from __future__ import with_statement
 from fabric.api import *
+from fabric.operations import put, get
 from fabric.contrib.console import confirm
 from fabric.contrib.files import append
+import time
 
 @parallel
 def host_type():
@@ -21,6 +23,7 @@ def install_dependencies():
     sudo('apt-get -y install python-pip')
     sudo('apt-get -y install python-dev')
     sudo('apt-get -y install dtach')
+    sudo('apt-get -y install python-gmpy2')
     sudo('pip install pycrypto')
     sudo('pip install ecdsa')
 
@@ -37,12 +40,23 @@ def removeHosts():
 
 @parallel
 def writeHosts():
-    append('~/hosts', open('hosts','r').read().split('\n'))
+    put('./hosts', '~/')
+    #append('~/hosts', open('hosts','r').read().split('\n'))
+
+@parallel
+def fetchLogs():
+    get('~/HoneyBadgerBFT/mmr13/msglog.TorMultiple',
+        'logs/%(host)s' + time.strftime(time.gmtime()) + '.log')
+
+@parallel
+def syncKeys():
+    put('./keys', '~/')
+    put('./ecdsa_keys', '~/')
 
 @parallel
 def runProtocol():
     with cd('~/HoneyBadgerBFT/mmr13'):
-        run('python honest_party_test_EC2.py ~/hosts')
+        run('python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys')
 
 @parallel
 def checkout():

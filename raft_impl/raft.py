@@ -1,5 +1,8 @@
 #!/Users/aluex/anaconda/bin/python
 ##################################
+from gevent import monkey
+monkey.patch_all()
+
 import gevent
 from gevent import Greenlet
 from gevent.queue import Queue

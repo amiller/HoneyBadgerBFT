@@ -1,6 +1,8 @@
 __author__ = 'aluex'
+from gevent import monkey
+monkey.patch_all()
+
 import sys
-import gevent.monkey
 from gevent.queue import Queue
 from gevent import Greenlet
 import random
@@ -13,7 +15,6 @@ import struct
 import gmpy2
 from ecdsa_ssl import KEY
 
-gevent.monkey.patch_all()
 
 nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 
@@ -83,6 +84,8 @@ class deepEncodeException(Exception):
 class deepDecodeException(Exception):
     pass
 
+class finishTransactionLeap(Exception):
+    pass
 
 # assumptions: amount of the money transferred can be expressed in 2 bytes.
 def encodeTransaction(tr):
@@ -342,17 +345,18 @@ def greenletFunction(func):
     func.at_exit = lambda: None  # manual at_exit since Greenlet does not provide this event by default
     return func
 
-def checkExceptionPerGreenlet():
+def checkExceptionPerGreenlet(ignoreHealthyOnes=True):
     mylog("Tring to detect greenlets...")
     for ob in gc.get_objects():
         if not hasattr(ob, 'parent_args'):
             continue
         if not ob:
             continue
-        # if not ob.exception:
-        #     continue
+        if ignoreHealthyOnes and (not ob.exception):
+             continue
         mylog('%s[%s] called with parent arg\n(%s)\n%s' % (ob.name, repr(ob.args), repr(ob.parent_args),
-                                                           ''.join(traceback.format_stack(ob.gr_frame))), verboseLevel=-1)
+            ''.join(traceback.format_stack(ob.gr_frame))), verboseLevel=-1)
+        mylog(ob.exception)
 
 if __name__ == '__main__':
     a = MonitoredInt()

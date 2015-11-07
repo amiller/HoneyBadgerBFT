@@ -5,7 +5,7 @@ from gevent.queue import Queue, Empty
 from mmr13 import binary_consensus
 from bkr_acs import acs, initBeforeBinaryConsensus
 from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, \
-    greenletPacker, PK, SKs, Transaction, getECDSAKeys, sha1hash, setHash
+    greenletPacker, PK, SKs, Transaction, getECDSAKeys, sha1hash, setHash, finishTransactionLeap
 from collections import defaultdict
 # from ecdsa import SigningKey
 import struct
@@ -229,8 +229,10 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             lock.get()
             finishcount += 1
             lock.put(1)
-            if finishcount >= N - t:
-                sys.exit()
+            #if finishcount >= N - t:
+            #    break
+                #raise finishTransactionLeap()  # long-jump
+                # sys.exit()
             # raw_input()
         sessionID = sessionID + 1
     mylog("[%d] Now halting..." % (pid))

@@ -1,4 +1,7 @@
 # Basic framework requirements
+from gevent import monkey
+monkey.patch_all()
+
 import gevent
 from gevent import Greenlet
 from gevent.server import StreamServer

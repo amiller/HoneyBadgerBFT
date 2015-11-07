@@ -1,6 +1,7 @@
 #!/usr/bin/python
 __author__ = 'aluex'
-
+from gevent import monkey
+monkey.patch_all()
 
 from gevent.queue import *
 from gevent import Greenlet
@@ -13,7 +14,8 @@ import gevent
 import os
 #import random
 from utils import myRandom as random
-from utils import checkExceptionPerGreenlet, getSignatureCost, deepEncode, deepDecode, randomTransaction, initiateECDSAKeys
+from utils import checkExceptionPerGreenlet, getSignatureCost, \
+    deepEncode, deepDecode, randomTransaction, initiateECDSAKeys, finishTransactionLeap
 # import fcp
 import json
 import cPickle as pickle
@@ -125,8 +127,8 @@ def client_test_freenet(N, t):
             return decode(s)[1:]
         return recv
 
-    #while True:
-    if True:
+    while True:
+    #if True:
         initBeforeBinaryConsensus()
         ts = []
         controlChannels = [Queue() for _ in range(N)]
@@ -151,11 +153,7 @@ def client_test_freenet(N, t):
             gevent.joinall(ts)
         except ACSException:
             gevent.killall(ts)
-        except gevent.hub.LoopExit: # Manual fix for early stop
-            while True:
-                gevent.sleep(1)
-            checkExceptionPerGreenlet()
-        finally:
+        except finishTransactionLeap:  ### Manually jump to this level
             print msgTypeCounter
             # message id 0 (duplicated) for signatureCost
             #logChannel.put((0, getSignatureCost(), 0, 0, str(time.time()), str(time.time()), '[signature cost]'))
@@ -164,12 +162,16 @@ def client_test_freenet(N, t):
             for item in logChannel:
                 mylog(item, verboseLevel=-1)
             mylog("=====", verboseLevel=-1)
+            #checkExceptionPerGreenlet()
             # print getSignatureCost()
-
+            continue
+            pass
+        except gevent.hub.LoopExit: # Manual fix for early stop
+            while True:
+                gevent.sleep(1)
+            checkExceptionPerGreenlet()
+        finally:
             print "Concensus Finished"
-            # mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
-            #tokens = [s for s in raw_input().strip().split() if s]
-            #mylog("= %s\n" % repr(parser[tokens[0]](tokens)))  # In case the parser has an output
 
 # import GreenletProfiler
 import atexit
