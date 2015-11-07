@@ -1,5 +1,6 @@
 import argparse
 import boto.ec2
+import sys
 import time
 if not boto.config.has_section('ec2'):
     boto.config.add_section('ec2')
@@ -167,23 +168,26 @@ def callFabFromIPList(l, work):
     else:
         call('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work), shell=True)
 
-
 def callStartProtocolAndMonitorOutput(N, t, l, work='runProtocol'):
     starting_time = time.time()
     if platform.system() == 'Darwin':
         popen = Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem',
             '-u', 'ubuntu', '-H', ','.join(l),
-            work], stdout=PIPE, stderr=STDOUT, close_fds=True)
+            work], stdout=PIPE, stderr=STDOUT, close_fds=True, bufsize=1, universal_newlines=True)
     else:
-        popen = Popen('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work), shell=True, stdout=PIPE, stderr=PIPE)
-    lines_iterator = iter(popen.stdout.readline, b"")
+        popen = Popen('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work),
+                      shell=True, stdout=PIPE, stderr=PIPE)
+    # lines_iterator = iter(popen.stdout.readline, b"")
     counter = 0
-    for line in lines_iterator:
+    while True:
+        line = popen.stdout.readline()
+        if not line: break
         if 'synced transactions set' in line:
             counter += 1
         if counter >= N - t:
             break
         print line # yield line
+        sys.stdout.flush()
     ending_time = time.time()
     print 'Latency from client scope:', ending_time - starting_time
 
