@@ -201,7 +201,7 @@ lock.put(1)
 @greenletFunction
 def honestParty(pid, N, t, controlChannel, broadcast, receive):
     # RequestChannel is called by the client and it is the client's duty to broadcast the tx it wants to include
-    mylog("[%d] Honest party started at %f." % (pid, time.time()), verboseLevel=-1)
+    mylog("timestampB (%d, %lf)" % (pid, time.time()), verboseLevel=-1)
     #sock = socket.create_connection((sys.argv[4], 51234))
     transactionCache = set()
     sessionID = 0
@@ -228,7 +228,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             assert(isinstance(syncedTXSet, set))
             transactionCache = transactionCache.difference(syncedTXSet)
             mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)), verboseLevel=-1)
-            mylog("[%d] ending time at %f" % (pid, time.time()), verboseLevel=-1)
+            mylog("timestampE (%d, %lf)" % (pid, time.time()), verboseLevel=-1)
             lock.get()
             finishcount += 1
             lock.put(1)
