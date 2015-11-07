@@ -1,6 +1,6 @@
 import argparse
 import boto.ec2
-import sys
+import sys, os
 import time
 if not boto.config.has_section('ec2'):
     boto.config.add_section('ec2')
@@ -155,6 +155,8 @@ def stopAll():
         stop_all_instances(region)
 
 from subprocess import check_output, Popen, call, PIPE, STDOUT
+import fcntl
+from threading import Thread
 import platform
 
 
@@ -166,16 +168,53 @@ def callFabFromIPList(l, work):
     else:
         call('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work), shell=True)
 
-def callStartProtocolAndMonitorOutput(N, t, l, work='runProtocol'):
+def non_block_read(output):
+    ''' even in a thread, a normal read with block until the buffer is full '''
+    fd = output.fileno()
+    fl = fcntl.fcntl(fd, fcntl.F_GETFL)
+    fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
+    try:
+        return output.readline()
+    except:
+        return ''
+
+def monitor(stdout, N, t):
     starting_time = time.time()
+    counter = 0
+    while True:
+        output = non_block_read(stdout).strip()
+        print output
+        if 'synced transactions set' in output:
+            counter += 1
+            if counter >= N - t:
+                break
+    ending_time = time.time()
+    print 'Latency from client scope:', ending_time - starting_time
+
+def runProtocol():  # fast-path to run, assuming we already have the files ready
+    callFabFromIPList(getIP(), 'runProtocol')
+
+def stopProtocol():
+    callFabFromIPList(getIP(), 'stopProtocols')
+
+def callStartProtocolAndMonitorOutput(N, t, l, work='runProtocol'):
+    # starting_time = time.time()
     if platform.system() == 'Darwin':
         popen = Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem',
             '-u', 'ubuntu', '-H', ','.join(l),
             work], stdout=PIPE, stderr=STDOUT, close_fds=True, bufsize=1, universal_newlines=True)
     else:
         popen = Popen('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work),
-                      shell=True, stdout=PIPE, stderr=PIPE)
+            shell=True, stdout=PIPE, stderr=STDOUT, close_fds=True, bufsize=1, universal_newlines=True)
     # lines_iterator = iter(popen.stdout.readline, b"")
+    thread = Thread(target=monitor, args=[popen.stdout, N, t])
+    thread.daemon = True
+    thread.start()
+
+    popen.wait()
+    thread.join(timeout=1)
+
+    return  # to comment the following lines
     counter = 0
     while True:
         line = popen.stdout.readline()

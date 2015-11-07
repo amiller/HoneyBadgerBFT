@@ -13,6 +13,7 @@ def host_type():
 def ping():
     run('ping -c 5 google.com')
     run('echo "synced transactions set"')
+    run('ping -c 100 google.com')
 
 @parallel
 def cloneRepo():
