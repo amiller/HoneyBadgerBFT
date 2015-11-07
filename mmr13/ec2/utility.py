@@ -171,10 +171,9 @@ def callStartProtocolAndMonitorOutput(N, t, l, work='runProtocol'):
     if platform.system() == 'Darwin':
         popen = Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem',
             '-u', 'ubuntu', '-H', ','.join(l),
-            work], shell=True, stdout=PIPE, stderr=STDOUT)
+            work], stdout=PIPE, stderr=STDOUT, close_fds=True)
     else:
         popen = Popen('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work), stdout=PIPE, stderr=PIPE)
-    return
     lines_iterator = iter(popen.stdout.readline, b"")
     counter = 0
     for line in lines_iterator:
