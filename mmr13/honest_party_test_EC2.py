@@ -291,5 +291,5 @@ if __name__ == '__main__':
         prepareIPList(open(sys.argv[1], 'r').read())
         if USE_PROFILE:
             GreenletProfiler.start()
-        client_test_freenet(4, 1)  # Here N is no longer used
+        client_test_freenet(int(sys.argv[5]), int(sys.argv[6]))  # Here N is no longer used
 
