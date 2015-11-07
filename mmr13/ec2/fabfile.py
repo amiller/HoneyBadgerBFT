@@ -10,6 +10,11 @@ def host_type():
     run('uname -s')
 
 @parallel
+def ping():
+    run('ping -c 5 google.com')
+    run('echo "synced transactions set"')
+
+@parallel
 def cloneRepo():
     run('git clone https://github.com/amiller/HoneyBadgerBFT.git')
 
