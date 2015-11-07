@@ -93,6 +93,7 @@ def launch_new_instances(region, number):
                 aws_secret_access_key=secret_key)
     dev_sda1 = boto.ec2.blockdevicemapping.EBSBlockDeviceType()
     dev_sda1.size = 8 # size in Gigabytes
+    dev_sda1.delete_on_terminate = True
     bdm = boto.ec2.blockdevicemapping.BlockDeviceMapping()
     bdm['/dev/sda1'] = dev_sda1
     img = ec2_conn.get_all_images(filters={'name':'ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-20150325'})[0].id
@@ -102,6 +103,7 @@ def launch_new_instances(region, number):
                                  key_name='amiller-mc2ec2', 
                                  instance_type='t2.medium',
                                  security_group_ids = [secgroups[region], ],
+                                 
                                  #subnet_id = 'vpc-037ab266',
                                  block_device_map = bdm)
     for instance in reservation.instances:
@@ -154,12 +156,6 @@ def callFabFromIPList(l, work):
         #    '-u', 'ubuntu', '-H', ','.join(l), # We rule out the client
         #    work])
 
-
-def callFab(s, work):
-    # open('hosts','w').write('\n'.join(getAddrFromEC2Summary(s)))
-    print Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem', 
-            '-u', 'ubuntu', '-H', ','.join(getAddrFromEC2Summary(s)),
-            work])
 
 if  __name__ =='__main__':
   try: __IPYTHON__
