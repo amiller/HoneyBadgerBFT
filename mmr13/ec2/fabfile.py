@@ -82,9 +82,7 @@ class MyTCPHandler(SocketServer.BaseRequestHandler):
         if sync_counter >= N - t:
             print "finished at %lf" % (time.time() - start_time)
 
-@parallel
-def runProtocolFromClient(client, Nstr, tstr):
-    # s = StringIO()
+def runServer():   # deprecated
     global start_time, sync_counter, N, t
     N = int(Nstr)
     t = int(tstr)
@@ -92,6 +90,10 @@ def runProtocolFromClient(client, Nstr, tstr):
     sync_counter = 0
     server = SocketServer.TCPServer(('0.0.0.0', 51234), MyTCPHandler)
     server.serve_forever()
+
+@parallel
+def runProtocolFromClient(client, Nstr, tstr):
+    # s = StringIO()
     with cd('~/HoneyBadgerBFT/mmr13'):
         run('python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys %s' % client)
 
