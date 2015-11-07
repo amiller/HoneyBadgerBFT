@@ -109,6 +109,7 @@ def launch_new_instances(region, number):
         instance.add_tag("Name", NameFilter)
     return reservation
 
+
 def start_all_instances(region):
     ec2_conn = boto.ec2.connect_to_region(region,
                 aws_access_key_id=access_key,
@@ -121,6 +122,7 @@ def start_all_instances(region):
                 idList.append(ins.instance_id)
     ec2_conn.start_instances(instance_ids=idList)
 
+
 def ipAll():
     result = []
     for region in regions:
@@ -130,8 +132,10 @@ def ipAll():
     callFabFromIPList(result, 'writeHosts')
     return result
 
+
 def getIP():
     return [l for l in open('hosts', 'r').read().split('\n') if l]
+
 
 def idAll():
     result = []
@@ -139,28 +143,37 @@ def idAll():
         result += get_ec2_instances_id(region) or []
     return result
 
+
 def startAll():
     for region in regions:
         start_all_instances(region)
+
 
 def stopAll():
     for region in regions:
         stop_all_instances(region)
 
 from subprocess import check_output, Popen, call, PIPE
+import platform
+
 
 def callFabFromIPList(l, work):
-    call('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work), shell=True)
-        #print Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem', 
-        #    '-u', 'ubuntu', '-H', ','.join(l), # We rule out the client
-        #    work])
+    if platform.system() == 'Darwin':
+        print Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem',
+            '-u', 'ubuntu', '-H', ','.join(l), # We rule out the client
+            work])
+    else:
+        call('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work), shell=True)
+
 
 def callStartProtocolAndMonitorOutput(N, t, l, work='startProtocol'):
     starting_time = time.time()
-    # popen = Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem',
-    #     '-u', 'ubuntu', '-H', ','.join(l), # We rule out the client
-    #     work], stdout=PIPE)
-    popen = Popen('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work), stdout=PIPE)
+    if platform.system() == 'Darwin':
+        popen = Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem',
+            '-u', 'ubuntu', '-H', ','.join(l), # We rule out the client
+            work], stdout=PIPE)
+    else:
+        popen = Popen('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work), stdout=PIPE)
     lines_iterator = iter(popen.stdout.readline, b"")
     counter = 0
     for line in lines_iterator:
