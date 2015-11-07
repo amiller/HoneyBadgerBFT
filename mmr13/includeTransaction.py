@@ -7,6 +7,7 @@ from bkr_acs import acs, initBeforeBinaryConsensus
 from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, \
     greenletPacker, PK, SKs, Transaction, getECDSAKeys, sha1hash, setHash, finishTransactionLeap
 from collections import defaultdict
+import socket
 # from ecdsa import SigningKey
 import struct
 
@@ -229,6 +230,9 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             lock.get()
             finishcount += 1
             lock.put(1)
+            if len(sys.argv) > 4: # we have a client parameter
+                sock = socket.create_connection((sys.argv[4], 51234))
+                sock.sendall("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)))
             #if finishcount >= N - t:
             #    break
                 #raise finishTransactionLeap()  # long-jump

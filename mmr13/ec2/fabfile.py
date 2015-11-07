@@ -90,7 +90,7 @@ def runProtocolFromClient(client, Nstr, tstr):
     t = int(tstr)
     start_time = time.time()
     sync_counter = 0
-    server = SocketServer.TCPServer(('0.0.0.0', 7997), MyTCPHandler)
+    server = SocketServer.TCPServer(('0.0.0.0', 51234), MyTCPHandler)
     server.serve_forever()
     with cd('~/HoneyBadgerBFT/mmr13'):
         run('python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys %s' % client)
