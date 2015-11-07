@@ -153,7 +153,7 @@ def stopAll():
     for region in regions:
         stop_all_instances(region)
 
-from subprocess import check_output, Popen, call, PIPE
+from subprocess import check_output, Popen, call, PIPE, STDOUT
 import platform
 
 
@@ -166,14 +166,15 @@ def callFabFromIPList(l, work):
         call('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work), shell=True)
 
 
-def callStartProtocolAndMonitorOutput(N, t, l, work='startProtocol'):
+def callStartProtocolAndMonitorOutput(N, t, l, work='runProtocol'):
     starting_time = time.time()
     if platform.system() == 'Darwin':
         popen = Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem',
-            '-u', 'ubuntu', '-H', ','.join(l), # We rule out the client
-            work], stdout=PIPE)
+            '-u', 'ubuntu', '-H', ','.join(l),
+            work], shell=True, stdout=PIPE, stderr=STDOUT)
     else:
-        popen = Popen('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work), stdout=PIPE)
+        popen = Popen('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work), stdout=PIPE, stderr=PIPE)
+    return
     lines_iterator = iter(popen.stdout.readline, b"")
     counter = 0
     for line in lines_iterator:
@@ -181,13 +182,13 @@ def callStartProtocolAndMonitorOutput(N, t, l, work='startProtocol'):
             counter += 1
         if counter >= N - t:
             break
-        print(line) # yield line
+        print line # yield line
     ending_time = time.time()
     print 'Latency from client scope:', ending_time - starting_time
 
 
 
-def callFab(s, work):
+def callFab(s, work):  # Depracated
     # open('hosts','w').write('\n'.join(getAddrFromEC2Summary(s)))
     print Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem', 
             '-u', 'ubuntu', '-H', ','.join(getAddrFromEC2Summary(s)),
