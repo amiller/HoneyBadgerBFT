@@ -235,7 +235,7 @@ def client_test_freenet(N, t):
             th.parent_args = (N, t)
             th.name = 'client_test_freenet.honestParty(%d)' % i
             controlChannels[i].put(('IncludeTransaction',
-                set([randomTransaction() for trC in range(sys.argv[4])])))
+                set([randomTransaction() for trC in range(int(sys.argv[4]))])))
             th.start()
             mylog('Summoned party %i at time %f' % (i, time.time()), verboseLevel=-1)
             ts.append(th)
