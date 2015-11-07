@@ -95,7 +95,7 @@ def launch_new_instances(region, number):
                 aws_secret_access_key=secret_key)
     dev_sda1 = boto.ec2.blockdevicemapping.EBSBlockDeviceType(delete_on_termination=True)
     dev_sda1.size = 8 # size in Gigabytes
-    dev_sda1.delete_on_terminate = True
+    dev_sda1.delete_on_termination = True
     bdm = boto.ec2.blockdevicemapping.BlockDeviceMapping()
     bdm['/dev/sda1'] = dev_sda1
     img = ec2_conn.get_all_images(filters={'name':'ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-20150325'})[0].id
