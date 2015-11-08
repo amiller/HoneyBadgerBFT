@@ -50,9 +50,9 @@ logGreenlet = None
 def logWriter(fileHandler):
     while True:
         msgCounter, msgSize, msgFrom, msgTo, st, et, content = logChannel.get()
-        if not QUIET_MODE:
-            fileHandler.write("%d:%d(%d->%d)[%s]-[%s]%s\n" % (msgCounter, msgSize, msgFrom, msgTo, st, et, content))
-            fileHandler.flush()
+        #if not QUIET_MODE:
+        fileHandler.write("%d:%d(%d->%d)[%s]-[%s]%s\n" % (msgCounter, msgSize, msgFrom, msgTo, st, et, content))
+        fileHandler.flush()
 
 def encode(m):  # TODO
     global msgCounter
@@ -85,7 +85,8 @@ def decode(s):  # TODO
     msgContent[result[0]] = None
     global totalMessageSize
     totalMessageSize += msgSize[result[0]]
-    logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]],
+    if not QUIET_MODE:
+        logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]],
                     starting_time[result[0]], ending_time[result[0]], repr(result[1])))
     return result[1]
 
