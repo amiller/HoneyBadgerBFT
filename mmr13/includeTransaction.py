@@ -5,9 +5,11 @@ from gevent.queue import Queue, Empty
 from mmr13 import binary_consensus
 from bkr_acs import acs, initBeforeBinaryConsensus
 from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, \
-    greenletPacker, PK, SKs, Transaction, getECDSAKeys, sha1hash, setHash, finishTransactionLeap
+    greenletPacker, PK, SKs, Transaction, getECDSAKeys, sha1hash, setHash, finishTransactionLeap, encodeTransaction, constructTransactionFromRepr
 from collections import defaultdict
+import zfec
 import socket
+from io import BytesIO
 # from ecdsa import SigningKey
 import struct
 
@@ -74,6 +76,9 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
 
     keys = getECDSAKeys()
 
+    zfecEncoder = zfec.Encoder(N-t, N)
+    zfecDecoder = zfec.Decoder(N-t, N)
+
     def Listener():
         opinions = [defaultdict(lambda: 0) for _ in range(N)]
         signed = [False]*N
@@ -84,21 +89,40 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
             if msgBundle[0] == 'i' and not signed[msgBundle[1]]:
                 if keys[msgBundle[1]].verify(sha1hash(hex(setHash(msgBundle[2]))), msgBundle[3]):
                     # Here we should remove the randomness of the signature
-                    newBundle = (msgBundle[1], msgBundle[2])
+                    assert isinstance(msgBundle[2], set)
+                    buf = BytesIO()
+                    for tr in msgBundle[2]:
+                        buf.write(encodeTransaction(tr))
+                    buf.seek(0)
+                    step = 4 * len(msgBundle[2]) % (N - t) == 0 and 4 * len(msgBundle[2]) / (N - t) or (4 * len(msgBundle[2]) % (N - t) + 1)
+                    fragList = [buf.read(step) for i in range(N - t)]
+                    newBundle = (msgBundle[1], zfecEncoder(fragList)[msgBundle[1]])
+                    #newBundle = (msgBundle[1], msgBundle[2])
                     #mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
                     #mylog("[%d] and now signed is %s" % (pid, repr(signed)), verboseLevel=-1)
-                    broadcast(('e', pid, newBundle, keys[pid].sign(sha1hash(hex((newBundle[0]+37)*setHash(newBundle[1]))))))
+                    #broadcast(('e', pid, newBundle, keys[pid].sign(sha1hash(hex((newBundle[0]+37)*setHash(newBundle[1]))))))
+                    broadcast(('e', pid, newBundle, keys[pid].sign(
+                        sha1hash(repr(newBundle))
+                    )))
                     signed[msgBundle[1]] = True
                 else:
                     raise ECDSASignatureError()
             elif msgBundle[0] == 'e':
-                if keys[msgBundle[1]].verify(sha1hash(hex((msgBundle[2][0]+37)*setHash(msgBundle[2][1]))), msgBundle[3]):
+                #if keys[msgBundle[1]].verify(sha1hash(hex((msgBundle[2][0]+37)*setHash(msgBundle[2][1]))), msgBundle[3]):
+                if keys[msgBundle[1]].verify(sha1hash(repr(msgBundle[2])), msgBundle[3]):
                     originBundle = msgBundle[2]
-                    opinions[originBundle[0]][repr(originBundle[1])] += 1
+                    opinions[originBundle[0]][sender] = originBundle[1]
+                    # opinions[originBundle[0]][repr(originBundle[1])] += 1
                     # mylog("[%d] counter for (%d, %s) is now %d" % (pid, originBundle[0],
                     #    repr(originBundle[1]), opinions[originBundle[0]][repr(originBundle[1])]))
-                    if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2 and not outputs[originBundle[0]].full():
-                        outputs[originBundle[0]].put(originBundle[1])
+                    # if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2 and not outputs[originBundle[0]].full():
+                    if len(opinions[originBundle[0]]) >= N-t and not outputs[originBundle[0]].full():
+                        try:
+                            reconstruction = zfecDecoder(opinions[originBundle[0]].values(), opinions[originBundle[0]].keys())
+                        except:
+                            raise ECDSASignatureError()  # just a place holder
+                        # outputs[originBundle[0]].put(originBundle[1])
+                        outputs[originBundle[0]].put(reconstruction)
                 else:
                     raise ECDSASignatureError()
 
@@ -220,7 +244,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             elif op == "Halt":
                 break
             elif op == "Msg":
-                broadcast(eval(msg)) # now the msg is something we mannually send
+                broadcast(eval(msg))  # now the msg is something we mannually send
         except Empty:
             print ">>>"
         finally:

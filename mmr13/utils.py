@@ -101,6 +101,7 @@ def encodeTransaction(tr):
 # + party index can be expressed in 1 byte.
 # + round index can be expressed in 2 bytes.
 # + transactions with ammount > 0 [THIS IS IMPORTANT for separation]
+# + transaction set fragments is less than 2^32 bytes
 
 def deepEncode(mc, m):
     buf = BytesIO()
@@ -120,9 +121,11 @@ def deepEncode(mc, m):
         buf.write('\x02')
         t2, p1, (p2, s), sig = c
         buf.write(struct.pack('BB', p1, p2))
-        for tr in s:
-            buf.write(encodeTransaction(tr))
-        buf.write('\x00'*4)
+        buf.write(struct.pack('<I', len(s)))
+        buf.write(s)  ## here we already have them encoded
+        # for tr in s:
+        #     buf.write(encodeTransaction(tr))
+        # buf.write('\x00'*4)
         buf.write(sig)
     else:
         p1, (t2, m2) = c
@@ -176,10 +179,12 @@ def deepDecode(m, msgTypeCounter):
         return mc, (f, t, ('B', ('i', p1, trSet, sig)),)
     elif msgtype == 2:
         p1, p2 = struct.unpack('BB', buf.read(2))
-        trRepr = buf.read(4)
-        while trRepr != '\x00'*4:
-            trSet.add(constructTransactionFromRepr(trRepr))
-            trRepr = buf.read(4)
+        trSetLen = struct.unpack('<I', buf.read(4))
+        trSet = buf.read(trSetLen)
+        # trRepr = buf.read(4)
+        # while trRepr != '\x00'*4:
+        #    trSet.add(constructTransactionFromRepr(trRepr))
+        #    trRepr = buf.read(4)
         sig = buf.read()
         return mc, (f, t, ('B', ('e', p1, (p2, trSet), sig)),)
     elif msgtype == 3:
