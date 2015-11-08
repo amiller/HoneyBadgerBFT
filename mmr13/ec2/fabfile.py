@@ -52,7 +52,7 @@ def writeHosts():
 @parallel
 def fetchLogs():
     get('~/HoneyBadgerBFT/mmr13/msglog.TorMultiple',
-        'logs/%(host)s' + time.strftime(time.gmtime()) + '.log')
+        'logs/%(host)s' + time.strftime('%Y-%m-%d_%H:%M:%SZ',time.gmtime()) + '.log')
 
 @parallel
 def syncKeys():
