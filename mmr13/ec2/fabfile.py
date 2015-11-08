@@ -32,6 +32,15 @@ def install_dependencies():
     sudo('apt-get -y install python-gmpy2')
     sudo('pip install pycrypto')
     sudo('pip install ecdsa')
+    sudo('pip install zfec')
+
+@parallel
+def prepare():
+    syncKeys()
+    install_dependencies()
+    cloneRepo()
+    git_pull()
+
 
 @parallel
 def stopProtocols():
