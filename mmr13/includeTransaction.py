@@ -96,7 +96,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     buf.seek(0)
                     step = 4 * len(msgBundle[2]) % (N - t) == 0 and 4 * len(msgBundle[2]) / (N - t) or (4 * len(msgBundle[2]) % (N - t) + 1)
                     fragList = [buf.read(step) for i in range(N - t)]
-                    newBundle = (msgBundle[1], zfecEncoder(fragList)[msgBundle[1]])
+                    newBundle = (msgBundle[1], zfecEncoder.encode(fragList)[msgBundle[1]])
                     #newBundle = (msgBundle[1], msgBundle[2])
                     #mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
                     #mylog("[%d] and now signed is %s" % (pid, repr(signed)), verboseLevel=-1)
@@ -118,7 +118,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     # if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2 and not outputs[originBundle[0]].full():
                     if len(opinions[originBundle[0]]) >= N-t and not outputs[originBundle[0]].full():
                         try:
-                            reconstruction = zfecDecoder(opinions[originBundle[0]].values(), opinions[originBundle[0]].keys())
+                            reconstruction = zfecDecoder.decode(opinions[originBundle[0]].values(), opinions[originBundle[0]].keys())
                         except:
                             raise ECDSASignatureError()  # just a place holder
                         # outputs[originBundle[0]].put(originBundle[1])
