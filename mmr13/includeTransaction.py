@@ -94,6 +94,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     for tr in msgBundle[2]:
                         buf.write(encodeTransaction(tr))
                     buf.seek(0)
+                    print 'sent', repr(buf.read())
+                    buf.seek(0)
                     step = 4 * len(msgBundle[2]) % (N - t) == 0 and 4 * len(msgBundle[2]) / (N - t) or (4 * len(msgBundle[2]) % (N - t) + 1)
                     fragList = [buf.read(step) for i in range(N - t)]
                     if len(fragList[-1]) < step:
@@ -127,7 +129,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         #    raise ECDSASignatureError()  # just a place holder
                         # outputs[originBundle[0]].put(originBundle[1])
                             buf = ''.join(reconstruction).rstrip('\xFF')
-                            print repr(buf)
+                            print 'received', repr(buf)
                             assert len(buf) % 4 == 0
                             outputs[originBundle[0]].put([constructTransactionFromRepr(buf[i:i+4]) for i in range(0, len(buf), 4)])
                 else:
