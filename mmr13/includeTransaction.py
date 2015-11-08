@@ -127,6 +127,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         #    raise ECDSASignatureError()  # just a place holder
                         # outputs[originBundle[0]].put(originBundle[1])
                             buf = ''.join(reconstruction).rstrip('\xFF')
+                            print buf
                             assert len(buf) % 4 == 0
                             outputs[originBundle[0]].put([constructTransactionFromRepr(buf[i:i+4]) for i in range(0, len(buf), 4)])
                 else:
