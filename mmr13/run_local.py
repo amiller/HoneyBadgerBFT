@@ -2,7 +2,7 @@ import subprocess, sys, signal
 
 def runOnTransaction(N, t, Tx):
     p = subprocess.Popen(
-        ['python', './honest_party_test.py', '%d_%d.key' % (N, t), 'ecdsa_keys', '%d' % (Tx * 62.5)],
+        ['python', './honest_party_test.py', '%d_%d.key' % (N, t), 'ecdsa_keys', '%d' % (Tx * 62.5), str(N), str(t)],
         shell=False,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
