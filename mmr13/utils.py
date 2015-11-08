@@ -18,7 +18,7 @@ from ecdsa_ssl import KEY
 
 nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 
-verbose = -1
+verbose = -2
 goodseed = random.randint(1, 10000)
 myRandom = random.Random(goodseed)
 
