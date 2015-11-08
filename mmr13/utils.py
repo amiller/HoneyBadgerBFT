@@ -179,7 +179,7 @@ def deepDecode(m, msgTypeCounter):
         return mc, (f, t, ('B', ('i', p1, trSet, sig)),)
     elif msgtype == 2:
         p1, p2 = struct.unpack('BB', buf.read(2))
-        trSetLen = struct.unpack('<I', buf.read(4))
+        trSetLen = struct.unpack('<I', buf.read(4))[0]
         trSet = buf.read(trSetLen)
         # trRepr = buf.read(4)
         # while trRepr != '\x00'*4:
