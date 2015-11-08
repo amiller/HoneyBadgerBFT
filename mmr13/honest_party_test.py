@@ -29,12 +29,14 @@ import struct
 from io import BytesIO
 
 USE_DEEP_ENCODE = True
+QUIET_MODE = True
 
 def exception(msg):
     mylog(bcolors.WARNING + "Exception: %s\n" % msg + bcolors.ENDC)
     os.exit(1)
 
 msgCounter = 0
+totalMessageSize = 0
 starting_time = dict()
 ending_time = dict()
 msgSize = dict()
@@ -48,8 +50,9 @@ logGreenlet = None
 def logWriter(fileHandler):
     while True:
         msgCounter, msgSize, msgFrom, msgTo, st, et, content = logChannel.get()
-        fileHandler.write("%d:%d(%d->%d)[%s]-[%s]%s\n" % (msgCounter, msgSize, msgFrom, msgTo, st, et, content))
-        fileHandler.flush()
+        if not QUIET_MODE:
+            fileHandler.write("%d:%d(%d->%d)[%s]-[%s]%s\n" % (msgCounter, msgSize, msgFrom, msgTo, st, et, content))
+            fileHandler.flush()
 
 def encode(m):  # TODO
     global msgCounter
@@ -80,6 +83,8 @@ def decode(s):  # TODO
     assert(isinstance(result, tuple))
     ending_time[result[0]] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
     msgContent[result[0]] = None
+    global totalMessageSize
+    totalMessageSize += msgSize[result[0]]
     logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]],
                     starting_time[result[0]], ending_time[result[0]], repr(result[1])))
     return result[1]
@@ -137,7 +142,7 @@ def client_test_freenet(N, t):
             recv = recvWithDecode(buffers[i])
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
             controlChannels[i].put(('IncludeTransaction',
-                set([randomTransaction() for trC in range(1)])))
+                set([randomTransaction() for trC in range(sys.argv[3])])))
             #controlChannels[i].put(('IncludeTransaction', randomTransaction()))
             th.start_later(random.random() * maxdelay)
             ts.append(th)
@@ -186,6 +191,7 @@ OUTPUT_HALF_MSG = False
 
 def exit():
     print "Entering atexit()"
+    print "Total Message size", totalMessageSize
     if OUTPUT_HALF_MSG:
         halfmsgCounter = 0
         for msgindex in starting_time.keys():
