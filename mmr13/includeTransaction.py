@@ -98,7 +98,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     fragList = [buf.read(step) for i in range(N - t)]
                     if len(fragList[-1]) < step:
                         fragList[-1] = fragList[-1] + '\xFF' * (step - len(fragList[-1]))
-                    newBundle = (msgBundle[1], zfecEncoder.encode(fragList)[msgBundle[1]])
+                    newBundle = (msgBundle[1], zfecEncoder.encode(fragList)[pid])
                     #newBundle = (msgBundle[1], msgBundle[2])
                     #mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
                     #mylog("[%d] and now signed is %s" % (pid, repr(signed)), verboseLevel=-1)
