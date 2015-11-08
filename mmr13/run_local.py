@@ -25,7 +25,8 @@ def runOnTransaction(N, t, Tx):
 
 def main(N, t):
     for i in range(11):
-        runOnTransaction(N, t, 2**i)
+        for j in range(4):
+            runOnTransaction(N, t, 2**i)
 
 if __name__=='__main__':
     main(int(sys.argv[1]), int(sys.argv[2]))
