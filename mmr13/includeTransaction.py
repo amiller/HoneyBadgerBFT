@@ -119,11 +119,12 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     if len(opinions[originBundle[0]]) >= N-t and not outputs[originBundle[0]].full():
                         if True:
                         #try:
-                            reconstruction = zfecDecoder.decode(opinions[originBundle[0]].values(), opinions[originBundle[0]].keys())
+                            reconstruction = zfecDecoder.decode(opinions[originBundle[0]].values()[:N-t],
+                                opinions[originBundle[0]].keys()[:N-t])  # We only take the first N-t fragments
                         #except:
                         #    raise ECDSASignatureError()  # just a place holder
                         # outputs[originBundle[0]].put(originBundle[1])
-                        outputs[originBundle[0]].put(reconstruction)
+                            outputs[originBundle[0]].put(reconstruction)
                 else:
                     raise ECDSASignatureError()
 
