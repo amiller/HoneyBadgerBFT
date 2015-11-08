@@ -17,7 +17,7 @@ def runOnTransaction(N, t, Tx):
         if 'synced' in line:
             counter += 1
         if counter >= N - t:
-            popen.send_signal(signal.SIGINT)
+            p.send_signal(signal.SIGINT)
     print Tx, p.stdout.read()
 
 def main(N, t):
