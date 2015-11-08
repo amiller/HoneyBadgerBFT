@@ -18,7 +18,8 @@ def runOnTransaction(N, t, Tx):
             counter += 1
         if counter >= N - t:
             p.send_signal(signal.SIGINT)
-    print Tx, p.stdout.read()
+            print Tx, p.stdout.read(), p.stderr.read()      
+    
 
 def main(N, t):
     for i in range(11):
