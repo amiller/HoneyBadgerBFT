@@ -11,6 +11,8 @@ def runOnTransaction(N, t, Tx):
     counter = 0
     while True:
         line = p.stdout.readline()
+        if 'size' in line:
+            print Tx, line
         if line == '':
             break
         # print(line.strip())  # remove extra ws between lines
@@ -18,7 +20,7 @@ def runOnTransaction(N, t, Tx):
             counter += 1
         if counter >= N - t:
             p.send_signal(signal.SIGINT)
-            print Tx, p.stdout.read(), p.stderr.read()      
+
     
 
 def main(N, t):
