@@ -1,4 +1,4 @@
-import subprocess, sys
+import subprocess, sys, signal
 
 def runOnTransaction(N, t, Tx):
     p = subprocess.Popen(
@@ -17,7 +17,7 @@ def runOnTransaction(N, t, Tx):
         if 'synced' in line:
             counter += 1
         if counter >= N - t:
-            p.kill()
+            popen.send_signal(signal.SIGINT)
     print Tx, p.stdout.read()
 
 def main(N, t):
