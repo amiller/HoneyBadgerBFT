@@ -37,13 +37,14 @@ def get_ec2_instances_ip(region):
     if ec2_conn:
         result = []
         reservations = ec2_conn.get_all_reservations(filters={'tag:Name': NameFilter})
-        for reservation in reservations:    
-            for ins in reservation.instances:
-                if ins.public_dns_name: 
-                # ec2-54-153-121-229.us-west-1.compute.amazonaws.com
-                    currentIP = ins.public_dns_name.split('.')[0][4:].replace('-','.')
-                    result.append(currentIP)
-                    print currentIP
+        for reservation in reservations:
+            if reservation:       
+                for ins in reservation.instances:
+                    if ins.public_dns_name: 
+                    # ec2-54-153-121-229.us-west-1.compute.amazonaws.com
+                        currentIP = ins.public_dns_name.split('.')[0][4:].replace('-','.')
+                        result.append(currentIP)
+                        print currentIP
         return result
     else:
         print 'Region failed', region
@@ -72,10 +73,11 @@ def stop_all_instances(region):
     idList = []
     if ec2_conn:
         reservations = ec2_conn.get_all_reservations(filters={'tag:Name': NameFilter})
-        for reservation in reservations:    
-            for ins in reservation.instances:
-                idList.append(ins.id)
-    ec2_conn.stop_instances(instance_ids=idList)
+        for reservation in reservations: 
+            if reservation:   
+                for ins in reservation.instances:
+                    idList.append(ins.id)
+        ec2_conn.stop_instances(instance_ids=idList)
 
 def terminate_all_instances(region):
     ec2_conn = boto.ec2.connect_to_region(region,
@@ -84,10 +86,11 @@ def terminate_all_instances(region):
     idList = []
     if ec2_conn:
         reservations = ec2_conn.get_all_reservations(filters={'tag:Name': NameFilter})
-        for reservation in reservations:    
-            for ins in reservation.instances:
-                idList.append(ins.id)
-    ec2_conn.terminate_instances(instance_ids=idList)
+        for reservation in reservations:   
+            if reservation:    
+                for ins in reservation.instances:
+                    idList.append(ins.id)
+        ec2_conn.terminate_instances(instance_ids=idList)
 
 def launch_new_instances(region, number):
     ec2_conn = boto.ec2.connect_to_region(region,
@@ -123,7 +126,7 @@ def start_all_instances(region):
         for reservation in reservations:    
             for ins in reservation.instances:
                 idList.append(ins.instance_id)
-    ec2_conn.start_instances(instance_ids=idList)
+        ec2_conn.start_instances(instance_ids=idList)
 
 
 def ipAll():
