@@ -25,4 +25,4 @@ def main(N, t):
         runOnTransaction(N, t, 2**i)
 
 if __name__=='__main__':
-    main(int(sys.argv[1], sys.argv[2]))
+    main(int(sys.argv[1]), int(sys.argv[2]))
