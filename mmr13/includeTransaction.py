@@ -227,7 +227,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             syncedTXSet = includeTransaction(pid, N, t, transactionCache, broadcast, receive)
             assert(isinstance(syncedTXSet, set))
             transactionCache = transactionCache.difference(syncedTXSet)
-            mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)), verboseLevel=-1)
+            mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)), verboseLevel = -2)
             mylog("timestampE (%d, %lf)" % (pid, time.time()), verboseLevel=-1)
             lock.get()
             finishcount += 1

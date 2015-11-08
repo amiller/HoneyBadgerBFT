@@ -191,7 +191,7 @@ OUTPUT_HALF_MSG = False
 
 def exit():
     print "Entering atexit()"
-    print "Total Message size", totalMessageSize
+    mylog("Total Message size %d" % totalMessageSize, verboseLevel=-2)
     if OUTPUT_HALF_MSG:
         halfmsgCounter = 0
         for msgindex in starting_time.keys():
@@ -215,5 +215,5 @@ if __name__ == '__main__':
     atexit.register(exit)
     if USE_PROFILE:
         GreenletProfiler.start()
-    client_test_freenet(4, 1)
+    client_test_freenet(20, 4)
 
