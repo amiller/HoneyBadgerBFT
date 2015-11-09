@@ -27,7 +27,7 @@ import sys
 def main(N, t, start_i=0, end_i=11, start_j=0):
     for i in range(start_i, end_i):
         sys.stdout.write(str(2**i))
-        for j in range(start_i, 4):
+        for j in range(start_j, 4):
             sys.stdout.write(',' + str(runOnTransaction(N, t, 2**i)))
         sys.stdout.write('\n')
 
