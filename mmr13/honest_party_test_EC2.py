@@ -251,6 +251,8 @@ def client_test_freenet(N, t):
         except gevent.hub.LoopExit: # Manual fix for early stop
             print "Concensus Finished"
             mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
+        finally:
+            mylog("Total Message size %d" % totalMessageSize, verboseLevel=-2)
 
 
 import atexit
@@ -266,8 +268,7 @@ if USE_PROFILE:
     import GreenletProfiler
 
 def exit():
-    print >>sys.stderr, "Entering atexit()", totalMessageSize
-    mylog("Total Message size %d" % totalMessageSize, verboseLevel=-2)
+    print >>sys.stderr, "Entering atexit()"
     if OUTPUT_HALF_MSG:
         halfmsgCounter = 0
         for msgindex in starting_time.keys():
