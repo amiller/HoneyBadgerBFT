@@ -14,7 +14,7 @@ from io import BytesIO
 import struct
 import gmpy2
 from ecdsa_ssl import KEY
-
+import os
 
 nameList = open('names.txt','r').read().strip().split('\n')
 # nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
@@ -96,7 +96,7 @@ def encodeTransaction(tr):
     targetInd = nameList.index(tr.target)
     return struct.pack(
         '<BBH', sourceInd, targetInd, tr.amount
-    ) + ''.join([chr(random.randint(1, 255)) for i in range(TR_SIZE - 4)])  # padding
+    ) + os.urandom(TR_SIZE - 5) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
 
 
 # assumptions:
