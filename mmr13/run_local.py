@@ -23,14 +23,17 @@ def runOnTransaction(N, t, Tx):
             p.send_signal(signal.SIGINT)
 
     
+import sys
+def main(N, t, start_i=0, start_j=0):
+    for i in range(start_i, 11):
+        sys.stdout.write(str(2**i))
+        for j in range(start_i, 4):
+            sys.stdout.write(',' + str(runOnTransaction(N, t, 2**i)))
+        sys.stdout.write('\n')
 
-def main(N, t):
-    for i in range(11):
-        line = [str(2**i)]
-        for j in range(4):
-            line.append(runOnTransaction(N, t, 2**i))
-        print ','.join(line)
-    
 
 if __name__=='__main__':
-    main(int(sys.argv[1]), int(sys.argv[2]))
+    if len(sys.argv > 3):
+        main(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]))    
+    else:
+        main(int(sys.argv[1]), int(sys.argv[2]))
