@@ -117,7 +117,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
                     if len(fragList[-1]) < step:
                         fragList[-1] = fragList[-1] + '\xFF' * (step - len(fragList[-1]))  # padding
-                    # print 'fragList', fragList
+                    print sender, 'fragList', fragList
                     newBundle = (msgBundle[1], zfecEncoder.encode(fragList)[pid])
                     #newBundle = (msgBundle[1], msgBundle[2])
                     #mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
@@ -144,6 +144,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                                 opinions[originBundle[0]].keys()[:Threshold])  # We only take the first [Threshold] fragments
                         # assert len(reconstruction) == Threshold
                         buf = ''.join(reconstruction).rstrip('\xFF')
+                        print opinions[originBundle[0]].values()[:Threshold]
+                        print opinions[originBundle[0]].keys()[:Threshold]
                         print originBundle[0], '->', sender, len(buf), repr(buf)
                         assert len(buf) % TR_SIZE == 0
                         reconsLocker[originBundle[0]].put(buf)
