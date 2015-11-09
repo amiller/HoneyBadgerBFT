@@ -192,6 +192,7 @@ OUTPUT_HALF_MSG = False
 
 def exit():
     print "Entering atexit()"
+    print msgTypeCounter
     mylog("Total Message size %d" % totalMessageSize, verboseLevel=-2)
     if OUTPUT_HALF_MSG:
         halfmsgCounter = 0
