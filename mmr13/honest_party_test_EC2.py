@@ -105,7 +105,7 @@ def prepareIPList(content):
 
 mylog("[INIT] IP_MAPPINGS: %s" % repr(IP_MAPPINGS))
 
-nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
+# nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 
 
 def exception(msg):
@@ -156,7 +156,7 @@ def decode(s):  # TODO
     msgTo[result[0]] = result[1][0]
     global totalMessageSize
     totalMessageSize += msgSize[result[0]]
-    print totalMessageSize
+    # print totalMessageSize
     logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
     return result[1]
 
@@ -269,7 +269,7 @@ if USE_PROFILE:
     import GreenletProfiler
 
 def exit():
-    print >>sys.stderr, "Entering atexit()"
+    print "Entering atexit()"
     if OUTPUT_HALF_MSG:
         halfmsgCounter = 0
         for msgindex in starting_time.keys():
