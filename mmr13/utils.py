@@ -155,7 +155,7 @@ def deepEncode(mc, m):
 
 
 def constructTransactionFromRepr(r):
-    print repr(r[:4])
+    # print repr(r[:4])
     sourceInd, targetInd, amount = struct.unpack('<BBH', r[:4])
     tr = Transaction()
     tr.source = nameList[sourceInd]
