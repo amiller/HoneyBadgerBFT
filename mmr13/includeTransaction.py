@@ -118,6 +118,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     if len(fragList[-1]) < step:
                         fragList[-1] = fragList[-1] + '\xFF' * (step - len(fragList[-1]))  # padding
                     print sender, 'fragList', fragList
+                    print sender, 'encoded', zfecEncoder.encode(fragList)
                     newBundle = (msgBundle[1], zfecEncoder.encode(fragList)[pid])
                     #newBundle = (msgBundle[1], msgBundle[2])
                     #mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
