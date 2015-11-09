@@ -115,7 +115,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     for tr in msgBundle[2]:
                         buf.write(encodeTransaction(tr))
                     buf.seek(0)
-                    # print 'sent', repr(buf.read())
+                    print 'sent', repr(buf.read())
                     buf.seek(0)
                     step = TR_SIZE * len(msgBundle[2]) % Threshold == 0 and TR_SIZE * len(msgBundle[2]) / Threshold or (TR_SIZE * len(msgBundle[2]) / Threshold + 1)
                     fragList = [buf.read(step) for i in range(Threshold)]
@@ -148,7 +148,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                                 opinions[originBundle[0]].keys()[:Threshold])  # We only take the first [Threshold] fragments
                         # assert len(reconstruction) == Threshold
                         buf = ''.join(reconstruction).rstrip('\xFF')
-                        print len(buf), repr(buf[-30:])
+                        print len(buf), repr(buf)
                         assert len(buf) % TR_SIZE == 0
                         reconsLocker[originBundle[0]].put(buf)
                         broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to
