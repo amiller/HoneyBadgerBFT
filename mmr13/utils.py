@@ -18,6 +18,7 @@ from ecdsa_ssl import KEY
 
 nameList = open('names.txt','r').read().strip().split('\n')
 # nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
+TR_SIZE = 250
 
 verbose = -2
 goodseed = random.randint(1, 10000)
@@ -33,6 +34,7 @@ def callBackWrap(func, callback):
     return _callBackWrap
 
 PK, SKs = None, None
+
 ecdsa_key_list = []
 
 from Crypto.Hash import SHA256
@@ -94,7 +96,7 @@ def encodeTransaction(tr):
     targetInd = nameList.index(tr.target)
     return struct.pack(
         '<BBH', sourceInd, targetInd, tr.amount
-    )
+    ) + ''.join([chr(random.randint(1, 255)) for i in range(TR_SIZE - 4)])  # padding
 
 
 # assumptions:
@@ -154,7 +156,7 @@ def deepEncode(mc, m):
 
 
 def constructTransactionFromRepr(r):
-    sourceInd, targetInd, amount = struct.unpack('<BBH', r)
+    sourceInd, targetInd, amount = struct.unpack('<BBH', r[:4])
     tr = Transaction()
     tr.source = nameList[sourceInd]
     tr.target = nameList[targetInd]
@@ -178,10 +180,10 @@ def deepDecode(m, msgTypeCounter):
     msgTypeCounter[msgtype] += len(m)
     if msgtype == 1:
         p1, = struct.unpack('B', buf.read(1))
-        trRepr = buf.read(4)
-        while trRepr != '\x00'*4:
+        trRepr = buf.read(TR_SIZE)
+        while not '\x00'*4 in trRepr:
             trSet.add(constructTransactionFromRepr(trRepr))
-            trRepr = buf.read(4)
+            trRepr = buf.read(TR_SIZE)
         sig = buf.read()
         return mc, (f, t, ('B', ('i', p1, trSet, sig)),)
     elif msgtype == 2:
