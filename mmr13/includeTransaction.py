@@ -100,7 +100,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         def final(i):
             buf = reconsLocker[i].get()
             finalTrigger[i].get()
-            outputs[i].put([constructTransactionFromRepr(buf[i:i+4]) for i in range(0, len(buf), 4)])
+            outputs[i].put([constructTransactionFromRepr(buf[i:i+TR_SIZE]) for i in range(0, len(buf), 4)])
         for i in range(N):
             Greenlet(final, i).start()
         while True:
@@ -111,14 +111,13 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 if keys[msgBundle[1]].verify(sha1hash(hex(setHash(msgBundle[2]))), msgBundle[3]):
                     # Here we should remove the randomness of the signature
                     assert isinstance(msgBundle[2], set)
-                    buf = BytesIO()
+                    tbuf = []
                     for tr in msgBundle[2]:
-                        buf.write(encodeTransaction(tr))
-                    buf.seek(0)
+                        tbuf.append(encodeTransaction(tr))
+                    buf = ''.join(tbuf)
                     print 'sent', repr(buf.read())
-                    buf.seek(0)
                     step = TR_SIZE * len(msgBundle[2]) % Threshold == 0 and TR_SIZE * len(msgBundle[2]) / Threshold or (TR_SIZE * len(msgBundle[2]) / Threshold + 1)
-                    fragList = [buf.read(step) for i in range(Threshold)]
+                    fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
                     if len(fragList[-1]) < step:
                         fragList[-1] = fragList[-1] + '\xFF' * (step - len(fragList[-1]))  # padding
                     # print 'fragList', fragList
