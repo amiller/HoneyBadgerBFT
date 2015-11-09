@@ -9,20 +9,22 @@ def runOnTransaction(N, t, Tx):
         stdin=subprocess.PIPE
     )
     counter = 0
+    sent = False
     while True:
         line = p.stdout.readline()
         if 'size' in line:
             # print Tx, line
             return line.replace('Total Message size ','').strip()
-        print line, counter
         if line == '':
             break
         # print(line.strip())  # remove extra ws between lines
         if 'synced' in line:
             counter += 1
-        if counter >= N - t:
+        if counter >= N - t and not sent:
             p.send_signal(signal.SIGINT)
+            sent = True
             print 'signal sent'
+        # print line, counter
 
     
 import sys
