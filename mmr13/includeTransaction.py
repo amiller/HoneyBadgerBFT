@@ -115,7 +115,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     for tr in msgBundle[2]:
                         tbuf.append(encodeTransaction(tr))
                     buf = ''.join(tbuf)
-                    print 'sent', repr(buf.read())
+                    print 'sent', repr(buf)
                     step = TR_SIZE * len(msgBundle[2]) % Threshold == 0 and TR_SIZE * len(msgBundle[2]) / Threshold or (TR_SIZE * len(msgBundle[2]) / Threshold + 1)
                     fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
                     if len(fragList[-1]) < step:
