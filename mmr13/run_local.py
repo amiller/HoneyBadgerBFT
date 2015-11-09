@@ -22,6 +22,7 @@ def runOnTransaction(N, t, Tx):
             counter += 1
         if counter >= N - t:
             p.send_signal(signal.SIGINT)
+            print 'signal sent'
 
     
 import sys
