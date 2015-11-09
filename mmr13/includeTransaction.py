@@ -111,11 +111,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 if keys[msgBundle[1]].verify(sha1hash(hex(setHash(msgBundle[2]))), msgBundle[3]):
                     # Here we should remove the randomness of the signature
                     assert isinstance(msgBundle[2], set)
-                    tbuf = []
-                    for tr in msgBundle[2]:
-                        tbuf.append(encodeTransaction(tr))
-                    buf = ''.join(tbuf)
-                    print 'sent', repr(buf)
+                    buf = ''.join([encodeTransaction(tr) for tr in msgBundle[2]])
+                    # print 'sent', repr(buf)
                     step = TR_SIZE * len(msgBundle[2]) % Threshold == 0 and TR_SIZE * len(msgBundle[2]) / Threshold or (TR_SIZE * len(msgBundle[2]) / Threshold + 1)
                     fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
                     if len(fragList[-1]) < step:
@@ -147,7 +144,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                                 opinions[originBundle[0]].keys()[:Threshold])  # We only take the first [Threshold] fragments
                         # assert len(reconstruction) == Threshold
                         buf = ''.join(reconstruction).rstrip('\xFF')
-                        print len(buf), repr(buf)
+                        # print len(buf), repr(buf)
                         assert len(buf) % TR_SIZE == 0
                         reconsLocker[originBundle[0]].put(buf)
                         broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to
