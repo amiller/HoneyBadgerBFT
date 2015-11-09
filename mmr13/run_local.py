@@ -33,7 +33,7 @@ def main(N, t, start_i=0, start_j=0):
 
 
 if __name__=='__main__':
-    if len(sys.argv > 3):
+    if len(sys.argv) > 3:
         main(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]))    
     else:
         main(int(sys.argv[1]), int(sys.argv[2]))
