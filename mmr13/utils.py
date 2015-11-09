@@ -16,7 +16,8 @@ import gmpy2
 from ecdsa_ssl import KEY
 
 
-nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
+nameList = open('names.txt','r').read().split('\n')
+# nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 
 verbose = -2
 goodseed = random.randint(1, 10000)
@@ -72,7 +73,7 @@ def randomTransaction():
     tx = Transaction()
     tx.source = random.choice(nameList)
     tx.target = random.choice(nameList)
-    tx.amount = random.randint(1, 100)
+    tx.amount = random.randint(1, 32767)  # not 0
     return tx
 
 def randomTransactionStr():
