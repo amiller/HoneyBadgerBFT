@@ -24,8 +24,8 @@ def runOnTransaction(N, t, Tx):
 
     
 import sys
-def main(N, t, start_i=0, start_j=0):
-    for i in range(start_i, 11):
+def main(N, t, start_i=0, end_i=11, start_j=0):
+    for i in range(start_i, end_i):
         sys.stdout.write(str(2**i))
         for j in range(start_i, 4):
             sys.stdout.write(',' + str(runOnTransaction(N, t, 2**i)))
@@ -34,6 +34,6 @@ def main(N, t, start_i=0, start_j=0):
 
 if __name__=='__main__':
     if len(sys.argv) > 3:
-        main(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]))    
+        main(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]))    
     else:
         main(int(sys.argv[1]), int(sys.argv[2]))

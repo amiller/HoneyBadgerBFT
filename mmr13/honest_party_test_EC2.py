@@ -266,7 +266,7 @@ if USE_PROFILE:
     import GreenletProfiler
 
 def exit():
-    print "Entering atexit()"
+    print >>sys.stderr, "Entering atexit()", totalMessageSize
     mylog("Total Message size %d" % totalMessageSize, verboseLevel=-2)
     if OUTPUT_HALF_MSG:
         halfmsgCounter = 0
