@@ -111,7 +111,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 if keys[msgBundle[1]].verify(sha1hash(hex(setHash(msgBundle[2]))), msgBundle[3]):
                     # Here we should remove the randomness of the signature
                     assert isinstance(msgBundle[2], set)
-                    buf = ''.join([encodeTransaction(tr) for tr in msgBundle[2]])
+                    buf = msgBundle[2] # now it is a string  # ''.join([encodeTransaction(tr) for tr in msgBundle[2]])
                     print sender, 'sent', len(buf), repr(buf)
                     step = TR_SIZE * len(msgBundle[2]) % Threshold == 0 and TR_SIZE * len(msgBundle[2]) / Threshold or (TR_SIZE * len(msgBundle[2]) / Threshold + 1)
                     fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
@@ -164,7 +164,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     finalTrigger[msgBundle[1]].put(1)
 
     greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()
-    broadcast(('i', pid, msg, keys[pid].sign(sha1hash(hex(setHash(msg))))))  # Kick Off!
+    encodedMsg = ''.join([encodeTransaction(tr) for tr in msg])
+    broadcast(('i', pid, encodedMsg, keys[pid].sign(sha1hash(hex(setHash(msg))))))  # Kick Off!
 
 @greenletFunction
 def consensusBroadcast(pid, N, t, msg, broadcast, receive, outputs, method=multiSigBr):
