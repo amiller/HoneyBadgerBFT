@@ -252,6 +252,7 @@ def client_test_freenet(N, t):
             print "Concensus Finished"
             mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
         finally:
+            open('msgsize','w').write(str(totalMessageSize))
             mylog("Total Message size %d" % totalMessageSize, verboseLevel=-2)
 
 
