@@ -156,11 +156,12 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
             elif msgBundle[0] == 'r':
                 readyCounter[msgBundle[1]][msgBundle[2]] += 1
                 tmp = readyCounter[msgBundle[1]][msgBundle[2]]
+                print pid, msgBundle[1], tmp
                 if tmp >= t+1 and not readySent[msgBundle[1]]:
                     readySent[msgBundle[1]] = True
                     broadcast(('r', msgBundle[1], msgBundle[2]))  # relay the msg
-                if tmp >= 2*t+1 and not outputs[originBundle[0]].full():
-                    finalTrigger[originBundle[0]].put(1)
+                if tmp >= 2*t+1 and not outputs[msgBundle[1]].full():
+                    finalTrigger[msgBundle[1]].put(1)
 
     greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()
     broadcast(('i', pid, msg, keys[pid].sign(sha1hash(hex(setHash(msg))))))  # Kick Off!
