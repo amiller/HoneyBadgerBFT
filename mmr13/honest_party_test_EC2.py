@@ -119,7 +119,7 @@ msgSize = defaultdict(lambda: 0)
 msgFrom = defaultdict(lambda: 0)
 msgTo = defaultdict(lambda: 0)
 msgContent = defaultdict(lambda: '')
-msgTypeCounter = [0] * 6
+msgTypeCounter = [0] * 7
 logChannel = Queue()
 
 def logWriter(fileHandler):
