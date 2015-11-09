@@ -134,8 +134,9 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     # if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2 and not outputs[originBundle[0]].full():
                     if len(opinions[originBundle[0]]) >= Threshold2 and not readySent:
                         readySent = True
-                        reconstruction = zfecDecoder.decode(opinions[originBundle[0]].values()[:N-t],
-                                opinions[originBundle[0]].keys()[:N-t])  # We only take the first N-t fragments
+                        reconstruction = zfecDecoder.decode(opinions[originBundle[0]].values()[:Threshold],
+                                opinions[originBundle[0]].keys()[:Threshold])  # We only take the first [Threshold] fragments
+                        # assert len(reconstruction) == Threshold
                         buf = ''.join(reconstruction).rstrip('\xFF')
                         assert len(buf) % 4 == 0
                         reconsLocker.put(buf)
