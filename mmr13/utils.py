@@ -127,6 +127,11 @@ def deepEncode(mc, m):
         #     buf.write(encodeTransaction(tr))
         # buf.write('\x00'*4)
         buf.write(sig)
+    elif c[0]=='r':
+        buf.write('\x06')
+        t2, p1, hm = c
+        buf.write(struct.pack('B', p1))
+        buf.write(hm)
     else:
         p1, (t2, m2) = c
         if t2 == 'B':
@@ -163,6 +168,7 @@ def constructTransactionFromRepr(r):
 # 3:(0, 3, ('A', (1, ('B', (1, 1)))))
 # 4:(0, 3, ('A', (2, ('A', (1, 1)))))
 # 5:(3, 0, ('A', (0, ('C', (1, mpz(340L))))))
+# 6:(3, 0, ('B', ('r', 0, 'asdasd')))
 
 def deepDecode(m, msgTypeCounter):
     buf = BytesIO(m)
@@ -197,6 +203,10 @@ def deepDecode(m, msgTypeCounter):
         p1, r = struct.unpack('<BH', buf.read(3))
         sig = gmpy2.from_binary('\x01\x01'+buf.read())
         return mc, (f, t, ('A', (p1, ('C', (r, sig)))))
+    elif msgtype == 6:
+        p1, = struct.unpack('B', buf.read(1))
+        hm = buf.read()
+        return mc, (f, t, ('B', ('r', p1, hm)))
     else:
         raise deepDecodeException()
 

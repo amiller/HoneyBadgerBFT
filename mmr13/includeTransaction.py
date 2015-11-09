@@ -64,6 +64,12 @@ class dummyPKI(object):
 class ECDSASignatureError(Exception):
     pass
 
+def ceil(x):
+    assert isinstance(x, float)
+    if int(x) != x:
+        return int(x)+1
+    return int(x)
+
 @greenletFunction
 def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
     # Since all the parties we have are symmetric, so I implement this function for N instances of A-cast as a whole
@@ -75,15 +81,20 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
     #Pubkeys[pid].put(sk.get_verifying_key())
 
     keys = getECDSAKeys()
+    Threshold = ceil((N-t+1)/2.0)
+    Threshold2 = ceil((N+t+1)/2.0)
 
-    zfecEncoder = zfec.Encoder(N-t, N)
-    zfecDecoder = zfec.Decoder(N-t, N)
+    zfecEncoder = zfec.Encoder(Threshold, N)
+    zfecDecoder = zfec.Decoder(Threshold, N)
 
     def Listener():
         opinions = [defaultdict(lambda: 0) for _ in range(N)]
+        readyCounter = [defaultdict(lambda: 0) for _ in range(N)]
         signed = [False]*N
+        readySent = False
+        reconsLocker = Queue()
         while True:
-            sender, msgBundle = receive()  # TODO: Add Signature here
+            sender, msgBundle = receive()
             #mylog("[%d] multiSigBr received msgBundle %s" % (pid, msgBundle), verboseLevel=-1)
             # vki = Pubkeys[msgBundle[1]].peek()
             if msgBundle[0] == 'i' and not signed[msgBundle[1]]:
@@ -96,10 +107,10 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     buf.seek(0)
                     # print 'sent', repr(buf.read())
                     buf.seek(0)
-                    step = 4 * len(msgBundle[2]) % (N - t) == 0 and 4 * len(msgBundle[2]) / (N - t) or (4 * len(msgBundle[2]) / (N - t) + 1)
-                    fragList = [buf.read(step) for i in range(N - t)]
+                    step = 4 * len(msgBundle[2]) % Threshold == 0 and 4 * len(msgBundle[2]) / Threshold or (4 * len(msgBundle[2]) / Threshold + 1)
+                    fragList = [buf.read(step) for i in range(Threshold)]
                     if len(fragList[-1]) < step:
-                        fragList[-1] = fragList[-1] + '\xFF' * (step - len(fragList[-1]))
+                        fragList[-1] = fragList[-1] + '\xFF' * (step - len(fragList[-1]))  # padding
                     # print 'fragList', fragList
                     newBundle = (msgBundle[1], zfecEncoder.encode(fragList)[pid])
                     #newBundle = (msgBundle[1], msgBundle[2])
@@ -121,21 +132,26 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     # mylog("[%d] counter for (%d, %s) is now %d" % (pid, originBundle[0],
                     #    repr(originBundle[1]), opinions[originBundle[0]][repr(originBundle[1])]))
                     # if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2 and not outputs[originBundle[0]].full():
-                    if len(opinions[originBundle[0]]) >= N-t and not outputs[originBundle[0]].full():
-                        if True:
-                        #try:
-                            reconstruction = zfecDecoder.decode(opinions[originBundle[0]].values()[:N-t],
+                    if len(opinions[originBundle[0]]) >= Threshold2 and not readySent:
+                        readySent = True
+                        reconstruction = zfecDecoder.decode(opinions[originBundle[0]].values()[:N-t],
                                 opinions[originBundle[0]].keys()[:N-t])  # We only take the first N-t fragments
-                            # print reconstruction
-                        #except:
-                        #    raise ECDSASignatureError()  # just a place holder
-                        # outputs[originBundle[0]].put(originBundle[1])
-                            buf = ''.join(reconstruction).rstrip('\xFF')
-                            # print 'received', repr(buf)
-                            assert len(buf) % 4 == 0
-                            outputs[originBundle[0]].put([constructTransactionFromRepr(buf[i:i+4]) for i in range(0, len(buf), 4)])
+                        buf = ''.join(reconstruction).rstrip('\xFF')
+                        assert len(buf) % 4 == 0
+                        reconsLocker.put(buf)
+                        broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to
                 else:
                     raise ECDSASignatureError()
+            elif msgBundle[0] == 'r':
+                readyCounter[msgBundle[1]][msgBundle[2]] += 1
+                tmp = readyCounter[msgBundle[1]][msgBundle[2]]
+                if tmp >= t+1 and not readySent:
+                    readySent = True
+                    broadcast('r', msgBundle[1], msgBundle[2])
+                if tmp >= 2*t+1 and not outputs[originBundle[0]].full():
+                    buf = reconsLocker.get()
+                    outputs[originBundle[0]].put([constructTransactionFromRepr(buf[i:i+4]) for i in range(0, len(buf), 4)])
+
 
 
     greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()

@@ -44,7 +44,7 @@ msgFrom = dict()
 msgTo = dict()
 msgContent = dict()
 logChannel = Queue()
-msgTypeCounter = [0]*6
+msgTypeCounter = [0]*7
 logGreenlet = None
 
 def logWriter(fileHandler):
