@@ -64,11 +64,14 @@ class dummyPKI(object):
 class ECDSASignatureError(Exception):
     pass
 
+import math
+
 def ceil(x):
-    assert isinstance(x, float)
-    if int(x) != x:
-        return int(x)+1
-    return int(x)
+    #assert isinstance(x, float)
+    #if int(x) != x:
+    #    return int(x)+1
+    #return int(x)
+    return int(math.ceil(x))
 
 @greenletFunction
 def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
@@ -93,6 +96,12 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         signed = [False]*N
         readySent = False
         reconsLocker = Queue()
+        finalTrigger = Queue()
+        def final():
+            buf = reconsLocker.get()
+            sender = finalTrigger.get()
+            outputs[sender].put([constructTransactionFromRepr(buf[i:i+4]) for i in range(0, len(buf), 4)])
+        Greenlet(final).start()
         while True:
             sender, msgBundle = receive()
             #mylog("[%d] multiSigBr received msgBundle %s" % (pid, msgBundle), verboseLevel=-1)
@@ -148,12 +157,9 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 tmp = readyCounter[msgBundle[1]][msgBundle[2]]
                 if tmp >= t+1 and not readySent:
                     readySent = True
-                    broadcast('r', msgBundle[1], msgBundle[2])
+                    broadcast('r', msgBundle[1], msgBundle[2])  # relay the msg
                 if tmp >= 2*t+1 and not outputs[originBundle[0]].full():
-                    buf = reconsLocker.get()
-                    outputs[originBundle[0]].put([constructTransactionFromRepr(buf[i:i+4]) for i in range(0, len(buf), 4)])
-
-
+                    finalTrigger.put(originBundle[0])
 
     greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()
     broadcast(('i', pid, msg, keys[pid].sign(sha1hash(hex(setHash(msg))))))  # Kick Off!
