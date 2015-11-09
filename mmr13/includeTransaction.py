@@ -148,6 +148,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                                 opinions[originBundle[0]].keys()[:Threshold])  # We only take the first [Threshold] fragments
                         # assert len(reconstruction) == Threshold
                         buf = ''.join(reconstruction).rstrip('\xFF')
+                        print len(buf)
                         assert len(buf) % TR_SIZE == 0
                         reconsLocker[originBundle[0]].put(buf)
                         broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to
@@ -261,7 +262,6 @@ lock.put(1)
 @greenletFunction
 def honestParty(pid, N, t, controlChannel, broadcast, receive):
     # RequestChannel is called by the client and it is the client's duty to broadcast the tx it wants to include
-    mylog("timestampB (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
     #sock = socket.create_connection((sys.argv[4], 51234))
     transactionCache = set()
     sessionID = 0
@@ -284,6 +284,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
         except Empty:
             print ">>>"
         finally:
+            mylog("timestampB (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
             syncedTXSet = includeTransaction(pid, N, t, transactionCache, broadcast, receive)
             assert(isinstance(syncedTXSet, set))
             transactionCache = transactionCache.difference(syncedTXSet)
