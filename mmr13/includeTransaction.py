@@ -276,7 +276,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
                     transactionCache.add(msg)
                 elif isinstance(msg, set):
                     transactionCache.update(msg)
-                # print transactionCache
+                print 'got', len(transactionCache), 'TXs'
             elif op == "Halt":
                 break
             elif op == "Msg":
