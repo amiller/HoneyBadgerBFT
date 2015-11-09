@@ -14,6 +14,7 @@ def runOnTransaction(N, t, Tx):
         if 'size' in line:
             # print Tx, line
             return line.replace('Total Message size ','').strip()
+        print line
         if line == '':
             break
         # print(line.strip())  # remove extra ws between lines
