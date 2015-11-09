@@ -113,6 +113,7 @@ def exception(msg):
     os.exit(1)
 
 msgCounter = 0
+totalMessageSize = 0
 starting_time = defaultdict(lambda: 0.0)
 ending_time = defaultdict(lambda: 0.0)
 msgSize = defaultdict(lambda: 0)
@@ -153,6 +154,8 @@ def decode(s):  # TODO
     msgContent[result[0]] = None
     msgFrom[result[0]] = result[1][1]
     msgTo[result[0]] = result[1][0]
+    global totalMessageSize
+    totalMessageSize += msgSize[result[0]]
     logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
     return result[1]
 
@@ -263,6 +266,8 @@ if USE_PROFILE:
     import GreenletProfiler
 
 def exit():
+    print "Entering atexit()"
+    mylog("Total Message size %d" % totalMessageSize, verboseLevel=-2)
     if OUTPUT_HALF_MSG:
         halfmsgCounter = 0
         for msgindex in starting_time.keys():
