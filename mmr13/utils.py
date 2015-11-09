@@ -115,10 +115,9 @@ def deepEncode(mc, m):
     if c[0]=='i':
         buf.write('\x01')
         t2, p1, s, sig = c
-        buf.write(struct.pack('B', p1))
+        buf.write(struct.pack('<BI', p1, len(s)))  # here we write the # of tx instead of # of bytes
         for tr in s:
             buf.write(encodeTransaction(tr))
-        buf.write('\x00'*4)
         buf.write(sig)
     elif c[0]=='e':
         buf.write('\x02')
@@ -180,21 +179,16 @@ def deepDecode(m, msgTypeCounter):
     trSet = set()
     msgTypeCounter[msgtype] += len(m)
     if msgtype == 1:
-        p1, = struct.unpack('B', buf.read(1))
-        trRepr = buf.read(TR_SIZE)
-        while not '\x00'*4 in trRepr:
-            trSet.add(constructTransactionFromRepr(trRepr))
+        p1, lenS = struct.unpack('<BI', buf.read(5))
+        for i in range(lenS):
             trRepr = buf.read(TR_SIZE)
+            trSet.add(constructTransactionFromRepr(trRepr))
         sig = buf.read()
         return mc, (f, t, ('B', ('i', p1, trSet, sig)),)
     elif msgtype == 2:
         p1, p2 = struct.unpack('BB', buf.read(2))
         trSetLen = struct.unpack('<I', buf.read(4))[0]
         trSet = buf.read(trSetLen)
-        # trRepr = buf.read(4)
-        # while trRepr != '\x00'*4:
-        #    trSet.add(constructTransactionFromRepr(trRepr))
-        #    trRepr = buf.read(4)
         sig = buf.read()
         return mc, (f, t, ('B', ('e', p1, (p2, trSet), sig)),)
     elif msgtype == 3:

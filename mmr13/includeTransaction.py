@@ -100,7 +100,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         def final(i):
             buf = reconsLocker[i].get()
             finalTrigger[i].get()
-            outputs[i].put([constructTransactionFromRepr(buf[i:i+TR_SIZE]) for i in range(0, len(buf), 4)])
+            outputs[i].put([constructTransactionFromRepr(buf[i:i+TR_SIZE]) for i in range(0, len(buf), TR_SIZE)])
         for i in range(N):
             Greenlet(final, i).start()
         while True:
