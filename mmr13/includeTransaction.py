@@ -94,14 +94,15 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         opinions = [defaultdict(lambda: 0) for _ in range(N)]
         readyCounter = [defaultdict(lambda: 0) for _ in range(N)]
         signed = [False]*N
-        readySent = False
-        reconsLocker = Queue()
-        finalTrigger = Queue()
-        def final():
-            buf = reconsLocker.get()
-            sender = finalTrigger.get()
-            outputs[sender].put([constructTransactionFromRepr(buf[i:i+4]) for i in range(0, len(buf), 4)])
-        Greenlet(final).start()
+        readySent = [False] * N
+        reconsLocker = [Queue() for _ in range(N)]
+        finalTrigger = [Queue() for _ in range(N)]
+        def final(i):
+            buf = reconsLocker[i].get()
+            finalTrigger[i].get()
+            outputs[i].put([constructTransactionFromRepr(buf[i:i+4]) for i in range(0, len(buf), 4)])
+        for i in range(N):
+            Greenlet(final, i).start()
         while True:
             sender, msgBundle = receive()
             #mylog("[%d] multiSigBr received msgBundle %s" % (pid, msgBundle), verboseLevel=-1)
@@ -141,25 +142,25 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     # mylog("[%d] counter for (%d, %s) is now %d" % (pid, originBundle[0],
                     #    repr(originBundle[1]), opinions[originBundle[0]][repr(originBundle[1])]))
                     # if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2 and not outputs[originBundle[0]].full():
-                    if len(opinions[originBundle[0]]) >= Threshold2 and not readySent:
-                        readySent = True
+                    if len(opinions[originBundle[0]]) >= Threshold2 and not readySent[originBundle[0]]:
+                        readySent[originBundle[0]] = True
                         reconstruction = zfecDecoder.decode(opinions[originBundle[0]].values()[:Threshold],
                                 opinions[originBundle[0]].keys()[:Threshold])  # We only take the first [Threshold] fragments
                         # assert len(reconstruction) == Threshold
                         buf = ''.join(reconstruction).rstrip('\xFF')
                         assert len(buf) % 4 == 0
-                        reconsLocker.put(buf)
+                        reconsLocker[originBundle[0]].put(buf)
                         broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to
                 else:
                     raise ECDSASignatureError()
             elif msgBundle[0] == 'r':
                 readyCounter[msgBundle[1]][msgBundle[2]] += 1
                 tmp = readyCounter[msgBundle[1]][msgBundle[2]]
-                if tmp >= t+1 and not readySent:
-                    readySent = True
+                if tmp >= t+1 and not readySent[msgBundle[1]]:
+                    readySent[msgBundle[1]] = True
                     broadcast('r', msgBundle[1], msgBundle[2])  # relay the msg
                 if tmp >= 2*t+1 and not outputs[originBundle[0]].full():
-                    finalTrigger.put(originBundle[0])
+                    finalTrigger[originBundle[0]].put(1)
 
     greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()
     broadcast(('i', pid, msg, keys[pid].sign(sha1hash(hex(setHash(msg))))))  # Kick Off!
