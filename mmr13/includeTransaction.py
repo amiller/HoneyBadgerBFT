@@ -115,7 +115,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     assert isinstance(msgBundle[2], str)
                     buf = msgBundle[2] # now it is a string  # ''.join([encodeTransaction(tr) for tr in msgBundle[2]])
                     print sender, 'sent', len(buf), repr(buf)
-                    step = TR_SIZE * len(msgBundle[2]) % Threshold == 0 and TR_SIZE * len(msgBundle[2]) / Threshold or (TR_SIZE * len(msgBundle[2]) / Threshold + 1)
+                    step = len(buf) % Threshold == 0 and len(buf) / Threshold or (TR_SIZE * len(buf) / Threshold + 1)
                     fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
                     if len(fragList[-1]) < step:
                         fragList[-1] = fragList[-1] + '\xFF' * (step - len(fragList[-1]))  # padding
