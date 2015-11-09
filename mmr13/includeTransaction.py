@@ -114,13 +114,13 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     # assert isinstance(msgBundle[2], set)
                     assert isinstance(msgBundle[2], str)
                     buf = msgBundle[2] # now it is a string  # ''.join([encodeTransaction(tr) for tr in msgBundle[2]])
-                    print sender, 'sent', len(buf), repr(buf)
+                    #print sender, 'sent', len(buf), repr(buf)
                     step = len(buf) % Threshold == 0 and len(buf) / Threshold or (len(buf) / Threshold + 1)
                     fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
                     if len(fragList[-1]) < step:
                         fragList[-1] = fragList[-1] + '\xFF' * (step - len(fragList[-1]))  # padding
-                    print sender, 'fragList', fragList
-                    print sender, 'encoded', zfecEncoder.encode(fragList)
+                    #print sender, 'fragList', fragList
+                    #print sender, 'encoded', zfecEncoder.encode(fragList)
                     newBundle = (msgBundle[1], zfecEncoder.encode(fragList)[pid])
                     #newBundle = (msgBundle[1], msgBundle[2])
                     #mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
@@ -147,9 +147,9 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                                 opinions[originBundle[0]].keys()[:Threshold])  # We only take the first [Threshold] fragments
                         # assert len(reconstruction) == Threshold
                         buf = ''.join(reconstruction).rstrip('\xFF')
-                        print opinions[originBundle[0]].values()[:Threshold]
-                        print opinions[originBundle[0]].keys()[:Threshold]
-                        print originBundle[0], '->', sender, len(buf), repr(buf)
+                        #print opinions[originBundle[0]].values()[:Threshold]
+                        #print opinions[originBundle[0]].keys()[:Threshold]
+                        #print originBundle[0], '->', sender, len(buf), repr(buf)
                         assert len(buf) % TR_SIZE == 0
                         reconsLocker[originBundle[0]].put(buf)
                         broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to

@@ -117,7 +117,7 @@ def deepEncode(mc, m):
         t2, p1, s, sig = c
         buf.write(struct.pack('<BI', p1, len(s)))  # here we write the # of tx instead of # of bytes
         buf.write(s)  # here we assume s is an encoded set of transaction
-        #for tr in s:
+        # for tr in s:
         #    buf.write(encodeTransaction(tr))
         buf.write(sig)
     elif c[0]=='e':
@@ -125,7 +125,7 @@ def deepEncode(mc, m):
         t2, p1, (p2, s), sig = c
         buf.write(struct.pack('<BBI', p1, p2, len(s)))
         buf.write(s)  ## here we already have them encoded
-        print 'wrote', repr(s)
+        # print 'wrote', repr(s)
         # for tr in s:
         #     buf.write(encodeTransaction(tr))
         # buf.write('\x00'*4)
@@ -190,7 +190,7 @@ def deepDecode(m, msgTypeCounter):
     elif msgtype == 2:
         p1, p2, trSetLen = struct.unpack('<BBI', buf.read(6))
         trSet = buf.read(trSetLen)
-        print 'read', repr(trSet)
+        # print 'read', repr(trSet)
         sig = buf.read()
         return mc, (f, t, ('B', ('e', p1, (p2, trSet), sig)),)
     elif msgtype == 3:
