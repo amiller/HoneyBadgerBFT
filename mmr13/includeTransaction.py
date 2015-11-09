@@ -5,7 +5,7 @@ from gevent.queue import Queue, Empty
 from mmr13 import binary_consensus
 from bkr_acs import acs, initBeforeBinaryConsensus
 from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, \
-    greenletPacker, PK, SKs, Transaction, getECDSAKeys, sha1hash, setHash, finishTransactionLeap, encodeTransaction, constructTransactionFromRepr
+    greenletPacker, PK, SKs, Transaction, getECDSAKeys, sha1hash, setHash, finishTransactionLeap, encodeTransaction, constructTransactionFromRepr, TR_SIZE
 from collections import defaultdict
 import zfec
 import socket
@@ -117,7 +117,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     buf.seek(0)
                     # print 'sent', repr(buf.read())
                     buf.seek(0)
-                    step = 4 * len(msgBundle[2]) % Threshold == 0 and 4 * len(msgBundle[2]) / Threshold or (4 * len(msgBundle[2]) / Threshold + 1)
+                    step = TR_SIZE * len(msgBundle[2]) % Threshold == 0 and TR_SIZE * len(msgBundle[2]) / Threshold or (TR_SIZE * len(msgBundle[2]) / Threshold + 1)
                     fragList = [buf.read(step) for i in range(Threshold)]
                     if len(fragList[-1]) < step:
                         fragList[-1] = fragList[-1] + '\xFF' * (step - len(fragList[-1]))  # padding
@@ -148,7 +148,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                                 opinions[originBundle[0]].keys()[:Threshold])  # We only take the first [Threshold] fragments
                         # assert len(reconstruction) == Threshold
                         buf = ''.join(reconstruction).rstrip('\xFF')
-                        assert len(buf) % 4 == 0
+                        assert len(buf) % TR_SIZE == 0
                         reconsLocker[originBundle[0]].put(buf)
                         broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to
                 else:
