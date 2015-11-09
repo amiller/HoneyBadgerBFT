@@ -158,7 +158,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 tmp = readyCounter[msgBundle[1]][msgBundle[2]]
                 if tmp >= t+1 and not readySent[msgBundle[1]]:
                     readySent[msgBundle[1]] = True
-                    broadcast('r', msgBundle[1], msgBundle[2])  # relay the msg
+                    broadcast(('r', msgBundle[1], msgBundle[2]))  # relay the msg
                 if tmp >= 2*t+1 and not outputs[originBundle[0]].full():
                     finalTrigger[originBundle[0]].put(1)
 
