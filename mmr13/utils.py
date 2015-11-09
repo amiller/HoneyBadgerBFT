@@ -16,7 +16,7 @@ import gmpy2
 from ecdsa_ssl import KEY
 
 
-nameList = open('names.txt','r').read().split('\n')
+nameList = open('names.txt','r').read().strip().split('\n')
 # nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 
 verbose = -2
