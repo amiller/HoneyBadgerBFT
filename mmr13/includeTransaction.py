@@ -156,7 +156,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
             elif msgBundle[0] == 'r':
                 readyCounter[msgBundle[1]][msgBundle[2]] += 1
                 tmp = readyCounter[msgBundle[1]][msgBundle[2]]
-                print pid, msgBundle[1], tmp
+                # print pid, msgBundle[1], tmp
                 if tmp >= t+1 and not readySent[msgBundle[1]]:
                     readySent[msgBundle[1]] = True
                     broadcast(('r', msgBundle[1], msgBundle[2]))  # relay the msg
