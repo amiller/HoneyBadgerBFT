@@ -31,7 +31,7 @@ def acs(pid, N, t, Q, broadcast, receive):
             #         N, t, 1, make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
             receivedChannelsFlags.append(i)
             mylog('B[%d]binary consensus_%d_starts with 1 at %f' % (pid, i, time.time()), verboseLevel=-1)
-            greenletPacker(Greenlet(binary_consensus, pid,
+            greenletPacker(Greenlet(binary_consensus, i, pid,
                 N, t, 1, decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get),
                     'acs.callbackFactory.binary_consensus', (pid, N, t, Q, broadcast, receive)).start()
         return _callback
@@ -94,7 +94,7 @@ def acs(pid, N, t, Q, broadcast, receive):
     for i in range(N):
         if not i in receivedChannelsFlags:
             mylog('B[%d]binary_%d_starts with 0 at %f' % (pid, i, time.time()))
-            greenletPacker(Greenlet(binary_consensus, pid, N, t, 0,
+            greenletPacker(Greenlet(binary_consensus, i, pid, N, t, 0,
                      decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get),
                            'acs.binary_consensus', (pid, N, t, Q, broadcast, receive)).start()
     locker.get()  # Now we can check'''

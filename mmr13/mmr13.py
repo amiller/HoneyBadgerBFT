@@ -84,7 +84,7 @@ class CommonCoinFailureException(Exception):
 
 #from ..commoncoin.shoup import ShoupPublicKey
 
-def shared_coin(pid, N, t, broadcast, receive):
+def shared_coin(instance, pid, N, t, broadcast, receive):
     '''
     A dummy version of the Shared Coin
     :param pid: my id number
@@ -115,18 +115,19 @@ def shared_coin(pid, N, t, broadcast, receive):
             if len(received[r]) == t + 1:  #####
                 #if True:
                 try:
-                    combsig = PK.combine_shares(str(r), dict(received[r]))
-                    assert PK.verify_signature(combsig, str(r))
+                    combsig = PK.combine_shares(str((r,instance)), dict(received[r]))
+                    assert PK.verify_signature(combsig, str((r,instance)))
                 except AssertionError, e:
                     raise CommonCoinFailureException()
                 # b = hash(r) % 2
                 # mylog('[%d] got a common coin at round %d' % (pid, r), verboseLevel=-2)
-                outputQueue[r].put(r % 2)
+                #outputQueue[r].put(r % 2)
+                outputQueue[r].put(combsig % 2)
 
     greenletPacker(Greenlet(_recv), 'shared_coin_dummy', (pid, N, t, broadcast, receive)).start()
 
     def getCoin(round):
-        broadcast((round, SKs[pid].sign(str(round))))   # I have to do mapping to 1..l
+        broadcast((round, SKs[pid].sign(str((round,instance)))))   # I have to do mapping to 1..l
         return outputQueue[round].get()
 
     return getCoin
@@ -370,7 +371,7 @@ def checkFinishedWithGlobalState(N):
     return False
 
 
-def binary_consensus(pid, N, t, vi, decide, broadcast, receive):
+def binary_consensus(instance, pid, N, t, vi, decide, broadcast, receive):
     '''
     Binary consensus from [MMR 13]. It takes an input vi and will finally write the decided value into _decide_ channel.
     :param pid: my id number
@@ -419,7 +420,7 @@ def binary_consensus(pid, N, t, vi, decide, broadcast, receive):
 
     received = [defaultdict(set), defaultdict(set)]
 
-    coin = shared_coin(pid, N, t, makeBroadcastWithTag('C', broadcast), coinQ.get)
+    coin = shared_coin(instance, pid, N, t, makeBroadcastWithTag('C', broadcast), coinQ.get)
 
     def getWithProcessing(r, binValues, callBackWaiter):
         def _recv(*args, **kargs):
