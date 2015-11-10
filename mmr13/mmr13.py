@@ -120,7 +120,7 @@ def shared_coin(pid, N, t, broadcast, receive):
                 except AssertionError, e:
                     raise CommonCoinFailureException()
                 # b = hash(r) % 2
-                mylog('[%d] got a common coin at round %d' % (pid, r), verboseLevel=-2)
+                # mylog('[%d] got a common coin at round %d' % (pid, r), verboseLevel=-2)
                 outputQueue[r].put(r % 2)
 
     greenletPacker(Greenlet(_recv), 'shared_coin_dummy', (pid, N, t, broadcast, receive)).start()
