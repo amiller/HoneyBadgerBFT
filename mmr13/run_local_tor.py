@@ -7,12 +7,12 @@ def runOnTransaction(N, t, Tx):
     p = subprocess.check_output(
         ['python', './honest_party_test_tor_multipleCircuits.py', 'lol', '%d_%d.key' % (N, t), 'ecdsa_keys', '%d' % Tx, str(N), str(t)],
         # stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        stdin=subprocess.PIPE
+        # stderr=subprocess.PIPE,
+        # stdin=subprocess.PIPE
     )
     q = subprocess.check_output(['python', 'process.py', 'msglog.TorMultiple'])
     print q.replace('\n', ' ')
-    return 
+    return
     counter = 0
     sent = False
     while True:

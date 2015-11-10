@@ -6,8 +6,8 @@ def runOnTransaction(N, t, Tx):
         ['python', './honest_party_test.py', '%d_%d.key' % (N, t), 'ecdsa_keys', '%d' % Tx, str(N), str(t)],
         shell=False,
         # stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        stdin=subprocess.PIPE
+        # stderr=subprocess.PIPE,
+        # stdin=subprocess.PIPE
     )
     return p.split('Total Message size ')[1].strip()
 
