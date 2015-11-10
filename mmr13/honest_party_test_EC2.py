@@ -280,7 +280,7 @@ def exit():
         mylog('%d extra log exported.' % halfmsgCounter, verboseLevel=-1)
 
     if GEVENT_DEBUG:
-        checkExceptionPerGreenlet()
+        checkExceptionPerGreenlet('gevent_debug')
 
     if USE_PROFILE:
         GreenletProfiler.stop()

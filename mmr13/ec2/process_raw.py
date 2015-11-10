@@ -22,6 +22,9 @@ def process(s, N=-1, t=-1):
         N = len(starttime.keys())
         t = N/4  # follows the convention that 4t = N
     print 'N', N, 't', t
+    if len(endtime) < N - t:
+        print "!!!!!!!!!!!!! Census Unfinished"
+        return
     print '(N-t) finishing at', sorted(endtime.values())[N-t-1] - min(starttime.values())
     print '(N/2) finishing at', sorted(endtime.values())[N/2] - min(starttime.values())
     print 'max', maxLatency
