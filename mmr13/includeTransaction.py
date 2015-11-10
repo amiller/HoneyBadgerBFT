@@ -299,8 +299,8 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             lock.put(1)
             # if len(sys.argv) > 4: # we have a client parameter
             #     sock.sendall("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)))
-            #if finishcount >= N - t:
-            #    break
+            if finishcount >= N - t:  # convenient for local experiments
+                break
                 #raise finishTransactionLeap()  # long-jump
                 # sys.exit()
             # raw_input()
