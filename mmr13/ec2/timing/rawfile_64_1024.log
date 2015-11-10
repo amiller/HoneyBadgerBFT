@@ -1,0 +1,768 @@
+[52.33.53.213] Executing task 'runProtocolFromClient'
+[52.33.136.90] Executing task 'runProtocolFromClient'
+[52.33.110.126] Executing task 'runProtocolFromClient'
+[52.33.15.241] Executing task 'runProtocolFromClient'
+[52.26.174.190] Executing task 'runProtocolFromClient'
+[52.27.56.194] Executing task 'runProtocolFromClient'
+[52.27.60.112] Executing task 'runProtocolFromClient'
+[52.27.34.67] Executing task 'runProtocolFromClient'
+[52.8.236.221] Executing task 'runProtocolFromClient'
+[52.9.67.40] Executing task 'runProtocolFromClient'
+[52.8.15.124] Executing task 'runProtocolFromClient'
+[50.18.222.111] Executing task 'runProtocolFromClient'
+[52.9.68.121] Executing task 'runProtocolFromClient'
+[52.9.68.122] Executing task 'runProtocolFromClient'
+[52.9.68.123] Executing task 'runProtocolFromClient'
+[52.9.68.120] Executing task 'runProtocolFromClient'
+[54.165.235.118] Executing task 'runProtocolFromClient'
+[54.165.144.121] Executing task 'runProtocolFromClient'
+[54.85.187.133] Executing task 'runProtocolFromClient'
+[54.152.80.53] Executing task 'runProtocolFromClient'
+[54.152.214.169] Executing task 'runProtocolFromClient'
+[54.88.236.216] Executing task 'runProtocolFromClient'
+[54.152.14.201] Executing task 'runProtocolFromClient'
+[54.209.70.187] Executing task 'runProtocolFromClient'
+[54.233.106.151] Executing task 'runProtocolFromClient'
+[54.233.106.149] Executing task 'runProtocolFromClient'
+[54.94.191.135] Executing task 'runProtocolFromClient'
+[54.233.67.4] Executing task 'runProtocolFromClient'
+[54.233.107.50] Executing task 'runProtocolFromClient'
+[54.207.99.118] Executing task 'runProtocolFromClient'
+[54.94.200.6] Executing task 'runProtocolFromClient'
+[54.233.105.238] Executing task 'runProtocolFromClient'
+[52.31.144.13] Executing task 'runProtocolFromClient'
+[52.31.33.220] Executing task 'runProtocolFromClient'
+[52.17.82.76] Executing task 'runProtocolFromClient'
+[52.31.148.96] Executing task 'runProtocolFromClient'
+[52.18.90.146] Executing task 'runProtocolFromClient'
+[52.17.128.217] Executing task 'runProtocolFromClient'
+[52.30.252.30] Executing task 'runProtocolFromClient'
+[52.30.193.207] Executing task 'runProtocolFromClient'
+[52.29.89.18] Executing task 'runProtocolFromClient'
+[52.28.249.170] Executing task 'runProtocolFromClient'
+[52.29.145.48] Executing task 'runProtocolFromClient'
+[52.29.145.47] Executing task 'runProtocolFromClient'
+[52.29.145.46] Executing task 'runProtocolFromClient'
+[52.29.126.28] Executing task 'runProtocolFromClient'
+[52.29.135.34] Executing task 'runProtocolFromClient'
+[52.29.143.241] Executing task 'runProtocolFromClient'
+[54.179.134.33] Executing task 'runProtocolFromClient'
+[54.179.129.40] Executing task 'runProtocolFromClient'
+[54.254.138.90] Executing task 'runProtocolFromClient'
+[54.254.219.95] Executing task 'runProtocolFromClient'
+[54.254.204.105] Executing task 'runProtocolFromClient'
+[54.255.172.185] Executing task 'runProtocolFromClient'
+[54.255.199.38] Executing task 'runProtocolFromClient'
+[54.254.136.22] Executing task 'runProtocolFromClient'
+[52.192.75.27] Executing task 'runProtocolFromClient'
+[52.192.138.240] Executing task 'runProtocolFromClient'
+[52.192.84.31] Executing task 'runProtocolFromClient'
+[52.192.95.238] Executing task 'runProtocolFromClient'
+[52.192.89.214] Executing task 'runProtocolFromClient'
+[52.192.62.170] Executing task 'runProtocolFromClient'
+[52.192.132.206] Executing task 'runProtocolFromClient'
+[52.192.132.209] Executing task 'runProtocolFromClient'
+[52.192.132.209] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.192.62.170] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.192.132.206] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.192.95.238] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.192.89.214] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.255.199.38] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.192.138.240] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.192.75.27] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.192.84.31] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.255.172.185] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.254.136.22] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.254.204.105] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.179.129.40] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.29.135.34] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.254.219.95] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.254.138.90] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.179.134.33] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.29.126.28] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.29.143.241] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.29.145.46] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.28.249.170] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.29.145.47] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.18.90.146] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.29.145.48] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.17.128.217] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.30.193.207] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.29.89.18] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.30.252.30] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.17.82.76] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.31.33.220] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.31.148.96] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.233.105.238] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.31.144.13] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.233.107.50] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.94.191.135] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.207.99.118] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.88.236.216] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.233.106.149] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.94.200.6] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.209.70.187] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.152.14.201] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.233.106.151] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.233.67.4] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.152.80.53] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.152.214.169] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.165.144.121] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.85.187.133] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.165.235.118] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.9.68.120] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.9.68.123] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.9.68.122] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.9.68.121] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[50.18.222.111] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.8.15.124] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.9.67.40] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.27.34.67] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.8.236.221] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.27.60.112] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.27.56.194] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.33.15.241] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.26.174.190] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.33.110.126] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.33.136.90] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[52.33.53.213] run: python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys 1024 64 16
+[54.88.236.216] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.88.236.216] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.88.236.216] out: 
+[54.88.236.216] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.88.236.216] out: 100    13  100    13    0     0  11743      0 --:--:-- --:--:-- --:--:-- 13000
+[54.88.236.216] out: servers started
+[54.209.70.187] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.209.70.187] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.209.70.187] out: 
+[54.209.70.187] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.209.70.187] out: 100    13  100    13    0     0  11245      0 --:--:-- --:--:-- --:--:-- 13000
+[54.209.70.187] out: servers started
+[52.9.68.120] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.9.68.120] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.9.68.120] out: 
+[52.9.68.120] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.165.144.121] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.165.144.121] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.165.144.121] out: 
+[54.165.144.121] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.9.68.120] out: 100    11  100    11    0     0   9197      0 --:--:-- --:--:-- --:--:-- 11000
+[52.9.68.120] out: servers started
+[54.165.144.121] out: 100    14  100    14    0     0  11695      0 --:--:-- --:--:-- --:--:-- 14000
+[54.165.144.121] out: servers started
+[54.85.187.133] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.85.187.133] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.85.187.133] out: 
+[54.85.187.133] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.85.187.133] out: 100    13  100    13    0     0  11026      0 --:--:-- --:--:-- --:--:-- 13000
+[54.85.187.133] out: servers started
+[54.152.14.201] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.152.14.201] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.152.14.201] out: 
+[54.152.14.201] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.152.14.201] out: 100    13  100    13    0     0  11413      0 --:--:-- --:--:-- --:--:-- 13000
+[54.152.14.201] out: servers started
+[54.152.80.53] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.152.80.53] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.152.80.53] out: 
+[54.152.80.53] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[50.18.222.111] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[50.18.222.111] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[50.18.222.111] out: 
+[50.18.222.111] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.152.80.53] out: 100    12  100    12    0     0  10958      0 --:--:-- --:--:-- --:--:-- 12000
+[54.152.80.53] out: servers started
+[50.18.222.111] out: 100    13  100    13    0     0  11443      0 --:--:-- --:--:-- --:--:-- 13000
+[50.18.222.111] out: servers started
+[52.29.143.241] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.29.143.241] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.29.143.241] out: 
+[52.29.143.241] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.29.143.241] out: 100    13  100    13    0     0  12820      0 --:--:-- --:--:-- --:--:-- 13000
+[52.29.143.241] out: servers started
+[52.9.68.122] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.9.68.122] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.9.68.122] out: 
+[52.9.68.122] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.9.68.122] out: 100    11  100    11    0     0   8957      0 --:--:-- --:--:-- --:--:-- 11000
+[52.9.68.122] out: servers started
+[52.8.236.221] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.8.236.221] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.8.236.221] out: 
+[52.8.236.221] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.8.236.221] out: 100    12  100    12    0     0   8595      0 --:--:-- --:--:-- --:--:-- 12000
+[52.8.236.221] out: servers started
+[52.33.15.241] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.8.15.124] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.27.60.112] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.27.60.112] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.27.60.112] out: 
+[52.33.136.90] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.8.15.124] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.8.15.124] out: 
+[52.33.136.90] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.33.136.90] out: 
+[52.33.15.241] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.33.15.241] out: 
+[52.8.15.124] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.30.252.30] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.30.252.30] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.30.252.30] out: 
+[52.8.15.124] out: 100    11  100    11    0     0   9683      0 --:--:-- --:--:-- --:--:-- 11000
+[52.8.15.124] out: servers started
+[52.27.60.112] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.27.60.112] out: 100    12  100    12    0     0   9546      0 --:--:-- --:--:-- --:--:-- 12000
+[52.27.60.112] out: servers started
+[52.30.252.30] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.33.15.241] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.30.252.30] out: 100    12  100    12    0     0   9661      0 --:--:-- --:--:-- --:--:-- 12000
+[52.30.252.30] out: servers started
+[52.33.136.90] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.33.136.90] out: 100    12  100    12    0     0   9237      0 --:--:-- --:--:-- --:--:-- 12000
+[52.33.136.90] out: servers started
+[52.33.15.241] out: 100    12  100    12    0     0  10380      0 --:--:-- --:--:-- --:--:-- 12000
+[52.33.15.241] out: servers started
+[52.30.193.207] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.26.174.190] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.26.174.190] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.26.174.190] out: 
+[52.26.174.190] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.30.193.207] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.30.193.207] out: 
+[52.28.249.170] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.26.174.190] out: 100    13  100    13    0     0  10569      0 --:--:-- --:--:-- --:--:-- 13000
+[52.26.174.190] out: servers started
+[52.30.193.207] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.28.249.170] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.28.249.170] out: 
+[52.30.193.207] out: 100    13  100    13    0     0  11494      0 --:--:-- --:--:-- --:--:-- 13000
+[52.30.193.207] out: servers started
+[54.152.214.169] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.152.214.169] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.152.214.169] out: 
+[52.28.249.170] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.152.214.169] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.152.214.169] out: 100    14  100    14    0     0  11656      0 --:--:-- --:--:-- --:--:-- 14000
+[54.152.214.169] out: servers started
+[52.28.249.170] out: 100    13  100    13    0     0  11054      0 --:--:-- --:--:-- --:--:-- 13000
+[52.28.249.170] out: servers started
+[54.165.235.118] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.165.235.118] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.165.235.118] out: 
+[54.165.235.118] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.165.235.118] out: 100    14  100    14    0     0  11579      0 --:--:-- --:--:-- --:--:-- 14000
+[54.165.235.118] out: servers started
+[52.9.68.123] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.9.68.123] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.9.68.123] out: 
+[52.29.145.46] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.29.145.46] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.29.145.46] out: 
+[52.29.145.46] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.9.68.123] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.9.68.123] out: 100    11  100    11    0     0   8892      0 --:--:-- --:--:-- --:--:-- 11000
+[52.9.68.123] out: servers started
+[52.29.145.46] out: 100    12  100    12    0     0  10362      0 --:--:-- --:--:-- --:--:-- 12000
+[52.29.145.46] out: servers started
+[52.9.68.121] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.9.68.121] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.9.68.121] out: 
+[52.31.33.220] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.9.67.40] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.9.67.40] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.9.67.40] out: 
+[52.9.68.121] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.9.68.121] out: 100    11  100    11    0     0   9458      0 --:--:-- --:--:-- --:--:-- 11000
+[52.9.68.121] out: servers started
+[52.31.33.220] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.31.33.220] out: 
+[52.31.33.220] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.27.34.67] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.27.34.67] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.27.34.67] out: 
+[52.27.34.67] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.27.34.67] out: 100    11  100    11    0     0   8148      0 --:--:-- --:--:-- --:--:-- 11000
+[52.27.34.67] out: servers started
+[52.33.53.213] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.31.33.220] out: 100    12  100    12    0     0  10591      0 --:--:-- --:--:-- --:--:-- 12000
+[52.31.33.220] out: servers started
+[52.31.148.96] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.31.148.96] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.31.148.96] out: 
+[52.31.148.96] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.9.67.40] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.31.148.96] out: 100    12  100    12    0     0  10186      0 --:--:-- --:--:-- --:--:-- 12000
+[52.31.148.96] out: servers started
+[52.33.53.213] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.33.53.213] out: 
+[52.9.67.40] out: 100    10  100    10    0     0   8210      0 --:--:-- --:--:-- --:--:-- 10000
+[52.9.67.40] out: servers started
+[52.33.53.213] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.31.144.13] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.33.53.213] out: 100    12  100    12    0     0  10152      0 --:--:-- --:--:-- --:--:-- 12000
+[52.33.53.213] out: servers started
+[52.29.126.28] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.29.126.28] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.29.126.28] out: 
+[52.29.126.28] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.29.126.28] out: 100    12  100    12    0     0  11952      0 --:--:-- --:--:-- --:--:-- 12000
+[52.29.126.28] out: servers started
+[52.29.89.18] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.29.145.48] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.29.145.48] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.29.145.48] out: 
+[52.29.145.48] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.29.145.48] out: 100    12  100    12    0     0   9486      0 --:--:-- --:--:-- --:--:-- 12000
+[52.29.145.48] out: servers started
+[52.29.89.18] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.29.89.18] out: 
+[52.29.89.18] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.31.144.13] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.31.144.13] out: 
+[52.31.144.13] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.31.144.13] out: 100    12  100    12    0     0   9860      0 --:--:-- --:--:-- --:--:-- 12000
+[52.31.144.13] out: servers started
+[52.29.89.18] out: 100    11  100    11    0     0   8358      0 --:--:-- --:--:-- --:--:-- 11000
+[52.29.89.18] out: servers started
+[52.18.90.146] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.18.90.146] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.18.90.146] out: 
+[52.192.132.209] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.192.132.209] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.192.132.209] out: 
+[52.192.132.209] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.192.132.209] out: 100    14  100    14    0     0  11484      0 --:--:-- --:--:-- --:--:-- 14000
+[52.192.132.209] out: servers started
+[52.17.128.217] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.17.128.217] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.17.128.217] out: 
+[52.18.90.146] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.18.90.146] out: 100    12  100    12    0     0  10282      0 --:--:-- --:--:-- --:--:-- 12000
+[52.18.90.146] out: servers started
+[52.33.110.126] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.17.128.217] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.17.128.217] out: 100    13  100    13    0     0   9059      0 --:--:-- --:--:-- --:--:-- 13000
+[52.17.128.217] out: servers started
+[52.33.110.126] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.33.110.126] out: 
+[52.192.75.27] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.192.75.27] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.192.75.27] out: 
+[54.233.106.151] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.192.75.27] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.233.106.151] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.233.106.151] out: 
+[54.233.106.151] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.233.106.151] out: 100    14  100    14    0     0  10744      0 --:--:-- --:--:-- --:--:-- 14000
+[54.233.106.151] out: servers started
+[52.27.56.194] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.27.56.194] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.27.56.194] out: 
+[54.207.99.118] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.207.99.118] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.207.99.118] out: 
+[52.27.56.194] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.207.99.118] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.33.110.126] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.192.75.27] out: 100    12  100    12    0     0  10327      0 --:--:-- --:--:-- --:--:-- 12000
+[52.192.75.27] out: servers started
+[52.27.56.194] out: 100    12  100    12    0     0  10195      0 --:--:-- --:--:-- --:--:-- 12000
+[52.27.56.194] out: servers started
+[54.207.99.118] out: 100    13  100    13    0     0  11545      0 --:--:-- --:--:-- --:--:-- 13000
+[54.207.99.118] out: servers started
+[52.33.110.126] out: 100    13  100    13    0     0  11754      0 --:--:-- --:--:-- --:--:-- 13000
+[52.33.110.126] out: servers started
+[52.192.62.170] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.192.62.170] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.192.62.170] out: 
+[54.233.105.238] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.233.105.238] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.233.105.238] out: 
+[54.233.105.238] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.233.106.149] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.233.106.149] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.233.106.149] out: 
+[54.233.105.238] out: 100    14  100    14    0     0  10479      0 --:--:-- --:--:-- --:--:-- 14000
+[54.233.105.238] out: servers started
+[54.233.106.149] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.233.106.149] out: 100    14  100    14    0     0  11391      0 --:--:-- --:--:-- --:--:-- 14000
+[54.233.106.149] out: servers started
+[52.29.145.47] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.192.62.170] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.192.62.170] out: 100    13  100    13    0     0  10116      0 --:--:-- --:--:-- --:--:-- 13000
+[52.192.62.170] out: servers started
+[52.29.145.47] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.29.145.47] out: 
+[52.29.135.34] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.29.135.34] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.29.135.34] out: 
+[52.192.138.240] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.192.138.240] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.192.138.240] out: 
+[52.192.138.240] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.17.82.76] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.17.82.76] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.17.82.76] out: 
+[52.192.138.240] out: 100    14  100    14    0     0  11935      0 --:--:-- --:--:-- --:--:-- 14000
+[52.192.138.240] out: servers started
+[52.29.145.47] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.29.145.47] out: 100    12  100    12    0     0   8817      0 --:--:-- --:--:-- --:--:-- 12000
+[52.29.145.47] out: servers started
+[52.192.95.238] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.192.95.238] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.192.95.238] out: 
+[52.192.95.238] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.192.95.238] out: 100    13  100    13    0     0  10526      0 --:--:-- --:--:-- --:--:-- 13000
+[52.192.95.238] out: servers started
+[52.29.135.34] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.29.135.34] out: 100    12  100    12    0     0  10480      0 --:--:-- --:--:-- --:--:-- 12000
+[52.29.135.34] out: servers started
+[52.17.82.76] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.17.82.76] out: 100    11  100    11    0     0  10054      0 --:--:-- --:--:-- --:--:-- 11000
+[52.17.82.76] out: servers started
+[52.192.132.206] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.192.132.206] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.192.132.206] out: 
+[52.192.132.206] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.192.132.206] out: 100    14  100    14    0     0  11400      0 --:--:-- --:--:-- --:--:-- 14000
+[52.192.132.206] out: servers started
+[54.94.191.135] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.192.84.31] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.94.191.135] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.94.191.135] out: 
+[54.94.191.135] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.192.84.31] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.233.67.4] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.233.67.4] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.233.67.4] out: 
+[54.94.191.135] out: 100    13  100    13    0     0  11555      0 --:--:-- --:--:-- --:--:-- 13000
+[54.94.191.135] out: servers started
+[54.254.136.22] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.254.136.22] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.254.136.22] out: 
+[54.254.136.22] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.254.136.22] out: 100    13  100    13    0     0  10108      0 --:--:-- --:--:-- --:--:-- 13000
+[54.254.136.22] out: servers started
+[54.233.107.50] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.233.107.50] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.233.107.50] out: 
+[54.233.107.50] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.192.84.31] out: 
+[52.192.84.31] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.192.84.31] out: 100    12  100    12    0     0   8908      0 --:--:-- --:--:-- --:--:-- 12000
+[52.192.84.31] out: servers started
+[54.233.107.50] out: 100    13  100    13    0     0   9730      0 --:--:-- --:--:-- --:--:-- 13000
+[54.233.107.50] out: servers started
+[54.233.67.4] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.233.67.4] out: 100    11  100    11    0     0   9777      0 --:--:-- --:--:-- --:--:-- 11000
+[54.233.67.4] out: servers started
+[54.94.200.6] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.94.200.6] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.94.200.6] out: 
+[54.94.200.6] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.254.219.95] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.94.200.6] out: 100    11  100    11    0     0   8409      0 --:--:-- --:--:-- --:--:-- 11000
+[54.94.200.6] out: servers started
+[54.255.172.185] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.192.89.214] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.192.89.214] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.192.89.214] out: 
+[52.192.89.214] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.192.89.214] out: 100    13  100    13    0     0  10743      0 --:--:-- --:--:-- --:--:-- 13000
+[52.192.89.214] out: servers started
+[54.254.219.95] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.254.219.95] out: 
+[54.254.219.95] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.254.219.95] out: 100    13  100    13    0     0  10268      0 --:--:-- --:--:-- --:--:-- 13000
+[54.254.219.95] out: servers started
+[54.255.199.38] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.255.199.38] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.255.199.38] out: 
+[54.255.199.38] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.255.199.38] out: 100    13  100    13    0     0  12345      0 --:--:-- --:--:-- --:--:-- 13000
+[54.255.199.38] out: servers started
+[54.179.129.40] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.254.204.105] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.179.129.40] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.179.129.40] out: 
+[54.254.204.105] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.254.204.105] out: 
+[54.179.129.40] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.254.204.105] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.254.204.105] out: 100    14  100    14    0     0   9985      0 --:--:-- --:--:-- --:--:-- 14000
+[54.254.204.105] out: servers started
+[54.179.129.40] out: 100    13  100    13    0     0  11353      0 --:--:-- --:--:-- --:--:-- 13000
+[54.179.129.40] out: servers started
+[54.254.138.90] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.254.138.90] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.254.138.90] out: 
+[54.254.138.90] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.254.138.90] out: 100    13  100    13    0     0  10752      0 --:--:-- --:--:-- --:--:-- 13000
+[54.254.138.90] out: servers started
+[54.179.134.33] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.179.134.33] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.179.134.33] out: 
+[54.179.134.33] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.179.134.33] out: 100    13  100    13    0     0  10433      0 --:--:-- --:--:-- --:--:-- 13000
+[54.179.134.33] out: servers started
+[54.255.172.185] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.255.172.185] out: 
+[54.255.172.185] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.255.172.185] out: 100    14  100    14    0     0  11764      0 --:--:-- --:--:-- --:--:-- 14000
+[54.255.172.185] out: servers started
+[54.88.236.216] out: got 1024 TXs
+[54.88.236.216] out: timestampB (21, 1447078226.674472)
+[54.165.144.121] out: got 1024 TXs
+[54.165.144.121] out: timestampB (17, 1447078226.976000)
+[52.9.68.120] out: got 1024 TXs
+[52.9.68.120] out: timestampB (15, 1447078227.124691)
+[54.85.187.133] out: got 1024 TXs
+[54.85.187.133] out: timestampB (18, 1447078227.440654)
+[54.152.14.201] out: got 1024 TXs
+[54.152.14.201] out: timestampB (22, 1447078227.536934)
+[54.209.70.187] out: got 1024 TXs
+[54.209.70.187] out: timestampB (23, 1447078227.868388)
+[54.152.80.53] out: got 1024 TXs
+[54.152.80.53] out: timestampB (19, 1447078227.852448)
+[50.18.222.111] out: got 1024 TXs
+[50.18.222.111] out: timestampB (11, 1447078228.245827)
+[52.33.15.241] out: got 1024 TXs
+[52.33.15.241] out: timestampB (3, 1447078229.127138)
+[52.27.60.112] out: got 1024 TXs
+[52.27.60.112] out: timestampB (6, 1447078229.158319)
+[52.9.68.122] out: got 1024 TXs
+[52.9.68.122] out: timestampB (13, 1447078229.204705)
+[52.33.136.90] out: got 1024 TXs
+[52.33.136.90] out: timestampB (1, 1447078229.172748)
+[52.26.174.190] out: got 1024 TXs
+[52.26.174.190] out: timestampB (4, 1447078229.080380)
+[54.152.214.169] out: got 1024 TXs
+[54.152.214.169] out: timestampB (20, 1447078229.306147)
+[54.165.235.118] out: got 1024 TXs
+[54.165.235.118] out: timestampB (16, 1447078229.308566)
+[52.8.236.221] out: got 1024 TXs
+[52.8.236.221] out: timestampB (8, 1447078229.545535)
+[52.27.34.67] out: got 1024 TXs
+[52.27.34.67] out: timestampB (7, 1447078229.500202)
+[52.8.15.124] out: got 1024 TXs
+[52.8.15.124] out: timestampB (10, 1447078229.496905)
+[52.33.53.213] out: got 1024 TXs
+[52.33.53.213] out: timestampB (0, 1447078229.481310)
+[52.33.110.126] out: got 1024 TXs
+[52.33.110.126] out: timestampB (2, 1447078229.732802)
+[52.9.68.123] out: got 1024 TXs
+[52.9.68.123] out: timestampB (14, 1447078229.874098)
+[52.27.56.194] out: got 1024 TXs
+[52.27.56.194] out: timestampB (5, 1447078229.923848)
+[52.9.68.121] out: got 1024 TXs
+[52.9.68.121] out: timestampB (12, 1447078229.994639)
+[52.9.67.40] out: got 1024 TXs
+[52.9.67.40] out: timestampB (9, 1447078230.133635)
+[52.29.143.241] out: got 1024 TXs
+[52.29.143.241] out: timestampB (47, 1447078230.424285)
+[52.30.252.30] out: got 1024 TXs
+[52.30.252.30] out: timestampB (38, 1447078230.854921)
+[52.30.193.207] out: got 1024 TXs
+[52.30.193.207] out: timestampB (39, 1447078230.889476)
+[52.31.33.220] out: got 1024 TXs
+[52.31.33.220] out: timestampB (33, 1447078230.984514)
+[52.31.148.96] out: got 1024 TXs
+[52.31.148.96] out: timestampB (35, 1447078231.228792)
+[52.31.144.13] out: got 1024 TXs
+[52.31.144.13] out: timestampB (32, 1447078230.996818)
+[52.18.90.146] out: got 1024 TXs
+[52.18.90.146] out: timestampB (36, 1447078231.376924)
+[52.17.128.217] out: got 1024 TXs
+[52.17.128.217] out: timestampB (37, 1447078231.445303)
+[52.28.249.170] out: got 1024 TXs
+[52.28.249.170] out: timestampB (41, 1447078231.573152)
+[52.17.82.76] out: got 1024 TXs
+[52.17.82.76] out: timestampB (34, 1447078231.670948)
+[52.29.145.46] out: got 1024 TXs
+[52.29.145.46] out: timestampB (44, 1447078231.673806)
+[52.29.126.28] out: got 1024 TXs
+[52.29.126.28] out: timestampB (45, 1447078231.990059)
+[52.29.145.48] out: got 1024 TXs
+[52.29.145.48] out: timestampB (42, 1447078232.010147)
+[52.29.89.18] out: got 1024 TXs
+[52.29.89.18] out: timestampB (40, 1447078232.126991)
+[52.29.145.47] out: got 1024 TXs
+[52.29.145.47] out: timestampB (43, 1447078232.408611)
+[52.192.132.209] out: got 1024 TXs
+[52.192.132.209] out: timestampB (63, 1447078232.386417)
+[52.29.135.34] out: got 1024 TXs
+[52.29.135.34] out: timestampB (46, 1447078232.426526)
+[52.192.75.27] out: got 1024 TXs
+[52.192.75.27] out: timestampB (56, 1447078232.269734)
+[52.192.138.240] out: got 1024 TXs
+[52.192.138.240] out: timestampB (57, 1447078232.368532)
+[52.192.95.238] out: got 1024 TXs
+[52.192.95.238] out: timestampB (59, 1447078232.599396)
+[52.192.62.170] out: got 1024 TXs
+[52.192.62.170] out: timestampB (61, 1447078232.615346)
+[52.192.132.206] out: got 1024 TXs
+[52.192.132.206] out: timestampB (62, 1447078232.760490)
+[52.192.84.31] out: got 1024 TXs
+[52.192.84.31] out: timestampB (58, 1447078232.828212)
+[52.192.89.214] out: got 1024 TXs
+[52.192.89.214] out: timestampB (60, 1447078233.125181)
+[54.233.106.151] out: got 1024 TXs
+[54.233.106.151] out: timestampB (24, 1447078235.133242)
+[54.207.99.118] out: got 1024 TXs
+[54.207.99.118] out: timestampB (29, 1447078235.295083)
+[54.255.172.185] out: got 1024 TXs
+[54.255.172.185] out: timestampB (53, 1447078235.111184)
+[54.233.106.149] out: got 1024 TXs
+[54.233.106.149] out: timestampB (25, 1447078235.275211)
+[54.233.105.238] out: got 1024 TXs
+[54.233.105.238] out: timestampB (31, 1447078235.375161)
+[54.94.191.135] out: got 1024 TXs
+[54.94.191.135] out: timestampB (26, 1447078235.375436)
+[54.255.199.38] out: got 1024 TXs
+[54.255.199.38] out: timestampB (54, 1447078235.364125)
+[54.233.107.50] out: got 1024 TXs
+[54.233.107.50] out: timestampB (28, 1447078235.655875)
+[54.179.129.40] out: got 1024 TXs
+[54.179.129.40] out: timestampB (49, 1447078235.422795)
+[54.233.67.4] out: got 1024 TXs
+[54.233.67.4] out: timestampB (27, 1447078235.529983)
+[54.254.136.22] out: got 1024 TXs
+[54.254.136.22] out: timestampB (55, 1447078235.416973)
+[54.94.200.6] out: got 1024 TXs
+[54.94.200.6] out: timestampB (30, 1447078235.718657)
+[54.254.219.95] out: got 1024 TXs
+[54.254.219.95] out: timestampB (51, 1447078235.909922)
+[54.179.134.33] out: got 1024 TXs
+[54.179.134.33] out: timestampB (48, 1447078235.950312)
+[54.254.204.105] out: got 1024 TXs
+[54.254.204.105] out: timestampB (52, 1447078236.041589)
+[54.254.138.90] out: got 1024 TXs
+[54.254.138.90] out: timestampB (50, 1447078236.062112)
+[52.33.110.126] out: [2] synced transactions.
+[52.33.110.126] out: timestampE (2, 1447078249.173913)
+[52.30.193.207] out: [39] synced transactions.
+[52.30.193.207] out: timestampE (39, 1447078249.169423)
+[52.33.53.213] out: [0] synced transactions.
+[52.33.53.213] out: timestampE (0, 1447078249.170857)
+[52.29.145.46] out: [44] synced transactions.
+[52.29.145.46] out: timestampE (44, 1447078249.273980)
+[52.29.145.48] out: [42] synced transactions.
+[52.29.145.48] out: timestampE (42, 1447078249.510220)
+[54.152.80.53] out: [19] synced transactions.
+[54.152.80.53] out: timestampE (19, 1447078249.577059)
+[54.165.144.121] out: [17] synced transactions.
+[54.165.144.121] out: timestampE (17, 1447078249.636579)
+[54.152.214.169] out: [20] synced transactions.
+[54.152.214.169] out: timestampE (20, 1447078249.590358)
+[52.9.68.120] out: [15] synced transactions.
+[52.9.68.120] out: timestampE (15, 1447078249.499582)
+[54.152.14.201] out: [22] synced transactions.
+[54.152.14.201] out: timestampE (22, 1447078249.643205)
+[52.33.15.241] out: [3] synced transactions.
+[52.33.15.241] out: timestampE (3, 1447078249.582081)
+[52.27.56.194] out: [5] synced transactions.
+[52.27.56.194] out: timestampE (5, 1447078249.608228)
+[52.29.126.28] out: [45] synced transactions.
+[52.29.126.28] out: timestampE (45, 1447078249.591994)
+[52.27.34.67] out: [7] synced transactions.
+[52.27.34.67] out: timestampE (7, 1447078249.527922)
+[52.26.174.190] out: [4] synced transactions.
+[52.26.174.190] out: timestampE (4, 1447078249.424115)
+[54.88.236.216] out: [21] synced transactions.
+[54.88.236.216] out: timestampE (21, 1447078249.607497)
+[52.29.143.241] out: [47] synced transactions.
+[52.29.143.241] out: timestampE (47, 1447078249.528162)
+[52.27.60.112] out: [6] synced transactions.
+[52.27.60.112] out: timestampE (6, 1447078249.609069)
+[52.33.136.90] out: [1] synced transactions.
+[52.33.136.90] out: timestampE (1, 1447078249.578645)
+[54.165.235.118] out: [16] synced transactions.
+[54.165.235.118] out: timestampE (16, 1447078249.631662)
+[52.9.68.123] out: [14] synced transactions.
+[52.9.68.123] out: timestampE (14, 1447078249.729893)
+[52.9.68.121] out: [12] synced transactions.
+[52.9.68.121] out: timestampE (12, 1447078249.663450)
+[52.9.67.40] out: [9] synced transactions.
+[52.9.67.40] out: timestampE (9, 1447078249.762922)
+[54.209.70.187] out: [23] synced transactions.
+[54.209.70.187] out: timestampE (23, 1447078249.989571)
+[54.85.187.133] out: [18] synced transactions.
+[54.85.187.133] out: timestampE (18, 1447078249.843824)
+[50.18.222.111] out: [11] synced transactions.
+[50.18.222.111] out: timestampE (11, 1447078249.662813)
+[52.9.68.122] out: [13] synced transactions.
+[52.9.68.122] out: timestampE (13, 1447078249.703959)
+[52.8.15.124] out: [10] synced transactions.
+[52.8.15.124] out: timestampE (10, 1447078249.655497)
+[52.8.236.221] out: [8] synced transactions.
+[52.8.236.221] out: timestampE (8, 1447078249.946091)
+[52.30.252.30] out: [38] synced transactions.
+[52.30.252.30] out: timestampE (38, 1447078249.743800)
+[52.29.145.47] out: [43] synced transactions.
+[52.29.145.47] out: timestampE (43, 1447078250.004774)
+[52.29.89.18] out: [40] synced transactions.
+[52.29.89.18] out: timestampE (40, 1447078250.397794)
+[54.255.172.185] out: [53] synced transactions.
+[54.255.172.185] out: timestampE (53, 1447078250.348696)
+[52.192.62.170] out: [61] synced transactions.
+[52.192.62.170] out: timestampE (61, 1447078250.549716)
+[52.192.132.209] out: [63] synced transactions.
+[52.192.132.209] out: timestampE (63, 1447078250.666405)
+[54.255.199.38] out: [54] synced transactions.
+[54.255.199.38] out: timestampE (54, 1447078250.660216)
+[52.192.132.206] out: [62] synced transactions.
+[52.192.138.240] out: [57] synced transactions.
+[52.192.138.240] out: timestampE (57, 1447078250.523728)
+[52.192.132.206] out: timestampE (62, 1447078250.821253)
+[52.17.82.76] out: [34] synced transactions.
+[52.17.82.76] out: timestampE (34, 1447078250.727933)
+[52.192.95.238] out: [59] synced transactions.
+[52.192.95.238] out: timestampE (59, 1447078250.768940)
+[52.31.148.96] out: [35] synced transactions.
+[52.31.148.96] out: timestampE (35, 1447078250.955129)
+[52.192.84.31] out: [58] synced transactions.
+[52.192.84.31] out: timestampE (58, 1447078251.019780)
+[52.31.33.220] out: [33] synced transactions.
+[52.31.33.220] out: timestampE (33, 1447078251.141231)
+[52.31.144.13] out: [32] synced transactions.
+[52.31.144.13] out: timestampE (32, 1447078251.143334)
+[52.192.75.27] out: [56] synced transactions.
+[52.192.75.27] out: timestampE (56, 1447078251.333333)
+[52.28.249.170] out: [41] synced transactions.
+[52.28.249.170] out: timestampE (41, 1447078251.553253)
+[52.192.89.214] out: [60] synced transactions.
+[52.192.89.214] out: timestampE (60, 1447078251.521594)
+[54.179.129.40] out: [49] synced transactions.
+[54.179.129.40] out: timestampE (49, 1447078251.554865)
+[52.17.128.217] out: [37] synced transactions.
+[52.17.128.217] out: timestampE (37, 1447078251.802743)
+[54.254.204.105] out: [52] synced transactions.
+[54.254.204.105] out: timestampE (52, 1447078252.797206)
+[52.29.135.34] out: [46] synced transactions.
+[52.29.135.34] out: timestampE (46, 1447078252.987020)
+[52.18.90.146] out: [36] synced transactions.
+[52.18.90.146] out: timestampE (36, 1447078253.422878)
+[54.94.200.6] out: [30] synced transactions.
+[54.94.200.6] out: timestampE (30, 1447078255.720617)
+[54.233.106.149] out: [25] synced transactions.
+[54.233.106.149] out: timestampE (25, 1447078256.070455)
+[54.233.107.50] out: [28] synced transactions.
+[54.233.107.50] out: timestampE (28, 1447078256.267777)
+[54.207.99.118] out: [29] synced transactions.
+[54.207.99.118] out: timestampE (29, 1447078256.283715)
+[54.233.105.238] out: [31] synced transactions.
+[54.233.105.238] out: timestampE (31, 1447078256.337466)
+[54.233.106.151] out: [24] synced transactions.
+[54.233.106.151] out: timestampE (24, 1447078256.503894)
+[54.233.67.4] out: [27] synced transactions.
+[54.233.67.4] out: timestampE (27, 1447078256.525730)
+[54.254.219.95] out: [51] synced transactions.
+[54.254.219.95] out: timestampE (51, 1447078257.362335)
+[54.254.136.22] out: [55] synced transactions.
+[54.254.136.22] out: timestampE (55, 1447078257.458127)
+[54.94.191.135] out: [26] synced transactions.
+[54.94.191.135] out: timestampE (26, 1447078257.696994)
+[54.179.134.33] out: [48] synced transactions.
+[54.179.134.33] out: timestampE (48, 1447078258.186578)
+[54.254.138.90] out: [50] synced transactions.
+[54.254.138.90] out: timestampE (50, 1447078258.418848)
