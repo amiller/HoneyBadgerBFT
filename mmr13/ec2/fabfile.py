@@ -11,7 +11,7 @@ def host_type():
 
 @parallel
 def gettime():
-    run('echo $(($(date +%s%N)/1000))')
+    run('date +%s.%N')
 
 @parallel
 def ping():
