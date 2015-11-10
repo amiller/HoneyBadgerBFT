@@ -44,7 +44,7 @@ msgFrom = dict()
 msgTo = dict()
 msgContent = dict()
 logChannel = Queue()
-msgTypeCounter = [0]*7
+msgTypeCounter = [[0,0] for _ in range(7)]
 logGreenlet = None
 
 def logWriter(fileHandler):
@@ -160,7 +160,8 @@ def client_test_freenet(N, t):
         except ACSException:
             gevent.killall(ts)
         except finishTransactionLeap:  ### Manually jump to this level
-            print msgTypeCounter
+            print 'msgCounter', msgCounter
+            print 'msgTypeCounter', msgTypeCounter
             # message id 0 (duplicated) for signatureCost
             #logChannel.put((0, getSignatureCost(), 0, 0, str(time.time()), str(time.time()), '[signature cost]'))
             logChannel.put(StopIteration)
@@ -192,7 +193,12 @@ OUTPUT_HALF_MSG = False
 
 def exit():
     print "Entering atexit()"
-    print msgTypeCounter
+    print 'msgCounter', msgCounter
+    print 'msgTypeCounter', msgTypeCounter
+    nums,lens = zip(*msgTypeCounter)
+    print '    Init      Echo      Val       Aux      Coin     Ready'
+    print '%8d %8d %9d %9d %9d %9d' % nums[1:]
+    print '%8d %8d %9d %9d %9d %9d' % lens[1:]
     mylog("Total Message size %d" % totalMessageSize, verboseLevel=-2)
     if OUTPUT_HALF_MSG:
         halfmsgCounter = 0
