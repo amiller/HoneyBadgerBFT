@@ -361,7 +361,7 @@ def greenletFunction(func):
     return func
 
 def checkExceptionPerGreenlet(outfileName=None, ignoreHealthyOnes=True):
-    mylog("Tring to detect greenlets...")
+    mylog("Tring to detect greenlets...", verboseLevel=-2)
     if not outfileName:
         for ob in gc.get_objects():
             if not hasattr(ob, 'parent_args'):
@@ -374,7 +374,7 @@ def checkExceptionPerGreenlet(outfileName=None, ignoreHealthyOnes=True):
                 ''.join(traceback.format_stack(ob.gr_frame))), verboseLevel=-2)
             mylog(ob.exception, verboseLevel=-2)
     else:
-        handler = open(outfileName,'w')
+        handler = open(outfileName, 'w')
         for ob in gc.get_objects():
             if not hasattr(ob, 'parent_args'):
                 continue

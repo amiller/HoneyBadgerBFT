@@ -1,0 +1,1051 @@
+[54.94.243.208] out: servers started
+[52.8.92.220] out: got 16384 TXs
+[52.8.92.220] out: timestampB (1, 1447161605.748591)
+[54.209.228.153] out: got 16384 TXs
+[54.209.228.153] out: timestampB (2, 1447161606.265963)
+[52.27.237.141] out: got 16384 TXs
+[52.27.237.141] out: timestampB (0, 1447161606.048382)
+[52.192.140.223] out: got 16384 TXs
+[52.192.140.223] out: timestampB (7, 1447161606.794253)
+[52.19.164.11] out: got 16384 TXs
+[52.19.164.11] out: timestampB (4, 1447161607.199944)
+[52.29.95.105] out: got 16384 TXs
+[52.29.95.105] out: timestampB (5, 1447161606.867385)
+[54.169.212.80] out: got 16384 TXs
+[54.169.212.80] out: timestampB (6, 1447161607.090351)
+[54.94.243.208] out: got 16384 TXs
+[54.94.243.208] out: timestampB (3, 1447161607.945131)
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[52.8.92.220] out: [1] synced transactions.
+[52.8.92.220] out: timestampE (1, 1447161624.138935)
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.27.237.141] out: [0] synced transactions.
+[52.27.237.141] out: timestampE (0, 1447161623.568045)
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.192.140.223] out: [7] synced transactions.
+[52.192.140.223] out: timestampE (7, 1447161624.179356)
+[54.209.228.153] out: [2] synced transactions.
+[54.209.228.153] out: timestampE (2, 1447161624.341793)
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.29.95.105] out: [5] synced transactions.
+[52.29.95.105] out: timestampE (5, 1447161623.994165)
+[52.29.95.105] out: [5] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[52.19.164.11] out: [4] synced transactions.
+[52.19.164.11] out: timestampE (4, 1447161624.492384)
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.94.243.208] out: [3] synced transactions.
+[54.94.243.208] out: timestampE (3, 1447161624.567643)
+[52.27.237.141] out: [0] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[54.169.212.80] out: [6] synced transactions.
+[54.169.212.80] out: timestampE (6, 1447161624.384445)
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+
+[54.94.243.208] out: servers started
+[52.8.92.220] out: got 16384 TXs
+[52.8.92.220] out: timestampB (1, 1447161651.268457)
+[52.27.237.141] out: got 16384 TXs
+[52.27.237.141] out: timestampB (0, 1447161650.743646)
+[54.209.228.153] out: got 16384 TXs
+[54.209.228.153] out: timestampB (2, 1447161651.976592)
+[52.192.140.223] out: got 16384 TXs
+[52.192.140.223] out: timestampB (7, 1447161652.493340)
+[52.19.164.11] out: got 16384 TXs
+[52.19.164.11] out: timestampB (4, 1447161652.842684)
+[52.29.95.105] out: got 16384 TXs
+[52.29.95.105] out: timestampB (5, 1447161652.528283)
+[54.169.212.80] out: got 16384 TXs
+[54.169.212.80] out: timestampB (6, 1447161652.642457)
+[54.94.243.208] out: got 16384 TXs
+[54.94.243.208] out: timestampB (3, 1447161653.557745)
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.8.92.220] out: [1] synced transactions.
+[52.8.92.220] out: timestampE (1, 1447161669.421092)
+[52.27.237.141] out: [0] synced transactions.
+[52.27.237.141] out: timestampE (0, 1447161668.830786)
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[54.209.228.153] out: [2] synced transactions.
+[54.209.228.153] out: timestampE (2, 1447161669.529421)
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.192.140.223] out: [7] synced transactions.
+[52.192.140.223] out: timestampE (7, 1447161669.461744)
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.29.95.105] out: [5] synced transactions.
+[52.29.95.105] out: timestampE (5, 1447161669.274697)
+[52.29.95.105] out: [5] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[52.19.164.11] out: [4] synced transactions.
+[52.19.164.11] out: timestampE (4, 1447161669.726093)
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[54.94.243.208] out: [3] synced transactions.
+[54.94.243.208] out: timestampE (3, 1447161670.091361)
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] synced transactions.
+[54.169.212.80] out: timestampE (6, 1447161672.611225)
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 2
+
+[54.94.243.208] out: servers started
+[52.8.92.220] out: got 16384 TXs
+[52.8.92.220] out: timestampB (1, 1447161693.926294)
+[52.27.237.141] out: got 16384 TXs
+[52.27.237.141] out: timestampB (0, 1447161693.417790)
+[54.209.228.153] out: got 16384 TXs
+[54.209.228.153] out: timestampB (2, 1447161695.118762)
+[52.192.140.223] out: got 16384 TXs
+[52.192.140.223] out: timestampB (7, 1447161695.177810)
+[52.19.164.11] out: got 16384 TXs
+[52.19.164.11] out: timestampB (4, 1447161695.559713)
+[52.29.95.105] out: got 16384 TXs
+[52.29.95.105] out: timestampB (5, 1447161695.219970)
+[54.169.212.80] out: got 16384 TXs
+[54.169.212.80] out: timestampB (6, 1447161695.388058)
+[54.94.243.208] out: got 16383 TXs
+[54.94.243.208] out: timestampB (3, 1447161697.737595)
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[52.27.237.141] out: [0] synced transactions.
+[52.27.237.141] out: timestampE (0, 1447161712.611749)
+[52.8.92.220] out: [1] synced transactions.
+[52.8.92.220] out: timestampE (1, 1447161713.243181)
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[54.209.228.153] out: [2] synced transactions.
+[54.209.228.153] out: timestampE (2, 1447161713.392763)
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.192.140.223] out: [7] synced transactions.
+[52.192.140.223] out: timestampE (7, 1447161713.257577)
+[52.29.95.105] out: [5] synced transactions.
+[52.29.95.105] out: timestampE (5, 1447161713.085132)
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.169.212.80] out: [6] synced transactions.
+[54.169.212.80] out: timestampE (6, 1447161712.618474)
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.19.164.11] out: [4] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 2
+[54.94.243.208] out: [3] synced transactions.
+[54.94.243.208] out: timestampE (3, 1447161714.129808)
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[52.19.164.11] out: [4] synced transactions.
+[52.19.164.11] out: timestampE (4, 1447161714.403467)
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 2
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[52.19.164.11] out: [4] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+
+[54.94.243.208] out: servers started
+[52.8.92.220] out: got 16384 TXs
+[52.8.92.220] out: timestampB (1, 1447161740.269743)
+[52.27.237.141] out: got 16384 TXs
+[52.27.237.141] out: timestampB (0, 1447161739.732180)
+[54.209.228.153] out: got 16384 TXs
+[54.209.228.153] out: timestampB (2, 1447161740.986692)
+[52.19.164.11] out: got 16384 TXs
+[52.19.164.11] out: timestampB (4, 1447161741.843539)
+[52.192.140.223] out: got 16384 TXs
+[52.192.140.223] out: timestampB (7, 1447161741.684692)
+[52.29.95.105] out: got 16384 TXs
+[52.29.95.105] out: timestampB (5, 1447161741.532400)
+[54.169.212.80] out: got 16384 TXs
+[54.169.212.80] out: timestampB (6, 1447161741.815505)
+[54.94.243.208] out: got 16384 TXs
+[54.94.243.208] out: timestampB (3, 1447161742.592806)
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[52.27.237.141] out: [0] synced transactions.
+[52.27.237.141] out: timestampE (0, 1447161758.747162)
+[52.8.92.220] out: [1] synced transactions.
+[52.8.92.220] out: timestampE (1, 1447161759.387566)
+[54.209.228.153] out: [2] synced transactions.
+[54.209.228.153] out: timestampE (2, 1447161759.538436)
+[52.192.140.223] out: [7] synced transactions.
+[52.192.140.223] out: timestampE (7, 1447161759.538203)
+[54.169.212.80] out: [6] synced transactions.
+[54.169.212.80] out: timestampE (6, 1447161758.833539)
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.94.243.208] out: [3] synced transactions.
+[54.94.243.208] out: timestampE (3, 1447161759.601665)
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 2
+[52.29.95.105] out: [5] got a common coin at round 1
+[52.29.95.105] out: [5] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[52.29.95.105] out: [5] synced transactions.
+[52.29.95.105] out: timestampE (5, 1447161760.864376)
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+[52.29.95.105] out: [5] got a common coin at round 3
+
+[54.94.243.208] out: servers started
+[52.27.237.141] out: got 16384 TXs
+[52.27.237.141] out: timestampB (0, 1447161773.500993)
+[52.8.92.220] out: got 16384 TXs
+[52.8.92.220] out: timestampB (1, 1447161774.240428)
+[54.209.228.153] out: got 16384 TXs
+[54.209.228.153] out: timestampB (2, 1447161774.959860)
+[52.29.95.105] out: got 16384 TXs
+[52.29.95.105] out: timestampB (5, 1447161775.168307)
+[52.19.164.11] out: got 16384 TXs
+[52.19.164.11] out: timestampB (4, 1447161776.200701)
+[52.192.140.223] out: got 16384 TXs
+[52.192.140.223] out: timestampB (7, 1447161776.100702)
+[54.169.212.80] out: got 16384 TXs
+[54.169.212.80] out: timestampB (6, 1447161775.625906)
+[54.94.243.208] out: got 16384 TXs
+[54.94.243.208] out: timestampB (3, 1447161776.709729)
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[52.8.92.220] out: [1] synced transactions.
+[52.8.92.220] out: timestampE (1, 1447161792.283350)
+[52.192.140.223] out: [7] synced transactions.
+[52.192.140.223] out: timestampE (7, 1447161792.261843)
+[52.27.237.141] out: [0] synced transactions.
+[52.27.237.141] out: timestampE (0, 1447161791.767094)
+[54.209.228.153] out: [2] synced transactions.
+[54.209.228.153] out: timestampE (2, 1447161792.442105)
+[54.169.212.80] out: [6] synced transactions.
+[54.169.212.80] out: timestampE (6, 1447161791.595343)
+[52.27.237.141] out: [0] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 1
+[52.27.237.141] out: [0] got a common coin at round 1
+[54.94.243.208] out: [3] synced transactions.
+[54.94.243.208] out: timestampE (3, 1447161792.377321)
+[54.209.228.153] out: [2] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[54.209.228.153] out: [2] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[52.192.140.223] out: [7] got a common coin at round 1
+[54.94.243.208] out: [3] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[54.169.212.80] out: [6] got a common coin at round 1
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[52.8.92.220] out: [1] got a common coin at round 2
+[52.27.237.141] out: [0] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[52.192.140.223] out: [7] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.169.212.80] out: [6] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.243.208] out: [3] got a common coin at round 2
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.27.237.141] out: [0] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[52.192.140.223] out: [7] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[54.209.228.153] out: [2] got a common coin at round 3
+[52.8.92.220] out: [1] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.169.212.80] out: [6] got a common coin at round 3
+[54.94.243.208] out: [3] got a common coin at round 3
