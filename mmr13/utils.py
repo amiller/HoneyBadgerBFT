@@ -360,18 +360,31 @@ def greenletFunction(func):
     func.at_exit = lambda: None  # manual at_exit since Greenlet does not provide this event by default
     return func
 
-def checkExceptionPerGreenlet(ignoreHealthyOnes=True):
+def checkExceptionPerGreenlet(outfileName=None, ignoreHealthyOnes=True):
     mylog("Tring to detect greenlets...")
-    for ob in gc.get_objects():
-        if not hasattr(ob, 'parent_args'):
-            continue
-        if not ob:
-            continue
-        if ignoreHealthyOnes and (not ob.exception):
-             continue
-        mylog('%s[%s] called with parent arg\n(%s)\n%s' % (ob.name, repr(ob.args), repr(ob.parent_args),
-            ''.join(traceback.format_stack(ob.gr_frame))), verboseLevel=-1)
-        mylog(ob.exception)
+    if not outfileName:
+        for ob in gc.get_objects():
+            if not hasattr(ob, 'parent_args'):
+                continue
+            if not ob:
+                continue
+            if ignoreHealthyOnes and (not ob.exception):
+                 continue
+            mylog('%s[%s] called with parent arg\n(%s)\n%s' % (ob.name, repr(ob.args), repr(ob.parent_args),
+                ''.join(traceback.format_stack(ob.gr_frame))), verboseLevel=-2)
+            mylog(ob.exception, verboseLevel=-2)
+    else:
+        handler = open(outfileName,'w')
+        for ob in gc.get_objects():
+            if not hasattr(ob, 'parent_args'):
+                continue
+            if not ob:
+                continue
+            if ignoreHealthyOnes and (not ob.exception):
+                 continue
+            handler.write('%s[%s] called with parent arg\n(%s)\n%s' % (ob.name, repr(ob.args), repr(ob.parent_args),
+                ''.join(traceback.format_stack(ob.gr_frame))))
+            handler.write(ob.exception)
 
 if __name__ == '__main__':
     a = MonitoredInt()
