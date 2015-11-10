@@ -1,13 +1,16 @@
 import subprocess, sys, signal
 
 def runOnTransaction(N, t, Tx):
-    p = subprocess.Popen(
+    # p = subprocess.Popen(
+    p = subprocess.check_output(
         ['python', './honest_party_test.py', '%d_%d.key' % (N, t), 'ecdsa_keys', '%d' % Tx, str(N), str(t)],
         shell=False,
-        stdout=subprocess.PIPE,
+        # stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         stdin=subprocess.PIPE
     )
+    return p.split('Total Message size ')[1].strip()
+
     counter = 0
     sent = False
     while True:
@@ -23,7 +26,7 @@ def runOnTransaction(N, t, Tx):
         if counter >= N - t and not sent:
             p.send_signal(signal.SIGINT)
             sent = True
-            print 'signal sent'
+            # print 'signal sent'
         # print line, counter
 
     
