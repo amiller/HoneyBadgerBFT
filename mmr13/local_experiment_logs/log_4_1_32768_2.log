@@ -1,0 +1,28 @@
+got 32768 TXs
+timestampB (0, 1447189917.372316)
+got 32768 TXs
+timestampB (1, 1447189917.468887)
+got 32768 TXs
+timestampB (2, 1447189917.561967)
+[0] got a common coin at round (1,1) (0)
+[0] got a common coin at round (0,1) (0)
+[0] got a common coin at round (1,1) (1)
+got 32768 TXs
+timestampB (3, 1447189932.838866)
+[0] got a common coin at round (2,2) (1)
+[0] got a common coin at round (0,2) (1)
+[0] got a common coin at round (0,2) (1)
+[0] synced transactions.
+timestampE (0, 1447189940.464351)
+[1] synced transactions.
+timestampE (1, 1447189940.778551)
+[2] synced transactions.
+timestampE (2, 1447189941.105201)
+Concensus Finished
+Entering atexit()
+msgCounter 352
+msgTypeCounter [[0, 0], [16, 131073316], [48, 196612028], [96, 960], [72, 720], [72, 19152], [48, 1920]]
+    Init      Echo      Val       Aux      Coin     Ready
+      16       48        96        72        72        48
+131073316 196612028       960       720     19152      1920
+Total Message size 327708096

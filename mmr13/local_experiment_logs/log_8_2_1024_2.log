@@ -1,0 +1,51 @@
+got 1024 TXs
+timestampB (1, 1447190191.074720)
+got 1024 TXs
+timestampB (0, 1447190191.077185)
+got 1024 TXs
+timestampB (3, 1447190191.079843)
+got 1024 TXs
+timestampB (2, 1447190191.082978)
+got 1024 TXs
+timestampB (4, 1447190191.085901)
+got 1024 TXs
+timestampB (5, 1447190191.088826)
+got 1024 TXs
+timestampB (7, 1447190191.091672)
+got 1024 TXs
+timestampB (6, 1447190191.718550)
+[0] got a common coin at round (4,1) (0)
+[0] got a common coin at round (3,1) (1)
+[0] got a common coin at round (7,1) (0)
+[0] got a common coin at round (1,1) (1)
+[0] got a common coin at round (7,1) (0)
+[0] got a common coin at round (3,1) (1)
+[0] got a common coin at round (1,1) (0)
+[0] got a common coin at round (2,1) (0)
+[0] got a common coin at round (7,2) (1)
+[0] got a common coin at round (4,2) (1)
+[0] got a common coin at round (3,2) (1)
+[0] got a common coin at round (5,2) (0)
+[0] got a common coin at round (5,2) (1)
+[0] got a common coin at round (7,2) (1)
+[0] got a common coin at round (1,2) (1)
+[0] synced transactions.
+timestampE (0, 1447190195.858215)
+[1] synced transactions.
+timestampE (1, 1447190195.877752)
+[2] synced transactions.
+timestampE (2, 1447190195.897369)
+[3] synced transactions.
+timestampE (3, 1447190195.916623)
+[4] synced transactions.
+timestampE (4, 1447190195.936191)
+[5] synced transactions.
+timestampE (5, 1447190195.955421)
+Concensus Finished
+Entering atexit()
+msgCounter 4104
+msgTypeCounter [[0, 0], [64, 16389344], [512, 32811056], [1192, 11920], [912, 9120], [912, 242592], [512, 20480]]
+    Init      Echo      Val       Aux      Coin     Ready
+      64      512      1192       912       912       512
+16389344 32811056     11920      9120    242592     20480
+Total Message size 49484512

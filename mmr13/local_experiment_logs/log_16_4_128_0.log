@@ -1,0 +1,109 @@
+got 128 TXs
+timestampB (0, 1447194489.386904)
+got 128 TXs
+timestampB (3, 1447194489.387495)
+got 128 TXs
+timestampB (4, 1447194489.388127)
+got 128 TXs
+timestampB (7, 1447194489.388685)
+got 128 TXs
+timestampB (6, 1447194489.389305)
+got 128 TXs
+timestampB (10, 1447194489.389862)
+got 128 TXs
+timestampB (1, 1447194489.390980)
+got 128 TXs
+timestampB (2, 1447194489.391540)
+got 128 TXs
+timestampB (8, 1447194489.392165)
+got 128 TXs
+timestampB (12, 1447194489.392738)
+got 128 TXs
+timestampB (14, 1447194489.626653)
+got 128 TXs
+timestampB (13, 1447194489.627366)
+got 128 TXs
+timestampB (5, 1447194489.627932)
+got 128 TXs
+timestampB (9, 1447194489.628567)
+got 128 TXs
+timestampB (15, 1447194489.629129)
+got 128 TXs
+timestampB (11, 1447194489.629756)
+[0] got a common coin at round (10,1) (0)
+[0] got a common coin at round (14,1) (0)
+[0] got a common coin at round (11,1) (0)
+[0] got a common coin at round (1,1) (1)
+[0] got a common coin at round (1,1) (1)
+[0] got a common coin at round (5,1) (1)
+[0] got a common coin at round (10,1) (0)
+[0] got a common coin at round (1,1) (0)
+[0] got a common coin at round (7,1) (1)
+[0] got a common coin at round (5,1) (0)
+[0] got a common coin at round (8,1) (0)
+[0] got a common coin at round (3,1) (1)
+[0] got a common coin at round (1,1) (1)
+[0] got a common coin at round (15,1) (0)
+[0] got a common coin at round (14,1) (0)
+[0] got a common coin at round (13,1) (0)
+[0] got a common coin at round (4,2) (0)
+[0] got a common coin at round (9,2) (0)
+[0] got a common coin at round (8,2) (0)
+[0] got a common coin at round (10,2) (1)
+[0] got a common coin at round (13,2) (1)
+[0] got a common coin at round (3,2) (1)
+[0] got a common coin at round (10,2) (0)
+[0] got a common coin at round (8,2) (0)
+[0] got a common coin at round (0,2) (0)
+[0] got a common coin at round (6,2) (1)
+[0] got a common coin at round (4,2) (0)
+[0] got a common coin at round (0,2) (0)
+[0] got a common coin at round (14,2) (0)
+[0] got a common coin at round (0,2) (0)
+[0] got a common coin at round (13,2) (0)
+[0] got a common coin at round (9,2) (1)
+[0] got a common coin at round (2,3) (0)
+[0] got a common coin at round (9,3) (0)
+[0] got a common coin at round (3,3) (1)
+[0] got a common coin at round (12,3) (1)
+[0] got a common coin at round (15,3) (1)
+[0] got a common coin at round (8,3) (1)
+[0] got a common coin at round (14,3) (1)
+[0] got a common coin at round (0,3) (0)
+[0] got a common coin at round (14,3) (1)
+[0] got a common coin at round (7,3) (0)
+[0] got a common coin at round (7,3) (1)
+[0] got a common coin at round (15,3) (1)
+[0] got a common coin at round (1,3) (0)
+[0] synced transactions.
+timestampE (0, 1447194500.911374)
+[1] synced transactions.
+timestampE (1, 1447194500.915930)
+[2] synced transactions.
+timestampE (2, 1447194500.920423)
+[3] synced transactions.
+timestampE (3, 1447194500.924914)
+[4] synced transactions.
+timestampE (4, 1447194500.929242)
+[5] synced transactions.
+timestampE (5, 1447194500.934090)
+[6] synced transactions.
+timestampE (6, 1447194500.938497)
+[7] synced transactions.
+timestampE (7, 1447194500.942888)
+[8] synced transactions.
+timestampE (8, 1447194500.947271)
+[9] synced transactions.
+timestampE (9, 1447194500.951670)
+[10] synced transactions.
+timestampE (10, 1447194500.956332)
+[11] synced transactions.
+timestampE (11, 1447194500.960740)
+Concensus Finished
+Entering atexit()
+msgCounter 45312
+msgTypeCounter [[0, 0], [256, 8213264], [4096, 19071248], [13824, 138240], [11520, 115200], [11520, 3064256], [4096, 163840]]
+    Init      Echo      Val       Aux      Coin     Ready
+     256     4096     13824     11520     11520      4096
+ 8213264 19071248    138240    115200   3064256    163840
+Total Message size 30766048
