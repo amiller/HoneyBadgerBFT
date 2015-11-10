@@ -13,7 +13,7 @@ def runOnTransaction(N, t, Tx):
     while True:
         line = p.stdout.readline()
         if 'size' in line:
-            # print Tx, line
+            print Tx, line
             return line.replace('Total Message size ','').strip()
         if line == '':
             break
