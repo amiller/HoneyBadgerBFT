@@ -10,6 +10,10 @@ def host_type():
     run('uname -s')
 
 @parallel
+def gettime():
+    run('echo $(($(date +%s%N)/1000))')
+
+@parallel
 def ping():
     run('ping -c 5 google.com')
     run('echo "synced transactions set"')
