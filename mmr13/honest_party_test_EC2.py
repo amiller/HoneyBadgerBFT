@@ -262,7 +262,7 @@ import traceback
 from greenlet import greenlet
 
 USE_PROFILE = False
-GEVENT_DEBUG = False
+GEVENT_DEBUG = True
 OUTPUT_HALF_MSG = False
 
 if USE_PROFILE:
