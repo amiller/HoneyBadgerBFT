@@ -1,8 +1,8 @@
 ############# Process the latency from a raw screen log
-def process(s):
+def process(s, N=-1, t=-1):
     endtime = dict()
     starttime = dict()
-    t = []
+    tList = []
     lines = s.split('\n')
     for line in lines:
         if 'timestampE' in line:
@@ -14,11 +14,16 @@ def process(s):
     maxLatency = 0
     for key, value in endtime.items():
         print key, starttime[key], value, value - starttime[key]
-        t.append(value - starttime[key])
+        tList.append(value - starttime[key])
         if value - starttime[key] > maxLatency:
             maxLatency = value - starttime[key]
+    if N < 0 or t < 0 or 3*t < N:
+        # infer N, t
+        N = len(starttime.keys())
+        t = N/4  # follows the convention that 4t = N
+    print '(N-t) finishing at', sorted(endtime.values())[N-t-1] - min(starttime.values())
     print 'max', maxLatency
-    print 'avg', sum(t) / len(t)
+    print 'avg', sum(tList) / len(tList)
     print 'range', max(endtime.values()) - min(starttime.values())
 
 if  __name__ =='__main__':
