@@ -59,7 +59,7 @@ def listen_to_channel(port):
     return q
 
 def connect_to_channel(hostname, port, party):
-    mylog('Trying to connect to %s for party %d' % (repr((hostname, port)), party), verboseLevel=-1)
+    mylog('Trying to connect to %s for party %d' % (repr((hostname, port)), party), verboseLevel=-2)
     retry = True
     s = socks.socksocket()
     while retry:
@@ -72,7 +72,7 @@ def connect_to_channel(hostname, port, party):
         retry = True
         gevent.sleep(1)
         s.close()
-        mylog('retrying (%s, %d) caused by %s...' % (hostname, port, str(e)) , verboseLevel=-1)
+        mylog('retrying (%s, %d) caused by %s...' % (hostname, port, str(e)) , verboseLevel=-2)
     q = Queue()
     def _handle():
         while True:
