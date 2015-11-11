@@ -247,6 +247,11 @@ def callFab(s, work):  # Depracated
             '-u', 'ubuntu', '-H', ','.join(getAddrFromEC2Summary(s)),
             work])
 
+#short-cuts
+
+c = callFabFromIPList
+r = runProtocolfromClient
+
 if  __name__ =='__main__':
   try: __IPYTHON__
   except NameError:

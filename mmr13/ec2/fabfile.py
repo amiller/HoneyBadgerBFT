@@ -69,7 +69,7 @@ def fetchLogs():
 
 @parallel
 def syncKeys():
-    put('./keys*', '~/')
+    put('./*.key', '~/')
     put('./ecdsa_keys', '~/')
 
 import SocketServer, time
