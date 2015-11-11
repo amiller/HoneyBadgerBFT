@@ -47,7 +47,7 @@ def listen_to_channel(port):
         while True:
         #for line in f:
             # msglength = struct.unpack('<I', f.read(4))
-            msglength = struct.unpack('<I', goodread(f, 4))
+            msglength, = struct.unpack('<I', goodread(f, 4))
             line = goodread(f, msglength)  # f.read(msglength)
             # print 'line read from socket', line
             # obj = decode(base64.b64decode(line))
