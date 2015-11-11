@@ -121,8 +121,9 @@ def shared_coin(instance, pid, N, t, broadcast, receive):
                     raise CommonCoinFailureException()
                 # b = hash(r) % 2
                 # mylog('[%d] got a common coin %d at round %d' % (pid, combsig % 2, r), verboseLevel=-2)
-                #outputQueue[r].put(r % 2)
-                outputQueue[r].put(combsig % 2)
+                # outputQueue[r].put(r % 2)
+                # outputQueue[r].put(combsig % 2)
+                outputQueue[r].put(combsig.bit_test(0) and 1 or 0)  # explicitly convert to int
 
     greenletPacker(Greenlet(_recv), 'shared_coin_dummy', (pid, N, t, broadcast, receive)).start()
 
