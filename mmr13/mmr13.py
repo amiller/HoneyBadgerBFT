@@ -463,7 +463,7 @@ def binary_consensus(instance, pid, N, t, vi, decide, broadcast, receive):
 
     while True: # checkFinishedWithGlobalState(N):
         round += 1
-        mylog(bcolors.WARNING + '[%d]m enters round %d with decision %s' % (pid, round, globalState[pid] or 'None') + bcolors.ENDC, verboseLevel=-1)
+        mylog(bcolors.WARNING + '[%d] enters round %d with decision %s' % (pid, round, globalState[pid] or 'None') + bcolors.ENDC, verboseLevel=-2)
         # Broadcast EST
         # TODO: let bv_broadcast receive
         bvOutputHolder = Queue(2)  # 2 possible values
