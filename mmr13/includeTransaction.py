@@ -129,7 +129,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     #broadcast(('e', pid, newBundle, keys[pid].sign(sha1hash(hex((newBundle[0]+37)*setHash(newBundle[1]))))))
                     Greenlet(broadcast, ('e', pid, newBundle, keys[pid].sign(
                         sha1hash(repr(newBundle))
-                    )))
+                    ))).start()
                     #broadcast(('e', pid, newBundle, keys[pid].sign(
                     #    sha1hash(repr(newBundle))
                     #)))
@@ -156,7 +156,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         #print originBundle[0], '->', sender, len(buf), repr(buf)
                         assert len(buf) % TR_SIZE == 0
                         reconsLocker[originBundle[0]].put(buf)
-                        Greenlet(broadcast, ('r', originBundle[0], sha1hash(buf)))
+                        Greenlet(broadcast, ('r', originBundle[0], sha1hash(buf))).start()
                         # broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to
                 else:
                     raise ECDSASignatureError()
@@ -166,7 +166,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 # print pid, msgBundle[1], tmp
                 if tmp >= t+1 and not readySent[msgBundle[1]]:
                     readySent[msgBundle[1]] = True
-                    Greenlet(broadcast, ('r', msgBundle[1], msgBundle[2]))
+                    Greenlet(broadcast, ('r', msgBundle[1], msgBundle[2])).start()
                     # broadcast(('r', msgBundle[1], msgBundle[2]))  # relay the msg
                 if tmp >= 2*t+1 and not outputs[msgBundle[1]].full():
                     finalTrigger[msgBundle[1]].put(1)
