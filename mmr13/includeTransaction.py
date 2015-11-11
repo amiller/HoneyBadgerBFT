@@ -142,16 +142,16 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 if keys[msgBundle[1]].verify(sha1hash(repr(msgBundle[2])), msgBundle[3]):
                     originBundle = msgBundle[2]
                     opinions[originBundle[0]][sender] = originBundle[1]
-                    mylog("[%d] got %d echos for %d" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
-                         verboseLevel=-2)
+                    # mylog("[%d] got %d echos for %d" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
+                    #      verboseLevel=-2)
                     # opinions[originBundle[0]][repr(originBundle[1])] += 1
                     # mylog("[%d] counter for (%d, %s) is now %d" % (pid, originBundle[0],
                     #    repr(originBundle[1]), opinions[originBundle[0]][repr(originBundle[1])]))
                     # if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2 and not outputs[originBundle[0]].full():
                     if len(opinions[originBundle[0]]) >= Threshold2 and not reconstDone[originBundle[0]]:
                         reconstDone[originBundle[0]] = True
-                        mylog("[%d] got %d echos for %d to reconstruction" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
-                         verboseLevel=-2)
+                        # mylog("[%d] got %d echos for %d to reconstruction" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
+                        #  verboseLevel=-2)
                         reconstruction = zfecDecoder.decode(opinions[originBundle[0]].values()[:Threshold],
                                 opinions[originBundle[0]].keys()[:Threshold])  # We only take the first [Threshold] fragments
                         # assert len(reconstruction) == Threshold
@@ -162,7 +162,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         assert len(buf) % TR_SIZE == 0
                         if reconsLocker[originBundle[0]].empty():
                             reconsLocker[originBundle[0]].put(buf)
-                        mylog("[%d] put reconsLocker for %d" % (pid, originBundle[0]), verboseLevel=-2)
+                        # mylog("[%d] put reconsLocker for %d" % (pid, originBundle[0]), verboseLevel=-2)
                         if not readySent[originBundle[0]]:
                             readySent[originBundle[0]] = True
                             Greenlet(broadcast, ('r', originBundle[0], sha1hash(buf))).start()
@@ -179,7 +179,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     # broadcast(('r', msgBundle[1], msgBundle[2]))  # relay the msg
                 if tmp >= 2*t+1 and not outputs[msgBundle[1]].full() and finalTrigger[msgBundle[1]].empty():
                     finalTrigger[msgBundle[1]].put(1)
-                    mylog("[%d] put finalTrigger for %d" % (pid, msgBundle[1]), verboseLevel=-2)
+                    # mylog("[%d] put finalTrigger for %d" % (pid, msgBundle[1]), verboseLevel=-2)
 
     greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()
     encodedMsg = ''.join([encodeTransaction(tr) for tr in msg])
