@@ -115,8 +115,8 @@ def shared_coin(instance, pid, N, t, broadcast, receive):
             if len(received[r]) == t + 1:  #####
                 #if True:
                 try:
-                    combsig = PK.combine_shares(str((r,instance)), dict(received[r]))
-                    assert PK.verify_signature(combsig, str((r,instance)))
+                    combsig = PK.combine_shares(str((r, instance)), dict(received[r]))
+                    assert PK.verify_signature(combsig, str((r, instance)))
                 except AssertionError, e:
                     raise CommonCoinFailureException()
                 # b = hash(r) % 2

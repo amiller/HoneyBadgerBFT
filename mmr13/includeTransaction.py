@@ -100,6 +100,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         def final(i):
             buf = reconsLocker[i].get()
             finalTrigger[i].get()
+            mylog("[%d] finished acast on msg from %d." % (pid, i), verboseLevel=-2)
             outputs[i].put([constructTransactionFromRepr(buf[i:i+TR_SIZE]) for i in range(0, len(buf), TR_SIZE)])
         for i in range(N):
             Greenlet(final, i).start()
@@ -231,7 +232,7 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
             'includeTransaction.outputCallBack', (pid, N, t, setToInclude, broadcast, receive)).start()
 
     def callbackFactoryACS():
-        def _callback(commonSet): # now I know player j has succeeded in broadcasting
+        def _callback(commonSet):  # now I know player j has succeeded in broadcasting
             #######
             locker.put(commonSet)
         return _callback
