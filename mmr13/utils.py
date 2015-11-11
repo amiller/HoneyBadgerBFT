@@ -178,7 +178,8 @@ def deepDecode(m, msgTypeCounter):
     buf = BytesIO(m)
     mc, f, t, msgtype = struct.unpack('<IBBB', buf.read(7))
     trSet = set()
-    msgTypeCounter[msgtype] += len(m)
+    msgTypeCounter[msgtype][0] += 1
+    msgTypeCounter[msgtype][1] += len(m)
     if msgtype == 1:
         p1, lenS = struct.unpack('<BI', buf.read(5))
         trSet = buf.read(lenS)
