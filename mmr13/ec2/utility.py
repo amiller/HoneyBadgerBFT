@@ -205,6 +205,10 @@ def runProtocolfromClient(client, key, hosts=None):
     else:
         callFabFromIPList(hosts, 'runProtocolFromClient:%s,%s' % (client, key))
 
+def runEC2(Tx, N, t, n):  # run 4 in a row
+    for i in range(1, n):
+        runProtocolfromClient("%d %d %d" % (Tx, N, t), "~/%d_%d_%d.key" % (N, t, i))
+
 def stopProtocol():
     callFabFromIPList(getIP(), 'stopProtocols')
 

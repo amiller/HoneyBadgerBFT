@@ -77,7 +77,7 @@ def acs(pid, N, t, Q, broadcast, receive):
     def listenerFactory(i, channel):
         def _listener():
             BA[i] = channel.get()
-            # if BA[i]:   # Al: no idea why we have a if BA[i] here..
+            # if BA[i]:   # Al: used to be a short-cut, but only works when the N in line 87 changed as (N-t)
             if True:
                 mylog('B[%d]binary consensus_%d_ends at %f' % (pid, i, time.time()), verboseLevel=-1)
                 if callbackCounter[0] >= 2*t and (not locker2.full()):
