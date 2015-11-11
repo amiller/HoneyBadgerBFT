@@ -526,7 +526,7 @@ def binary_consensus(instance, pid, N, t, vi, decide, broadcast, receive):
                 # decide s
                 if not decided:
                     mylog("[%d] decides on %d in round %d at instance %d" % (pid, s, round, instance), verboseLevel=-2)
-                    globalState[pid] = "decides on %d" % s
+                    globalState[pid] = "%d" % s
                     decide.put(s)
                     decided = True
                     decidedNum = s

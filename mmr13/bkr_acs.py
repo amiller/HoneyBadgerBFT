@@ -29,11 +29,12 @@ def acs(pid, N, t, Q, broadcast, receive):
         def _callback(val): # Get notified for i
             # Greenlet(callBackWrap(binary_consensus, callbackFactory(i)), pid,
             #         N, t, 1, make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
-            receivedChannelsFlags.append(i)
-            mylog('B[%d]binary consensus_%d_starts with 1 at %f' % (pid, i, time.time()), verboseLevel=-1)
-            greenletPacker(Greenlet(binary_consensus, i, pid,
-                N, t, 1, decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get),
-                    'acs.callbackFactory.binary_consensus', (pid, N, t, Q, broadcast, receive)).start()
+            if not i in receivedChannelsFlags:
+                receivedChannelsFlags.append(i)
+                mylog('B[%d]binary consensus_%d_starts with 1 at %f' % (pid, i, time.time()), verboseLevel=-1)
+                greenletPacker(Greenlet(binary_consensus, i, pid,
+                    N, t, 1, decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get),
+                        'acs.callbackFactory.binary_consensus', (pid, N, t, Q, broadcast, receive)).start()
         return _callback
 
     for i, q in enumerate(Q):
@@ -94,6 +95,7 @@ def acs(pid, N, t, Q, broadcast, receive):
     # Now we feed 0 to all the other binary consensus protocols
     for i in range(N):
         if not i in receivedChannelsFlags:
+            receivedChannelsFlags.append(i)
             mylog('B[%d]binary_%d_starts with 0 at %f' % (pid, i, time.time()))
             greenletPacker(Greenlet(binary_consensus, i, pid, N, t, 0,
                      decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get),
