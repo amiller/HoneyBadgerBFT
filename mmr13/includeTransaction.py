@@ -97,7 +97,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         readySent = [False] * N
         reconsLocker = [Queue() for _ in range(N)]
         finalTrigger = [Queue() for _ in range(N)]
-        def final(i):
+        def final(i):  # only one time
             buf = reconsLocker[i].get()
             finalTrigger[i].get()
             mylog("[%d] finished acast on msg from %d." % (pid, i), verboseLevel=-2)
@@ -127,9 +127,12 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     #mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
                     #mylog("[%d] and now signed is %s" % (pid, repr(signed)), verboseLevel=-1)
                     #broadcast(('e', pid, newBundle, keys[pid].sign(sha1hash(hex((newBundle[0]+37)*setHash(newBundle[1]))))))
-                    broadcast(('e', pid, newBundle, keys[pid].sign(
+                    Greenlet(broadcast, ('e', pid, newBundle, keys[pid].sign(
                         sha1hash(repr(newBundle))
                     )))
+                    #broadcast(('e', pid, newBundle, keys[pid].sign(
+                    #    sha1hash(repr(newBundle))
+                    #)))
                     signed[msgBundle[1]] = True
                 else:
                     raise ECDSASignatureError()
@@ -153,7 +156,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         #print originBundle[0], '->', sender, len(buf), repr(buf)
                         assert len(buf) % TR_SIZE == 0
                         reconsLocker[originBundle[0]].put(buf)
-                        broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to
+                        Greenlet(broadcast, ('r', originBundle[0], sha1hash(buf)))
+                        # broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to
                 else:
                     raise ECDSASignatureError()
             elif msgBundle[0] == 'r':
@@ -162,7 +166,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 # print pid, msgBundle[1], tmp
                 if tmp >= t+1 and not readySent[msgBundle[1]]:
                     readySent[msgBundle[1]] = True
-                    broadcast(('r', msgBundle[1], msgBundle[2]))  # relay the msg
+                    Greenlet(broadcast, ('r', msgBundle[1], msgBundle[2]))
+                    # broadcast(('r', msgBundle[1], msgBundle[2]))  # relay the msg
                 if tmp >= 2*t+1 and not outputs[msgBundle[1]].full():
                     finalTrigger[msgBundle[1]].put(1)
 
