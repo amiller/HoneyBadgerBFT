@@ -156,7 +156,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         #print originBundle[0], '->', sender, len(buf), repr(buf)
                         assert len(buf) % TR_SIZE == 0
                         reconsLocker[originBundle[0]].put(buf)
-                        mylog("[%d] put reconsLocker for %d" % (pid, originBundle[0]), verboseLevel=-1)
+                        mylog("[%d] put reconsLocker for %d" % (pid, originBundle[0]), verboseLevel=-2)
                         Greenlet(broadcast, ('r', originBundle[0], sha1hash(buf))).start()
                         # broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to
                 else:
@@ -171,7 +171,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     # broadcast(('r', msgBundle[1], msgBundle[2]))  # relay the msg
                 if tmp >= 2*t+1 and not outputs[msgBundle[1]].full():
                     finalTrigger[msgBundle[1]].put(1)
-                    mylog("[%d] put finalTrigger for %d" % (pid, msgBundle[1]), verboseLevel=-1)
+                    mylog("[%d] put finalTrigger for %d" % (pid, msgBundle[1]), verboseLevel=-2)
 
     greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()
     encodedMsg = ''.join([encodeTransaction(tr) for tr in msg])
