@@ -141,8 +141,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 if keys[msgBundle[1]].verify(sha1hash(repr(msgBundle[2])), msgBundle[3]):
                     originBundle = msgBundle[2]
                     opinions[originBundle[0]][sender] = originBundle[1]
-                    # mylog("[%d] got %d echos for %d" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
-                    #      verboseLevel=-2)
+                    mylog("[%d] got %d echos for %d" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
+                          verboseLevel=-2)
                     # opinions[originBundle[0]][repr(originBundle[1])] += 1
                     # mylog("[%d] counter for (%d, %s) is now %d" % (pid, originBundle[0],
                     #    repr(originBundle[1]), opinions[originBundle[0]][repr(originBundle[1])]))
