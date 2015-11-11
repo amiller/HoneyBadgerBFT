@@ -81,7 +81,7 @@ def acs(pid, N, t, Q, broadcast, receive):
                 if callbackCounter[0] >= 2*t and (not locker2.full()):
                         locker2.put("Key")  # Now we've got 2t+1 1's
                 callbackCounter[0] += 1
-                if callbackCounter[0] >= N-t and (not locker.full()):  # if we have all of them responded
+                if callbackCounter[0] >= N and (not locker.full()):  # if we have all of them responded
                         locker.put("Key")
         return _listener
 
@@ -152,7 +152,7 @@ def acs_mapping(pid, N, t, Q, broadcast, receive):
 
 def checkBA(BA, N, t):
     global defaultBA
-    if sum(BA) <= 2*t:  # If acs failed, we use a pre-set default common subset
+    if sum(BA) <= N-t:  # If acs failed, we use a pre-set default common subset
         raise ACSException
         # This part should never be executed
         if not defaultBA:

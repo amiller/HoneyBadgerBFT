@@ -61,7 +61,7 @@ def random_Qn(n):
     return pow(x, 2, n)
 
 def dealer(bits=2048, players=10, k=5):
-    random.seed(1203103)
+    #random.seed(1203103)
     global n, m, p, q, e, d, shares
     assert bits == 2048, 'need different parameters'
     p = safe_prime_1
