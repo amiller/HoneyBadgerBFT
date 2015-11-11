@@ -77,13 +77,14 @@ def acs(pid, N, t, Q, broadcast, receive):
     def listenerFactory(i, channel):
         def _listener():
             BA[i] = channel.get()
-            if BA[i]:
+            # if BA[i]:   # Al: no idea why we have a if BA[i] here..
+            if True:
                 mylog('B[%d]binary consensus_%d_ends at %f' % (pid, i, time.time()), verboseLevel=-1)
                 if callbackCounter[0] >= 2*t and (not locker2.full()):
                         locker2.put("Key")  # Now we've got 2t+1 1's
                 callbackCounter[0] += 1
                 mylog("[%d] got %d result for acs now, BA: %s" % (pid, callbackCounter[0], repr(BA)), verboseLevel=-2)
-                if callbackCounter[0] >= N and (not locker.full()):  # if we have all of them responded
+                if callbackCounter[0] == N and (not locker.full()):  # if we have all of them responded
                         locker.put("Key")
         return _listener
 
