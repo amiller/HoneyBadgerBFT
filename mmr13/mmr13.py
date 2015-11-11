@@ -120,7 +120,7 @@ def shared_coin(instance, pid, N, t, broadcast, receive):
                 except AssertionError, e:
                     raise CommonCoinFailureException()
                 # b = hash(r) % 2
-                mylog('[%d] got a common coin %d at round %d' % (pid, combsig % 2, r), verboseLevel=-2)
+                # mylog('[%d] got a common coin %d at round %d' % (pid, combsig % 2, r), verboseLevel=-2)
                 #outputQueue[r].put(r % 2)
                 outputQueue[r].put(combsig % 2)
 
@@ -524,7 +524,7 @@ def binary_consensus(instance, pid, N, t, vi, decide, broadcast, receive):
             if values[0] == s:
                 # decide s
                 if not decided:
-                    mylog(bcolors.WARNING + "[%d]b decides on %d" % (pid, s) + bcolors.ENDC)
+                    mylog("[%d] decides on %d in round %d at instance %d" % (pid, s, round, instance), verboseLevel=-2)
                     globalState[pid] = "decides on %d" % s
                     decide.put(s)
                     decided = True
