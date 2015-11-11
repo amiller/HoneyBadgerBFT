@@ -141,6 +141,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 if keys[msgBundle[1]].verify(sha1hash(repr(msgBundle[2])), msgBundle[3]):
                     originBundle = msgBundle[2]
                     opinions[originBundle[0]][sender] = originBundle[1]
+                    mylog("[%d] got %d echos for %d" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
+                          verboseLevel=-2)
                     # opinions[originBundle[0]][repr(originBundle[1])] += 1
                     # mylog("[%d] counter for (%d, %s) is now %d" % (pid, originBundle[0],
                     #    repr(originBundle[1]), opinions[originBundle[0]][repr(originBundle[1])]))
@@ -169,7 +171,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     readySent[msgBundle[1]] = True
                     Greenlet(broadcast, ('r', msgBundle[1], msgBundle[2])).start()
                     # broadcast(('r', msgBundle[1], msgBundle[2]))  # relay the msg
-                if tmp >= 2*t+1 and not outputs[msgBundle[1]].full():
+                if tmp >= 2*t+1 and not outputs[msgBundle[1]].full() and finalTrigger[msgBundle[1]].empty():
                     finalTrigger[msgBundle[1]].put(1)
                     mylog("[%d] put finalTrigger for %d" % (pid, msgBundle[1]), verboseLevel=-2)
 
