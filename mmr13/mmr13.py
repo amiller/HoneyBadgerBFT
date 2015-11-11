@@ -115,14 +115,15 @@ def shared_coin(instance, pid, N, t, broadcast, receive):
             if len(received[r]) == t + 1:  #####
                 #if True:
                 try:
-                    combsig = PK.combine_shares(str((r,instance)), dict(received[r]))
-                    assert PK.verify_signature(combsig, str((r,instance)))
+                    combsig = PK.combine_shares(str((r, instance)), dict(received[r]))
+                    assert PK.verify_signature(combsig, str((r, instance)))
                 except AssertionError, e:
                     raise CommonCoinFailureException()
                 # b = hash(r) % 2
-                mylog('[%d] got a common coin %d at round %d' % (pid, combsig % 2, r), verboseLevel=-2)
-                #outputQueue[r].put(r % 2)
-                outputQueue[r].put(combsig % 2)
+                # mylog('[%d] got a common coin %d at round %d' % (pid, combsig % 2, r), verboseLevel=-2)
+                # outputQueue[r].put(r % 2)
+                # outputQueue[r].put(combsig % 2)
+                outputQueue[r].put(combsig.bit_test(0) and 1 or 0)  # explicitly convert to int
 
     greenletPacker(Greenlet(_recv), 'shared_coin_dummy', (pid, N, t, broadcast, receive)).start()
 
@@ -524,7 +525,7 @@ def binary_consensus(instance, pid, N, t, vi, decide, broadcast, receive):
             if values[0] == s:
                 # decide s
                 if not decided:
-                    mylog(bcolors.WARNING + "[%d]b decides on %d" % (pid, s) + bcolors.ENDC)
+                    mylog("[%d] decides on %d in round %d at instance %d" % (pid, s, round, instance), verboseLevel=-2)
                     globalState[pid] = "decides on %d" % s
                     decide.put(s)
                     decided = True

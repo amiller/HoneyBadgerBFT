@@ -199,8 +199,11 @@ def monitor(stdout, N, t):
 def runProtocol():  # fast-path to run, assuming we already have the files ready
     callFabFromIPList(getIP(), 'runProtocol')
 
-def runProtocolfromClient(client, N, t):
-    callFabFromIPList(getIP(), 'runProtocolFromClient:%s,%d,%d' % (client, N, t))
+def runProtocolfromClient(client, key, hosts=None):
+    if not hosts:
+        callFabFromIPList(getIP(), 'runProtocolFromClient:%s,%s' % (client, key))
+    else:
+        callFabFromIPList(hosts, 'runProtocolFromClient:%s,%s' % (client, key))
 
 def stopProtocol():
     callFabFromIPList(getIP(), 'stopProtocols')
@@ -243,6 +246,11 @@ def callFab(s, work):  # Depracated
     print Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem', 
             '-u', 'ubuntu', '-H', ','.join(getAddrFromEC2Summary(s)),
             work])
+
+#short-cuts
+
+c = callFabFromIPList
+rp = runProtocolfromClient
 
 if  __name__ =='__main__':
   try: __IPYTHON__

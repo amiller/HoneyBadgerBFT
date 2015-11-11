@@ -100,7 +100,7 @@ def acs(pid, N, t, Q, broadcast, receive):
     locker.get()  # Now we can check'''
     BA = checkBA(BA, N, t)
     # gevent.sleep(1)
-    mylog(bcolors.UNDERLINE + "[%d] Get subset %s" % (pid, BA) + bcolors.ENDC)
+    mylog("[%d] Get subset %s" % (pid, BA), verboseLevel=-2)
     return BA
 
 comment = '''
@@ -152,7 +152,7 @@ def acs_mapping(pid, N, t, Q, broadcast, receive):
 
 def checkBA(BA, N, t):
     global defaultBA
-    if sum(BA) <= N-t:  # If acs failed, we use a pre-set default common subset
+    if sum(BA) < N-t:  # If acs failed, we use a pre-set default common subset
         raise ACSException
         # This part should never be executed
         if not defaultBA:

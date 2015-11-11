@@ -31,14 +31,27 @@ from subprocess import check_output
 TOR_SOCKSPORT = range(9050, 9150)
 WAITING_SETUP_TIME_IN_SEC = 3
 
+def goodread(f, length):
+    ltmp = length
+    buf = []
+    while ltmp > 0:
+        buf.append(f.read(ltmp))
+        ltmp -= len(buf[-1])
+    return ''.join(buf)
+
 def listen_to_channel(port):
     mylog('Preparing server on %d...' % port)
-    q = Queue(1)
+    q = Queue()
     def _handle(socket, address):
         f = socket.makefile()
-        for line in f:
+        while True:
+        #for line in f:
+            # msglength = struct.unpack('<I', f.read(4))
+            msglength, = struct.unpack('<I', goodread(f, 4))
+            line = goodread(f, msglength)  # f.read(msglength)
             # print 'line read from socket', line
-            obj = decode(base64.b64decode(line))
+            # obj = decode(base64.b64decode(line))
+            obj = decode(line)
             # mylog('decoding')
             # mylog(obj, verboseLevel=-1)
             q.put(obj[1:])
@@ -62,12 +75,15 @@ def connect_to_channel(hostname, port, party):
         gevent.sleep(1)
         s.close()
         mylog('retrying (%s, %d) caused by %s...' % (hostname, port, str(e)) , verboseLevel=-1)
-    q = Queue(1)
+    q = Queue()
     def _handle():
         while True:
             obj = q.get()
-            retry = True
-            s.sendall(base64.b64encode(encode(obj)) + '\n')
+            # retry = True
+            # s.sendall(base64.b64encode(encode(obj)) + '\n')
+            content = encode(obj)
+            s.sendall(struct.pack('<I', len(content)) + content)
+            # s.sendall(content)
             #        retry = False
             #    except:
             #        retry = True
@@ -120,7 +136,7 @@ msgSize = defaultdict(lambda: 0)
 msgFrom = defaultdict(lambda: 0)
 msgTo = defaultdict(lambda: 0)
 msgContent = defaultdict(lambda: '')
-msgTypeCounter = [0] * 7
+msgTypeCounter = [[0, 0]] * 7
 logChannel = Queue()
 
 def logWriter(fileHandler):

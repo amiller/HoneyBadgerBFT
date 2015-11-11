@@ -29,43 +29,59 @@ import sys
 
 TOR_SOCKSPORT = range(9050, 9150)
 
+def goodread(f, length):
+    ltmp = length
+    buf = []
+    while ltmp > 0:
+        buf.append(f.read(ltmp))
+        ltmp -= len(buf[-1])
+    return ''.join(buf)
+
 def listen_to_channel(port):
     mylog('Preparing server on %d...' % port)
-    q = Queue(1)
+    q = Queue()
     def _handle(socket, address):
         f = socket.makefile()
-        for line in f:
+        while True:
+        #for line in f:
+            # msglength = struct.unpack('<I', f.read(4))
+            msglength = struct.unpack('<I', goodread(f, 4))
+            line = goodread(f, msglength)  # f.read(msglength)
             # print 'line read from socket', line
-            obj = decode(base64.b64decode(line))
+            # obj = decode(base64.b64decode(line))
+            obj = decode(line)
             # mylog('decoding')
             # mylog(obj, verboseLevel=-1)
             q.put(obj[1:])
             # mylog(bcolors.OKBLUE + 'received %s' % repr(obj[1:]) + bcolors.ENDC, verboseLevel=-1)
-    server = StreamServer(('127.0.0.1', port), _handle)
+    server = StreamServer(('0.0.0.0', port), _handle)
     server.start()
     return q
 
 def connect_to_channel(hostname, port, party):
-    mylog('Trying to connect to %s for party %d' % (repr((hostname, port)), party), verboseLevel=-2)
+    mylog('Trying to connect to %s for party %d' % (repr((hostname, port)), party), verboseLevel=-1)
     retry = True
     s = socks.socksocket()
     while retry:
       try:
         s = socks.socksocket()
-        s.setproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", TOR_SOCKSPORT[party], True)
+        # s.setproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", TOR_SOCKSPORT[party], True)
         s.connect((hostname, port))
         retry = False
       except Exception, e:  # socks.SOCKS5Error:
         retry = True
         gevent.sleep(1)
         s.close()
-        mylog('retrying (%s, %d) caused by %s...' % (hostname, port, str(e)) , verboseLevel=-2)
-    q = Queue(1)
+        mylog('retrying (%s, %d) caused by %s...' % (hostname, port, str(e)) , verboseLevel=-1)
+    q = Queue()
     def _handle():
         while True:
             obj = q.get()
-            retry = True
-            s.sendall(base64.b64encode(encode(obj)) + '\n')
+            # retry = True
+            # s.sendall(base64.b64encode(encode(obj)) + '\n')
+            content = encode(obj)
+            s.sendall(struct.pack('<I', len(content)) + content)
+            # s.sendall(content)
             #        retry = False
             #    except:
             #        retry = True
@@ -199,7 +215,7 @@ msgSize = defaultdict(lambda: 0)
 msgFrom = defaultdict(lambda: 0)
 msgTo = defaultdict(lambda: 0)
 msgContent = defaultdict(lambda: '')
-msgTypeCounter = [0] * 7
+msgTypeCounter = [[0, 0]] * 7
 logChannel = Queue()
 
 def logWriter(fileHandler):

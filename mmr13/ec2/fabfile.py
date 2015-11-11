@@ -28,11 +28,11 @@ def install_dependencies():
     sudo('apt-get update')
     sudo('apt-get -y install python-gevent')
     sudo('apt-get -y install git')
-    sudo('apt-get -y install subversion')
+    # sudo('apt-get -y install subversion')
     sudo('apt-get -y install python-socksipy')
     sudo('apt-get -y install python-pip')
     sudo('apt-get -y install python-dev')
-    #sudo('apt-get -y install dtach')
+    # sudo('apt-get -y install dtach')
     sudo('apt-get -y install python-gmpy2')
     sudo('pip install pycrypto')
     sudo('pip install ecdsa')
@@ -69,7 +69,7 @@ def fetchLogs():
 
 @parallel
 def syncKeys():
-    put('./keys', '~/')
+    put('./*.key', '~/')
     put('./ecdsa_keys', '~/')
 
 import SocketServer, time
@@ -105,10 +105,10 @@ def runServer():   # deprecated
     server.serve_forever()
 
 @parallel
-def runProtocolFromClient(client, Nstr, tstr):
+def runProtocolFromClient(client, key):
     # s = StringIO()
     with cd('~/HoneyBadgerBFT/mmr13'):
-        run('python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys %s' % client)
+        run('python honest_party_test_EC2.py ~/hosts %s ~/ecdsa_keys %s' % (key, client))
 
 @parallel
 def runProtocol():
