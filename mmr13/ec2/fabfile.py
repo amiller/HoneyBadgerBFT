@@ -105,10 +105,10 @@ def runServer():   # deprecated
     server.serve_forever()
 
 @parallel
-def runProtocolFromClient(client, Nstr, tstr):
+def runProtocolFromClient(client, key):
     # s = StringIO()
     with cd('~/HoneyBadgerBFT/mmr13'):
-        run('python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys %s' % client)
+        run('python honest_party_test_EC2.py ~/hosts %s ~/ecdsa_keys %s' % (key, client))
 
 @parallel
 def runProtocol():
