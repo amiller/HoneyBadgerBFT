@@ -1,184 +1,340 @@
 got 128 TXs
-timestampB (2, 1447193917.464464)
+timestampB (0, 1447201577.204376)
 got 128 TXs
-timestampB (4, 1447193917.465232)
+timestampB (4, 1447201577.205127)
 got 128 TXs
-timestampB (7, 1447193917.465984)
+timestampB (7, 1447201577.205867)
 got 128 TXs
-timestampB (5, 1447193917.466744)
+timestampB (11, 1447201577.206656)
 got 128 TXs
-timestampB (11, 1447193917.467485)
+timestampB (3, 1447201577.207509)
 got 128 TXs
-timestampB (3, 1447193917.468219)
+timestampB (2, 1447201577.208344)
 got 128 TXs
-timestampB (0, 1447193917.468968)
+timestampB (6, 1447201577.209181)
 got 128 TXs
-timestampB (6, 1447193917.469736)
+timestampB (13, 1447201577.210008)
 got 128 TXs
-timestampB (14, 1447193917.470470)
+timestampB (1, 1447201577.210833)
 got 128 TXs
-timestampB (15, 1447193917.471830)
+timestampB (5, 1447201577.212235)
 got 128 TXs
-timestampB (17, 1447193917.472575)
+timestampB (19, 1447201577.213066)
 got 128 TXs
-timestampB (8, 1447193917.473260)
+timestampB (21, 1447201577.213833)
 got 128 TXs
-timestampB (1, 1447193917.473995)
+timestampB (15, 1447201577.214658)
 got 128 TXs
-timestampB (13, 1447193917.474741)
+timestampB (10, 1447201577.215473)
 got 128 TXs
-timestampB (10, 1447193917.475483)
+timestampB (12, 1447201577.216295)
 got 128 TXs
-timestampB (20, 1447193917.476217)
+timestampB (16, 1447201577.217120)
 got 128 TXs
-timestampB (9, 1447193917.476955)
+timestampB (18, 1447201577.217942)
 got 128 TXs
-timestampB (18, 1447193917.477689)
+timestampB (17, 1447201577.218757)
 got 128 TXs
-timestampB (24, 1447193917.478428)
+timestampB (8, 1447201577.219484)
 got 128 TXs
-timestampB (16, 1447193917.479175)
+timestampB (26, 1447201577.220206)
 got 128 TXs
-timestampB (27, 1447193917.479908)
+timestampB (20, 1447201577.220929)
 got 128 TXs
-timestampB (28, 1447193917.480641)
+timestampB (22, 1447201577.221654)
 got 128 TXs
-timestampB (19, 1447193917.482080)
+timestampB (14, 1447201577.222965)
 got 128 TXs
-timestampB (12, 1447193917.669831)
+timestampB (24, 1447201577.223694)
 got 128 TXs
-timestampB (29, 1447193917.670626)
+timestampB (9, 1447201577.224422)
 got 128 TXs
-timestampB (22, 1447193917.671380)
+timestampB (27, 1447201577.225148)
 got 128 TXs
-timestampB (21, 1447193917.672126)
+timestampB (25, 1447201577.225896)
 got 128 TXs
-timestampB (25, 1447193917.672889)
+timestampB (28, 1447201577.436420)
 got 128 TXs
-timestampB (30, 1447193917.673633)
+timestampB (23, 1447201577.437890)
 got 128 TXs
-timestampB (23, 1447193917.674394)
+timestampB (29, 1447201577.438653)
 got 128 TXs
-timestampB (26, 1447193917.675156)
+timestampB (30, 1447201577.439415)
 got 128 TXs
-timestampB (31, 1447193917.675838)
-[0] got a common coin at round (4,1) (1)
-[0] got a common coin at round (29,1) (0)
-[0] got a common coin at round (7,1) (1)
-[0] got a common coin at round (29,1) (1)
-[0] got a common coin at round (15,1) (0)
-[0] got a common coin at round (2,1) (0)
-[0] got a common coin at round (0,1) (1)
-[0] got a common coin at round (28,1) (0)
-[0] got a common coin at round (2,1) (0)
-[0] got a common coin at round (2,1) (0)
-[0] got a common coin at round (2,1) (1)
+timestampB (31, 1447201577.440171)
+[0] got a common coin at round (10,1) (1)
+[0] got a common coin at round (5,1) (1)
 [0] got a common coin at round (9,1) (1)
-[0] got a common coin at round (1,1) (0)
-[0] got a common coin at round (0,1) (1)
-[0] got a common coin at round (10,1) (0)
+[0] got a common coin at round (27,1) (1)
+[0] got a common coin at round (11,1) (1)
 [0] got a common coin at round (19,1) (1)
-[0] got a common coin at round (9,1) (1)
-[0] got a common coin at round (27,1) (0)
-[0] got a common coin at round (28,1) (1)
-[0] got a common coin at round (24,1) (0)
-[0] got a common coin at round (3,1) (1)
-[0] got a common coin at round (31,1) (1)
-[0] got a common coin at round (28,1) (0)
-[0] got a common coin at round (2,1) (1)
-[0] got a common coin at round (28,1) (1)
-[0] got a common coin at round (6,1) (0)
-[0] got a common coin at round (0,1) (0)
-[0] got a common coin at round (6,1) (1)
-[0] got a common coin at round (1,1) (0)
-[0] got a common coin at round (1,1) (1)
-[0] got a common coin at round (27,1) (0)
+[0] got a common coin at round (18,1) (0)
+[0] got a common coin at round (25,1) (0)
+[0] got a common coin at round (8,1) (1)
 [0] got a common coin at round (22,1) (1)
-[0] got a common coin at round (14,2) (1)
-[0] got a common coin at round (25,2) (0)
-[0] got a common coin at round (31,2) (0)
-[0] got a common coin at round (15,2) (1)
-[0] got a common coin at round (12,2) (1)
-[0] got a common coin at round (16,2) (1)
-[0] got a common coin at round (25,2) (1)
-[0] got a common coin at round (23,2) (1)
-[0] got a common coin at round (23,2) (1)
-[0] got a common coin at round (6,2) (0)
-[0] got a common coin at round (30,2) (0)
-[0] got a common coin at round (0,2) (0)
-[0] got a common coin at round (28,2) (0)
-[0] got a common coin at round (5,2) (1)
-[0] got a common coin at round (11,2) (0)
-[0] got a common coin at round (22,2) (1)
-[0] got a common coin at round (26,2) (1)
-[0] got a common coin at round (19,2) (0)
-[0] got a common coin at round (5,2) (1)
-[0] got a common coin at round (7,2) (1)
-[0] got a common coin at round (15,2) (1)
-[0] got a common coin at round (31,2) (0)
-[0] got a common coin at round (17,2) (1)
-[0] got a common coin at round (29,2) (0)
-[0] got a common coin at round (19,2) (1)
-[0] got a common coin at round (14,2) (1)
-[0] got a common coin at round (2,2) (1)
-[0] got a common coin at round (21,2) (0)
-[0] got a common coin at round (18,2) (0)
-[0] got a common coin at round (31,2) (0)
-[0] got a common coin at round (12,2) (0)
+[0] got a common coin at round (7,1) (1)
+[0] got a common coin at round (0,1) (1)
+[0] got a common coin at round (1,1) (1)
+[0] got a common coin at round (6,1) (0)
+[0] got a common coin at round (24,1) (0)
+[0] got a common coin at round (16,1) (1)
+[0] got a common coin at round (2,1) (1)
+[0] got a common coin at round (15,1) (0)
+[0] got a common coin at round (17,1) (1)
+[0] got a common coin at round (3,1) (1)
+[0] got a common coin at round (13,1) (0)
+[0] got a common coin at round (26,1) (0)
+[0] got a common coin at round (20,1) (1)
+[0] got a common coin at round (12,1) (1)
+[0] got a common coin at round (21,1) (0)
+[0] got a common coin at round (14,1) (1)
+[0] got a common coin at round (4,1) (0)
+523[10,1]: (mpz(1), [1])
+[10] decides on 1 in round 1
+523[5,1]: (mpz(1), [1])
+[5] decides on 1 in round 1
+523[9,1]: (mpz(1), [1])
+[9] decides on 1 in round 1
+523[27,1]: (mpz(1), [1])
+[27] decides on 1 in round 1
+523[11,1]: (mpz(1), [1])
+[11] decides on 1 in round 1
+523[19,1]: (mpz(1), [1])
+[19] decides on 1 in round 1
+523[18,1]: (mpz(0), [1])
+523[25,1]: (mpz(0), [1])
+523[8,1]: (mpz(1), [1])
+[8] decides on 1 in round 1
+523[22,1]: (mpz(1), [1])
+[22] decides on 1 in round 1
+523[7,1]: (mpz(1), [1])
+[7] decides on 1 in round 1
+523[0,1]: (mpz(1), [1])
+[0] decides on 1 in round 1
+523[1,1]: (mpz(1), [1])
+[1] decides on 1 in round 1
+523[6,1]: (mpz(0), [1])
+523[24,1]: (mpz(0), [1])
+523[16,1]: (mpz(1), [1])
+[16] decides on 1 in round 1
+523[2,1]: (mpz(1), [1])
+[2] decides on 1 in round 1
+523[15,1]: (mpz(0), [1])
+523[17,1]: (mpz(1), [1])
+[17] decides on 1 in round 1
+523[3,1]: (mpz(1), [1])
+[3] decides on 1 in round 1
+523[13,1]: (mpz(0), [1])
+523[26,1]: (mpz(0), [1])
+523[20,1]: (mpz(1), [1])
+[20] decides on 1 in round 1
+523[12,1]: (mpz(1), [1])
+[12] decides on 1 in round 1
+523[21,1]: (mpz(0), [1])
+523[14,1]: (mpz(1), [1])
+[14] decides on 1 in round 1
+523[4,1]: (mpz(0), [1])
+[0] got a common coin at round (29,1) (1)
+[0] got a common coin at round (28,1) (1)
+[0] got a common coin at round (30,1) (0)
+[0] got a common coin at round (23,1) (0)
+[0] got a common coin at round (31,1) (1)
+523[29,1]: (mpz(1), [1])
+[29] decides on 1 in round 1
+523[28,1]: (mpz(1), [1])
+[28] decides on 1 in round 1
+523[30,1]: (mpz(0), [1])
+523[23,1]: (mpz(0), [1])
+523[31,1]: (mpz(1), [1])
+[31] decides on 1 in round 1
+[0] got a common coin at round (10,2) (0)
 [0] got a common coin at round (0,2) (1)
+[0] got a common coin at round (25,2) (1)
+[0] got a common coin at round (19,2) (1)
+[0] got a common coin at round (22,2) (1)
+[0] got a common coin at round (7,2) (0)
+[0] got a common coin at round (2,2) (1)
+[0] got a common coin at round (13,2) (0)
+[0] got a common coin at round (9,2) (0)
+[0] got a common coin at round (6,2) (1)
+[0] got a common coin at round (21,2) (0)
+[0] got a common coin at round (1,2) (0)
+[0] got a common coin at round (3,2) (0)
+[0] got a common coin at round (27,2) (0)
+[0] got a common coin at round (15,2) (0)
+[0] got a common coin at round (5,2) (0)
+[0] got a common coin at round (16,2) (0)
+[0] got a common coin at round (11,2) (0)
+[0] got a common coin at round (4,2) (1)
+[0] got a common coin at round (18,2) (1)
+[0] got a common coin at round (8,2) (1)
+[0] got a common coin at round (26,2) (0)
+[0] got a common coin at round (17,2) (0)
+[0] got a common coin at round (14,2) (0)
+[0] got a common coin at round (24,2) (1)
+[0] got a common coin at round (12,2) (0)
+[0] got a common coin at round (20,2) (0)
+523[10,2]: (mpz(0), [1])
+523[25,2]: (mpz(1), [1])
+[25] decides on 1 in round 2
+523[7,2]: (mpz(0), [1])
+523[13,2]: (mpz(0), [1])
+523[9,2]: (mpz(0), [1])
+523[6,2]: (mpz(1), [1])
+[6] decides on 1 in round 2
+523[21,2]: (mpz(0), [1])
+523[1,2]: (mpz(0), [1])
+523[3,2]: (mpz(0), [1])
+523[27,2]: (mpz(0), [1])
+523[15,2]: (mpz(0), [1])
+523[5,2]: (mpz(0), [1])
+523[16,2]: (mpz(0), [1])
+523[11,2]: (mpz(0), [1])
+523[4,2]: (mpz(1), [1])
+[4] decides on 1 in round 2
+523[18,2]: (mpz(1), [1])
+[18] decides on 1 in round 2
+523[26,2]: (mpz(0), [1])
+523[17,2]: (mpz(0), [1])
+523[14,2]: (mpz(0), [1])
+523[24,2]: (mpz(1), [1])
+[24] decides on 1 in round 2
+523[12,2]: (mpz(0), [1])
+523[20,2]: (mpz(0), [1])
+[0] got a common coin at round (29,2) (1)
+[0] got a common coin at round (30,2) (0)
+[0] got a common coin at round (31,2) (1)
+[0] got a common coin at round (23,2) (0)
+[0] got a common coin at round (28,2) (0)
+523[30,2]: (mpz(0), [1])
+523[23,2]: (mpz(0), [1])
+523[28,2]: (mpz(0), [1])
+[0] got a common coin at round (10,3) (1)
+[0] got a common coin at round (24,3) (1)
+[0] got a common coin at round (1,3) (0)
+[0] got a common coin at round (18,3) (1)
+[0] got a common coin at round (15,3) (0)
+[0] got a common coin at round (16,3) (1)
+[0] got a common coin at round (20,3) (1)
+[0] got a common coin at round (9,3) (1)
+[0] got a common coin at round (5,3) (0)
+[0] got a common coin at round (11,3) (0)
+[0] got a common coin at round (12,3) (1)
+[0] got a common coin at round (27,3) (0)
+[0] got a common coin at round (25,3) (0)
+[0] got a common coin at round (26,3) (1)
+[0] got a common coin at round (6,3) (0)
+[0] got a common coin at round (7,3) (0)
+[0] got a common coin at round (3,3) (0)
+[0] got a common coin at round (13,3) (1)
+[0] got a common coin at round (21,3) (1)
+[0] got a common coin at round (4,3) (0)
+[0] got a common coin at round (17,3) (1)
+[0] got a common coin at round (14,3) (0)
+523[1,3]: (mpz(0), [1])
+523[15,3]: (mpz(0), [1])
+523[5,3]: (mpz(0), [1])
+523[11,3]: (mpz(0), [1])
+523[27,3]: (mpz(0), [1])
+523[25,3]: (mpz(0), [1])
+523[26,3]: (mpz(1), [1])
+[26] decides on 1 in round 3
+523[6,3]: (mpz(0), [1])
+523[7,3]: (mpz(0), [1])
+523[3,3]: (mpz(0), [1])
+523[13,3]: (mpz(1), [1])
+[13] decides on 1 in round 3
+523[21,3]: (mpz(1), [1])
+[21] decides on 1 in round 3
+523[4,3]: (mpz(0), [1])
+523[14,3]: (mpz(0), [1])
+[0] got a common coin at round (30,3) (0)
+[0] got a common coin at round (23,3) (1)
+[0] got a common coin at round (28,3) (1)
+523[30,3]: (mpz(0), [1])
+523[23,3]: (mpz(1), [1])
+[23] decides on 1 in round 3
+[0] got a common coin at round (1,4) (0)
+[0] got a common coin at round (26,4) (0)
+[0] got a common coin at round (6,4) (0)
+[0] got a common coin at round (13,4) (1)
+[0] got a common coin at round (27,4) (0)
+[0] got a common coin at round (4,4) (1)
+[0] got a common coin at round (5,4) (1)
+[0] got a common coin at round (7,4) (1)
+[0] got a common coin at round (3,4) (0)
+[0] got a common coin at round (11,4) (0)
+[0] got a common coin at round (14,4) (0)
+[0] got a common coin at round (25,4) (1)
+[0] got a common coin at round (21,4) (0)
+[0] got a common coin at round (15,4) (1)
+523[1,4]: (mpz(0), [1])
+523[26,4]: (mpz(0), [1])
+523[6,4]: (mpz(0), [1])
+523[27,4]: (mpz(0), [1])
+523[3,4]: (mpz(0), [1])
+523[11,4]: (mpz(0), [1])
+523[14,4]: (mpz(0), [1])
+523[21,4]: (mpz(0), [1])
+523[15,4]: (mpz(1), [1])
+[15] decides on 1 in round 4
+[0] got a common coin at round (30,4) (1)
+[0] got a common coin at round (23,4) (1)
+523[30,4]: (mpz(1), [1])
+[30] decides on 1 in round 4
 [0] synced transactions.
-timestampE (0, 1447193987.216349)
+timestampE (0, 1447201683.085759)
 [1] synced transactions.
-timestampE (1, 1447193987.226098)
+timestampE (1, 1447201683.138076)
 [2] synced transactions.
-timestampE (2, 1447193987.235765)
+timestampE (2, 1447201683.150878)
 [3] synced transactions.
-timestampE (3, 1447193987.245450)
+timestampE (3, 1447201683.163738)
 [4] synced transactions.
-timestampE (4, 1447193987.255076)
+timestampE (4, 1447201683.176487)
 [5] synced transactions.
-timestampE (5, 1447193987.264673)
+timestampE (5, 1447201683.189178)
 [6] synced transactions.
-timestampE (6, 1447193987.274218)
+timestampE (6, 1447201683.201906)
 [7] synced transactions.
-timestampE (7, 1447193987.283824)
+timestampE (7, 1447201683.214613)
 [8] synced transactions.
-timestampE (8, 1447193987.293441)
+timestampE (8, 1447201683.227327)
 [9] synced transactions.
-timestampE (9, 1447193987.303054)
+timestampE (9, 1447201683.240039)
 [10] synced transactions.
-timestampE (10, 1447193987.312651)
+timestampE (10, 1447201683.252824)
 [11] synced transactions.
-timestampE (11, 1447193987.323088)
+timestampE (11, 1447201683.265549)
 [12] synced transactions.
-timestampE (12, 1447193987.333323)
+timestampE (12, 1447201683.278273)
 [13] synced transactions.
-timestampE (13, 1447193987.343006)
+timestampE (13, 1447201683.291046)
 [14] synced transactions.
-timestampE (14, 1447193987.352614)
+timestampE (14, 1447201683.303802)
 [15] synced transactions.
-timestampE (15, 1447193987.362187)
+timestampE (15, 1447201683.316534)
 [16] synced transactions.
-timestampE (16, 1447193987.371853)
+timestampE (16, 1447201683.329289)
 [17] synced transactions.
-timestampE (17, 1447193987.381440)
+timestampE (17, 1447201683.342026)
 [18] synced transactions.
-timestampE (18, 1447193987.391028)
+timestampE (18, 1447201683.354783)
 [19] synced transactions.
-timestampE (19, 1447193987.400662)
+timestampE (19, 1447201683.367493)
 [20] synced transactions.
-timestampE (20, 1447193987.410273)
+timestampE (20, 1447201683.380298)
 [21] synced transactions.
-timestampE (21, 1447193987.419845)
+timestampE (21, 1447201683.392979)
 [22] synced transactions.
-timestampE (22, 1447193987.429411)
+timestampE (22, 1447201683.405712)
 [23] synced transactions.
-timestampE (23, 1447193987.439002)
+timestampE (23, 1447201683.418508)
 Concensus Finished
 Entering atexit()
-msgCounter 279552
-msgTypeCounter [[0, 0], [1024, 32852864], [32768, 83427168], [81920, 819200], [65536, 655360], [65536, 17432160], [32768, 1310720]]
+msgCounter 399360
+msgTypeCounter [[0, 0], [1024, 32853088], [32768, 83427360], [117760, 1177600], [107520, 1075200], [107520, 28599584], [32768, 1310720]]
     Init      Echo      Val       Aux      Coin     Ready
-    1024    32768     81920     65536     65536     32768
-32852864 83427168    819200    655360  17432160   1310720
-Total Message size 136497472
+    1024    32768    117760    107520    107520     32768
+32853088 83427360   1177600   1075200  28599584   1310720
+Total Message size 148443552
