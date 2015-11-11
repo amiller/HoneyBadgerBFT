@@ -65,7 +65,7 @@ def connect_to_channel(hostname, port, party):
     while retry:
       try:
         s = socks.socksocket()
-        # s.setproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", TOR_SOCKSPORT[party], True)
+        s.setproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", TOR_SOCKSPORT[party], True)
         s.connect((hostname, port))
         retry = False
       except Exception, e:  # socks.SOCKS5Error:
