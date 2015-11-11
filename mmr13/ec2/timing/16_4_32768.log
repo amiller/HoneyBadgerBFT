@@ -1,0 +1,1352 @@
+
+[54.94.248.107] out: servers started
+[54.215.152.5] out: got 32767 TXs
+[54.215.152.5] out: timestampB (3, 1447222361.355258)
+[54.193.99.111] out: got 32767 TXs
+[54.193.99.111] out: timestampB (2, 1447222361.370127)
+[52.33.245.184] out: got 32768 TXs
+[52.33.245.184] out: timestampB (0, 1447222360.994501)
+[52.32.92.14] out: got 32767 TXs
+[52.32.92.14] out: timestampB (1, 1447222361.466416)
+[54.86.211.192] out: got 32768 TXs
+[54.86.211.192] out: timestampB (5, 1447222362.047976)
+[52.23.217.101] out: got 32767 TXs
+[52.23.217.101] out: timestampB (4, 1447222361.595661)
+[52.31.37.38] out: got 32768 TXs
+[52.31.37.38] out: timestampB (8, 1447222363.146052)
+[52.68.109.173] out: got 32768 TXs
+[52.68.109.173] out: timestampB (14, 1447222362.988566)
+[52.31.81.187] out: got 32768 TXs
+[52.31.81.187] out: timestampB (9, 1447222362.973193)
+[52.29.39.241] out: got 32768 TXs
+[52.29.39.241] out: timestampB (10, 1447222362.889017)
+[52.28.23.61] out: got 32768 TXs
+[52.28.23.61] out: timestampB (11, 1447222363.289506)
+[52.192.23.169] out: got 32768 TXs
+[52.192.23.169] out: timestampB (15, 1447222363.207967)
+[54.169.242.254] out: got 32767 TXs
+[54.169.242.254] out: timestampB (12, 1447222363.714851)
+[54.254.185.166] out: got 32768 TXs
+[54.254.185.166] out: timestampB (13, 1447222364.002420)
+[54.207.9.158] out: got 32767 TXs
+[54.207.9.158] out: timestampB (7, 1447222364.287041)
+[54.94.248.107] out: got 32767 TXs
+[54.94.248.107] out: timestampB (6, 1447222364.677097)
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 9
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 11
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 9
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 11
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 9
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 11
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 10
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 2
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 10
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 2
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 10
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 2
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 9
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 11
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 10
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 2
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 9
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 11
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 10
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 9
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 11
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 10
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 10
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 9
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 11
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 2
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 9
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 11
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 10
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 2
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 9
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 11
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 10
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 2
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 2
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 2
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 2
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 9
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 11
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 10
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 6
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 6
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 6
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 6
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 7
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 6
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 6
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 7
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 7
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 9
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 11
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 7
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 10
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 7
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 6
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 7
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 7
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 6
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 7
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 6
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 6
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 7
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 7
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 9
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 11
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 2
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 10
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 6
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 7
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 2
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 6
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 7
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 2
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 9
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 11
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 10
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 6
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 7
+[52.23.217.101] out: [4] decides on 1 in round 2 at instance 3
+[52.23.217.101] out: [4] decides on 1 in round 2 at instance 8
+[52.192.23.169] out: [15] decides on 1 in round 2 at instance 3
+[52.192.23.169] out: [15] decides on 1 in round 2 at instance 8
+[52.29.39.241] out: [10] decides on 1 in round 2 at instance 3
+[52.29.39.241] out: [10] decides on 1 in round 2 at instance 8
+[52.28.23.61] out: [11] decides on 1 in round 2 at instance 3
+[52.28.23.61] out: [11] decides on 1 in round 2 at instance 8
+[54.86.211.192] out: [5] decides on 1 in round 2 at instance 3
+[54.86.211.192] out: [5] decides on 1 in round 2 at instance 8
+[54.254.185.166] out: [13] decides on 1 in round 2 at instance 3
+[54.254.185.166] out: [13] decides on 1 in round 2 at instance 8
+[54.169.242.254] out: [12] decides on 1 in round 2 at instance 3
+[54.169.242.254] out: [12] decides on 1 in round 2 at instance 8
+[54.215.152.5] out: [3] decides on 1 in round 2 at instance 3
+[54.215.152.5] out: [3] decides on 1 in round 2 at instance 8
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 3
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 8
+[54.94.248.107] out: [6] decides on 1 in round 2 at instance 3
+[54.94.248.107] out: [6] decides on 1 in round 2 at instance 8
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 10
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 2
+[54.207.9.158] out: [7] decides on 1 in round 2 at instance 3
+[54.207.9.158] out: [7] decides on 1 in round 2 at instance 8
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 9
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 11
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 6
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 7
+[52.31.81.187] out: [9] decides on 1 in round 2 at instance 3
+[54.193.99.111] out: [2] decides on 1 in round 2 at instance 3
+[54.193.99.111] out: [2] decides on 1 in round 2 at instance 8
+[52.31.81.187] out: [9] decides on 1 in round 2 at instance 8
+[52.32.92.14] out: [1] decides on 1 in round 2 at instance 3
+[52.32.92.14] out: [1] decides on 1 in round 2 at instance 8
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 1
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 5
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 15
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 12
+[54.193.99.111] out: [2] decides on 1 in round 3 at instance 1
+[54.193.99.111] out: [2] decides on 1 in round 3 at instance 5
+[54.193.99.111] out: [2] decides on 1 in round 3 at instance 15
+[54.193.99.111] out: [2] decides on 1 in round 3 at instance 12
+[52.23.217.101] out: [4] decides on 1 in round 3 at instance 1
+[52.23.217.101] out: [4] decides on 1 in round 3 at instance 5
+[52.23.217.101] out: [4] decides on 1 in round 3 at instance 15
+[52.23.217.101] out: [4] decides on 1 in round 3 at instance 12
+[54.215.152.5] out: [3] decides on 1 in round 3 at instance 1
+[54.215.152.5] out: [3] decides on 1 in round 3 at instance 5
+[54.215.152.5] out: [3] decides on 1 in round 3 at instance 15
+[54.215.152.5] out: [3] decides on 1 in round 3 at instance 12
+[52.32.92.14] out: [1] decides on 1 in round 3 at instance 1
+[52.32.92.14] out: [1] decides on 1 in round 3 at instance 5
+[52.32.92.14] out: [1] decides on 1 in round 3 at instance 15
+[52.32.92.14] out: [1] decides on 1 in round 3 at instance 12
+[54.86.211.192] out: [5] decides on 1 in round 3 at instance 1
+[54.86.211.192] out: [5] decides on 1 in round 3 at instance 5
+[54.86.211.192] out: [5] decides on 1 in round 3 at instance 15
+[54.86.211.192] out: [5] decides on 1 in round 3 at instance 12
+[52.29.39.241] out: [10] decides on 1 in round 3 at instance 1
+[52.29.39.241] out: [10] decides on 1 in round 3 at instance 5
+[52.29.39.241] out: [10] decides on 1 in round 3 at instance 15
+[52.29.39.241] out: [10] decides on 1 in round 3 at instance 12
+[52.28.23.61] out: [11] decides on 1 in round 3 at instance 1
+[52.28.23.61] out: [11] decides on 1 in round 3 at instance 5
+[52.28.23.61] out: [11] decides on 1 in round 3 at instance 15
+[52.28.23.61] out: [11] decides on 1 in round 3 at instance 12
+[54.169.242.254] out: [12] decides on 1 in round 3 at instance 1
+[54.169.242.254] out: [12] decides on 1 in round 3 at instance 5
+[54.169.242.254] out: [12] decides on 1 in round 3 at instance 15
+[54.169.242.254] out: [12] decides on 1 in round 3 at instance 12
+[54.94.248.107] out: [6] decides on 1 in round 3 at instance 1
+[54.94.248.107] out: [6] decides on 1 in round 3 at instance 5
+[54.94.248.107] out: [6] decides on 1 in round 3 at instance 15
+[54.254.185.166] out: [13] decides on 1 in round 3 at instance 1
+[54.254.185.166] out: [13] decides on 1 in round 3 at instance 5
+[54.254.185.166] out: [13] decides on 1 in round 3 at instance 15
+[54.254.185.166] out: [13] decides on 1 in round 3 at instance 12
+[52.192.23.169] out: [15] decides on 1 in round 3 at instance 1
+[52.192.23.169] out: [15] decides on 1 in round 3 at instance 5
+[52.192.23.169] out: [15] decides on 1 in round 3 at instance 15
+[52.192.23.169] out: [15] decides on 1 in round 3 at instance 12
+[54.94.248.107] out: [6] decides on 1 in round 3 at instance 12
+[52.31.81.187] out: [9] decides on 1 in round 3 at instance 1
+[52.31.81.187] out: [9] decides on 1 in round 3 at instance 5
+[52.31.81.187] out: [9] decides on 1 in round 3 at instance 15
+[52.31.81.187] out: [9] decides on 1 in round 3 at instance 12
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 9
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 10
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 11
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 2
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 6
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 7
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 2
+[52.68.109.173] out: [14] decides on 1 in round 2 at instance 3
+[52.68.109.173] out: [14] decides on 1 in round 2 at instance 8
+[52.32.92.14] out: [1] decides on 1 in round 4 at instance 14
+[54.86.211.192] out: [5] decides on 1 in round 4 at instance 14
+[54.86.211.192] out: [5] decides on 1 in round 4 at instance 13
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 9
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 11
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 10
+[54.193.99.111] out: [2] decides on 1 in round 4 at instance 14
+[54.193.99.111] out: [2] decides on 1 in round 4 at instance 13
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 6
+[52.68.109.173] out: [14] decides on 1 in round 3 at instance 1
+[52.29.39.241] out: [10] decides on 1 in round 4 at instance 14
+[52.29.39.241] out: [10] decides on 1 in round 4 at instance 13
+[52.68.109.173] out: [14] decides on 1 in round 3 at instance 15
+[52.31.81.187] out: [9] decides on 1 in round 4 at instance 14
+[52.28.23.61] out: [11] decides on 1 in round 4 at instance 14
+[52.28.23.61] out: [11] decides on 1 in round 4 at instance 13
+[54.254.185.166] out: [13] decides on 1 in round 4 at instance 14
+[54.169.242.254] out: [12] decides on 1 in round 4 at instance 14
+[52.68.109.173] out: [14] decides on 1 in round 3 at instance 5
+[52.192.23.169] out: [15] decides on 1 in round 4 at instance 14
+[52.68.109.173] out: [14] decides on 1 in round 3 at instance 12
+[54.94.248.107] out: [6] decides on 1 in round 4 at instance 14
+[52.31.81.187] out: [9] decides on 1 in round 4 at instance 13
+[52.31.37.38] out: [8] decides on 1 in round 2 at instance 3
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 7
+[54.94.248.107] out: [6] decides on 1 in round 4 at instance 13
+[52.33.245.184] out: [0] decides on 1 in round 4 at instance 14
+[52.33.245.184] out: [0] decides on 1 in round 4 at instance 13
+[54.215.152.5] out: [3] decides on 1 in round 4 at instance 14
+[54.215.152.5] out: [3] decides on 1 in round 4 at instance 13
+[52.31.37.38] out: [8] decides on 1 in round 2 at instance 8
+[52.192.23.169] out: [15] decides on 1 in round 4 at instance 13
+[54.169.242.254] out: [12] decides on 1 in round 4 at instance 13
+[52.68.109.173] out: [14] decides on 1 in round 4 at instance 14
+[52.68.109.173] out: [14] decides on 1 in round 4 at instance 13
+[52.23.217.101] out: [4] decides on 1 in round 4 at instance 14
+[52.31.37.38] out: [8] decides on 1 in round 3 at instance 1
+[52.31.37.38] out: [8] decides on 1 in round 3 at instance 5
+[52.23.217.101] out: [4] decides on 1 in round 4 at instance 13
+[52.32.92.14] out: [1] decides on 1 in round 4 at instance 13
+[52.31.37.38] out: [8] decides on 1 in round 3 at instance 15
+[52.31.37.38] out: [8] decides on 1 in round 3 at instance 12
+[54.254.185.166] out: [13] decides on 1 in round 4 at instance 13
+[52.31.37.38] out: [8] decides on 1 in round 4 at instance 14
+[52.31.37.38] out: [8] decides on 1 in round 4 at instance 13
+[54.215.152.5] out: [3] decides on 1 in round 5 at instance 0
+[54.193.99.111] out: [2] decides on 1 in round 5 at instance 0
+[52.32.92.14] out: [1] decides on 1 in round 5 at instance 0
+[52.33.245.184] out: [0] decides on 1 in round 5 at instance 0
+[52.29.39.241] out: [10] decides on 1 in round 5 at instance 0
+[52.31.81.187] out: [9] decides on 1 in round 5 at instance 0
+[54.86.211.192] out: [5] decides on 1 in round 5 at instance 0
+[52.28.23.61] out: [11] decides on 1 in round 5 at instance 0
+[52.23.217.101] out: [4] decides on 1 in round 5 at instance 0
+[52.31.37.38] out: [8] decides on 1 in round 5 at instance 0
+[52.68.109.173] out: [14] decides on 1 in round 5 at instance 0
+[54.254.185.166] out: [13] decides on 1 in round 5 at instance 0
+[54.169.242.254] out: [12] decides on 1 in round 5 at instance 0
+[54.94.248.107] out: [6] decides on 1 in round 5 at instance 0
+[52.192.23.169] out: [15] decides on 1 in round 5 at instance 0
+[54.207.9.158] out: [7] decides on 1 in round 3 at instance 1
+[54.207.9.158] out: [7] decides on 1 in round 3 at instance 5
+[54.207.9.158] out: [7] decides on 1 in round 3 at instance 15
+[54.207.9.158] out: [7] decides on 1 in round 3 at instance 12
+[54.207.9.158] out: [7] decides on 1 in round 4 at instance 14
+[54.207.9.158] out: [7] decides on 1 in round 4 at instance 13
+[54.207.9.158] out: [7] decides on 1 in round 5 at instance 0
+[54.215.152.5] out: [3] decides on 1 in round 8 at instance 4
+[54.215.152.5] out: [3] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.33.245.184] out: [0] decides on 1 in round 8 at instance 4
+[52.33.245.184] out: [0] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.193.99.111] out: [2] decides on 1 in round 8 at instance 4
+[54.193.99.111] out: [2] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.86.211.192] out: [5] decides on 1 in round 8 at instance 4
+[54.86.211.192] out: [5] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.32.92.14] out: [1] decides on 1 in round 8 at instance 4
+[52.32.92.14] out: [1] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.23.217.101] out: [4] decides on 1 in round 8 at instance 4
+[52.23.217.101] out: [4] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.68.109.173] out: [14] decides on 1 in round 8 at instance 4
+[52.68.109.173] out: [14] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.31.37.38] out: [8] decides on 1 in round 8 at instance 4
+[52.31.37.38] out: [8] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.192.23.169] out: [15] decides on 1 in round 8 at instance 4
+[52.192.23.169] out: [15] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.31.81.187] out: [9] decides on 1 in round 8 at instance 4
+[52.31.81.187] out: [9] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.254.185.166] out: [13] decides on 1 in round 8 at instance 4
+[54.254.185.166] out: [13] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.28.23.61] out: [11] decides on 1 in round 8 at instance 4
+[52.28.23.61] out: [11] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.169.242.254] out: [12] decides on 1 in round 8 at instance 4
+[54.169.242.254] out: [12] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.29.39.241] out: [10] decides on 1 in round 8 at instance 4
+[52.29.39.241] out: [10] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.94.248.107] out: [6] decides on 1 in round 8 at instance 4
+[54.94.248.107] out: [6] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.207.9.158] out: [7] decides on 1 in round 8 at instance 4
+[54.207.9.158] out: [7] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.254.185.166] out: [13] synced transactions.
+[54.254.185.166] out: timestampE (13, 1447222435.414857)
+[54.215.152.5] out: [3] synced transactions.
+[54.215.152.5] out: timestampE (3, 1447222435.708920)
+[52.23.217.101] out: [4] synced transactions.
+[52.23.217.101] out: timestampE (4, 1447222435.406984)
+[54.193.99.111] out: [2] synced transactions.
+[54.193.99.111] out: timestampE (2, 1447222435.781414)
+[52.29.39.241] out: [10] synced transactions.
+[52.29.39.241] out: timestampE (10, 1447222435.524664)
+[54.86.211.192] out: [5] synced transactions.
+[54.86.211.192] out: timestampE (5, 1447222435.923433)
+[52.32.92.14] out: [1] synced transactions.
+[52.32.92.14] out: timestampE (1, 1447222435.797430)
+[52.33.245.184] out: [0] synced transactions.
+[52.33.245.184] out: timestampE (0, 1447222435.329911)
+[52.68.109.173] out: [14] synced transactions.
+[52.68.109.173] out: timestampE (14, 1447222435.798572)
+[54.94.248.107] out: [6] synced transactions.
+[54.94.248.107] out: timestampE (6, 1447222435.998957)
+[52.31.37.38] out: [8] synced transactions.
+[52.31.37.38] out: timestampE (8, 1447222436.008189)
+[52.192.23.169] out: [15] synced transactions.
+[52.192.23.169] out: timestampE (15, 1447222435.680382)
+[54.169.242.254] out: [12] synced transactions.
+[54.169.242.254] out: timestampE (12, 1447222435.517282)
+[52.28.23.61] out: [11] synced transactions.
+[52.28.23.61] out: timestampE (11, 1447222436.058513)
+[52.31.81.187] out: [9] synced transactions.
+[52.31.81.187] out: timestampE (9, 1447222435.864277)
+[54.207.9.158] out: [7] synced transactions.
+[54.207.9.158] out: timestampE (7, 1447222435.985033)
+
+[54.94.248.107] out: servers started
+[54.193.99.111] out: got 32768 TXs
+[54.193.99.111] out: timestampB (2, 1447222509.999487)
+[54.215.152.5] out: got 32768 TXs
+[54.215.152.5] out: timestampB (3, 1447222510.004515)
+[52.32.92.14] out: got 32768 TXs
+[52.32.92.14] out: timestampB (1, 1447222510.113872)
+[52.33.245.184] out: got 32768 TXs
+[52.33.245.184] out: timestampB (0, 1447222509.625609)
+[52.23.217.101] out: got 32768 TXs
+[52.23.217.101] out: timestampB (4, 1447222510.237029)
+[54.86.211.192] out: got 32768 TXs
+[54.86.211.192] out: timestampB (5, 1447222510.699343)
+[52.68.109.173] out: got 32768 TXs
+[52.68.109.173] out: timestampB (14, 1447222511.738515)
+[52.192.23.169] out: got 32768 TXs
+[52.192.23.169] out: timestampB (15, 1447222511.544818)
+[52.29.39.241] out: got 32767 TXs
+[52.29.39.241] out: timestampB (10, 1447222511.525052)
+[52.28.23.61] out: got 32768 TXs
+[52.28.23.61] out: timestampB (11, 1447222511.954385)
+[54.169.242.254] out: got 32768 TXs
+[54.169.242.254] out: timestampB (12, 1447222512.248418)
+[52.31.37.38] out: got 32768 TXs
+[52.31.37.38] out: timestampB (8, 1447222512.848497)
+[52.31.81.187] out: got 32768 TXs
+[52.31.81.187] out: timestampB (9, 1447222512.648224)
+[54.254.185.166] out: got 32768 TXs
+[54.254.185.166] out: timestampB (13, 1447222512.658920)
+[54.207.9.158] out: got 32768 TXs
+[54.207.9.158] out: timestampB (7, 1447222512.893431)
+[54.94.248.107] out: got 32766 TXs
+[54.94.248.107] out: timestampB (6, 1447222513.235097)
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 2
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 2
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 2
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 2
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 2
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 2
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 2
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 1
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 0
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 1
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 0
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 1
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 0
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 1
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 0
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 1
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 0
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 1
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 0
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 1
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 0
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 4
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 4
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 4
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 11
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 10
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 15
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 11
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 10
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 15
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 9
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 11
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 10
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 15
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 9
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 8
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 4
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 11
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 10
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 15
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 9
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 8
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 8
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 2
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 1
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 0
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 2
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 2
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 0
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 1
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 4
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 4
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 15
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 11
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 11
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 10
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 15
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 10
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 4
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 11
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 10
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 15
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 9
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 8
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 9
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 4
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 15
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 11
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 10
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 9
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 9
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 8
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 9
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 8
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 2
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 1
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 0
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 1
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 0
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 8
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 4
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 11
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 10
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 15
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 9
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 9
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 8
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 4
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 11
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 10
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 15
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 4
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 8
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 15
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 11
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 10
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 9
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 8
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 6
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 6
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 6
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 6
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 6
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 2
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 0
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 1
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 6
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 6
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 6
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 6
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 6
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 2
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 1
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 0
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 4
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 11
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 10
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 6
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 8
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 4
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 11
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 10
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 15
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 9
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 9
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 15
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 8
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 2
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 0
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 1
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 4
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 15
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 11
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 10
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 9
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 6
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 8
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 2
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 0
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 1
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 4
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 11
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 10
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 15
+[54.215.152.5] out: [3] decides on 1 in round 2 at instance 12
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 9
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 12
+[52.32.92.14] out: [1] decides on 1 in round 2 at instance 12
+[54.193.99.111] out: [2] decides on 1 in round 2 at instance 12
+[54.86.211.192] out: [5] decides on 1 in round 2 at instance 12
+[52.23.217.101] out: [4] decides on 1 in round 2 at instance 12
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 6
+[52.192.23.169] out: [15] decides on 1 in round 2 at instance 12
+[52.29.39.241] out: [10] decides on 1 in round 2 at instance 12
+[52.28.23.61] out: [11] decides on 1 in round 2 at instance 12
+[54.169.242.254] out: [12] decides on 1 in round 2 at instance 12
+[52.31.81.187] out: [9] decides on 1 in round 2 at instance 12
+[52.31.37.38] out: [8] decides on 1 in round 2 at instance 12
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 6
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 8
+[54.193.99.111] out: [2] decides on 1 in round 3 at instance 3
+[54.215.152.5] out: [3] decides on 1 in round 3 at instance 3
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 3
+[52.32.92.14] out: [1] decides on 1 in round 3 at instance 3
+[54.86.211.192] out: [5] decides on 1 in round 3 at instance 3
+[52.23.217.101] out: [4] decides on 1 in round 3 at instance 3
+[52.31.81.187] out: [9] decides on 1 in round 3 at instance 3
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 2
+[52.192.23.169] out: [15] decides on 1 in round 3 at instance 3
+[52.29.39.241] out: [10] decides on 1 in round 3 at instance 3
+[52.28.23.61] out: [11] decides on 1 in round 3 at instance 3
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 1
+[52.31.37.38] out: [8] decides on 1 in round 3 at instance 3
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 0
+[52.23.217.101] out: [4] decides on 1 in round 3 at instance 5
+[52.23.217.101] out: [4] decides on 1 in round 3 at instance 7
+[52.23.217.101] out: [4] decides on 1 in round 3 at instance 14
+[54.254.185.166] out: [13] decides on 1 in round 2 at instance 12
+[54.86.211.192] out: [5] decides on 1 in round 3 at instance 7
+[54.86.211.192] out: [5] decides on 1 in round 3 at instance 5
+[54.86.211.192] out: [5] decides on 1 in round 3 at instance 14
+[54.193.99.111] out: [2] decides on 1 in round 3 at instance 5
+[54.193.99.111] out: [2] decides on 1 in round 3 at instance 7
+[54.193.99.111] out: [2] decides on 1 in round 3 at instance 14
+[52.31.37.38] out: [8] decides on 1 in round 3 at instance 5
+[54.169.242.254] out: [12] decides on 1 in round 3 at instance 3
+[52.31.37.38] out: [8] decides on 1 in round 3 at instance 7
+[52.31.37.38] out: [8] decides on 1 in round 3 at instance 14
+[54.215.152.5] out: [3] decides on 1 in round 3 at instance 5
+[54.215.152.5] out: [3] decides on 1 in round 3 at instance 7
+[54.215.152.5] out: [3] decides on 1 in round 3 at instance 14
+[52.31.81.187] out: [9] decides on 1 in round 3 at instance 5
+[52.31.81.187] out: [9] decides on 1 in round 3 at instance 7
+[52.31.81.187] out: [9] decides on 1 in round 3 at instance 14
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 5
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 7
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 14
+[52.32.92.14] out: [1] decides on 1 in round 3 at instance 5
+[52.32.92.14] out: [1] decides on 1 in round 3 at instance 7
+[52.32.92.14] out: [1] decides on 1 in round 3 at instance 14
+[52.192.23.169] out: [15] decides on 1 in round 3 at instance 5
+[52.192.23.169] out: [15] decides on 1 in round 3 at instance 7
+[52.29.39.241] out: [10] decides on 1 in round 3 at instance 5
+[52.29.39.241] out: [10] decides on 1 in round 3 at instance 7
+[52.29.39.241] out: [10] decides on 1 in round 3 at instance 14
+[52.192.23.169] out: [15] decides on 1 in round 3 at instance 14
+[52.28.23.61] out: [11] decides on 1 in round 3 at instance 5
+[52.28.23.61] out: [11] decides on 1 in round 3 at instance 7
+[52.28.23.61] out: [11] decides on 1 in round 3 at instance 14
+[54.169.242.254] out: [12] decides on 1 in round 3 at instance 7
+[54.169.242.254] out: [12] decides on 1 in round 3 at instance 5
+[54.169.242.254] out: [12] decides on 1 in round 3 at instance 14
+[54.94.248.107] out: [6] decides on 1 in round 2 at instance 12
+[54.94.248.107] out: [6] decides on 1 in round 3 at instance 7
+[54.94.248.107] out: [6] decides on 1 in round 3 at instance 5
+[54.94.248.107] out: [6] decides on 1 in round 3 at instance 3
+[54.94.248.107] out: [6] decides on 1 in round 3 at instance 14
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 8
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 4
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 11
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 10
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 9
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 15
+[54.254.185.166] out: [13] decides on 1 in round 3 at instance 5
+[54.254.185.166] out: [13] decides on 1 in round 3 at instance 3
+[54.254.185.166] out: [13] decides on 1 in round 3 at instance 14
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 8
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 6
+[54.254.185.166] out: [13] decides on 1 in round 3 at instance 7
+[52.68.109.173] out: [14] decides on 1 in round 2 at instance 12
+[52.68.109.173] out: [14] decides on 1 in round 3 at instance 3
+[52.68.109.173] out: [14] decides on 1 in round 3 at instance 5
+[52.68.109.173] out: [14] decides on 1 in round 3 at instance 14
+[52.68.109.173] out: [14] decides on 1 in round 3 at instance 7
+[52.33.245.184] out: [0] decides on 1 in round 5 at instance 13
+[52.33.245.184] out: [0] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.215.152.5] out: [3] decides on 1 in round 5 at instance 13
+[54.215.152.5] out: [3] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.32.92.14] out: [1] decides on 1 in round 5 at instance 13
+[52.32.92.14] out: [1] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.193.99.111] out: [2] decides on 1 in round 5 at instance 13
+[54.193.99.111] out: [2] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.23.217.101] out: [4] decides on 1 in round 5 at instance 13
+[52.23.217.101] out: [4] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.86.211.192] out: [5] decides on 1 in round 5 at instance 13
+[54.86.211.192] out: [5] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.192.23.169] out: [15] decides on 1 in round 5 at instance 13
+[52.192.23.169] out: [15] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.31.81.187] out: [9] decides on 1 in round 5 at instance 13
+[52.31.81.187] out: [9] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.68.109.173] out: [14] decides on 1 in round 5 at instance 13
+[52.68.109.173] out: [14] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.29.39.241] out: [10] decides on 1 in round 5 at instance 13
+[52.29.39.241] out: [10] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.28.23.61] out: [11] decides on 1 in round 5 at instance 13
+[52.28.23.61] out: [11] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.169.242.254] out: [12] decides on 1 in round 5 at instance 13
+[54.169.242.254] out: [12] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.254.185.166] out: [13] decides on 1 in round 5 at instance 13
+[54.254.185.166] out: [13] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 6
+[54.207.9.158] out: [7] decides on 1 in round 2 at instance 12
+[54.94.248.107] out: [6] decides on 1 in round 5 at instance 13
+[54.94.248.107] out: [6] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.207.9.158] out: [7] decides on 1 in round 3 at instance 5
+[54.207.9.158] out: [7] decides on 1 in round 3 at instance 3
+[54.207.9.158] out: [7] decides on 1 in round 3 at instance 14
+[54.207.9.158] out: [7] decides on 1 in round 3 at instance 7
+[54.207.9.158] out: [7] decides on 1 in round 5 at instance 13
+[54.207.9.158] out: [7] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.31.37.38] out: [8] decides on 1 in round 5 at instance 13
+[52.31.37.38] out: [8] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.215.152.5] out: [3] synced transactions.
+[54.215.152.5] out: timestampE (3, 1447222583.196225)
+[54.254.185.166] out: [13] synced transactions.
+[54.254.185.166] out: timestampE (13, 1447222582.939775)
+[52.29.39.241] out: [10] synced transactions.
+[52.29.39.241] out: timestampE (10, 1447222582.955430)
+[52.32.92.14] out: [1] synced transactions.
+[52.32.92.14] out: timestampE (1, 1447222583.255450)
+[54.193.99.111] out: [2] synced transactions.
+[54.193.99.111] out: timestampE (2, 1447222583.274054)
+[52.33.245.184] out: [0] synced transactions.
+[52.33.245.184] out: timestampE (0, 1447222582.816093)
+[54.169.242.254] out: [12] synced transactions.
+[54.169.242.254] out: timestampE (12, 1447222582.962586)
+[52.192.23.169] out: [15] synced transactions.
+[52.192.23.169] out: timestampE (15, 1447222583.140525)
+[52.23.217.101] out: [4] synced transactions.
+[52.23.217.101] out: timestampE (4, 1447222583.015908)
+[54.86.211.192] out: [5] synced transactions.
+[54.86.211.192] out: timestampE (5, 1447222583.494915)
+[52.68.109.173] out: [14] synced transactions.
+[52.68.109.173] out: timestampE (14, 1447222583.346531)
+[52.28.23.61] out: [11] synced transactions.
+[52.28.23.61] out: timestampE (11, 1447222583.510904)
+[54.94.248.107] out: [6] synced transactions.
+[54.94.248.107] out: timestampE (6, 1447222583.581172)
+[52.31.81.187] out: [9] synced transactions.
+[52.31.81.187] out: timestampE (9, 1447222583.379441)
+[54.207.9.158] out: [7] synced transactions.
+[54.207.9.158] out: timestampE (7, 1447222583.872291)
+[52.31.37.38] out: [8] synced transactions.
+[52.31.37.38] out: timestampE (8, 1447222584.383838)
+
+[54.254.185.166] out: servers started
+[54.215.152.5] out: got 32768 TXs
+[54.215.152.5] out: timestampB (3, 1447222652.042736)
+[54.193.99.111] out: got 32767 TXs
+[54.193.99.111] out: timestampB (2, 1447222652.055465)
+[52.33.245.184] out: got 32768 TXs
+[52.33.245.184] out: timestampB (0, 1447222651.678082)
+[52.32.92.14] out: got 32768 TXs
+[52.32.92.14] out: timestampB (1, 1447222652.151011)
+[54.86.211.192] out: got 32768 TXs
+[54.86.211.192] out: timestampB (5, 1447222652.764747)
+[52.23.217.101] out: got 32768 TXs
+[52.23.217.101] out: timestampB (4, 1447222652.273095)
+[52.31.37.38] out: got 32768 TXs
+[52.31.37.38] out: timestampB (8, 1447222653.938447)
+[52.68.109.173] out: got 32767 TXs
+[52.68.109.173] out: timestampB (14, 1447222653.775568)
+[52.31.81.187] out: got 32768 TXs
+[52.31.81.187] out: timestampB (9, 1447222653.751578)
+[52.29.39.241] out: got 32768 TXs
+[52.29.39.241] out: timestampB (10, 1447222653.554803)
+[52.192.23.169] out: got 32768 TXs
+[52.192.23.169] out: timestampB (15, 1447222653.619002)
+[52.28.23.61] out: got 32768 TXs
+[52.28.23.61] out: timestampB (11, 1447222654.391225)
+[54.169.242.254] out: got 32768 TXs
+[54.169.242.254] out: timestampB (12, 1447222654.426287)
+[54.207.9.158] out: got 32768 TXs
+[54.207.9.158] out: timestampB (7, 1447222654.921156)
+[54.94.248.107] out: got 32768 TXs
+[54.94.248.107] out: timestampB (6, 1447222655.297570)
+[54.254.185.166] out: got 32768 TXs
+[54.254.185.166] out: timestampB (13, 1447222655.548900)
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 2
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 4
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 3
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 1
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 0
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 2
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 4
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 3
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 1
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 0
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 2
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 4
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 3
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 2
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 1
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 4
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 0
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 3
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 1
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 0
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 15
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 8
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 14
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 2
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 4
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 15
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 0
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 3
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 1
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 8
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 14
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 15
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 8
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 14
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 2
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 4
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 3
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 1
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 0
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 2
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 4
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 3
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 1
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 0
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 15
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 8
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 15
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 8
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 14
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 15
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 8
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 14
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 15
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 8
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 14
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 14
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 13
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 7
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 13
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 7
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 13
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 7
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 2
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 4
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 3
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 1
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 0
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 15
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 8
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 14
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 13
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 7
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 2
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 4
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 15
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 0
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 3
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 1
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 2
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 4
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 3
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 8
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 14
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 1
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 13
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 7
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 0
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 15
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 8
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 2
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 4
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 15
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 0
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 3
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 1
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 8
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 14
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 14
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 13
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 7
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 4
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 2
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 3
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 13
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 7
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 1
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 13
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 7
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 13
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 0
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 13
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 7
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 15
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 8
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 14
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 13
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 7
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 2
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 4
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 15
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 0
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 3
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 1
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 7
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 13
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 7
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 3
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 1
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 0
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 15
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 2
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 4
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 8
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 8
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 14
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 7
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 13
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 14
+[54.215.152.5] out: [3] decides on 1 in round 2 at instance 5
+[54.86.211.192] out: [5] decides on 1 in round 2 at instance 5
+[52.32.92.14] out: [1] decides on 1 in round 2 at instance 5
+[52.32.92.14] out: [1] decides on 1 in round 2 at instance 12
+[54.215.152.5] out: [3] decides on 1 in round 2 at instance 12
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 13
+[52.192.23.169] out: [15] decides on 1 in round 2 at instance 5
+[54.254.185.166] out: [13] decides on 1 in round 2 at instance 5
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 7
+[54.169.242.254] out: [12] decides on 1 in round 2 at instance 5
+[54.86.211.192] out: [5] decides on 1 in round 2 at instance 12
+[52.192.23.169] out: [15] decides on 1 in round 2 at instance 12
+[54.94.248.107] out: [6] decides on 1 in round 2 at instance 5
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 12
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 5
+[52.29.39.241] out: [10] decides on 1 in round 2 at instance 5
+[54.207.9.158] out: [7] decides on 1 in round 2 at instance 5
+[54.169.242.254] out: [12] decides on 1 in round 2 at instance 12
+[54.193.99.111] out: [2] decides on 1 in round 2 at instance 5
+[52.31.81.187] out: [9] decides on 1 in round 2 at instance 5
+[52.31.81.187] out: [9] decides on 1 in round 2 at instance 12
+[54.207.9.158] out: [7] decides on 1 in round 2 at instance 12
+[52.28.23.61] out: [11] decides on 1 in round 2 at instance 5
+[52.28.23.61] out: [11] decides on 1 in round 2 at instance 12
+[54.193.99.111] out: [2] decides on 1 in round 2 at instance 12
+[54.254.185.166] out: [13] decides on 1 in round 2 at instance 12
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 7
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 13
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 2
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 4
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 3
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 1
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 0
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 15
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 8
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 14
+[54.94.248.107] out: [6] decides on 1 in round 2 at instance 12
+[52.29.39.241] out: [10] decides on 1 in round 2 at instance 12
+[52.23.217.101] out: [4] decides on 1 in round 2 at instance 12
+[52.23.217.101] out: [4] decides on 1 in round 2 at instance 5
+[52.32.92.14] out: [1] decides on 1 in round 3 at instance 10
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 10
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 9
+[52.32.92.14] out: [1] decides on 1 in round 3 at instance 9
+[54.215.152.5] out: [3] decides on 1 in round 3 at instance 10
+[54.215.152.5] out: [3] decides on 1 in round 3 at instance 9
+[54.193.99.111] out: [2] decides on 1 in round 3 at instance 10
+[54.193.99.111] out: [2] decides on 1 in round 3 at instance 9
+[54.86.211.192] out: [5] decides on 1 in round 3 at instance 10
+[54.86.211.192] out: [5] decides on 1 in round 3 at instance 9
+[52.31.81.187] out: [9] decides on 1 in round 3 at instance 10
+[54.254.185.166] out: [13] decides on 1 in round 3 at instance 10
+[52.192.23.169] out: [15] decides on 1 in round 3 at instance 10
+[52.192.23.169] out: [15] decides on 1 in round 3 at instance 9
+[54.169.242.254] out: [12] decides on 1 in round 3 at instance 10
+[54.254.185.166] out: [13] decides on 1 in round 3 at instance 9
+[54.169.242.254] out: [12] decides on 1 in round 3 at instance 9
+[52.31.81.187] out: [9] decides on 1 in round 3 at instance 9
+[52.23.217.101] out: [4] decides on 1 in round 3 at instance 9
+[52.23.217.101] out: [4] decides on 1 in round 3 at instance 10
+[52.28.23.61] out: [11] decides on 1 in round 3 at instance 10
+[54.207.9.158] out: [7] decides on 1 in round 3 at instance 10
+[52.28.23.61] out: [11] decides on 1 in round 3 at instance 9
+[52.31.37.38] out: [8] decides on 1 in round 2 at instance 5
+[52.31.37.38] out: [8] decides on 1 in round 2 at instance 12
+[52.29.39.241] out: [10] decides on 1 in round 3 at instance 10
+[52.29.39.241] out: [10] decides on 1 in round 3 at instance 9
+[52.31.37.38] out: [8] decides on 1 in round 3 at instance 9
+[52.31.37.38] out: [8] decides on 1 in round 3 at instance 10
+[54.94.248.107] out: [6] decides on 1 in round 3 at instance 10
+[54.94.248.107] out: [6] decides on 1 in round 3 at instance 9
+[54.207.9.158] out: [7] decides on 1 in round 3 at instance 9
+[52.33.245.184] out: [0] decides on 1 in round 4 at instance 6
+[52.32.92.14] out: [1] decides on 1 in round 4 at instance 6
+[54.215.152.5] out: [3] decides on 1 in round 4 at instance 6
+[54.215.152.5] out: [3] decides on 1 in round 4 at instance 11
+[54.215.152.5] out: [3] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.33.245.184] out: [0] decides on 1 in round 4 at instance 11
+[54.193.99.111] out: [2] decides on 1 in round 4 at instance 6
+[54.193.99.111] out: [2] decides on 1 in round 4 at instance 11
+[54.193.99.111] out: [2] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.32.92.14] out: [1] decides on 1 in round 4 at instance 11
+[52.32.92.14] out: [1] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.33.245.184] out: [0] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.86.211.192] out: [5] decides on 1 in round 4 at instance 6
+[52.23.217.101] out: [4] decides on 1 in round 4 at instance 6
+[52.192.23.169] out: [15] decides on 1 in round 4 at instance 6
+[52.23.217.101] out: [4] decides on 1 in round 4 at instance 11
+[52.23.217.101] out: [4] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.86.211.192] out: [5] decides on 1 in round 4 at instance 11
+[54.86.211.192] out: [5] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.28.23.61] out: [11] decides on 1 in round 4 at instance 6
+[52.31.37.38] out: [8] decides on 1 in round 4 at instance 6
+[52.31.37.38] out: [8] decides on 1 in round 4 at instance 11
+[52.31.37.38] out: [8] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 7
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 13
+[54.94.248.107] out: [6] decides on 1 in round 4 at instance 6
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 2
+[54.169.242.254] out: [12] decides on 1 in round 4 at instance 6
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 3
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 4
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 1
+[54.254.185.166] out: [13] decides on 1 in round 4 at instance 6
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 8
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 0
+[52.28.23.61] out: [11] decides on 1 in round 4 at instance 11
+[52.28.23.61] out: [11] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 15
+[52.192.23.169] out: [15] decides on 1 in round 4 at instance 11
+[52.192.23.169] out: [15] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.94.248.107] out: [6] decides on 1 in round 4 at instance 11
+[54.94.248.107] out: [6] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 14
+[54.254.185.166] out: [13] decides on 1 in round 4 at instance 11
+[54.254.185.166] out: [13] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.68.109.173] out: [14] decides on 1 in round 2 at instance 12
+[54.169.242.254] out: [12] decides on 1 in round 4 at instance 11
+[54.169.242.254] out: [12] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.68.109.173] out: [14] decides on 1 in round 2 at instance 5
+[52.29.39.241] out: [10] decides on 1 in round 4 at instance 6
+[52.29.39.241] out: [10] decides on 1 in round 4 at instance 11
+[52.29.39.241] out: [10] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.68.109.173] out: [14] decides on 1 in round 3 at instance 10
+[52.68.109.173] out: [14] decides on 1 in round 3 at instance 9
+[54.207.9.158] out: [7] decides on 1 in round 4 at instance 6
+[52.68.109.173] out: [14] decides on 1 in round 4 at instance 6
+[52.68.109.173] out: [14] decides on 1 in round 4 at instance 11
+[52.68.109.173] out: [14] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.31.81.187] out: [9] decides on 1 in round 4 at instance 11
+[52.31.81.187] out: [9] decides on 1 in round 4 at instance 6
+[54.207.9.158] out: [7] decides on 1 in round 4 at instance 11
+[54.207.9.158] out: [7] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.31.81.187] out: [9] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.215.152.5] out: [3] synced transactions.
+[54.215.152.5] out: timestampE (3, 1447222724.245110)
+[54.254.185.166] out: [13] synced transactions.
+[54.254.185.166] out: timestampE (13, 1447222724.039205)
+[54.193.99.111] out: [2] synced transactions.
+[54.193.99.111] out: timestampE (2, 1447222724.265325)
+[52.33.245.184] out: [0] synced transactions.
+[52.33.245.184] out: timestampE (0, 1447222723.819758)
+[54.94.248.107] out: [6] synced transactions.
+[54.94.248.107] out: timestampE (6, 1447222724.518507)
+[54.86.211.192] out: [5] synced transactions.
+[54.86.211.192] out: timestampE (5, 1447222724.478485)
+[52.23.217.101] out: [4] synced transactions.
+[52.23.217.101] out: timestampE (4, 1447222724.011087)
+[52.28.23.61] out: [11] synced transactions.
+[52.28.23.61] out: timestampE (11, 1447222724.579026)
+[52.29.39.241] out: [10] synced transactions.
+[52.29.39.241] out: timestampE (10, 1447222724.202059)
+[52.32.92.14] out: [1] synced transactions.
+[52.32.92.14] out: timestampE (1, 1447222724.520379)
+[52.31.37.38] out: [8] synced transactions.
+[52.31.37.38] out: timestampE (8, 1447222724.674558)
+[54.169.242.254] out: [12] synced transactions.
+[54.169.242.254] out: timestampE (12, 1447222724.107140)
+[52.192.23.169] out: [15] synced transactions.
+[52.192.23.169] out: timestampE (15, 1447222724.301485)
+[52.68.109.173] out: [14] synced transactions.
+[52.68.109.173] out: timestampE (14, 1447222724.697246)
+[54.207.9.158] out: [7] synced transactions.
+[54.207.9.158] out: timestampE (7, 1447222724.773449)
+[52.31.81.187] out: [9] synced transactions.
+[52.31.81.187] out: timestampE (9, 1447222724.933772)
+
+[54.207.9.158] out: servers started
+[54.215.152.5] out: got 32768 TXs
+[54.215.152.5] out: timestampB (3, 1447222751.643100)
+[52.32.92.14] out: got 32767 TXs
+[52.32.92.14] out: timestampB (1, 1447222751.775427)
+[54.193.99.111] out: got 32768 TXs
+[54.193.99.111] out: timestampB (2, 1447222751.785590)
+[52.33.245.184] out: got 32768 TXs
+[52.33.245.184] out: timestampB (0, 1447222751.318383)
+[52.23.217.101] out: got 32768 TXs
+[52.23.217.101] out: timestampB (4, 1447222751.896144)
+[54.86.211.192] out: got 32768 TXs
+[54.86.211.192] out: timestampB (5, 1447222752.408378)
+[52.31.37.38] out: got 32768 TXs
+[52.31.37.38] out: timestampB (8, 1447222753.527046)
+[52.192.23.169] out: got 32768 TXs
+[52.192.23.169] out: timestampB (15, 1447222753.126481)
+[52.31.81.187] out: got 32767 TXs
+[52.31.81.187] out: timestampB (9, 1447222753.311309)
+[52.68.109.173] out: got 32768 TXs
+[52.68.109.173] out: timestampB (14, 1447222753.421540)
+[52.29.39.241] out: got 32768 TXs
+[52.29.39.241] out: timestampB (10, 1447222753.172593)
+[52.28.23.61] out: got 32768 TXs
+[52.28.23.61] out: timestampB (11, 1447222753.619649)
+[54.169.242.254] out: got 32767 TXs
+[54.169.242.254] out: timestampB (12, 1447222754.055851)
+[54.254.185.166] out: got 32768 TXs
+[54.254.185.166] out: timestampB (13, 1447222754.281691)
+[54.94.248.107] out: got 32768 TXs
+[54.94.248.107] out: timestampB (6, 1447222754.889746)
+[54.207.9.158] out: got 32768 TXs
+[54.207.9.158] out: timestampB (7, 1447222754.617354)
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 0
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 14
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 8
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 15
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 11
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 10
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 0
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 14
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 8
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 15
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 11
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 10
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 0
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 14
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 8
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 15
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 11
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 10
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 0
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 14
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 8
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 15
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 11
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 10
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 0
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 14
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 8
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 15
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 11
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 10
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 0
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 14
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 8
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 15
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 11
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 10
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 0
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 14
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 8
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 15
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 11
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 10
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 0
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 14
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 8
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 15
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 11
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 10
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 0
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 14
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 8
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 15
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 11
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 10
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 7
+[54.193.99.111] out: [2] decides on 1 in round 1 at instance 6
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 7
+[52.32.92.14] out: [1] decides on 1 in round 1 at instance 6
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 7
+[54.215.152.5] out: [3] decides on 1 in round 1 at instance 6
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 0
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 7
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 6
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 14
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 8
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 15
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 11
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 10
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 7
+[54.86.211.192] out: [5] decides on 1 in round 1 at instance 6
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 7
+[52.28.23.61] out: [11] decides on 1 in round 1 at instance 6
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 7
+[52.31.37.38] out: [8] decides on 1 in round 1 at instance 6
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 7
+[52.29.39.241] out: [10] decides on 1 in round 1 at instance 6
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 7
+[54.169.242.254] out: [12] decides on 1 in round 1 at instance 6
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 7
+[54.254.185.166] out: [13] decides on 1 in round 1 at instance 6
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 0
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 14
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 8
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 15
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 11
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 10
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 0
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 14
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 8
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 15
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 11
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 10
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 0
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 7
+[54.207.9.158] out: [7] decides on 1 in round 1 at instance 6
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 14
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 8
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 15
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 11
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 10
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 7
+[52.23.217.101] out: [4] decides on 1 in round 1 at instance 6
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 6
+[54.94.248.107] out: [6] decides on 1 in round 1 at instance 7
+[54.215.152.5] out: [3] decides on 1 in round 2 at instance 1
+[54.215.152.5] out: [3] decides on 1 in round 2 at instance 3
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 1
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 3
+[54.86.211.192] out: [5] decides on 1 in round 2 at instance 1
+[54.86.211.192] out: [5] decides on 1 in round 2 at instance 3
+[54.193.99.111] out: [2] decides on 1 in round 2 at instance 1
+[54.193.99.111] out: [2] decides on 1 in round 2 at instance 3
+[54.215.152.5] out: [3] decides on 1 in round 2 at instance 4
+[54.215.152.5] out: [3] decides on 1 in round 2 at instance 12
+[54.193.99.111] out: [2] decides on 1 in round 2 at instance 4
+[54.193.99.111] out: [2] decides on 1 in round 2 at instance 12
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 4
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 12
+[52.23.217.101] out: [4] decides on 1 in round 2 at instance 1
+[52.23.217.101] out: [4] decides on 1 in round 2 at instance 3
+[52.23.217.101] out: [4] decides on 1 in round 2 at instance 4
+[52.23.217.101] out: [4] decides on 1 in round 2 at instance 12
+[54.86.211.192] out: [5] decides on 1 in round 2 at instance 4
+[54.86.211.192] out: [5] decides on 1 in round 2 at instance 12
+[52.31.37.38] out: [8] decides on 1 in round 2 at instance 1
+[52.31.37.38] out: [8] decides on 1 in round 2 at instance 3
+[52.29.39.241] out: [10] decides on 1 in round 2 at instance 1
+[52.29.39.241] out: [10] decides on 1 in round 2 at instance 3
+[52.31.37.38] out: [8] decides on 1 in round 2 at instance 4
+[52.31.37.38] out: [8] decides on 1 in round 2 at instance 12
+[54.94.248.107] out: [6] decides on 1 in round 2 at instance 1
+[54.94.248.107] out: [6] decides on 1 in round 2 at instance 3
+[52.29.39.241] out: [10] decides on 1 in round 2 at instance 4
+[52.29.39.241] out: [10] decides on 1 in round 2 at instance 12
+[52.28.23.61] out: [11] decides on 1 in round 2 at instance 1
+[52.28.23.61] out: [11] decides on 1 in round 2 at instance 3
+[54.254.185.166] out: [13] decides on 1 in round 2 at instance 1
+[54.254.185.166] out: [13] decides on 1 in round 2 at instance 3
+[52.32.92.14] out: [1] decides on 1 in round 2 at instance 1
+[54.207.9.158] out: [7] decides on 1 in round 2 at instance 1
+[54.207.9.158] out: [7] decides on 1 in round 2 at instance 3
+[52.32.92.14] out: [1] decides on 1 in round 2 at instance 3
+[52.28.23.61] out: [11] decides on 1 in round 2 at instance 4
+[52.28.23.61] out: [11] decides on 1 in round 2 at instance 12
+[52.32.92.14] out: [1] decides on 1 in round 2 at instance 4
+[52.32.92.14] out: [1] decides on 1 in round 2 at instance 12
+[54.94.248.107] out: [6] decides on 1 in round 2 at instance 4
+[54.94.248.107] out: [6] decides on 1 in round 2 at instance 12
+[54.254.185.166] out: [13] decides on 1 in round 2 at instance 4
+[54.254.185.166] out: [13] decides on 1 in round 2 at instance 12
+[54.207.9.158] out: [7] decides on 1 in round 2 at instance 4
+[54.207.9.158] out: [7] decides on 1 in round 2 at instance 12
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 0
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 14
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 8
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 15
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 11
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 10
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 7
+[52.31.81.187] out: [9] decides on 1 in round 1 at instance 6
+[52.31.81.187] out: [9] decides on 1 in round 2 at instance 4
+[52.31.81.187] out: [9] decides on 1 in round 2 at instance 1
+[54.86.211.192] out: [5] decides on 1 in round 3 at instance 5
+[54.86.211.192] out: [5] decides on 1 in round 3 at instance 2
+[54.215.152.5] out: [3] decides on 1 in round 3 at instance 5
+[54.215.152.5] out: [3] decides on 1 in round 3 at instance 2
+[54.193.99.111] out: [2] decides on 1 in round 3 at instance 5
+[54.193.99.111] out: [2] decides on 1 in round 3 at instance 2
+[54.193.99.111] out: [2] decides on 1 in round 3 at instance 9
+[52.32.92.14] out: [1] decides on 1 in round 3 at instance 5
+[52.32.92.14] out: [1] decides on 1 in round 3 at instance 2
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 5
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 2
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 9
+[54.86.211.192] out: [5] decides on 1 in round 3 at instance 9
+[54.215.152.5] out: [3] decides on 1 in round 3 at instance 9
+[52.31.81.187] out: [9] decides on 1 in round 2 at instance 3
+[54.215.152.5] out: [3] decides on 1 in round 3 at instance 13
+[54.215.152.5] out: [3] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.193.99.111] out: [2] decides on 1 in round 3 at instance 13
+[54.193.99.111] out: [2] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.254.185.166] out: [13] decides on 1 in round 3 at instance 5
+[54.254.185.166] out: [13] decides on 1 in round 3 at instance 2
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 13
+[52.33.245.184] out: [0] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.31.81.187] out: [9] decides on 1 in round 2 at instance 12
+[52.28.23.61] out: [11] decides on 1 in round 3 at instance 5
+[52.29.39.241] out: [10] decides on 1 in round 3 at instance 5
+[52.29.39.241] out: [10] decides on 1 in round 3 at instance 2
+[52.28.23.61] out: [11] decides on 1 in round 3 at instance 2
+[54.169.242.254] out: [12] decides on 1 in round 2 at instance 3
+[54.169.242.254] out: [12] decides on 1 in round 2 at instance 1
+[54.207.9.158] out: [7] decides on 1 in round 3 at instance 5
+[54.207.9.158] out: [7] decides on 1 in round 3 at instance 2
+[52.31.37.38] out: [8] decides on 1 in round 3 at instance 5
+[52.31.37.38] out: [8] decides on 1 in round 3 at instance 2
+[52.31.37.38] out: [8] decides on 1 in round 3 at instance 9
+[54.86.211.192] out: [5] decides on 1 in round 3 at instance 13
+[54.86.211.192] out: [5] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.29.39.241] out: [10] decides on 1 in round 3 at instance 9
+[52.28.23.61] out: [11] decides on 1 in round 3 at instance 9
+[52.31.81.187] out: [9] decides on 1 in round 3 at instance 5
+[52.31.81.187] out: [9] decides on 1 in round 3 at instance 2
+[54.169.242.254] out: [12] decides on 1 in round 2 at instance 12
+[54.207.9.158] out: [7] decides on 1 in round 3 at instance 9
+[54.169.242.254] out: [12] decides on 1 in round 2 at instance 4
+[52.31.37.38] out: [8] decides on 1 in round 3 at instance 13
+[52.31.37.38] out: [8] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.29.39.241] out: [10] decides on 1 in round 3 at instance 13
+[52.29.39.241] out: [10] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.94.248.107] out: [6] decides on 1 in round 3 at instance 9
+[54.94.248.107] out: [6] decides on 1 in round 3 at instance 5
+[54.94.248.107] out: [6] decides on 1 in round 3 at instance 2
+[52.31.81.187] out: [9] decides on 1 in round 3 at instance 9
+[52.31.81.187] out: [9] decides on 1 in round 3 at instance 13
+[52.31.81.187] out: [9] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.28.23.61] out: [11] decides on 1 in round 3 at instance 13
+[52.28.23.61] out: [11] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.32.92.14] out: [1] decides on 1 in round 3 at instance 9
+[54.207.9.158] out: [7] decides on 1 in round 3 at instance 13
+[54.207.9.158] out: [7] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.169.242.254] out: [12] decides on 1 in round 3 at instance 2
+[54.169.242.254] out: [12] decides on 1 in round 3 at instance 5
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 0
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 14
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 8
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 15
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 11
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 10
+[54.254.185.166] out: [13] decides on 1 in round 3 at instance 9
+[54.254.185.166] out: [13] decides on 1 in round 3 at instance 13
+[54.254.185.166] out: [13] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 7
+[52.192.23.169] out: [15] decides on 1 in round 1 at instance 6
+[52.32.92.14] out: [1] decides on 1 in round 3 at instance 13
+[52.32.92.14] out: [1] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.94.248.107] out: [6] decides on 1 in round 3 at instance 13
+[54.94.248.107] out: [6] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.169.242.254] out: [12] decides on 1 in round 3 at instance 9
+[52.192.23.169] out: [15] decides on 1 in round 2 at instance 1
+[52.192.23.169] out: [15] decides on 1 in round 2 at instance 3
+[52.192.23.169] out: [15] decides on 1 in round 2 at instance 4
+[54.169.242.254] out: [12] decides on 1 in round 3 at instance 13
+[54.169.242.254] out: [12] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.192.23.169] out: [15] decides on 1 in round 2 at instance 12
+[52.192.23.169] out: [15] decides on 1 in round 3 at instance 5
+[52.192.23.169] out: [15] decides on 1 in round 3 at instance 2
+[52.192.23.169] out: [15] decides on 1 in round 3 at instance 9
+[52.192.23.169] out: [15] decides on 1 in round 3 at instance 13
+[52.192.23.169] out: [15] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.23.217.101] out: [4] decides on 1 in round 3 at instance 2
+[52.23.217.101] out: [4] decides on 1 in round 3 at instance 9
+[52.23.217.101] out: [4] decides on 1 in round 3 at instance 13
+[52.23.217.101] out: [4] decides on 1 in round 3 at instance 5
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 0
+[52.23.217.101] out: [4] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 8
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 11
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 14
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 15
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 10
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 7
+[52.68.109.173] out: [14] decides on 1 in round 1 at instance 6
+[52.68.109.173] out: [14] decides on 1 in round 2 at instance 4
+[52.68.109.173] out: [14] decides on 1 in round 2 at instance 1
+[52.68.109.173] out: [14] decides on 1 in round 2 at instance 3
+[52.68.109.173] out: [14] decides on 1 in round 2 at instance 12
+[52.68.109.173] out: [14] decides on 1 in round 3 at instance 5
+[52.68.109.173] out: [14] decides on 1 in round 3 at instance 9
+[52.68.109.173] out: [14] decides on 1 in round 3 at instance 2
+[52.68.109.173] out: [14] decides on 1 in round 3 at instance 13
+[52.68.109.173] out: [14] Get subset [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[54.215.152.5] out: [3] synced transactions.
+[54.215.152.5] out: timestampE (3, 1447222822.992480)
+[52.29.39.241] out: [10] synced transactions.
+[52.29.39.241] out: timestampE (10, 1447222822.756239)
+[52.33.245.184] out: [0] synced transactions.
+[52.33.245.184] out: timestampE (0, 1447222822.571700)
+[54.193.99.111] out: [2] synced transactions.
+[54.193.99.111] out: timestampE (2, 1447222823.095796)
+[54.254.185.166] out: [13] synced transactions.
+[54.254.185.166] out: timestampE (13, 1447222822.868794)
+[54.86.211.192] out: [5] synced transactions.
+[54.86.211.192] out: timestampE (5, 1447222823.235572)
+[52.31.81.187] out: [9] synced transactions.
+[52.31.81.187] out: timestampE (9, 1447222823.156480)
+[52.28.23.61] out: [11] synced transactions.
+[52.28.23.61] out: timestampE (11, 1447222823.318785)
+[52.31.37.38] out: [8] synced transactions.
+[52.31.37.38] out: timestampE (8, 1447222823.426470)
+[54.207.9.158] out: [7] synced transactions.
+[54.207.9.158] out: timestampE (7, 1447222823.119096)
+[52.32.92.14] out: [1] synced transactions.
+[52.32.92.14] out: timestampE (1, 1447222823.424760)
+[54.94.248.107] out: [6] synced transactions.
+[54.94.248.107] out: timestampE (6, 1447222823.639210)
+[54.169.242.254] out: [12] synced transactions.
+[54.169.242.254] out: timestampE (12, 1447222823.045558)
+[52.192.23.169] out: [15] synced transactions.
+[52.192.23.169] out: timestampE (15, 1447222823.466617)
+[52.23.217.101] out: [4] synced transactions.
+[52.23.217.101] out: timestampE (4, 1447222823.398348)
+[52.68.109.173] out: [14] synced transactions.
+[52.68.109.173] out: timestampE (14, 1447222824.131183)

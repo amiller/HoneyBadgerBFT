@@ -1,0 +1,211 @@
+[54.94.195.186] out: servers started
+[54.193.28.250] out: got 131065 TXs
+[54.193.28.250] out: timestampB (1, 1447257714.964104)
+[52.34.13.1] out: got 131066 TXs
+[52.34.13.1] out: timestampB (0, 1447257715.015787)
+[52.23.245.219] out: got 131070 TXs
+[52.23.245.219] out: timestampB (2, 1447257715.413931)
+[52.192.125.193] out: got 131071 TXs
+[52.192.125.193] out: timestampB (7, 1447257716.211203)
+[52.31.202.217] out: got 131068 TXs
+[52.31.202.217] out: timestampB (4, 1447257716.173630)
+[52.28.149.39] out: got 131071 TXs
+[52.28.149.39] out: timestampB (5, 1447257716.402676)
+[54.254.145.28] out: got 131070 TXs
+[54.254.145.28] out: timestampB (6, 1447257717.052021)
+[54.94.195.186] out: got 131071 TXs
+[54.94.195.186] out: timestampB (3, 1447257717.327277)
+[54.193.28.250] out: [1] decides on 1 in round 1 at instance 4
+[52.34.13.1] out: [0] decides on 1 in round 1 at instance 4
+[52.23.245.219] out: [2] decides on 1 in round 1 at instance 4
+[52.192.125.193] out: [7] decides on 1 in round 1 at instance 4
+[54.193.28.250] out: [1] decides on 1 in round 1 at instance 2
+[54.193.28.250] out: [1] decides on 1 in round 1 at instance 7
+[52.34.13.1] out: [0] decides on 1 in round 1 at instance 2
+[52.34.13.1] out: [0] decides on 1 in round 1 at instance 7
+[52.23.245.219] out: [2] decides on 1 in round 1 at instance 2
+[52.192.125.193] out: [7] decides on 1 in round 1 at instance 2
+[52.23.245.219] out: [2] decides on 1 in round 1 at instance 7
+[52.192.125.193] out: [7] decides on 1 in round 1 at instance 7
+[52.31.202.217] out: [4] decides on 1 in round 1 at instance 4
+[52.31.202.217] out: [4] decides on 1 in round 1 at instance 2
+[52.31.202.217] out: [4] decides on 1 in round 1 at instance 7
+[52.28.149.39] out: [5] decides on 1 in round 1 at instance 4
+[52.28.149.39] out: [5] decides on 1 in round 1 at instance 2
+[52.28.149.39] out: [5] decides on 1 in round 1 at instance 7
+[52.34.13.1] out: [0] decides on 1 in round 2 at instance 0
+[52.34.13.1] out: [0] decides on 1 in round 2 at instance 1
+[52.23.245.219] out: [2] decides on 1 in round 2 at instance 1
+[52.23.245.219] out: [2] decides on 1 in round 2 at instance 0
+[52.34.13.1] out: [0] decides on 1 in round 2 at instance 5
+[52.34.13.1] out: [0] decides on 1 in round 2 at instance 3
+[52.192.125.193] out: [7] decides on 1 in round 2 at instance 1
+[52.192.125.193] out: [7] decides on 1 in round 2 at instance 0
+[52.28.149.39] out: [5] decides on 1 in round 2 at instance 1
+[52.28.149.39] out: [5] decides on 1 in round 2 at instance 0
+[52.23.245.219] out: [2] decides on 1 in round 2 at instance 5
+[52.23.245.219] out: [2] decides on 1 in round 2 at instance 3
+[52.192.125.193] out: [7] decides on 1 in round 2 at instance 5
+[52.192.125.193] out: [7] decides on 1 in round 2 at instance 3
+[52.28.149.39] out: [5] decides on 1 in round 2 at instance 5
+[52.28.149.39] out: [5] decides on 1 in round 2 at instance 3
+[52.31.202.217] out: [4] decides on 1 in round 2 at instance 1
+[52.31.202.217] out: [4] decides on 1 in round 2 at instance 0
+[52.31.202.217] out: [4] decides on 1 in round 2 at instance 5
+[52.31.202.217] out: [4] decides on 1 in round 2 at instance 3
+[54.193.28.250] out: [1] decides on 1 in round 2 at instance 1
+[54.193.28.250] out: [1] decides on 1 in round 2 at instance 0
+[54.193.28.250] out: [1] decides on 1 in round 2 at instance 5
+[54.193.28.250] out: [1] decides on 1 in round 2 at instance 3
+[54.193.28.250] out: [1] decides on 1 in round 4 at instance 6
+[54.193.28.250] out: [1] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.23.245.219] out: [2] decides on 1 in round 4 at instance 6
+[52.23.245.219] out: [2] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.192.125.193] out: [7] decides on 1 in round 4 at instance 6
+[52.192.125.193] out: [7] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.34.13.1] out: [0] decides on 1 in round 4 at instance 6
+[52.34.13.1] out: [0] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.28.149.39] out: [5] decides on 1 in round 4 at instance 6
+[52.28.149.39] out: [5] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.31.202.217] out: [4] decides on 1 in round 4 at instance 6
+[52.31.202.217] out: [4] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.254.145.28] out: [6] decides on 1 in round 1 at instance 4
+[54.254.145.28] out: [6] decides on 1 in round 1 at instance 2
+[54.254.145.28] out: [6] decides on 1 in round 2 at instance 1
+[54.254.145.28] out: [6] decides on 1 in round 2 at instance 0
+[54.254.145.28] out: [6] decides on 1 in round 2 at instance 5
+[54.254.145.28] out: [6] decides on 1 in round 2 at instance 3
+[54.254.145.28] out: [6] decides on 1 in round 1 at instance 7
+[54.254.145.28] out: [6] decides on 1 in round 4 at instance 6
+[54.254.145.28] out: [6] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.23.245.219] out: [2] synced transactions.
+[52.23.245.219] out: timestampE (2, 1447257852.966188)
+[52.34.13.1] out: [0] synced transactions.
+[52.34.13.1] out: timestampE (0, 1447257853.079098)
+[52.28.149.39] out: [5] synced transactions.
+[52.28.149.39] out: timestampE (5, 1447257853.087059)
+[52.31.202.217] out: [4] synced transactions.
+[52.31.202.217] out: timestampE (4, 1447257852.940956)
+[52.192.125.193] out: [7] synced transactions.
+[52.192.125.193] out: timestampE (7, 1447257853.276366)
+[54.193.28.250] out: [1] synced transactions.
+[54.193.28.250] out: timestampE (1, 1447257853.359437)
+[54.94.195.186] out: [3] decides on 1 in round 1 at instance 4
+[54.94.195.186] out: [3] decides on 1 in round 1 at instance 2
+[54.94.195.186] out: [3] decides on 1 in round 1 at instance 7
+[54.94.195.186] out: [3] decides on 1 in round 2 at instance 0
+[54.94.195.186] out: [3] decides on 1 in round 2 at instance 1
+[54.94.195.186] out: [3] decides on 1 in round 2 at instance 5
+[54.94.195.186] out: [3] decides on 1 in round 2 at instance 3
+[54.94.195.186] out: [3] decides on 1 in round 4 at instance 6
+[54.94.195.186] out: [3] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.254.145.28] out: [6] synced transactions.
+[54.254.145.28] out: timestampE (6, 1447257853.732744)
+[54.94.195.186] out: [3] synced transactions.
+[54.94.195.186] out: timestampE (3, 1447257858.144612)
+
+[54.94.195.186] out: servers started
+[54.193.28.250] out: got 131068 TXs
+[54.193.28.250] out: timestampB (1, 1447257904.393311)
+[52.34.13.1] out: got 131067 TXs
+[52.34.13.1] out: timestampB (0, 1447257905.752817)
+[52.23.245.219] out: got 131071 TXs
+[52.23.245.219] out: timestampB (2, 1447257905.691555)
+[52.28.149.39] out: got 131069 TXs
+[52.28.149.39] out: timestampB (5, 1447257906.290876)
+[52.31.202.217] out: got 131064 TXs
+[52.31.202.217] out: timestampB (4, 1447257906.271705)
+[52.192.125.193] out: got 131065 TXs
+[52.192.125.193] out: timestampB (7, 1447257906.502024)
+[54.254.145.28] out: got 131071 TXs
+[54.254.145.28] out: timestampB (6, 1447257907.312088)
+[54.94.195.186] out: got 131069 TXs
+[54.94.195.186] out: timestampB (3, 1447257907.777325)
+[52.34.13.1] out: [0] decides on 1 in round 1 at instance 0
+[52.34.13.1] out: [0] decides on 1 in round 1 at instance 5
+[52.34.13.1] out: [0] decides on 1 in round 1 at instance 4
+[52.23.245.219] out: [2] decides on 1 in round 1 at instance 0
+[52.23.245.219] out: [2] decides on 1 in round 1 at instance 5
+[52.192.125.193] out: [7] decides on 1 in round 1 at instance 0
+[52.192.125.193] out: [7] decides on 1 in round 1 at instance 5
+[52.23.245.219] out: [2] decides on 1 in round 1 at instance 4
+[52.192.125.193] out: [7] decides on 1 in round 1 at instance 4
+[54.193.28.250] out: [1] decides on 1 in round 1 at instance 0
+[54.193.28.250] out: [1] decides on 1 in round 1 at instance 5
+[54.193.28.250] out: [1] decides on 1 in round 1 at instance 4
+[54.254.145.28] out: [6] decides on 1 in round 1 at instance 0
+[54.254.145.28] out: [6] decides on 1 in round 1 at instance 5
+[54.254.145.28] out: [6] decides on 1 in round 1 at instance 4
+[52.31.202.217] out: [4] decides on 1 in round 1 at instance 0
+[52.31.202.217] out: [4] decides on 1 in round 1 at instance 5
+[52.31.202.217] out: [4] decides on 1 in round 1 at instance 4
+[54.193.28.250] out: [1] decides on 1 in round 2 at instance 3
+[54.193.28.250] out: [1] decides on 1 in round 2 at instance 7
+[54.193.28.250] out: [1] decides on 1 in round 2 at instance 1
+[52.34.13.1] out: [0] decides on 1 in round 2 at instance 3
+[52.34.13.1] out: [0] decides on 1 in round 2 at instance 7
+[52.34.13.1] out: [0] decides on 1 in round 2 at instance 1
+[52.34.13.1] out: [0] decides on 1 in round 2 at instance 6
+[54.193.28.250] out: [1] decides on 1 in round 2 at instance 6
+[52.23.245.219] out: [2] decides on 1 in round 2 at instance 3
+[52.23.245.219] out: [2] decides on 1 in round 2 at instance 7
+[52.23.245.219] out: [2] decides on 1 in round 2 at instance 1
+[52.192.125.193] out: [7] decides on 1 in round 2 at instance 3
+[52.192.125.193] out: [7] decides on 1 in round 2 at instance 7
+[52.192.125.193] out: [7] decides on 1 in round 2 at instance 1
+[52.31.202.217] out: [4] decides on 1 in round 2 at instance 3
+[52.31.202.217] out: [4] decides on 1 in round 2 at instance 7
+[52.31.202.217] out: [4] decides on 1 in round 2 at instance 1
+[52.23.245.219] out: [2] decides on 1 in round 2 at instance 6
+[54.254.145.28] out: [6] decides on 1 in round 2 at instance 3
+[54.254.145.28] out: [6] decides on 1 in round 2 at instance 7
+[54.254.145.28] out: [6] decides on 1 in round 2 at instance 1
+[52.192.125.193] out: [7] decides on 1 in round 2 at instance 6
+[52.31.202.217] out: [4] decides on 1 in round 2 at instance 6
+[54.254.145.28] out: [6] decides on 1 in round 2 at instance 6
+[54.94.195.186] out: [3] decides on 1 in round 1 at instance 0
+[54.94.195.186] out: [3] decides on 1 in round 1 at instance 5
+[54.94.195.186] out: [3] decides on 1 in round 1 at instance 4
+[54.94.195.186] out: [3] decides on 1 in round 2 at instance 1
+[54.94.195.186] out: [3] decides on 1 in round 2 at instance 6
+[54.94.195.186] out: [3] decides on 1 in round 2 at instance 3
+[54.94.195.186] out: [3] decides on 1 in round 2 at instance 7
+[52.28.149.39] out: [5] decides on 1 in round 1 at instance 0
+[52.28.149.39] out: [5] decides on 1 in round 1 at instance 5
+[52.28.149.39] out: [5] decides on 1 in round 1 at instance 4
+[52.28.149.39] out: [5] decides on 1 in round 2 at instance 6
+[52.28.149.39] out: [5] decides on 1 in round 2 at instance 3
+[52.28.149.39] out: [5] decides on 1 in round 2 at instance 1
+[52.28.149.39] out: [5] decides on 1 in round 2 at instance 7
+[52.23.245.219] out: [2] decides on 1 in round 5 at instance 2
+[52.23.245.219] out: [2] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.192.125.193] out: [7] decides on 1 in round 5 at instance 2
+[52.192.125.193] out: [7] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.34.13.1] out: [0] decides on 1 in round 5 at instance 2
+[52.34.13.1] out: [0] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.193.28.250] out: [1] decides on 1 in round 5 at instance 2
+[54.193.28.250] out: [1] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.31.202.217] out: [4] decides on 1 in round 5 at instance 2
+[52.31.202.217] out: [4] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.254.145.28] out: [6] decides on 1 in round 5 at instance 2
+[54.254.145.28] out: [6] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.28.149.39] out: [5] decides on 1 in round 5 at instance 2
+[52.28.149.39] out: [5] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.94.195.186] out: [3] decides on 1 in round 5 at instance 2
+[54.94.195.186] out: [3] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.23.245.219] out: [2] synced transactions.
+[52.23.245.219] out: timestampE (2, 1447258045.172530)
+[52.34.13.1] out: [0] synced transactions.
+[52.34.13.1] out: timestampE (0, 1447258045.268965)
+[54.254.145.28] out: [6] synced transactions.
+[54.254.145.28] out: timestampE (6, 1447258045.134940)
+[52.31.202.217] out: [4] synced transactions.
+[52.31.202.217] out: timestampE (4, 1447258045.057114)
+[52.28.149.39] out: [5] synced transactions.
+[52.28.149.39] out: timestampE (5, 1447258045.414421)
+[52.192.125.193] out: [7] synced transactions.
+[52.192.125.193] out: timestampE (7, 1447258045.533363)
+[54.193.28.250] out: [1] synced transactions.
+[54.193.28.250] out: timestampE (1, 1447258045.660954)
+[54.94.195.186] out: [3] synced transactions.
+[54.94.195.186] out: timestampE (3, 1447258047.150061)

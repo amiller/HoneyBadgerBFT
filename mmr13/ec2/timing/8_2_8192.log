@@ -1,1101 +1,648 @@
-[54.94.243.208] out: servers started
-[52.8.92.220] out: got 8191 TXs
-[52.8.92.220] out: timestampB (1, 1447161315.208511)
-[52.27.237.141] out: got 8192 TXs
-[52.27.237.141] out: timestampB (0, 1447161314.694618)
-[54.209.228.153] out: got 8192 TXs
-[54.209.228.153] out: timestampB (2, 1447161315.915539)
-[52.192.140.223] out: got 8192 TXs
-[52.192.140.223] out: timestampB (7, 1447161316.465915)
-[52.19.164.11] out: got 8192 TXs
-[52.19.164.11] out: timestampB (4, 1447161316.796011)
-[52.29.95.105] out: got 8192 TXs
-[52.29.95.105] out: timestampB (5, 1447161316.512509)
-[54.169.212.80] out: got 8192 TXs
-[54.169.212.80] out: timestampB (6, 1447161316.789038)
-[54.94.243.208] out: got 8192 TXs
-[54.94.243.208] out: timestampB (3, 1447161317.812011)
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.209.228.153] out: [2] synced transactions.
-[54.209.228.153] out: timestampE (2, 1447161325.691895)
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[52.29.95.105] out: [5] synced transactions.
-[52.29.95.105] out: timestampE (5, 1447161325.388357)
-[52.27.237.141] out: [0] synced transactions.
-[52.27.237.141] out: timestampE (0, 1447161325.060924)
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.19.164.11] out: [4] synced transactions.
-[52.19.164.11] out: timestampE (4, 1447161325.785960)
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.8.92.220] out: [1] synced transactions.
-[52.8.92.220] out: timestampE (1, 1447161325.660380)
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.192.140.223] out: [7] synced transactions.
-[52.192.140.223] out: timestampE (7, 1447161325.633479)
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.94.243.208] out: [3] synced transactions.
-[54.94.243.208] out: timestampE (3, 1447161325.726295)
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.169.212.80] out: [6] synced transactions.
-[54.169.212.80] out: timestampE (6, 1447161325.219337)
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
+[54.94.248.107] out: servers started
+[54.193.99.111] out: got 8192 TXs
+[54.193.99.111] out: timestampB (1, 1447211912.129312)
+[52.33.245.184] out: got 8192 TXs
+[52.33.245.184] out: timestampB (0, 1447211912.090661)
+[54.86.211.192] out: got 8192 TXs
+[54.86.211.192] out: timestampB (2, 1447211912.800469)
+[52.192.23.169] out: got 8192 TXs
+[52.192.23.169] out: timestampB (7, 1447211913.477415)
+[52.28.23.61] out: got 8192 TXs
+[52.28.23.61] out: timestampB (5, 1447211913.726377)
+[52.31.37.38] out: got 8192 TXs
+[52.31.37.38] out: timestampB (4, 1447211914.079770)
+[54.169.242.254] out: got 8192 TXs
+[54.169.242.254] out: timestampB (6, 1447211914.375605)
+[54.94.248.107] out: got 8192 TXs
+[54.94.248.107] out: timestampB (3, 1447211915.008744)
+[52.31.37.38] out: [4] finished acast on msg from 2.
+[52.31.37.38] out: [4] finished acast on msg from 0.
+[52.31.37.38] out: [4] finished acast on msg from 1.
+[52.28.23.61] out: [5] finished acast on msg from 1.
+[52.28.23.61] out: [5] finished acast on msg from 0.
+[52.28.23.61] out: [5] finished acast on msg from 2.
+[52.33.245.184] out: [0] finished acast on msg from 1.
+[52.33.245.184] out: [0] finished acast on msg from 0.
+[52.192.23.169] out: [7] finished acast on msg from 1.
+[54.86.211.192] out: [2] finished acast on msg from 1.
+[54.86.211.192] out: [2] finished acast on msg from 0.
+[54.86.211.192] out: [2] finished acast on msg from 2.
+[54.193.99.111] out: [1] finished acast on msg from 1.
+[54.193.99.111] out: [1] finished acast on msg from 0.
+[54.193.99.111] out: [1] finished acast on msg from 2.
+[52.33.245.184] out: [0] finished acast on msg from 2.
+[52.31.37.38] out: [4] finished acast on msg from 7.
+[52.192.23.169] out: [7] finished acast on msg from 7.
+[52.33.245.184] out: [0] finished acast on msg from 7.
+[52.33.245.184] out: [0] finished acast on msg from 4.
+[52.33.245.184] out: [0] finished acast on msg from 5.
+[54.86.211.192] out: [2] finished acast on msg from 7.
+[52.31.37.38] out: [4] finished acast on msg from 4.
+[52.31.37.38] out: [4] finished acast on msg from 5.
+[54.94.248.107] out: [3] finished acast on msg from 1.
+[54.94.248.107] out: [3] finished acast on msg from 0.
+[54.94.248.107] out: [3] finished acast on msg from 2.
+[54.169.242.254] out: [6] finished acast on msg from 0.
+[54.169.242.254] out: [6] finished acast on msg from 1.
+[54.169.242.254] out: [6] finished acast on msg from 2.
+[54.169.242.254] out: [6] finished acast on msg from 7.
+[52.28.23.61] out: [5] finished acast on msg from 7.
+[52.28.23.61] out: [5] finished acast on msg from 4.
+[54.94.248.107] out: [3] finished acast on msg from 7.
+[52.28.23.61] out: [5] finished acast on msg from 5.
+[54.193.99.111] out: [1] finished acast on msg from 7.
+[54.193.99.111] out: [1] finished acast on msg from 4.
+[54.193.99.111] out: [1] finished acast on msg from 5.
+[52.33.245.184] out: [0] finished acast on msg from 6.
+[52.192.23.169] out: [7] finished acast on msg from 4.
+[52.192.23.169] out: [7] finished acast on msg from 5.
+[54.169.242.254] out: [6] finished acast on msg from 5.
+[54.86.211.192] out: [2] finished acast on msg from 4.
+[54.86.211.192] out: [2] finished acast on msg from 5.
+[54.193.99.111] out: [1] finished acast on msg from 6.
+[52.33.245.184] out: [0] finished acast on msg from 3.
+[54.169.242.254] out: [6] finished acast on msg from 6.
+[54.193.99.111] out: [1] finished acast on msg from 3.
+[52.28.23.61] out: [5] finished acast on msg from 6.
+[52.28.23.61] out: [5] finished acast on msg from 3.
+[54.169.242.254] out: [6] finished acast on msg from 3.
+[54.86.211.192] out: [2] finished acast on msg from 6.
+[54.86.211.192] out: [2] finished acast on msg from 3.
+[54.94.248.107] out: [3] finished acast on msg from 4.
+[54.94.248.107] out: [3] finished acast on msg from 5.
+[54.86.211.192] out: [2] decides on 1 in round 1 at instance 2
+[52.192.23.169] out: [7] finished acast on msg from 6.
+[52.31.37.38] out: [4] finished acast on msg from 6.
+[52.31.37.38] out: [4] finished acast on msg from 3.
+[52.192.23.169] out: [7] finished acast on msg from 3.
+[54.193.99.111] out: [1] decides on 1 in round 1 at instance 2
+[52.28.23.61] out: [5] decides on 1 in round 1 at instance 2
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 2
+[52.31.37.38] out: [4] decides on 1 in round 1 at instance 2
+[54.169.242.254] out: [6] decides on 1 in round 1 at instance 2
+[54.94.248.107] out: [3] finished acast on msg from 6.
+[54.94.248.107] out: [3] finished acast on msg from 3.
+[54.193.99.111] out: [1] decides on 1 in round 1 at instance 7
+[54.193.99.111] out: [1] decides on 1 in round 1 at instance 4
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 7
+[54.86.211.192] out: [2] decides on 1 in round 1 at instance 7
+[52.192.23.169] out: [7] decides on 1 in round 1 at instance 7
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 4
+[54.94.248.107] out: [3] decides on 1 in round 1 at instance 2
+[54.169.242.254] out: [6] decides on 1 in round 1 at instance 7
+[52.28.23.61] out: [5] decides on 1 in round 1 at instance 7
+[52.31.37.38] out: [4] decides on 1 in round 1 at instance 7
+[54.86.211.192] out: [2] decides on 1 in round 1 at instance 4
+[52.31.37.38] out: [4] decides on 1 in round 1 at instance 4
+[54.94.248.107] out: [3] decides on 1 in round 1 at instance 7
+[54.193.99.111] out: [1] decides on 1 in round 2 at instance 1
+[52.192.23.169] out: [7] decides on 1 in round 1 at instance 4
+[52.28.23.61] out: [5] decides on 1 in round 1 at instance 4
+[54.94.248.107] out: [3] decides on 1 in round 1 at instance 4
+[54.86.211.192] out: [2] decides on 1 in round 2 at instance 1
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 1
+[54.193.99.111] out: [1] decides on 1 in round 2 at instance 0
+[52.192.23.169] out: [7] decides on 1 in round 2 at instance 1
+[52.28.23.61] out: [5] decides on 1 in round 2 at instance 1
+[52.31.37.38] out: [4] decides on 1 in round 2 at instance 1
+[52.28.23.61] out: [5] decides on 1 in round 2 at instance 0
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 0
+[52.31.37.38] out: [4] decides on 1 in round 2 at instance 0
+[54.86.211.192] out: [2] decides on 1 in round 2 at instance 0
+[54.169.242.254] out: [6] decides on 1 in round 2 at instance 1
+[54.94.248.107] out: [3] decides on 1 in round 2 at instance 1
+[54.94.248.107] out: [3] decides on 1 in round 2 at instance 0
+[54.193.99.111] out: [1] decides on 1 in round 2 at instance 5
+[54.193.99.111] out: [1] decides on 1 in round 2 at instance 3
+[54.86.211.192] out: [2] decides on 1 in round 2 at instance 5
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 5
+[52.31.37.38] out: [4] decides on 1 in round 2 at instance 5
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 3
+[52.28.23.61] out: [5] decides on 1 in round 2 at instance 5
+[54.169.242.254] out: [6] decides on 1 in round 2 at instance 0
+[52.192.23.169] out: [7] decides on 1 in round 2 at instance 5
+[54.169.242.254] out: [6] decides on 1 in round 2 at instance 5
+[54.169.242.254] out: [6] decides on 1 in round 1 at instance 4
+[54.94.248.107] out: [3] decides on 1 in round 2 at instance 5
+[54.86.211.192] out: [2] decides on 1 in round 2 at instance 3
+[52.31.37.38] out: [4] decides on 1 in round 2 at instance 3
+[52.192.23.169] out: [7] decides on 1 in round 2 at instance 3
+[52.192.23.169] out: [7] decides on 1 in round 1 at instance 2
+[52.192.23.169] out: [7] decides on 1 in round 2 at instance 0
+[54.169.242.254] out: [6] decides on 1 in round 2 at instance 3
+[52.28.23.61] out: [5] decides on 1 in round 2 at instance 3
+[54.94.248.107] out: [3] decides on 1 in round 2 at instance 3
+[52.33.245.184] out: [0] decides on 1 in round 4 at instance 6
+[52.33.245.184] out: [0] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.86.211.192] out: [2] decides on 1 in round 4 at instance 6
+[54.86.211.192] out: [2] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.193.99.111] out: [1] decides on 1 in round 4 at instance 6
+[54.193.99.111] out: [1] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.28.23.61] out: [5] decides on 1 in round 4 at instance 6
+[52.28.23.61] out: [5] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.31.37.38] out: [4] decides on 1 in round 4 at instance 6
+[52.31.37.38] out: [4] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.94.248.107] out: [3] decides on 1 in round 4 at instance 6
+[54.94.248.107] out: [3] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.192.23.169] out: [7] decides on 1 in round 4 at instance 6
+[52.192.23.169] out: [7] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.169.242.254] out: [6] decides on 1 in round 4 at instance 6
+[54.169.242.254] out: [6] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.33.245.184] out: [0] synced transactions.
+[52.33.245.184] out: timestampE (0, 1447211922.518209)
+[54.86.211.192] out: [2] synced transactions.
+[54.86.211.192] out: timestampE (2, 1447211922.783368)
+[54.193.99.111] out: [1] synced transactions.
+[54.193.99.111] out: timestampE (1, 1447211922.755529)
+[52.31.37.38] out: [4] synced transactions.
+[52.31.37.38] out: timestampE (4, 1447211922.908679)
+[52.28.23.61] out: [5] synced transactions.
+[52.28.23.61] out: timestampE (5, 1447211922.847141)
+[54.94.248.107] out: [3] synced transactions.
+[54.94.248.107] out: timestampE (3, 1447211922.918785)
+[52.192.23.169] out: [7] synced transactions.
+[52.192.23.169] out: timestampE (7, 1447211922.734439)
+[54.169.242.254] out: [6] synced transactions.
+[54.169.242.254] out: timestampE (6, 1447211922.689758)
 
-[54.169.212.80] out: servers started
-[52.8.92.220] out: got 8192 TXs
-[52.8.92.220] out: timestampB (1, 1447161403.926592)
-[52.27.237.141] out: got 8192 TXs
-[52.27.237.141] out: timestampB (0, 1447161403.412406)
-[54.209.228.153] out: got 8192 TXs
-[54.209.228.153] out: timestampB (2, 1447161404.610247)
-[52.192.140.223] out: got 8192 TXs
-[52.192.140.223] out: timestampB (7, 1447161405.212417)
-[52.19.164.11] out: got 8192 TXs
-[52.19.164.11] out: timestampB (4, 1447161405.522928)
-[52.29.95.105] out: got 8192 TXs
-[52.29.95.105] out: timestampB (5, 1447161405.214919)
-[54.169.212.80] out: got 8192 TXs
-[54.169.212.80] out: timestampB (6, 1447161405.679156)
-[54.94.243.208] out: got 8192 TXs
-[54.94.243.208] out: timestampB (3, 1447161406.362617)
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[52.8.92.220] out: [1] synced transactions.
-[52.8.92.220] out: timestampE (1, 1447161414.969958)
-[52.8.92.220] out: [1] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.209.228.153] out: [2] synced transactions.
-[54.209.228.153] out: timestampE (2, 1447161415.102575)
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.27.237.141] out: [0] synced transactions.
-[52.27.237.141] out: timestampE (0, 1447161414.448732)
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.29.95.105] out: [5] synced transactions.
-[52.29.95.105] out: timestampE (5, 1447161414.800001)
-[52.27.237.141] out: [0] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[54.94.243.208] out: [3] synced transactions.
-[54.94.243.208] out: timestampE (3, 1447161415.022818)
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[52.192.140.223] out: [7] synced transactions.
-[52.192.140.223] out: timestampE (7, 1447161415.090464)
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] synced transactions.
-[52.19.164.11] out: timestampE (4, 1447161416.611651)
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
+[54.94.248.107] out: servers started
+[54.193.99.111] out: got 8192 TXs
+[54.193.99.111] out: timestampB (1, 1447212004.385075)
+[52.33.245.184] out: got 8192 TXs
+[52.33.245.184] out: timestampB (0, 1447212004.321544)
+[54.86.211.192] out: got 8192 TXs
+[54.86.211.192] out: timestampB (2, 1447212005.017446)
+[52.192.23.169] out: got 8192 TXs
+[52.192.23.169] out: timestampB (7, 1447212005.743555)
+[52.28.23.61] out: got 8192 TXs
+[52.28.23.61] out: timestampB (5, 1447212005.943781)
+[52.31.37.38] out: got 8192 TXs
+[52.31.37.38] out: timestampB (4, 1447212006.360887)
+[54.169.242.254] out: got 8192 TXs
+[54.169.242.254] out: timestampB (6, 1447212006.736168)
+[54.94.248.107] out: got 8192 TXs
+[54.94.248.107] out: timestampB (3, 1447212007.252332)
+[54.86.211.192] out: [2] finished acast on msg from 0.
+[54.86.211.192] out: [2] finished acast on msg from 1.
+[52.33.245.184] out: [0] finished acast on msg from 0.
+[54.86.211.192] out: [2] finished acast on msg from 2.
+[52.28.23.61] out: [5] finished acast on msg from 1.
+[52.28.23.61] out: [5] finished acast on msg from 2.
+[52.28.23.61] out: [5] finished acast on msg from 0.
+[52.28.23.61] out: [5] finished acast on msg from 5.
+[52.31.37.38] out: [4] finished acast on msg from 1.
+[52.31.37.38] out: [4] finished acast on msg from 2.
+[52.31.37.38] out: [4] finished acast on msg from 0.
+[54.86.211.192] out: [2] finished acast on msg from 5.
+[54.193.99.111] out: [1] finished acast on msg from 0.
+[54.193.99.111] out: [1] finished acast on msg from 1.
+[52.31.37.38] out: [4] finished acast on msg from 5.
+[52.33.245.184] out: [0] finished acast on msg from 1.
+[52.192.23.169] out: [7] finished acast on msg from 1.
+[52.192.23.169] out: [7] finished acast on msg from 0.
+[52.192.23.169] out: [7] finished acast on msg from 2.
+[52.192.23.169] out: [7] finished acast on msg from 5.
+[54.169.242.254] out: [6] finished acast on msg from 5.
+[54.193.99.111] out: [1] finished acast on msg from 2.
+[54.193.99.111] out: [1] finished acast on msg from 5.
+[54.94.248.107] out: [3] finished acast on msg from 0.
+[54.94.248.107] out: [3] finished acast on msg from 1.
+[54.94.248.107] out: [3] finished acast on msg from 5.
+[52.28.23.61] out: [5] finished acast on msg from 4.
+[52.31.37.38] out: [4] finished acast on msg from 4.
+[52.33.245.184] out: [0] finished acast on msg from 2.
+[52.33.245.184] out: [0] finished acast on msg from 5.
+[52.33.245.184] out: [0] finished acast on msg from 4.
+[52.192.23.169] out: [7] finished acast on msg from 7.
+[52.192.23.169] out: [7] finished acast on msg from 4.
+[54.169.242.254] out: [6] finished acast on msg from 7.
+[54.94.248.107] out: [3] finished acast on msg from 4.
+[54.94.248.107] out: [3] finished acast on msg from 7.
+[52.31.37.38] out: [4] finished acast on msg from 7.
+[52.33.245.184] out: [0] finished acast on msg from 7.
+[54.193.99.111] out: [1] finished acast on msg from 7.
+[54.193.99.111] out: [1] finished acast on msg from 4.
+[52.28.23.61] out: [5] finished acast on msg from 7.
+[54.86.211.192] out: [2] finished acast on msg from 4.
+[54.86.211.192] out: [2] finished acast on msg from 7.
+[52.33.245.184] out: [0] finished acast on msg from 6.
+[52.31.37.38] out: [4] finished acast on msg from 6.
+[54.169.242.254] out: [6] finished acast on msg from 6.
+[54.193.99.111] out: [1] finished acast on msg from 6.
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 0
+[54.86.211.192] out: [2] finished acast on msg from 6.
+[54.193.99.111] out: [1] decides on 1 in round 1 at instance 0
+[54.193.99.111] out: [1] finished acast on msg from 3.
+[52.33.245.184] out: [0] finished acast on msg from 3.
+[52.192.23.169] out: [7] finished acast on msg from 6.
+[54.193.99.111] out: [1] decides on 1 in round 1 at instance 1
+[54.169.242.254] out: [6] finished acast on msg from 3.
+[52.192.23.169] out: [7] decides on 1 in round 1 at instance 0
+[52.192.23.169] out: [7] decides on 1 in round 1 at instance 1
+[52.31.37.38] out: [4] finished acast on msg from 3.
+[52.31.37.38] out: [4] decides on 1 in round 1 at instance 1
+[52.31.37.38] out: [4] decides on 1 in round 1 at instance 0
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 1
+[54.86.211.192] out: [2] decides on 1 in round 1 at instance 0
+[54.86.211.192] out: [2] decides on 1 in round 1 at instance 1
+[54.86.211.192] out: [2] finished acast on msg from 3.
+[52.28.23.61] out: [5] finished acast on msg from 6.
+[54.193.99.111] out: [1] decides on 1 in round 1 at instance 7
+[52.192.23.169] out: [7] finished acast on msg from 3.
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 7
+[54.86.211.192] out: [2] decides on 1 in round 1 at instance 7
+[52.28.23.61] out: [5] finished acast on msg from 3.
+[52.192.23.169] out: [7] decides on 1 in round 1 at instance 7
+[52.31.37.38] out: [4] decides on 1 in round 1 at instance 7
+[52.28.23.61] out: [5] decides on 1 in round 1 at instance 1
+[52.28.23.61] out: [5] decides on 1 in round 1 at instance 0
+[54.169.242.254] out: [6] decides on 1 in round 1 at instance 7
+[52.28.23.61] out: [5] decides on 1 in round 1 at instance 7
+[54.94.248.107] out: [3] finished acast on msg from 3.
+[54.94.248.107] out: [3] decides on 1 in round 1 at instance 1
+[54.193.99.111] out: [1] decides on 1 in round 2 at instance 6
+[54.94.248.107] out: [3] decides on 1 in round 1 at instance 0
+[54.94.248.107] out: [3] decides on 1 in round 1 at instance 7
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 6
+[54.86.211.192] out: [2] decides on 1 in round 2 at instance 6
+[52.31.37.38] out: [4] decides on 1 in round 2 at instance 6
+[52.192.23.169] out: [7] decides on 1 in round 2 at instance 6
+[52.28.23.61] out: [5] decides on 1 in round 2 at instance 6
+[54.169.242.254] out: [6] decides on 1 in round 2 at instance 6
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 2
+[54.193.99.111] out: [1] decides on 1 in round 3 at instance 2
+[52.28.23.61] out: [5] decides on 1 in round 3 at instance 2
+[54.86.211.192] out: [2] decides on 1 in round 3 at instance 2
+[52.31.37.38] out: [4] decides on 1 in round 3 at instance 2
+[52.192.23.169] out: [7] decides on 1 in round 3 at instance 2
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 4
+[54.193.99.111] out: [1] decides on 1 in round 3 at instance 4
+[54.193.99.111] out: [1] decides on 1 in round 3 at instance 3
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 3
+[54.86.211.192] out: [2] decides on 1 in round 3 at instance 3
+[54.86.211.192] out: [2] decides on 1 in round 3 at instance 4
+[52.192.23.169] out: [7] decides on 1 in round 3 at instance 4
+[52.192.23.169] out: [7] decides on 1 in round 3 at instance 3
+[52.28.23.61] out: [5] decides on 1 in round 3 at instance 3
+[54.94.248.107] out: [3] decides on 1 in round 3 at instance 4
+[52.31.37.38] out: [4] decides on 1 in round 3 at instance 4
+[52.28.23.61] out: [5] decides on 1 in round 3 at instance 4
+[52.31.37.38] out: [4] decides on 1 in round 3 at instance 3
+[54.169.242.254] out: [6] decides on 1 in round 3 at instance 3
+[54.94.248.107] out: [3] decides on 1 in round 3 at instance 3
+[54.94.248.107] out: [3] decides on 1 in round 2 at instance 6
+[54.94.248.107] out: [3] decides on 1 in round 3 at instance 2
+[54.193.99.111] out: [1] decides on 1 in round 5 at instance 5
+[54.193.99.111] out: [1] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.33.245.184] out: [0] decides on 1 in round 5 at instance 5
+[52.33.245.184] out: [0] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.86.211.192] out: [2] decides on 1 in round 5 at instance 5
+[54.86.211.192] out: [2] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.31.37.38] out: [4] decides on 1 in round 5 at instance 5
+[52.31.37.38] out: [4] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.192.23.169] out: [7] decides on 1 in round 5 at instance 5
+[52.192.23.169] out: [7] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.28.23.61] out: [5] decides on 1 in round 5 at instance 5
+[52.28.23.61] out: [5] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.94.248.107] out: [3] decides on 1 in round 5 at instance 5
+[54.94.248.107] out: [3] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.169.242.254] out: [6] decides on 1 in round 5 at instance 5
+[52.33.245.184] out: [0] synced transactions.
+[52.33.245.184] out: timestampE (0, 1447212014.944165)
+[54.193.99.111] out: [1] synced transactions.
+[54.193.99.111] out: timestampE (1, 1447212015.147543)
+[52.31.37.38] out: [4] synced transactions.
+[52.31.37.38] out: timestampE (4, 1447212015.260550)
+[54.86.211.192] out: [2] synced transactions.
+[54.86.211.192] out: timestampE (2, 1447212015.213165)
+[54.94.248.107] out: [3] synced transactions.
+[54.94.248.107] out: timestampE (3, 1447212015.257124)
+[52.28.23.61] out: [5] synced transactions.
+[52.28.23.61] out: timestampE (5, 1447212015.245438)
+[52.192.23.169] out: [7] synced transactions.
+[52.192.23.169] out: timestampE (7, 1447212015.107415)
 
-[54.94.243.208] out: servers started
-[54.209.228.153] out: got 8192 TXs
-[54.209.228.153] out: timestampB (2, 1447161438.736567)
-[52.8.92.220] out: got 8192 TXs
-[52.8.92.220] out: timestampB (1, 1447161438.736281)
-[52.27.237.141] out: got 8192 TXs
-[52.27.237.141] out: timestampB (0, 1447161438.288782)
-[52.29.95.105] out: got 8192 TXs
-[52.29.95.105] out: timestampB (5, 1447161439.295553)
-[52.19.164.11] out: got 8192 TXs
-[52.19.164.11] out: timestampB (4, 1447161440.188860)
-[52.192.140.223] out: got 8192 TXs
-[52.192.140.223] out: timestampB (7, 1447161440.115801)
-[54.169.212.80] out: got 8192 TXs
-[54.169.212.80] out: timestampB (6, 1447161440.137659)
-[54.94.243.208] out: got 8192 TXs
-[54.94.243.208] out: timestampB (3, 1447161441.548713)
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.27.237.141] out: [0] synced transactions.
-[52.27.237.141] out: timestampE (0, 1447161448.153953)
-[54.209.228.153] out: [2] synced transactions.
-[54.209.228.153] out: timestampE (2, 1447161448.855146)
-[52.8.92.220] out: [1] synced transactions.
-[52.8.92.220] out: timestampE (1, 1447161448.771852)
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[52.192.140.223] out: [7] synced transactions.
-[52.192.140.223] out: timestampE (7, 1447161448.821355)
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.19.164.11] out: [4] synced transactions.
-[52.19.164.11] out: timestampE (4, 1447161449.037446)
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.29.95.105] out: [5] synced transactions.
-[52.29.95.105] out: timestampE (5, 1447161448.694158)
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] synced transactions.
-[54.94.243.208] out: timestampE (3, 1447161453.399821)
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 2
+[54.94.248.107] out: servers started
+[54.193.99.111] out: got 8192 TXs
+[54.193.99.111] out: timestampB (1, 1447212055.519256)
+[52.33.245.184] out: got 8192 TXs
+[52.33.245.184] out: timestampB (0, 1447212055.407007)
+[54.86.211.192] out: got 8192 TXs
+[54.86.211.192] out: timestampB (2, 1447212056.133994)
+[52.192.23.169] out: got 8191 TXs
+[52.192.23.169] out: timestampB (7, 1447212056.824156)
+[52.31.37.38] out: got 8192 TXs
+[52.31.37.38] out: timestampB (4, 1447212057.032345)
+[52.28.23.61] out: got 8192 TXs
+[52.28.23.61] out: timestampB (5, 1447212057.060142)
+[54.169.242.254] out: got 8192 TXs
+[54.169.242.254] out: timestampB (6, 1447212057.757473)
+[54.94.248.107] out: got 8192 TXs
+[54.94.248.107] out: timestampB (3, 1447212058.415738)
+[52.28.23.61] out: [5] finished acast on msg from 0.
+[52.28.23.61] out: [5] finished acast on msg from 1.
+[54.86.211.192] out: [2] finished acast on msg from 1.
+[54.86.211.192] out: [2] finished acast on msg from 0.
+[54.193.99.111] out: [1] finished acast on msg from 0.
+[54.193.99.111] out: [1] finished acast on msg from 1.
+[52.31.37.38] out: [4] finished acast on msg from 0.
+[52.31.37.38] out: [4] finished acast on msg from 1.
+[52.28.23.61] out: [5] finished acast on msg from 2.
+[52.28.23.61] out: [5] finished acast on msg from 4.
+[52.192.23.169] out: [7] finished acast on msg from 0.
+[52.192.23.169] out: [7] finished acast on msg from 1.
+[52.192.23.169] out: [7] finished acast on msg from 2.
+[52.33.245.184] out: [0] finished acast on msg from 0.
+[52.33.245.184] out: [0] finished acast on msg from 1.
+[54.86.211.192] out: [2] finished acast on msg from 2.
+[52.33.245.184] out: [0] finished acast on msg from 2.
+[54.86.211.192] out: [2] finished acast on msg from 4.
+[54.193.99.111] out: [1] finished acast on msg from 2.
+[54.193.99.111] out: [1] finished acast on msg from 4.
+[54.169.242.254] out: [6] finished acast on msg from 0.
+[54.169.242.254] out: [6] finished acast on msg from 1.
+[54.169.242.254] out: [6] finished acast on msg from 4.
+[52.31.37.38] out: [4] finished acast on msg from 4.
+[52.192.23.169] out: [7] finished acast on msg from 7.
+[54.94.248.107] out: [3] finished acast on msg from 0.
+[54.94.248.107] out: [3] finished acast on msg from 1.
+[52.33.245.184] out: [0] finished acast on msg from 4.
+[54.94.248.107] out: [3] finished acast on msg from 2.
+[54.94.248.107] out: [3] finished acast on msg from 4.
+[52.33.245.184] out: [0] finished acast on msg from 7.
+[54.169.242.254] out: [6] finished acast on msg from 7.
+[52.192.23.169] out: [7] finished acast on msg from 5.
+[54.193.99.111] out: [1] finished acast on msg from 7.
+[54.169.242.254] out: [6] finished acast on msg from 5.
+[52.28.23.61] out: [5] finished acast on msg from 7.
+[52.33.245.184] out: [0] finished acast on msg from 5.
+[52.31.37.38] out: [4] finished acast on msg from 7.
+[52.31.37.38] out: [4] finished acast on msg from 5.
+[52.33.245.184] out: [0] finished acast on msg from 6.
+[52.192.23.169] out: [7] finished acast on msg from 6.
+[54.94.248.107] out: [3] finished acast on msg from 7.
+[54.94.248.107] out: [3] finished acast on msg from 5.
+[54.86.211.192] out: [2] finished acast on msg from 7.
+[54.86.211.192] out: [2] finished acast on msg from 5.
+[54.193.99.111] out: [1] finished acast on msg from 5.
+[54.169.242.254] out: [6] finished acast on msg from 6.
+[54.193.99.111] out: [1] finished acast on msg from 6.
+[54.94.248.107] out: [3] finished acast on msg from 6.
+[52.31.37.38] out: [4] finished acast on msg from 6.
+[54.86.211.192] out: [2] finished acast on msg from 6.
+[54.86.211.192] out: [2] finished acast on msg from 3.
+[52.28.23.61] out: [5] finished acast on msg from 5.
+[52.28.23.61] out: [5] finished acast on msg from 6.
+[52.33.245.184] out: [0] finished acast on msg from 3.
+[54.193.99.111] out: [1] finished acast on msg from 3.
+[54.169.242.254] out: [6] finished acast on msg from 3.
+[54.86.211.192] out: [2] decides on 1 in round 1 at instance 0
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 0
+[54.193.99.111] out: [1] decides on 1 in round 1 at instance 0
+[54.94.248.107] out: [3] finished acast on msg from 3.
+[52.31.37.38] out: [4] finished acast on msg from 3.
+[54.169.242.254] out: [6] decides on 1 in round 1 at instance 0
+[54.94.248.107] out: [3] decides on 1 in round 1 at instance 0
+[52.28.23.61] out: [5] finished acast on msg from 3.
+[54.86.211.192] out: [2] decides on 1 in round 1 at instance 4
+[52.192.23.169] out: [7] finished acast on msg from 3.
+[52.31.37.38] out: [4] decides on 1 in round 1 at instance 0
+[52.192.23.169] out: [7] decides on 1 in round 1 at instance 0
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 4
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 5
+[54.193.99.111] out: [1] decides on 1 in round 1 at instance 4
+[54.193.99.111] out: [1] decides on 1 in round 1 at instance 5
+[52.31.37.38] out: [4] decides on 1 in round 1 at instance 4
+[54.169.242.254] out: [6] decides on 1 in round 1 at instance 4
+[54.86.211.192] out: [2] decides on 1 in round 1 at instance 5
+[52.28.23.61] out: [5] decides on 1 in round 1 at instance 0
+[54.94.248.107] out: [3] decides on 1 in round 1 at instance 4
+[52.31.37.38] out: [4] decides on 1 in round 1 at instance 5
+[52.192.23.169] out: [7] decides on 1 in round 1 at instance 5
+[52.28.23.61] out: [5] decides on 1 in round 1 at instance 4
+[52.28.23.61] out: [5] decides on 1 in round 1 at instance 5
+[54.94.248.107] out: [3] decides on 1 in round 1 at instance 5
+[54.169.242.254] out: [6] decides on 1 in round 1 at instance 5
+[54.193.99.111] out: [1] decides on 1 in round 2 at instance 1
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 1
+[54.86.211.192] out: [2] decides on 1 in round 2 at instance 1
+[52.28.23.61] out: [5] decides on 1 in round 2 at instance 1
+[52.31.37.38] out: [4] decides on 1 in round 2 at instance 1
+[54.169.242.254] out: [6] decides on 1 in round 2 at instance 1
+[52.192.23.169] out: [7] decides on 1 in round 2 at instance 1
+[54.94.248.107] out: [3] decides on 1 in round 2 at instance 1
+[54.86.211.192] out: [2] decides on 1 in round 2 at instance 7
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 7
+[54.193.99.111] out: [1] decides on 1 in round 2 at instance 7
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 6
+[54.193.99.111] out: [1] decides on 1 in round 2 at instance 6
+[52.31.37.38] out: [4] decides on 1 in round 2 at instance 7
+[52.192.23.169] out: [7] decides on 1 in round 2 at instance 7
+[52.28.23.61] out: [5] decides on 1 in round 2 at instance 7
+[52.28.23.61] out: [5] decides on 1 in round 2 at instance 6
+[52.31.37.38] out: [4] decides on 1 in round 2 at instance 6
+[54.94.248.107] out: [3] decides on 1 in round 2 at instance 7
+[54.86.211.192] out: [2] decides on 1 in round 2 at instance 6
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 3
+[54.193.99.111] out: [1] decides on 1 in round 2 at instance 3
+[54.169.242.254] out: [6] decides on 1 in round 2 at instance 7
+[52.192.23.169] out: [7] decides on 1 in round 2 at instance 6
+[52.192.23.169] out: [7] decides on 1 in round 2 at instance 3
+[52.192.23.169] out: [7] decides on 1 in round 1 at instance 4
+[52.28.23.61] out: [5] decides on 1 in round 2 at instance 3
+[54.169.242.254] out: [6] decides on 1 in round 2 at instance 6
+[52.31.37.38] out: [4] decides on 1 in round 2 at instance 3
+[54.94.248.107] out: [3] decides on 1 in round 2 at instance 6
+[54.86.211.192] out: [2] decides on 1 in round 2 at instance 3
+[54.169.242.254] out: [6] decides on 1 in round 2 at instance 3
+[54.94.248.107] out: [3] decides on 1 in round 2 at instance 3
+[52.33.245.184] out: [0] decides on 1 in round 5 at instance 2
+[52.33.245.184] out: [0] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.193.99.111] out: [1] decides on 1 in round 5 at instance 2
+[54.193.99.111] out: [1] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.86.211.192] out: [2] decides on 1 in round 5 at instance 2
+[54.86.211.192] out: [2] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.31.37.38] out: [4] decides on 1 in round 5 at instance 2
+[52.31.37.38] out: [4] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.28.23.61] out: [5] decides on 1 in round 5 at instance 2
+[52.28.23.61] out: [5] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.192.23.169] out: [7] decides on 1 in round 5 at instance 2
+[52.192.23.169] out: [7] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.169.242.254] out: [6] decides on 1 in round 5 at instance 2
+[54.169.242.254] out: [6] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.94.248.107] out: [3] decides on 1 in round 5 at instance 2
+[54.94.248.107] out: [3] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.31.37.38] out: [4] synced transactions.
+[52.31.37.38] out: timestampE (4, 1447212066.632705)
+[52.33.245.184] out: [0] synced transactions.
+[52.33.245.184] out: timestampE (0, 1447212066.349404)
+[54.193.99.111] out: [1] synced transactions.
+[54.193.99.111] out: timestampE (1, 1447212066.548918)
+[54.86.211.192] out: [2] synced transactions.
+[54.86.211.192] out: timestampE (2, 1447212066.608562)
+[52.192.23.169] out: [7] synced transactions.
+[52.192.23.169] out: timestampE (7, 1447212066.483605)
+[52.28.23.61] out: [5] synced transactions.
+[52.28.23.61] out: timestampE (5, 1447212066.627641)
+[54.169.242.254] out: [6] synced transactions.
+[54.169.242.254] out: timestampE (6, 1447212066.447891)
+[54.94.248.107] out: [3] synced transactions.
+[54.94.248.107] out: timestampE (3, 1447212066.725887)
 
-[54.94.243.208] out: servers started
-[52.8.92.220] out: got 8192 TXs
-[52.8.92.220] out: timestampB (1, 1447161508.532121)
-[52.27.237.141] out: got 8192 TXs
-[52.27.237.141] out: timestampB (0, 1447161507.997307)
-[54.209.228.153] out: got 8192 TXs
-[54.209.228.153] out: timestampB (2, 1447161509.247167)
-[52.192.140.223] out: got 8192 TXs
-[52.192.140.223] out: timestampB (7, 1447161509.763334)
-[52.19.164.11] out: got 8192 TXs
-[52.19.164.11] out: timestampB (4, 1447161510.126809)
-[52.29.95.105] out: got 8192 TXs
-[52.29.95.105] out: timestampB (5, 1447161509.815148)
-[54.169.212.80] out: got 8192 TXs
-[54.169.212.80] out: timestampB (6, 1447161510.184079)
-[54.94.243.208] out: got 8192 TXs
-[54.94.243.208] out: timestampB (3, 1447161511.130009)
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.27.237.141] out: [0] synced transactions.
-[52.27.237.141] out: timestampE (0, 1447161517.417143)
-[52.8.92.220] out: [1] synced transactions.
-[52.8.92.220] out: timestampE (1, 1447161518.033180)
-[52.8.92.220] out: [1] got a common coin at round 1
-[54.209.228.153] out: [2] synced transactions.
-[54.209.228.153] out: timestampE (2, 1447161518.192336)
-[52.29.95.105] out: [5] synced transactions.
-[52.29.95.105] out: timestampE (5, 1447161517.833840)
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.19.164.11] out: [4] synced transactions.
-[52.19.164.11] out: timestampE (4, 1447161518.220832)
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.192.140.223] out: [7] synced transactions.
-[52.192.140.223] out: timestampE (7, 1447161518.143744)
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[54.169.212.80] out: [6] synced transactions.
-[54.169.212.80] out: timestampE (6, 1447161517.683646)
-[54.169.212.80] out: [6] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] synced transactions.
-[54.94.243.208] out: timestampE (3, 1447161527.636521)
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 3
+[54.94.248.107] out: servers started
+[54.193.99.111] out: got 8192 TXs
+[54.193.99.111] out: timestampB (1, 1447212097.387307)
+[52.33.245.184] out: got 8191 TXs
+[52.33.245.184] out: timestampB (0, 1447212097.298411)
+[54.86.211.192] out: got 8192 TXs
+[54.86.211.192] out: timestampB (2, 1447212098.268004)
+[52.192.23.169] out: got 8192 TXs
+[52.192.23.169] out: timestampB (7, 1447212098.692235)
+[52.31.37.38] out: got 8192 TXs
+[52.31.37.38] out: timestampB (4, 1447212098.881058)
+[52.28.23.61] out: got 8192 TXs
+[52.28.23.61] out: timestampB (5, 1447212098.948450)
+[54.169.242.254] out: got 8192 TXs
+[54.169.242.254] out: timestampB (6, 1447212099.685648)
+[54.94.248.107] out: got 8192 TXs
+[54.94.248.107] out: timestampB (3, 1447212100.277823)
+[54.86.211.192] out: [2] finished acast on msg from 0.
+[54.193.99.111] out: [1] finished acast on msg from 0.
+[52.31.37.38] out: [4] finished acast on msg from 0.
+[54.86.211.192] out: [2] finished acast on msg from 1.
+[54.193.99.111] out: [1] finished acast on msg from 1.
+[52.31.37.38] out: [4] finished acast on msg from 1.
+[52.28.23.61] out: [5] finished acast on msg from 0.
+[52.28.23.61] out: [5] finished acast on msg from 1.
+[52.33.245.184] out: [0] finished acast on msg from 0.
+[52.33.245.184] out: [0] finished acast on msg from 1.
+[52.31.37.38] out: [4] finished acast on msg from 2.
+[52.31.37.38] out: [4] finished acast on msg from 4.
+[54.94.248.107] out: [3] finished acast on msg from 0.
+[54.94.248.107] out: [3] finished acast on msg from 1.
+[52.192.23.169] out: [7] finished acast on msg from 0.
+[52.192.23.169] out: [7] finished acast on msg from 1.
+[52.192.23.169] out: [7] finished acast on msg from 4.
+[52.28.23.61] out: [5] finished acast on msg from 2.
+[52.28.23.61] out: [5] finished acast on msg from 4.
+[54.86.211.192] out: [2] finished acast on msg from 2.
+[54.86.211.192] out: [2] finished acast on msg from 4.
+[52.33.245.184] out: [0] finished acast on msg from 2.
+[52.33.245.184] out: [0] finished acast on msg from 4.
+[52.33.245.184] out: [0] finished acast on msg from 7.
+[54.193.99.111] out: [1] finished acast on msg from 2.
+[54.193.99.111] out: [1] finished acast on msg from 4.
+[54.193.99.111] out: [1] finished acast on msg from 7.
+[52.192.23.169] out: [7] finished acast on msg from 7.
+[52.192.23.169] out: [7] finished acast on msg from 5.
+[54.94.248.107] out: [3] finished acast on msg from 2.
+[54.94.248.107] out: [3] finished acast on msg from 4.
+[54.94.248.107] out: [3] finished acast on msg from 5.
+[54.94.248.107] out: [3] finished acast on msg from 7.
+[54.169.242.254] out: [6] finished acast on msg from 7.
+[54.169.242.254] out: [6] finished acast on msg from 5.
+[52.33.245.184] out: [0] finished acast on msg from 5.
+[54.86.211.192] out: [2] finished acast on msg from 7.
+[54.86.211.192] out: [2] finished acast on msg from 5.
+[52.31.37.38] out: [4] finished acast on msg from 7.
+[52.31.37.38] out: [4] finished acast on msg from 5.
+[52.33.245.184] out: [0] finished acast on msg from 6.
+[54.193.99.111] out: [1] finished acast on msg from 5.
+[54.193.99.111] out: [1] finished acast on msg from 6.
+[54.86.211.192] out: [2] finished acast on msg from 6.
+[52.28.23.61] out: [5] finished acast on msg from 7.
+[52.28.23.61] out: [5] finished acast on msg from 5.
+[54.169.242.254] out: [6] finished acast on msg from 6.
+[52.192.23.169] out: [7] finished acast on msg from 6.
+[52.192.23.169] out: [7] finished acast on msg from 3.
+[52.31.37.38] out: [4] finished acast on msg from 6.
+[52.33.245.184] out: [0] finished acast on msg from 3.
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 0
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 1
+[54.193.99.111] out: [1] finished acast on msg from 3.
+[54.169.242.254] out: [6] finished acast on msg from 3.
+[54.86.211.192] out: [2] finished acast on msg from 3.
+[54.193.99.111] out: [1] decides on 1 in round 1 at instance 0
+[54.193.99.111] out: [1] decides on 1 in round 1 at instance 1
+[52.31.37.38] out: [4] finished acast on msg from 3.
+[54.86.211.192] out: [2] decides on 1 in round 1 at instance 0
+[54.86.211.192] out: [2] decides on 1 in round 1 at instance 1
+[52.192.23.169] out: [7] decides on 1 in round 1 at instance 0
+[52.192.23.169] out: [7] decides on 1 in round 1 at instance 1
+[54.94.248.107] out: [3] finished acast on msg from 3.
+[52.31.37.38] out: [4] decides on 1 in round 1 at instance 0
+[52.28.23.61] out: [5] finished acast on msg from 6.
+[52.31.37.38] out: [4] decides on 1 in round 1 at instance 1
+[52.33.245.184] out: [0] decides on 1 in round 1 at instance 7
+[54.193.99.111] out: [1] decides on 1 in round 1 at instance 7
+[54.94.248.107] out: [3] decides on 1 in round 1 at instance 0
+[54.94.248.107] out: [3] decides on 1 in round 1 at instance 1
+[52.28.23.61] out: [5] finished acast on msg from 3.
+[54.86.211.192] out: [2] decides on 1 in round 1 at instance 7
+[52.31.37.38] out: [4] decides on 1 in round 1 at instance 7
+[52.28.23.61] out: [5] decides on 1 in round 1 at instance 0
+[52.28.23.61] out: [5] decides on 1 in round 1 at instance 1
+[52.192.23.169] out: [7] decides on 1 in round 1 at instance 7
+[54.169.242.254] out: [6] decides on 1 in round 1 at instance 7
+[52.28.23.61] out: [5] decides on 1 in round 1 at instance 7
+[54.94.248.107] out: [3] decides on 1 in round 1 at instance 7
+[54.193.99.111] out: [1] decides on 1 in round 2 at instance 6
+[52.33.245.184] out: [0] decides on 1 in round 2 at instance 6
+[54.86.211.192] out: [2] decides on 1 in round 2 at instance 6
+[52.28.23.61] out: [5] decides on 1 in round 2 at instance 6
+[52.31.37.38] out: [4] decides on 1 in round 2 at instance 6
+[52.192.23.169] out: [7] decides on 1 in round 2 at instance 6
+[54.169.242.254] out: [6] decides on 1 in round 2 at instance 6
+[54.193.99.111] out: [1] decides on 1 in round 3 at instance 4
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 4
+[54.86.211.192] out: [2] decides on 1 in round 3 at instance 4
+[54.193.99.111] out: [1] decides on 1 in round 3 at instance 3
+[52.31.37.38] out: [4] decides on 1 in round 3 at instance 4
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 3
+[52.28.23.61] out: [5] decides on 1 in round 3 at instance 4
+[52.192.23.169] out: [7] decides on 1 in round 3 at instance 4
+[54.86.211.192] out: [2] decides on 1 in round 3 at instance 3
+[54.94.248.107] out: [3] decides on 1 in round 3 at instance 4
+[52.192.23.169] out: [7] decides on 1 in round 3 at instance 3
+[52.31.37.38] out: [4] decides on 1 in round 3 at instance 3
+[52.28.23.61] out: [5] decides on 1 in round 3 at instance 3
+[52.33.245.184] out: [0] decides on 1 in round 3 at instance 2
+[54.86.211.192] out: [2] decides on 1 in round 3 at instance 2
+[54.193.99.111] out: [1] decides on 1 in round 3 at instance 2
+[54.94.248.107] out: [3] decides on 1 in round 3 at instance 3
+[54.94.248.107] out: [3] decides on 1 in round 2 at instance 6
+[54.169.242.254] out: [6] decides on 1 in round 3 at instance 3
+[52.31.37.38] out: [4] decides on 1 in round 3 at instance 2
+[52.28.23.61] out: [5] decides on 1 in round 3 at instance 2
+[52.192.23.169] out: [7] decides on 1 in round 3 at instance 2
+[54.94.248.107] out: [3] decides on 1 in round 3 at instance 2
+[54.193.99.111] out: [1] decides on 1 in round 5 at instance 5
+[54.193.99.111] out: [1] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.33.245.184] out: [0] decides on 1 in round 5 at instance 5
+[52.33.245.184] out: [0] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.86.211.192] out: [2] decides on 1 in round 5 at instance 5
+[54.86.211.192] out: [2] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.31.37.38] out: [4] decides on 1 in round 5 at instance 5
+[52.31.37.38] out: [4] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.192.23.169] out: [7] decides on 1 in round 5 at instance 5
+[52.192.23.169] out: [7] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.28.23.61] out: [5] decides on 1 in round 5 at instance 5
+[52.28.23.61] out: [5] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[54.169.242.254] out: [6] decides on 1 in round 5 at instance 5
+[54.94.248.107] out: [3] decides on 1 in round 5 at instance 5
+[54.94.248.107] out: [3] Get subset [1, 1, 1, 1, 1, 1, 1, 1]
+[52.33.245.184] out: [0] synced transactions.
+[52.33.245.184] out: timestampE (0, 1447212108.007100)
+[54.193.99.111] out: [1] synced transactions.
+[54.193.99.111] out: timestampE (1, 1447212108.222663)
+[54.86.211.192] out: [2] synced transactions.
+[54.86.211.192] out: timestampE (2, 1447212108.282128)
+[52.192.23.169] out: [7] synced transactions.
+[52.192.23.169] out: timestampE (7, 1447212108.200598)
+[52.31.37.38] out: [4] synced transactions.
+[52.31.37.38] out: timestampE (4, 1447212108.372146)
+[52.28.23.61] out: [5] synced transactions.
+[52.28.23.61] out: timestampE (5, 1447212108.344028)
+[54.94.248.107] out: [3] synced transactions.
+[54.94.248.107] out: timestampE (3, 1447212108.378407)
 
-[54.94.243.208] out: servers started
-[52.8.92.220] out: got 8192 TXs
-[52.8.92.220] out: timestampB (1, 1447161549.124228)
-[52.27.237.141] out: got 8192 TXs
-[52.27.237.141] out: timestampB (0, 1447161548.605269)
-[54.209.228.153] out: got 8192 TXs
-[54.209.228.153] out: timestampB (2, 1447161549.823763)
-[52.192.140.223] out: got 8192 TXs
-[52.192.140.223] out: timestampB (7, 1447161550.377020)
-[52.19.164.11] out: got 8192 TXs
-[52.19.164.11] out: timestampB (4, 1447161550.767840)
-[52.29.95.105] out: got 8192 TXs
-[52.29.95.105] out: timestampB (5, 1447161550.449874)
-[54.169.212.80] out: got 8192 TXs
-[54.169.212.80] out: timestampB (6, 1447161550.736274)
-[54.94.243.208] out: got 8192 TXs
-[54.94.243.208] out: timestampB (3, 1447161552.080996)
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[54.209.228.153] out: [2] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.27.237.141] out: [0] synced transactions.
-[52.27.237.141] out: timestampE (0, 1447161558.583454)
-[52.8.92.220] out: [1] synced transactions.
-[52.8.92.220] out: timestampE (1, 1447161559.224226)
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.27.237.141] out: [0] got a common coin at round 1
-[52.19.164.11] out: [4] synced transactions.
-[52.19.164.11] out: timestampE (4, 1447161559.411621)
-[54.209.228.153] out: [2] synced transactions.
-[54.209.228.153] out: timestampE (2, 1447161559.391359)
-[52.8.92.220] out: [1] got a common coin at round 1
-[52.192.140.223] out: [7] synced transactions.
-[52.192.140.223] out: timestampE (7, 1447161559.271844)
-[52.19.164.11] out: [4] got a common coin at round 1
-[52.192.140.223] out: [7] got a common coin at round 1
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.29.95.105] out: [5] synced transactions.
-[52.29.95.105] out: timestampE (5, 1447161559.208289)
-[52.27.237.141] out: [0] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.8.92.220] out: [1] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[54.209.228.153] out: [2] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.29.95.105] out: [5] got a common coin at round 2
-[52.19.164.11] out: [4] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.192.140.223] out: [7] got a common coin at round 2
-[52.27.237.141] out: [0] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.27.237.141] out: [0] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[54.209.228.153] out: [2] got a common coin at round 3
-[52.8.92.220] out: [1] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 1
-[52.29.95.105] out: [5] got a common coin at round 3
-[52.19.164.11] out: [4] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.192.140.223] out: [7] got a common coin at round 3
-[52.29.95.105] out: [5] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] synced transactions.
-[54.94.243.208] out: timestampE (3, 1447161560.445618)
-[54.94.243.208] out: [3] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.169.212.80] out: [6] synced transactions.
-[54.169.212.80] out: timestampE (6, 1447161559.866844)
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.169.212.80] out: [6] got a common coin at round 1
-[54.169.212.80] out: [6] got a common coin at round 2
-[54.94.243.208] out: [3] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
-[54.169.212.80] out: [6] got a common coin at round 3
