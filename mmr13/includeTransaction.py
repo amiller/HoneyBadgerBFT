@@ -95,6 +95,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         readyCounter = [defaultdict(lambda: 0) for _ in range(N)]
         signed = [False]*N
         readySent = [False] * N
+        reconstDone = [False] * N
         reconsLocker = [Queue() for _ in range(N)]
         finalTrigger = [Queue() for _ in range(N)]
         def final(i):  # only one time
@@ -147,10 +148,10 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     # mylog("[%d] counter for (%d, %s) is now %d" % (pid, originBundle[0],
                     #    repr(originBundle[1]), opinions[originBundle[0]][repr(originBundle[1])]))
                     # if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2 and not outputs[originBundle[0]].full():
-                    if len(opinions[originBundle[0]]) >= Threshold2 and not readySent[originBundle[0]]:
+                    if len(opinions[originBundle[0]]) >= Threshold2 and not reconstDone[originBundle[0]]:
+                        reconstDone[originBundle[0]] = True
                         mylog("[%d] got %d echos for %d to reconstruction" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
                           verboseLevel=-2)
-                        readySent[originBundle[0]] = True
                         reconstruction = zfecDecoder.decode(opinions[originBundle[0]].values()[:Threshold],
                                 opinions[originBundle[0]].keys()[:Threshold])  # We only take the first [Threshold] fragments
                         # assert len(reconstruction) == Threshold
@@ -162,7 +163,9 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         if reconsLocker[originBundle[0]].empty():
                             reconsLocker[originBundle[0]].put(buf)
                         mylog("[%d] put reconsLocker for %d" % (pid, originBundle[0]), verboseLevel=-2)
-                        Greenlet(broadcast, ('r', originBundle[0], sha1hash(buf))).start()
+                        if not readySent[originBundle[0]]:
+                            readySent[originBundle[0]] = True
+                            Greenlet(broadcast, ('r', originBundle[0], sha1hash(buf))).start()
                         # broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to
                 else:
                     raise ECDSASignatureError()
