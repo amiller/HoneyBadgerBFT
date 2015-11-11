@@ -250,7 +250,7 @@ def callFab(s, work):  # Depracated
 #short-cuts
 
 c = callFabFromIPList
-r = runProtocolfromClient
+rp = runProtocolfromClient
 
 if  __name__ =='__main__':
   try: __IPYTHON__
