@@ -141,13 +141,15 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 if keys[msgBundle[1]].verify(sha1hash(repr(msgBundle[2])), msgBundle[3]):
                     originBundle = msgBundle[2]
                     opinions[originBundle[0]][sender] = originBundle[1]
-                    mylog("[%d] got %d echos for %d" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
-                          verboseLevel=-2)
+                    # mylog("[%d] got %d echos for %d" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
+                    #      verboseLevel=-2)
                     # opinions[originBundle[0]][repr(originBundle[1])] += 1
                     # mylog("[%d] counter for (%d, %s) is now %d" % (pid, originBundle[0],
                     #    repr(originBundle[1]), opinions[originBundle[0]][repr(originBundle[1])]))
                     # if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2 and not outputs[originBundle[0]].full():
                     if len(opinions[originBundle[0]]) >= Threshold2 and not readySent[originBundle[0]]:
+                        mylog("[%d] got %d echos for %d to reconstruction" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
+                          verboseLevel=-2)
                         readySent[originBundle[0]] = True
                         reconstruction = zfecDecoder.decode(opinions[originBundle[0]].values()[:Threshold],
                                 opinions[originBundle[0]].keys()[:Threshold])  # We only take the first [Threshold] fragments
@@ -157,7 +159,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         #print opinions[originBundle[0]].keys()[:Threshold]
                         #print originBundle[0], '->', sender, len(buf), repr(buf)
                         assert len(buf) % TR_SIZE == 0
-                        reconsLocker[originBundle[0]].put(buf)
+                        if reconsLocker[originBundle[0]].empty():
+                            reconsLocker[originBundle[0]].put(buf)
                         mylog("[%d] put reconsLocker for %d" % (pid, originBundle[0]), verboseLevel=-2)
                         Greenlet(broadcast, ('r', originBundle[0], sha1hash(buf))).start()
                         # broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to
