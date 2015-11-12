@@ -81,7 +81,7 @@ def process(s, N=-1, t=-1):
         t = N/4  # follows the convention that 4t = N
     print 'N', N, 't', t
     if len(endtime) < N - t:
-        print "!!!!!!!!!!!!! Census Unfinished"
+        print "!!!!!!!!!!!!! Consensus Unfinished"
         return None
     return sorted(endtime.values())[N-t-1] - min(starttime.values())
     
@@ -126,6 +126,6 @@ def do_plot():
     plt.xlabel('Requests (Tx)')
     plt.tight_layout()
     # plt.show()
-    plt.savefig('plot_latency.svg', format='svg', dpi=1000)
+    plt.savefig('plot_latency.pdf', format='pdf', dpi=1000)
 
 do_plot()

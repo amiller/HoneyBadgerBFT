@@ -77,6 +77,6 @@ def do_plot():
     plt.xlabel('Requests (Tx)')
     # plt.tight_layout()
     # plt.show()
-    plt.savefig('plot_throughput.svg', format='svg', dpi=1000)
+    plt.savefig('plot_throughput.pdf', format='pdf', dpi=1000)
 
 do_plot()
