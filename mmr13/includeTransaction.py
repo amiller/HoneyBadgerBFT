@@ -117,17 +117,20 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     assert isinstance(msgBundle[2], str)
                     buf = msgBundle[2] # now it is a string  # ''.join([encodeTransaction(tr) for tr in msgBundle[2]])
                     #print sender, 'sent', len(buf), repr(buf)
-                    step = len(buf) % Threshold == 0 and len(buf) / Threshold or (len(buf) / Threshold + 1)
-                    fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
-                    if len(fragList[-1]) < step:
-                        fragList[-1] = fragList[-1] + '\xFF' * (step - len(fragList[-1]))  # padding
-                    #print sender, 'fragList', fragList
-                    #print sender, 'encoded', zfecEncoder.encode(fragList)
-                    newBundle = (msgBundle[1], zfecEncoder.encode(fragList)[pid])
-                    #newBundle = (msgBundle[1], msgBundle[2])
-                    #mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
-                    #mylog("[%d] and now signed is %s" % (pid, repr(signed)), verboseLevel=-1)
-                    #broadcast(('e', pid, newBundle, keys[pid].sign(sha1hash(hex((newBundle[0]+37)*setHash(newBundle[1]))))))
+                    if buf == '':  # in case someone proposed an empty string
+                        newBundle = (msgBundle[1], '')
+                    else:
+                        step = len(buf) % Threshold == 0 and len(buf) / Threshold or (len(buf) / Threshold + 1)
+                        fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
+                        if len(fragList[-1]) < step:
+                            fragList[-1] = fragList[-1] + '\xFF' * (step - len(fragList[-1]))  # padding
+                        #print sender, 'fragList', fragList
+                        #print sender, 'encoded', zfecEncoder.encode(fragList)
+                        newBundle = (msgBundle[1], zfecEncoder.encode(fragList)[pid])
+                        #newBundle = (msgBundle[1], msgBundle[2])
+                        #mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
+                        #mylog("[%d] and now signed is %s" % (pid, repr(signed)), verboseLevel=-1)
+                        #broadcast(('e', pid, newBundle, keys[pid].sign(sha1hash(hex((newBundle[0]+37)*setHash(newBundle[1]))))))
                     Greenlet(broadcast, ('e', pid, newBundle, keys[pid].sign(
                         sha1hash(repr(newBundle))
                     ))).start()
@@ -152,7 +155,10 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         reconstDone[originBundle[0]] = True
                         # mylog("[%d] got %d echos for %d to reconstruction" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
                         #  verboseLevel=-2)
-                        reconstruction = zfecDecoder.decode(opinions[originBundle[0]].values()[:Threshold],
+                        if opinions[originBundle[0]].values()[0] == '':
+                            reconstruction = ['']
+                        else:
+                            reconstruction = zfecDecoder.decode(opinions[originBundle[0]].values()[:Threshold],
                                 opinions[originBundle[0]].keys()[:Threshold])  # We only take the first [Threshold] fragments
                         # assert len(reconstruction) == Threshold
                         buf = ''.join(reconstruction).rstrip('\xFF')

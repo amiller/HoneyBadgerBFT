@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 # Measurements from the table
 expt = [
     (8,2,[
-        # (512,5.96925),
+        (512,5.96925),
         (1024,6.41475),
         (2048,6.402),
         (4096,7.75725),
@@ -103,24 +103,31 @@ def getPointsFromLog(d):
                     resY[(N, t)].append(latency)
     return resX, resY
 
+import matplotlib.cm as cm
+import numpy as np
+
 def do_plot():
     f = plt.figure(1, figsize=(7,5));
     plt.clf()
     ax = f.add_subplot(1, 1, 1)
     resX, resY = getPointsFromLog('ec2/timing')
-    for N,t, entries in expt:
+    colors = cm.get_cmap('terrain')(np.linspace(0, 0.3, len(resX)))
+    colorCounter = 0  # we cannot use *next*, bucase nparray is not iteratable
+    for N, t, entries in expt:
         throughput = []
         batch = []
         for ToverN, latency in entries:
             batch.append(ToverN * N)
             throughput.append(latency)
         ax.plot(batch, throughput, label='%d/%d' % (N,t))
-        ax.scatter(resX[(N, t)], resY[(N, t)], label='%d/%d' % (N,t), alpha=0.5, s=1)
+        ax.scatter(resX[(N, t)], resY[(N, t)], 
+            label='%d/%d' % (N,t), alpha=0.5, s=1.5, color=colors[colorCounter])
+        colorCounter += 1
 
     ax.set_xscale("log")
     ax.set_yscale("log")
-    plt.ylim([10**0.2, 10**2.5])
-    plt.xlim([10**2.2, 10**6.2])
+    plt.ylim([10**0.2, 10**2.6])
+    plt.xlim([10**2.2, 10**6.3])
     plt.legend(title='Nodes / Tolerance', loc='best')
     plt.ylabel('Latency')
     plt.xlabel('Requests (Tx)')
