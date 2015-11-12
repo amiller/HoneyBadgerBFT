@@ -104,7 +104,7 @@ def acs(pid, N, t, Q, broadcast, receive):
     locker.get()  # Now we can check'''
     BA = checkBA(BA, N, t)
     # gevent.sleep(1)
-    mylog("[%d] Get subset %s" % (pid, BA), verboseLevel=-2)
+    # mylog("[%d] Get subset %s" % (pid, BA), verboseLevel=-2)
     return BA
 
 comment = '''
