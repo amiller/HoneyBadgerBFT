@@ -122,6 +122,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     else:
                         step = len(buf) % Threshold == 0 and len(buf) / Threshold or (len(buf) / Threshold + 1)
                         print 'step', step, 'len(buf)', len(buf), 'Threshold', Threshold
+                        print repr(buf)
                         fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
                         if len(fragList[-1]) < step:
                             fragList[-1] = fragList[-1] + '\xFF' * (step - len(fragList[-1]))  # padding
