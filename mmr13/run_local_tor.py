@@ -1,45 +1,33 @@
 __author__ = 'aluex'
 
-import subprocess, sys, signal
+import subprocess, sys, signal, time
 #./honest_party_test_tor_multipleCircuits.py . 4_1.key ecdsa_keys 1 4 1
 def runOnTransaction(N, t, Tx):
     # p = subprocess.Popen(
-    p = subprocess.check_output(
-        ['python', './honest_party_test_tor_multipleCircuits.py', 'lol', '%d_%d.key' % (N, t), 'ecdsa_keys', '%d' % Tx, str(N), str(t)],
-        # stdout=subprocess.PIPE,
-        # stderr=subprocess.PIPE,
-        # stdin=subprocess.PIPE
-    )
+    retry = True
+    while retry:
+        try:
+            p = subprocess.check_output(
+                ['python', './honest_party_test_tor_multipleCircuits.py', 'lol', '%d_%d.key' % (N, t), 'ecdsa_keys', '%d' % Tx, str(N), str(t)],
+                timeout = 30
+                # stdout=subprocess.PIPE,
+                # stderr=subprocess.PIPE,
+                # stdin=subprocess.PIPE
+            )
+            retry = False
+        except subprocess.CalledProcessError:
+            retry = True
+            time.sleep(2)
     q = subprocess.check_output(['python', 'process.py', 'msglog.TorMultiple'])
-    print q.replace('\n', ' ')
-    return
-    counter = 0
-    sent = False
-    while True:
-        line = p.stdout.readline()
-        if 'size' in line:
-            # print Tx, line
-            return line.replace('Total Message size ','').strip()
-        if line == '':
-            break
-        # print(line.strip())  # remove extra ws between lines
-        if 'synced' in line:
-            counter += 1
-        if counter >= N - t and not sent:
-            p.send_signal(signal.SIGINT)
-            sent = True
-            # print 'signal sent'
-        # print line, counter
-    q = subprocess.check_output(['python', 'process.py', 'msglog.TorMultiple'])
-    print q.replace('\n', ' ')
+    print N, t, Tx, q.replace('\n', ' ')
 
 import sys
 def main(N, t, start_i=0, end_i=11, start_j=0):
     for i in range(start_i, end_i):
-        sys.stdout.write(str(2**i))
+        # sys.stdout.write(str(2**i))
         for j in range(start_j, 4):
             runOnTransaction(N, t, 2**i)
-        sys.stdout.write('\n')
+        print 
 
 
 if __name__=='__main__':
