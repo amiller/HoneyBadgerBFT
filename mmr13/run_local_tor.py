@@ -1,6 +1,7 @@
 __author__ = 'aluex'
 
-import subprocess, sys, signal, time
+import subprocess32 as subprocess
+import sys, signal, time
 #./honest_party_test_tor_multipleCircuits.py . 4_1.key ecdsa_keys 1 4 1
 def runOnTransaction(N, t, Tx):
     # p = subprocess.Popen(
