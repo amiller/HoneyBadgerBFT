@@ -16,7 +16,7 @@ def testEncoder(N, t, buf, Threshold, enc):
     step = len(buf) % Threshold == 0 and len(buf) / Threshold or (len(buf) / Threshold + 1)
     buf = buf.ljust(step * Threshold, '\xFF')
     fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
-    return zfecEncoder.encode(fragList)
+    return enc.encode(fragList)
 
 def main():
     for i in range(2, 8):
