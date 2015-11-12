@@ -29,9 +29,9 @@ def main():
             Tx = os.urandom((2**j) * 250)
             start = time.time()
             fragList = testEncoder(N, t, Tx, Threshold, zfecEncoder)
-            print N, t, len(Tx), 'encode', time.time() - start
+            print N, t, 2**j, 'encode', time.time() - start
             start = time.time()
             zfecDecoder.decode(fragList[:Threshold], range(Threshold))
-            print N, t, len(Tx), 'decode', time.time() - start
+            print N, t, 2**j, 'decode', time.time() - start
 
 main()
