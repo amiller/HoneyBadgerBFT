@@ -16,7 +16,7 @@ def runOnTransaction(N, t, Tx):
                 # stdin=subprocess.PIPE
             )
             retry = False
-        except subprocess.CalledProcessError:
+        except subprocess.TimeoutExpired:
             retry = True
             time.sleep(2)
     q = subprocess.check_output(['python', 'process.py', 'msglog.TorMultiple'])
