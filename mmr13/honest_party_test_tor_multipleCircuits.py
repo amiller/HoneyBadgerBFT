@@ -42,14 +42,14 @@ def listen_to_channel(port):
     q = Queue()
     def _handle(socket, address):
         f = socket.makefile()
-        # while True:
-        for line in f:
+        while True:
+        #for line in f:
             # msglength = struct.unpack('<I', f.read(4))
-            # msglength, = struct.unpack('<I', goodread(f, 4))
-            # line = goodread(f, msglength)  # f.read(msglength)
+            msglength, = struct.unpack('<I', goodread(f, 4))
+            line = goodread(f, msglength)  # f.read(msglength)
             # print 'line read from socket', line
-            obj = decode(base64.b64decode(line))
-            # obj = decode(line)
+            # obj = decode(base64.b64decode(line))
+            obj = decode(line)
             # mylog('decoding')
             # mylog(obj, verboseLevel=-1)
             q.put(obj[1:])
@@ -78,9 +78,9 @@ def connect_to_channel(hostname, port, party):
         while True:
             obj = q.get()
             # retry = True
-            s.sendall(base64.b64encode(encode(obj)) + '\n')
-            # content = encode(obj)
-            # s.sendall(struct.pack('<I', len(content)) + content)
+            # s.sendall(base64.b64encode(encode(obj)) + '\n')
+            content = encode(obj)
+            s.sendall(struct.pack('<I', len(content)) + content)
             # s.sendall(content)
             #        retry = False
             #    except:
