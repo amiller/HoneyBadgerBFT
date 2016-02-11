@@ -12,15 +12,9 @@ from bkr_acs import initBeforeBinaryConsensus
 from utils import ACSException, deepEncode, deepDecode, randomTransaction, randomTransactionStr
 import gevent
 import os
-#import random
 from utils import myRandom as random
 from gevent.server import StreamServer
-#import fcp
-#import json
-#import cPickle as pickle
 import time
-#import zlib
-#print state
 import base64
 import socks, socket
 import struct

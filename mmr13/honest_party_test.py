@@ -12,19 +12,15 @@ from bkr_acs import initBeforeBinaryConsensus
 from utils import ACSException
 import gevent
 import os
-#import random
 from utils import myRandom as random
 from utils import checkExceptionPerGreenlet, getSignatureCost, \
     deepEncode, deepDecode, randomTransaction, initiateECDSAKeys, finishTransactionLeap
-# import fcp
 import json
 import cPickle as pickle
 import time
 import sys
 import zlib
-#print state
 import base64
-# import socks
 import struct
 from io import BytesIO
 

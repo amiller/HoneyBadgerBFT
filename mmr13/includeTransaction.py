@@ -10,7 +10,6 @@ from collections import defaultdict
 import zfec
 import socket
 from io import BytesIO
-# from ecdsa import SigningKey
 import struct
 
 
@@ -67,10 +66,6 @@ class ECDSASignatureError(Exception):
 import math
 
 def ceil(x):
-    #assert isinstance(x, float)
-    #if int(x) != x:
-    #    return int(x)+1
-    #return int(x)
     return int(math.ceil(x))
 
 @greenletFunction
