@@ -7,8 +7,7 @@ from gevent.queue import Queue
 from collections import defaultdict
 import random
 
-import mmr13
-from mmr13 import makeCallOnce, bv_broadcast, shared_coin, binary_consensus, bcolors, mylog, mv84consensus, initBeforeBinaryConsensus
+from ..core.mmr13 import makeCallOnce, bv_broadcast, shared_coin, binary_consensus, bcolors, mylog, mv84consensus, initBeforeBinaryConsensus, globalState
 
 
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
@@ -128,11 +127,11 @@ def random_delay_binary_consensus(N, t, inputs):
         gevent.joinall(ts)
     #except gevent.hub.LoopExit: # Manual fix for early stop
         agreed = ""
-        for key, item in mmr13.globalState.items():
-            if item != mmr13.globalState[0]:
+        for key, item in globalState.items():
+            if item != globalState[0]:
                 mylog(bcolors.FAIL + 'Bad Concensus!' + bcolors.ENDC)
 
-    print mmr13.globalState
+    print globalState
     #pass
 
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
@@ -177,17 +176,17 @@ def random_delay_multivalue_consensus(N, t, inputs):
         gevent.joinall(ts)
     except gevent.hub.LoopExit: # Manual fix for early stop
         agreed = ""
-        for key, value in mmr13.globalState.items():
-            if mmr13.globalState[key] != "":
-                agreed = mmr13.globalState[key]
-        for key,  value in mmr13.globalState.items():
-            if mmr13.globalState[key] == "":
-                mmr13.globalState[key] = agreed
-            if mmr13.globalState[key] != agreed:
+        for key, value in globalState.items():
+            if globalState[key] != "":
+                agreed = globalState[key]
+        for key,  value in globalState.items():
+            if globalState[key] == "":
+                globalState[key] = agreed
+            if globalState[key] != agreed:
                 print "Consensus Error"
 
 
-    print mmr13.globalState
+    print globalState
     #pass
 
 if __name__=='__main__':

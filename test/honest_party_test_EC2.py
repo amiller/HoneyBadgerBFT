@@ -5,14 +5,14 @@ monkey.patch_all()
 
 from gevent.queue import *
 from gevent import Greenlet
-from utils import bcolors, mylog, initiateECDSAKeys, initiateThresholdSig, checkExceptionPerGreenlet
-from includeTransaction import honestParty, Transaction
+from ..core.utils import bcolors, mylog, initiateECDSAKeys, initiateThresholdSig, checkExceptionPerGreenlet
+from ..core.includeTransaction import honestParty, Transaction
 from collections import defaultdict
-from bkr_acs import initBeforeBinaryConsensus
-from utils import ACSException, deepEncode, deepDecode, randomTransaction, randomTransactionStr
+from ..core.bkr_acs import initBeforeBinaryConsensus
+from ..core.utils import ACSException, deepEncode, deepDecode, randomTransaction, randomTransactionStr
 import gevent
 import os
-from utils import myRandom as random
+from ..core.utils import myRandom as random
 from gevent.server import StreamServer
 import time
 import base64

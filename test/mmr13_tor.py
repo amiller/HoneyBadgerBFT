@@ -11,10 +11,7 @@ import random
 import json
 
 # Import the algorithm
-import mmr13
-reload(mmr13)
-
-from mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy
+from ..core.mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy
 
 # Sockets that route through Tor
 import socket
