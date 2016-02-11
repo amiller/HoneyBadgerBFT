@@ -75,8 +75,6 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
     assert(isinstance(outputs, list))
     for i in outputs:
         assert(isinstance(i, Queue))
-    #sk = dummyPKI() # SigningKey.generate() # uses NIST192p
-    #Pubkeys[pid].put(sk.get_verifying_key())
 
     keys = getECDSAKeys()
     Threshold = ceil((N-t+1)/2.0)
@@ -102,7 +100,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
             Greenlet(final, i).start()
         while True:
             sender, msgBundle = receive()
-            #mylog("[%d] multiSigBr received msgBundle %s" % (pid, msgBundle), verboseLevel=-1)
+            # mylog("[%d] multiSigBr received msgBundle %s" % (pid, msgBundle), verboseLevel=-1)
             # vki = Pubkeys[msgBundle[1]].peek()
             if msgBundle[0] == 'i' and not signed[msgBundle[1]]:
                 # if keys[msgBundle[1]].verify(sha1hash(hex(setHash(msgBundle[2]))), msgBundle[3]):
@@ -111,7 +109,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     # assert isinstance(msgBundle[2], set)
                     assert isinstance(msgBundle[2], str)
                     buf = msgBundle[2] # now it is a string  # ''.join([encodeTransaction(tr) for tr in msgBundle[2]])
-                    #print sender, 'sent', len(buf), repr(buf)
+                    # print sender, 'sent', len(buf), repr(buf)
                     if buf == '':  # in case someone proposed an empty string
                         newBundle = (msgBundle[1], '')
                     else:
@@ -123,21 +121,21 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         # print sender, 'fragList', fragList
                         # print sender, 'encoded', zfecEncoder.encode(fragList)
                         newBundle = (msgBundle[1], zfecEncoder.encode(fragList)[pid])  # assert each frag has a length of step
-                        #newBundle = (msgBundle[1], msgBundle[2])
-                        #mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
-                        #mylog("[%d] and now signed is %s" % (pid, repr(signed)), verboseLevel=-1)
-                        #broadcast(('e', pid, newBundle, keys[pid].sign(sha1hash(hex((newBundle[0]+37)*setHash(newBundle[1]))))))
+                        # newBundle = (msgBundle[1], msgBundle[2])
+                        # mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
+                        # mylog("[%d] and now signed is %s" % (pid, repr(signed)), verboseLevel=-1)
+                        # broadcast(('e', pid, newBundle, keys[pid].sign(sha1hash(hex((newBundle[0]+37)*setHash(newBundle[1]))))))
                     Greenlet(broadcast, ('e', pid, newBundle, keys[pid].sign(
                         sha1hash(repr(newBundle))
                     ))).start()
-                    #broadcast(('e', pid, newBundle, keys[pid].sign(
-                    #    sha1hash(repr(newBundle))
-                    #)))
+                    # broadcast(('e', pid, newBundle, keys[pid].sign(
+                    #     sha1hash(repr(newBundle))
+                    # )))
                     signed[msgBundle[1]] = True
                 else:
                     raise ECDSASignatureError()
             elif msgBundle[0] == 'e':
-                #if keys[msgBundle[1]].verify(sha1hash(hex((msgBundle[2][0]+37)*setHash(msgBundle[2][1]))), msgBundle[3]):
+                # if keys[msgBundle[1]].verify(sha1hash(hex((msgBundle[2][0]+37)*setHash(msgBundle[2][1]))), msgBundle[3]):
                 if keys[msgBundle[1]].verify(sha1hash(repr(msgBundle[2])), msgBundle[3]):
                     originBundle = msgBundle[2]
                     opinions[originBundle[0]][sender] = originBundle[1]
@@ -158,9 +156,9 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                                 opinions[originBundle[0]].keys()[:Threshold])  # We only take the first [Threshold] fragments
                         # assert len(reconstruction) == Threshold
                         buf = ''.join(reconstruction).rstrip('\xFF')
-                        #print opinions[originBundle[0]].values()[:Threshold]
-                        #print opinions[originBundle[0]].keys()[:Threshold]
-                        #print originBundle[0], '->', sender, len(buf), repr(buf)
+                        # print opinions[originBundle[0]].values()[:Threshold]
+                        # print opinions[originBundle[0]].keys()[:Threshold]
+                        # print originBundle[0], '->', sender, len(buf), repr(buf)
                         assert len(buf) % TR_SIZE == 0
                         if reconsLocker[originBundle[0]].empty():
                             reconsLocker[originBundle[0]].put(buf)

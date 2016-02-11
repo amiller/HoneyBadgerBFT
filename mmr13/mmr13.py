@@ -82,8 +82,6 @@ def bv_broadcast(pid, N, t, broadcast, receive, output, release=lambda: None):
 class CommonCoinFailureException(Exception):
     pass
 
-#from ..commoncoin.shoup import ShoupPublicKey
-
 def shared_coin(instance, pid, N, t, broadcast, receive):
     '''
     A dummy version of the Shared Coin
@@ -147,21 +145,7 @@ def shared_coin(instance, pid, N, t, broadcast, receive):
 def arbitary_adversary(pid, N, t, vi, broadcast, receive):
     pass
 
-
-# initDelivered = defaultdict(set)
-# vectDelivered = defaultdict(set)
-# vectDeliveredConsensus = defaultdict(set)
-# initReceived = defaultdict(set)
-# mvWaiterLock = defaultdict(lambda: Queue(1))
-# mvWaiterLock2 = defaultdict(lambda: Queue(1))
-# mvWaiterLock3 = defaultdict(lambda: Queue(1))
-# V = defaultdict(lambda: defaultdict(lambda: 'bottom'))
-# w = defaultdict(lambda:'bottom')
-# W = defaultdict(lambda: defaultdict(lambda: 'bottom'))
-
-# finished = defaultdict(lambda: False)  # For the short cut
 globalState = defaultdict(str)  # Just for debugging
-
 
 def initBeforeBinaryConsensus():
     '''
@@ -169,22 +153,7 @@ def initBeforeBinaryConsensus():
     Actually these variables should be described as local variables.
     :return: None
     '''
-    # This function is just for temporary use. It will be deprecated in the future.
-    comment = '''
-    global initDelivered, vectDelivered, vectDeliveredConsensus, mvWaiterLock, mvWaiterLock2, mvWaiterLock3, V, w, W, finished, globalState
-    initDelivered = defaultdict(set)
-    vectDelivered = defaultdict(set)
-    vectDeliveredConsensus = defaultdict(set)
-    #initReceived = defaultdict(set)
-    mvWaiterLock = defaultdict(lambda: Queue(1))
-    mvWaiterLock2 = defaultdict(lambda: Queue(1))
-    mvWaiterLock3 = defaultdict(lambda: Queue(1))
-    V = defaultdict(lambda: defaultdict(lambda: 'bottom'))
-    w = defaultdict(lambda:'bottom')
-    W = defaultdict(lambda: defaultdict(lambda: 'bottom'))
-    finished = defaultdict(lambda: False)
-    globalState = defaultdict(str)
-    '''
+    pass
 
 
 def mv84consensus(pid, N, t, vi, broadcast, receive):
@@ -265,98 +234,6 @@ def mv84consensus(pid, N, t, vi, broadcast, receive):
         mylog(bcolors.FAIL + "[%d] agreed on %s" % (pid, repr(vi)))
         return vi
 
-
-comment = '''
-def MVBroadcast(pid, N, t, vi, cid, broadcast, receive):
-    def make_mvbc_init():
-        def _bc(m):
-            broadcast(
-                ('INIT', (m, cid, pid))
-            )
-        return _bc
-
-    def make_mvbc_vect():
-        def _bc(m, V):
-            broadcast(
-                ('VECT', (m, V, cid, pid))
-            )
-        return _bc
-    reliableBroadcastReceiveQueue = Queue(1)
-    threshold = N - t
-    vCandidatesBeyondThreshold = []
-    initDelivered[pid] = {}
-    def T1():
-        br1 = Greenlet(bv_broadcast(pid, N, t, make_mvbc_init(), reliableBroadcastReceiveQueue.get, lambda _: None), vi)
-        br1.start()
-        mvWaiterLock[pid].get() # wait for the conditions being satisfied
-        br1.kill(block=False)
-        vCandidates = defaultdict(lambda: 0)
-        for tag, vj, cid, j in list(initDelivered[pid]):
-            V[pid][j] = vj
-            vCandidates[vj] += 1
-
-        for key, values in vCandidates.items():
-            if values >= threshold:
-                vCandidatesBeyondThreshold.append(values)
-        if len(vCandidatesBeyondThreshold) == 1:
-            w[pid] = vCandidatesBeyondThreshold[0]
-
-        br2 = Greenlet(bv_broadcast(pid, N, t, make_mvbc_vect(), reliableBroadcastReceiveQueue.get, lambda _: None), w[pid])
-        br2.start()
-        mvWaiterLock2[pid].get() # wait for the conditions being satisfied
-        br2.kill(block=False)
-
-        for tag, wj, Vj, cid, j in list(initDelivered[pid]):
-            W[pid][j] = wj
-        satisfied = True
-        for j in range(N):
-            for k in range(N):
-                if not (W[pid][j] == W[pid][k] or W[pid][j]=='bottom' or W[pid][k] == 'bottom'):
-                    satisfied = False
-                    break
-            if not satisfied:
-                break
-        bi = 0
-        if satisfied:
-            wCount = defaultdict(lambda: 0)
-            for wi in W[pid]:
-                wCount[wi] += 1
-            for keys, values in wCount.items():
-                if values>= threshold - t:
-                    bi = 1
-                    break
-        ci = binary_consensus(pid, N, t, bi, broadcast, reliableBroadcastReceiveQueue.get)
-        if ci == 0:
-            return 'bottom'
-
-        mvWaiterLock3.get()
-        mylog("[%d] decides on multivalue %s" % (pid, vCandidatesBeyondThreshold[0]))
-        return vCandidatesBeyondThreshold[0]
-
-
-    def T2(): ######### Message Router
-        while True:
-            sender, (tag, m) = receive()
-            if tag=='INIT':
-                vj, cid, j = m
-                initDelivered[pid].add((tag, vj, cid, j))
-                if len(initDelivered[pid]) >= threshold:
-                        mvWaiterLock[pid].put('ticket')
-            elif tag=='VECT':
-                wj, Vj, cid, j = m
-                vectDelivered[pid].add((tag, wj, Vj, cid, j))
-                if len(vectDelivered[pid]) >= threshold:
-                        mvWaiterLock2[pid].put('ticket')
-                if wj == vCandidatesBeyondThreshold[0]:
-                    vectDeliveredConsensus[pid].add((tag, wj, Vj, cid, j))
-                    if len(vectDelivered[pid]) >= threshold - t:
-                        mvWaiterLock3[pid].put('ticket')
-            else:
-                reliableBroadcastReceiveQueue.put((pid, (tag, m)))
-
-    Greenlet(T1).start()
-    Greenlet(T2).start()
-'''
 
 def checkFinishedWithGlobalState(N):
     '''

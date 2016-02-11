@@ -62,13 +62,6 @@ za44dm5gbhkzif24.onion
 TOR_MAPPINGS = [(host, BASE_PORT+i) for i, host in enumerate(TOR_MAPPING_LIST)]
 mylog("[INIT] TOR_MAPPINGS: %s" % repr(TOR_MAPPINGS))
 
-#controller = stem.control.Controller.from_port('127.0.0.1', 19051)
-#controller.authenticate('HoneyBadger')
-
-#mylog(bcolors.OKGREEN + "[Tor] Retriving destination fingerprints..." + bcolors.ENDC)
-
-#nodesList = [desc.fingerprint for desc in controller.get_network_statuses()]
-# controller.set_conf('__LeaveStreamsUnattached', '1')  # leave stream management to us
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
 def random_delay_broadcast1(inputs, t):
     maxdelay = 0.01
