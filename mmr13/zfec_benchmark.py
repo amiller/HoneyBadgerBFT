@@ -6,10 +6,6 @@ import os
 import math
 
 def ceil(x):
-    #assert isinstance(x, float)
-    #if int(x) != x:
-    #    return int(x)+1
-    #return int(x)
     return int(math.ceil(x))
 
 def testEncoder(N, t, buf, Threshold, enc):

@@ -11,7 +11,6 @@ from bkr_acs import initBeforeBinaryConsensus
 from utils import ACSException
 import gevent
 import os
-#import random
 from utils import myRandom as random
 import xmlrpclib
 import time
@@ -19,13 +18,12 @@ import json
 import pickle
 import zlib
 import base64
-#print state
+
 
 nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 
 SLEEP_TIME = 1
 CONCURRENT_NUM = 2
-# CONCURRENT = True
 
 def exception(msg):
     mylog(bcolors.WARNING + "Exception: %s\n" % msg + bcolors.ENDC)
@@ -134,7 +132,6 @@ def client_test_freenet(N, t):
             th.start_later(random.random() * maxdelay)
             ts.append(th)
 
-        #Greenlet(monitorUserInput).start()
         try:
             gevent.joinall(ts)
         except ACSException:
@@ -142,8 +139,6 @@ def client_test_freenet(N, t):
         except gevent.hub.LoopExit: # Manual fix for early stop
             print "Concensus Finished"
             mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
-
-    #   shutdownNodes()
 
 if __name__ == '__main__':
     client_test_freenet(5, 1)

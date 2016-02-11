@@ -12,14 +12,12 @@ from bkr_acs import initBeforeBinaryConsensus
 from utils import ACSException
 import gevent
 import os
-#import random
 from utils import myRandom as random
 import fcp
 import json
 import pickle
 import time
 import zlib
-#print state
 
 nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 

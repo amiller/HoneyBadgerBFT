@@ -8,7 +8,6 @@ from collections import defaultdict
 import random
 
 import mmr13
-reload(mmr13)
 from mmr13 import makeCallOnce, bv_broadcast, shared_coin, binary_consensus, bcolors, mylog, mv84consensus, initBeforeBinaryConsensus
 
 
@@ -197,13 +196,4 @@ if __name__=='__main__':
     inputs = [random.randint(0, 1) for _ in range(5)]
     print "Inputs:", inputs
     random_delay_binary_consensus(5, 1, inputs)
-    #print "Testing multivalue consensus with different inputs..."
-    #random_delay_multivalue_consensus(5, 1, [random.randint(0, 10) for x in range(5)])
-    #print "[ =========== ]"
-    #print "Testing multivalue consensus with identical inputs..."
-    #initBeforeBinaryConsensus()
-    #random_delay_multivalue_consensus(5, 1, [10]*5)
-    #print "[ =========== ]"
-    #print "Testing multivalue consensus with byzantine inputs..."
-    #initBeforeBinaryConsensus()
-    #random_delay_multivalue_consensus(5, 1, [10,10,10,10,5])
+
