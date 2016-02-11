@@ -44,7 +44,7 @@ sha1hash = lambda x: SHA256.new(x).digest()
 import sys
 import os
 sys.path.append(os.path.abspath('../commoncoin'))
-import ..commoncoin.shoup
+# import ..commoncoin.shoup
 
 
 class Transaction:  # assume amout is in term of short
