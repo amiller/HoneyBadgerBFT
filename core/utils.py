@@ -15,7 +15,7 @@ import struct
 import gmpy2
 from ..ecdsa.ecdsa_ssl import KEY
 import os
-
+from ..commoncoin import shoup
 
 nameList = open(os.path.dirname(os.path.abspath(__file__)) + '/../test/names.txt','r').read().strip().split('\n')
 # nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
