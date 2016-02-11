@@ -1,0 +1,201 @@
+RESERVATION	r-13fc70fa	796215334267	
+INSTANCE	i-79603990	ami-7f9dd51a	ec2-52-23-178-87.compute-1.amazonaws.com	ip-172-30-0-94.ec2.internal	running	liang-dave-aws	0		c4.large	2015-10-12T03:53:49+0000	us-east-1e				monitoring-disabled	52.23.178.87	172.30.0.94	vpc-1921847d	subnet-7621f14b	ebs			picocenter-placement-group	hvm	xen	kMUid1444622027416	sg-bbe61cdd	dedicated	true	
+BLOCKDEVICE	/dev/sda1	vol-c5e9270d	2015-10-12T03:53:52.000Z	true		
+BLOCKDEVICE	/dev/sdf	vol-6ce826a4	2015-10-12T03:53:52.000Z	false		
+NIC	eni-7d372240	subnet-7621f14b	vpc-1921847d	796215334267	in-use	172.30.0.94	ip-172-30-0-94.ec2.internal	true
+NICATTACHMENT	eni-attach-ee1ef59f	0	attached	2015-10-12T11:53:49+0800	true
+NICASSOCIATION	52.23.178.87	amazon	172.30.0.94
+GROUP	sg-bbe61cdd	picocenter-security-group
+PRIVATEIPADDRESS	172.30.0.94	ip-172-30-0-94.ec2.internal	ec2-52-23-178-87.compute-1.amazonaws.com
+TAG	instance	i-79603990	Name	picocenter-worker-2
+RESERVATION	r-69a1d9bf	796215334267	
+INSTANCE	i-b076d212	ami-d05e75b8		ip-172-31-58-90.ec2.internal	stopped	yupeng	0		m4.large	2015-10-10T22:05:49+0000	us-east-1a				monitoring-disabled		172.31.58.90	vpc-c44018a1	subnet-17a3103c	ebs				hvm	xen	YJYer1444514749065	sg-b50ff7d3	default	true	
+BLOCKDEVICE	/dev/sda1	vol-665e938a	2015-10-10T22:05:53.000Z	true		
+NIC	eni-96971cb7	subnet-17a3103c	vpc-c44018a1	796215334267	in-use	172.31.58.90	ip-172-31-58-90.ec2.internal	true
+NICATTACHMENT	eni-attach-e2d99c92	0	attached	2015-10-11T06:05:49+0800	true
+GROUP	sg-b50ff7d3	launch-wizard-21
+PRIVATEIPADDRESS	172.31.58.90	ip-172-31-58-90.ec2.internal	
+RESERVATION	r-2748aedd	796215334267	
+INSTANCE	i-bf3dbc6c	ami-d05e75b8		ip-172-31-10-1.ec2.internal	stopped	xiao	0		c4.4xlarge	2015-09-16T11:18:18+0000	us-east-1b				monitoring-disabled		172.31.10.1	vpc-c44018a1	subnet-6825501f	ebs				hvm	xen	STvtp1435912256770	sg-ebf30f8c	default	true	
+BLOCKDEVICE	/dev/sda1	vol-3d2012d3	2015-07-03T08:31:01.000Z	true		
+NIC	eni-cce26887	subnet-6825501f	vpc-c44018a1	796215334267	in-use	172.31.10.1	ip-172-31-10-1.ec2.internal	true
+NICATTACHMENT	eni-attach-5322c037	0	attached	2015-07-03T16:30:57+0800	true
+GROUP	sg-ebf30f8c	launch-wizard-16
+PRIVATEIPADDRESS	172.31.10.1	ip-172-31-10-1.ec2.internal	
+RESERVATION	r-bafc7053	796215334267	
+INSTANCE	i-2e6e37c7	ami-7f9dd51a	ec2-52-91-124-236.compute-1.amazonaws.com	ip-172-30-0-219.ec2.internal	running	liang-dave-aws	0		c4.large	2015-10-22T17:03:31+0000	us-east-1e				monitoring-disabled	52.91.124.236	172.30.0.219	vpc-1921847d	subnet-7621f14b	ebs			picocenter-placement-group	hvm	xen	XIFTZ1444621310562	sg-bbe61cdd	dedicated	true	
+BLOCKDEVICE	/dev/sdf	vol-1eea24d6	2015-10-12T03:41:55.000Z	false		
+BLOCKDEVICE	/dev/sda1	vol-f529f43d	2015-10-22T17:03:01.000Z	false		
+NIC	eni-4f0b1e72	subnet-7621f14b	vpc-1921847d	796215334267	in-use	172.30.0.219	ip-172-30-0-219.ec2.internal	true
+NICATTACHMENT	eni-attach-c318f3b2	0	attached	2015-10-12T11:41:51+0800	true
+NICASSOCIATION	52.91.124.236	amazon	172.30.0.219
+GROUP	sg-bbe61cdd	picocenter-security-group
+PRIVATEIPADDRESS	172.30.0.219	ip-172-30-0-219.ec2.internal	ec2-52-91-124-236.compute-1.amazonaws.com
+TAG	instance	i-2e6e37c7	Name	picocenter-worker-1
+RESERVATION	r-10a29c3f	796215334267	
+INSTANCE	i-4d1ac4a4	ami-d05e75b8	ec2-52-7-91-172.compute-1.amazonaws.com	ip-172-31-37-29.ec2.internal	running	jkatz2	0		t2.micro	2015-06-05T18:23:21+0000	us-east-1e				monitoring-disabled	52.7.91.172	172.31.37.29	vpc-c44018a1	subnet-7197cc4b	ebs				hvm	xen	UJVsY1433528600312	sg-58d6c33c	default	false	
+BLOCKDEVICE	/dev/sda1	vol-d673ac98	2015-06-05T18:23:25.000Z	true		
+NIC	eni-7e428a43	subnet-7197cc4b	vpc-c44018a1	796215334267	in-use	172.31.37.29	ip-172-31-37-29.ec2.internal	true
+NICATTACHMENT	eni-attach-8901bce9	0	attached	2015-06-06T02:23:21+0800	true
+NICASSOCIATION	52.7.91.172	amazon	172.31.37.29
+GROUP	sg-58d6c33c	Katz-Coursera
+PRIVATEIPADDRESS	172.31.37.29	ip-172-31-37-29.ec2.internal	ec2-52-7-91-172.compute-1.amazonaws.com
+TAG	instance	i-4d1ac4a4	Name	Katz-Coursera
+RESERVATION	r-9e4d7c74	796215334267	
+INSTANCE	i-d0e5ad2d	ami-d05e75b8		ip-172-31-11-115.ec2.internal	stopped	yupeng	0		m3.xlarge	2015-05-02T18:11:02+0000	us-east-1b				monitoring-disabled		172.31.11.115	vpc-c44018a1	subnet-6825501f	ebs				hvm	xen	JRVQp1430590260915	sg-5081dc34	default	false	
+BLOCKDEVICE	/dev/sda1	vol-d3280cc5	2015-05-02T18:11:05.000Z	true		
+NIC	eni-38402870	subnet-6825501f	vpc-c44018a1	796215334267	in-use	172.31.11.115	ip-172-31-11-115.ec2.internal	true
+NICATTACHMENT	eni-attach-1f5bef7a	0	attached	2015-05-03T02:11:02+0800	true
+GROUP	sg-5081dc34	launch-wizard-8
+PRIVATEIPADDRESS	172.31.11.115	ip-172-31-11-115.ec2.internal	
+RESERVATION	r-c92b2934	796215334267	
+INSTANCE	i-3491d0e0	ami-d05e75b8	ec2-54-175-129-31.compute-1.amazonaws.com	ip-172-31-4-116.ec2.internal	running	etherscrape	0		t2.small	2015-10-22T04:56:34+0000	us-east-1b				monitoring-disabled	54.175.129.31	172.31.4.116	vpc-c44018a1	subnet-6825501f	ebs				hvm	xen	NdnEC1445489794368	sg-fe41019a	default	false	
+BLOCKDEVICE	/dev/sda1	vol-97366177	2015-10-22T04:56:38.000Z	true		
+NIC	eni-8626afcb	subnet-6825501f	vpc-c44018a1	796215334267	in-use	172.31.4.116	ip-172-31-4-116.ec2.internal	true
+NICATTACHMENT	eni-attach-9bdda4e8	0	attached	2015-10-22T12:56:34+0800	true
+NICASSOCIATION	54.175.129.31	amazon	172.31.4.116
+GROUP	sg-fe41019a	all-traffic
+PRIVATEIPADDRESS	172.31.4.116	ip-172-31-4-116.ec2.internal	ec2-54-175-129-31.compute-1.amazonaws.com
+TAG	instance	i-3491d0e0	Name	etherscrape
+RESERVATION	r-7a43e08b	796215334267	
+INSTANCE	i-bd28606b	ami-d05e75b8		ip-172-31-56-114.ec2.internal	stopped	akosba_key	0		r3.8xlarge	2015-11-02T20:44:13+0000	us-east-1a				monitoring-disabled		172.31.56.114	vpc-c44018a1	subnet-17a3103c	ebs				hvm	xen	GPDkA1431655708212	sg-d94b64bd	default	false	
+BLOCKDEVICE	/dev/sda1	vol-74d95e9f	2015-05-15T02:08:33.000Z	true		
+NIC	eni-2b7a2607	subnet-17a3103c	vpc-c44018a1	796215334267	in-use	172.31.56.114	ip-172-31-56-114.ec2.internal	true
+NICATTACHMENT	eni-attach-aa2fe1d5	0	attached	2015-05-15T10:08:28+0800	true
+GROUP	sg-d94b64bd	launch-wizard-12
+PRIVATEIPADDRESS	172.31.56.114	ip-172-31-56-114.ec2.internal	
+TAG	instance	i-bd28606b	Name	snark_exps2
+RESERVATION	r-508f3fa0	796215334267	
+INSTANCE	i-e0b86148	ami-d05e75b8		ip-172-31-51-224.ec2.internal	stopped	xiao	0		c4.2xlarge	2015-07-10T19:50:12+0000	us-east-1a				monitoring-disabled		172.31.51.224	vpc-c44018a1	subnet-17a3103c	ebs				hvm	xen	wAvvk1436557811793	sg-9569a8f2	default	true	
+BLOCKDEVICE	/dev/sda1	vol-c6d1622c	2015-07-10T19:50:15.000Z	true		
+NIC	eni-23e2a40c	subnet-17a3103c	vpc-c44018a1	796215334267	in-use	172.31.51.224	ip-172-31-51-224.ec2.internal	true
+NICATTACHMENT	eni-attach-d4c0d5ab	0	attached	2015-07-11T03:50:12+0800	true
+GROUP	sg-9569a8f2	launch-wizard-19
+PRIVATEIPADDRESS	172.31.51.224	ip-172-31-51-224.ec2.internal	
+RESERVATION	r-62a22a8b	796215334267	
+INSTANCE	i-4db216b4	ami-7f9dd51a	ec2-52-3-220-217.compute-1.amazonaws.com	ip-172-30-0-232.ec2.internal	running	liang-dave-aws	0		c4.large	2015-10-17T01:29:12+0000	us-east-1e				monitoring-disabled	52.3.220.217	172.30.0.232	vpc-1921847d	subnet-7621f14b	ebs			picocenter-placement-group	hvm	xen	VZUYZ1445045351483	sg-bbe61cdd	dedicated	true	
+BLOCKDEVICE	/dev/sda1	vol-b43bef7c	2015-10-17T01:29:16.000Z	true		
+BLOCKDEVICE	/dev/sdf	vol-623befaa	2015-10-17T01:29:16.000Z	false		
+NIC	eni-50aeb26d	subnet-7621f14b	vpc-1921847d	796215334267	in-use	172.30.0.232	ip-172-30-0-232.ec2.internal	true
+NICATTACHMENT	eni-attach-70e21301	0	attached	2015-10-17T09:29:12+0800	true
+NICASSOCIATION	52.3.220.217	amazon	172.30.0.232
+GROUP	sg-bbe61cdd	picocenter-security-group
+PRIVATEIPADDRESS	172.30.0.232	ip-172-30-0-232.ec2.internal	ec2-52-3-220-217.compute-1.amazonaws.com
+TAG	instance	i-4db216b4	Name	picocenter-hub
+RESERVATION	r-4dffe7b7	796215334267	
+INSTANCE	i-cc2ccd19	ami-d05e75b8		ip-172-31-0-77.ec2.internal	stopped	xiao	0		t2.large	2015-09-16T11:18:18+0000	us-east-1b				monitoring-disabled		172.31.0.77	vpc-c44018a1	subnet-6825501f	ebs				hvm	xen	RsTMi1441245504615	sg-4b42032c	default	false	
+BLOCKDEVICE	/dev/sda1	vol-b6cbeb57	2015-09-03T01:58:29.000Z	true		
+NIC	eni-a539a5ef	subnet-6825501f	vpc-c44018a1	796215334267	in-use	172.31.0.77	ip-172-31-0-77.ec2.internal	false
+NICATTACHMENT	eni-attach-632b2c07	0	attached	2015-09-03T09:58:25+0800	true
+GROUP	sg-4b42032c	launch-wizard-20
+PRIVATEIPADDRESS	172.31.0.77	ip-172-31-0-77.ec2.internal	
+RESERVATION	r-d2a59bfd	796215334267	
+INSTANCE	i-051ac4ec	ami-d05e75b8	ec2-52-5-238-18.compute-1.amazonaws.com	ip-172-31-42-109.ec2.internal	running	jkatz2	0		t2.micro	2015-06-05T18:22:17+0000	us-east-1e				monitoring-disabled	52.5.238.18	172.31.42.109	vpc-c44018a1	subnet-7197cc4b	ebs				hvm	xen	joiBO1433528536205	sg-58d6c33c	default	false	
+BLOCKDEVICE	/dev/sda1	vol-d573ac9b	2015-06-05T18:22:19.000Z	true		
+NIC	eni-c34189fe	subnet-7197cc4b	vpc-c44018a1	796215334267	in-use	172.31.42.109	ip-172-31-42-109.ec2.internal	true
+NICATTACHMENT	eni-attach-d601bcb6	0	attached	2015-06-06T02:22:17+0800	true
+NICASSOCIATION	52.5.238.18	amazon	172.31.42.109
+GROUP	sg-58d6c33c	Katz-Coursera
+PRIVATEIPADDRESS	172.31.42.109	ip-172-31-42-109.ec2.internal	ec2-52-5-238-18.compute-1.amazonaws.com
+RESERVATION	r-cbecce27	796215334267	
+INSTANCE	i-bc478543	ami-d05e75b8		ip-172-31-30-34.ec2.internal	stopped	akosba_key	0		r3.2xlarge	2015-08-10T05:08:38+0000	us-east-1c				monitoring-disabled		172.31.30.34	vpc-c44018a1	subnet-8477ffdd	ebs				hvm	xen	MWdbU1431493033565	sg-f89dbe9c	default	false	
+BLOCKDEVICE	/dev/sda1	vol-c3c1cb84	2015-05-13T04:57:18.000Z	true		
+NIC	eni-3506166e	subnet-8477ffdd	vpc-c44018a1	796215334267	in-use	172.31.30.34	ip-172-31-30-34.ec2.internal	true
+NICATTACHMENT	eni-attach-136c106a	0	attached	2015-05-13T12:57:14+0800	true
+GROUP	sg-f89dbe9c	launch-wizard-11
+PRIVATEIPADDRESS	172.31.30.34	ip-172-31-30-34.ec2.internal	
+TAG	instance	i-bc478543	Name	snark_exps
+RESERVATION	r-8505217b	796215334267	
+INSTANCE	i-6d1b23ba	ami-d05e75b8	ec2-52-1-172-119.compute-1.amazonaws.com	ip-172-31-58-98.ec2.internal	running	shi-websites	0		t2.micro	2015-04-16T13:41:59+0000	us-east-1a				monitoring-disabled	52.1.172.119	172.31.58.98	vpc-c44018a1	subnet-17a3103c	ebs				hvm	xen	rcjcc1429191718707	sg-4e17502a	default	false	
+BLOCKDEVICE	/dev/sda1	vol-be842ea4	2015-04-16T13:42:02.000Z	true		
+NIC	eni-795dec55	subnet-17a3103c	vpc-c44018a1	796215334267	in-use	172.31.58.98	ip-172-31-58-98.ec2.internal	true
+NICATTACHMENT	eni-attach-fcb88580	0	attached	2015-04-16T21:41:59+0800	true
+NICASSOCIATION	52.1.172.119	amazon	172.31.58.98
+GROUP	sg-4e17502a	launch-wizard-2
+PRIVATEIPADDRESS	172.31.58.98	ip-172-31-58-98.ec2.internal	ec2-52-1-172-119.compute-1.amazonaws.com
+TAG	instance	i-6d1b23ba	Name	oblivm.com
+RESERVATION	r-be918d54	796215334267	
+INSTANCE	i-597572a4	ami-d05e75b8		ip-172-31-1-188.ec2.internal	stopped	yupeng	0		m3.xlarge	2015-05-13T19:13:49+0000	us-east-1b				monitoring-disabled		172.31.1.188	vpc-c44018a1	subnet-6825501f	ebs				hvm	xen	cSwbh1431544429394	sg-5081dc34	default	false	
+BLOCKDEVICE	/dev/sda1	vol-f402fe1a	2015-05-13T19:13:52.000Z	true		
+NIC	eni-3e346076	subnet-6825501f	vpc-c44018a1	796215334267	in-use	172.31.1.188	ip-172-31-1-188.ec2.internal	true
+NICATTACHMENT	eni-attach-12ed6577	0	attached	2015-05-14T03:13:49+0800	true
+GROUP	sg-5081dc34	launch-wizard-8
+PRIVATEIPADDRESS	172.31.1.188	ip-172-31-1-188.ec2.internal	
+RESERVATION	r-1f93d3e1	796215334267	
+INSTANCE	i-717422a6	ami-d05e75b8		ip-172-31-48-203.ec2.internal	stopped	amiller-mc2ec2	0		t2.medium	2015-04-10T14:36:34+0000	us-east-1a				monitoring-disabled		172.31.48.203	vpc-c44018a1	subnet-17a3103c	ebs				hvm	xen	Pnrtt1428676593552	sg-eb522e8f	default	false	
+BLOCKDEVICE	/dev/sda1	vol-35ca162f	2015-04-10T14:36:38.000Z	true		
+BLOCKDEVICE	/dev/sdf	vol-7c3c8166	2015-04-19T02:48:42.000Z	false		
+NIC	eni-7f6cb453	subnet-17a3103c	vpc-c44018a1	796215334267	in-use	172.31.48.203	ip-172-31-48-203.ec2.internal	true
+NICATTACHMENT	eni-attach-86e7c4fa	0	attached	2015-04-10T22:36:34+0800	true
+GROUP	sg-eb522e8f	launch-wizard-1
+PRIVATEIPADDRESS	172.31.48.203	ip-172-31-48-203.ec2.internal	
+TAG	instance	i-717422a6	Name	ethereum_labvm
+RESERVATION	r-3175f6dd	796215334267	
+INSTANCE	i-d8c48624	ami-d05e75b8	ec2-52-0-84-103.compute-1.amazonaws.com	ip-172-31-25-248.ec2.internal	running	shi-websites	0		t2.micro	2015-04-16T14:08:30+0000	us-east-1c				monitoring-disabled	52.0.84.103	172.31.25.248	vpc-c44018a1	subnet-8477ffdd	ebs				hvm	xen	NOQZQ1429193309523	sg-4e17502a	default	false	
+BLOCKDEVICE	/dev/sda1	vol-5a96eb1d	2015-04-16T14:08:33.000Z	true		
+NIC	eni-4d176e16	subnet-8477ffdd	vpc-c44018a1	796215334267	in-use	172.31.25.248	ip-172-31-25-248.ec2.internal	true
+NICATTACHMENT	eni-attach-ee41f497	0	attached	2015-04-16T22:08:30+0800	true
+NICASSOCIATION	52.0.84.103	amazon	172.31.25.248
+GROUP	sg-4e17502a	launch-wizard-2
+PRIVATEIPADDRESS	172.31.25.248	ip-172-31-25-248.ec2.internal	ec2-52-0-84-103.compute-1.amazonaws.com
+TAG	instance	i-d8c48624	Name	anonymous paper
+RESERVATION	r-4e7e4e98	796215334267	
+INSTANCE	i-dd512c62	ami-d05e75b8	ec2-52-91-89-147.compute-1.amazonaws.com	ip-172-31-50-238.ec2.internal	running	amiller-mc2ec2	3		t2.medium	2015-10-21T17:58:16+0000	us-east-1a				monitoring-disabled	52.91.89.147	172.31.50.238	vpc-c44018a1	subnet-17a3103c	ebs				hvm	xen	gvbrm1445450295866	sg-fe41019a	default	false	
+BLOCKDEVICE	/dev/sda1	vol-5cb330b0	2015-10-21T17:58:19.000Z	true		
+NIC	eni-d2420cf3	subnet-17a3103c	vpc-c44018a1	796215334267	in-use	172.31.50.238	ip-172-31-50-238.ec2.internal	true
+NICATTACHMENT	eni-attach-65fdcc15	0	attached	2015-10-22T01:58:16+0800	true
+NICASSOCIATION	52.91.89.147	amazon	172.31.50.238
+GROUP	sg-fe41019a	all-traffic
+PRIVATEIPADDRESS	172.31.50.238	ip-172-31-50-238.ec2.internal	ec2-52-91-89-147.compute-1.amazonaws.com
+TAG	instance	i-dd512c62	Name	amiller-bitcoin-1
+INSTANCE	i-dc512c63	ami-d05e75b8	ec2-52-91-167-127.compute-1.amazonaws.com	ip-172-31-50-239.ec2.internal	running	amiller-mc2ec2	4		t2.medium	2015-10-21T17:58:16+0000	us-east-1a				monitoring-disabled	52.91.167.127	172.31.50.239	vpc-c44018a1	subnet-17a3103c	ebs				hvm	xen	gvbrm1445450295866	sg-fe41019a	default	false	
+BLOCKDEVICE	/dev/sda1	vol-7fb23193	2015-10-21T17:58:19.000Z	true		
+NIC	eni-d0420cf1	subnet-17a3103c	vpc-c44018a1	796215334267	in-use	172.31.50.239	ip-172-31-50-239.ec2.internal	true
+NICATTACHMENT	eni-attach-53fdcc23	0	attached	2015-10-22T01:58:16+0800	true
+NICASSOCIATION	52.91.167.127	amazon	172.31.50.239
+GROUP	sg-fe41019a	all-traffic
+PRIVATEIPADDRESS	172.31.50.239	ip-172-31-50-239.ec2.internal	ec2-52-91-167-127.compute-1.amazonaws.com
+TAG	instance	i-dc512c63	Name	amiller-bitcoin-2
+INSTANCE	i-db512c64	ami-d05e75b8	ec2-52-91-163-255.compute-1.amazonaws.com	ip-172-31-50-241.ec2.internal	running	amiller-mc2ec2	1		t2.medium	2015-10-21T17:58:16+0000	us-east-1a				monitoring-disabled	52.91.163.255	172.31.50.241	vpc-c44018a1	subnet-17a3103c	ebs				hvm	xen	gvbrm1445450295866	sg-fe41019a	default	false	
+BLOCKDEVICE	/dev/sda1	vol-46b231aa	2015-10-21T17:58:19.000Z	true		
+NIC	eni-d5420cf4	subnet-17a3103c	vpc-c44018a1	796215334267	in-use	172.31.50.241	ip-172-31-50-241.ec2.internal	true
+NICATTACHMENT	eni-attach-63fdcc13	0	attached	2015-10-22T01:58:16+0800	true
+NICASSOCIATION	52.91.163.255	amazon	172.31.50.241
+GROUP	sg-fe41019a	all-traffic
+PRIVATEIPADDRESS	172.31.50.241	ip-172-31-50-241.ec2.internal	ec2-52-91-163-255.compute-1.amazonaws.com
+TAG	instance	i-db512c64	Name	amiller-bitcoin-3
+INSTANCE	i-da512c65	ami-d05e75b8	ec2-52-91-249-72.compute-1.amazonaws.com	ip-172-31-50-237.ec2.internal	running	amiller-mc2ec2	2		t2.medium	2015-10-21T17:58:16+0000	us-east-1a				monitoring-disabled	52.91.249.72	172.31.50.237	vpc-c44018a1	subnet-17a3103c	ebs				hvm	xen	gvbrm1445450295866	sg-fe41019a	default	false	
+BLOCKDEVICE	/dev/sda1	vol-47b231ab	2015-10-21T17:58:20.000Z	true		
+NIC	eni-d1420cf0	subnet-17a3103c	vpc-c44018a1	796215334267	in-use	172.31.50.237	ip-172-31-50-237.ec2.internal	true
+NICATTACHMENT	eni-attach-64fdcc14	0	attached	2015-10-22T01:58:16+0800	true
+NICASSOCIATION	52.91.249.72	amazon	172.31.50.237
+GROUP	sg-fe41019a	all-traffic
+PRIVATEIPADDRESS	172.31.50.237	ip-172-31-50-237.ec2.internal	ec2-52-91-249-72.compute-1.amazonaws.com
+TAG	instance	i-da512c65	Name	amiller-bitcoin-4
+INSTANCE	i-d8512c67	ami-d05e75b8	ec2-52-91-162-29.compute-1.amazonaws.com	ip-172-31-50-240.ec2.internal	running	amiller-mc2ec2	0		t2.medium	2015-10-21T17:58:16+0000	us-east-1a				monitoring-disabled	52.91.162.29	172.31.50.240	vpc-c44018a1	subnet-17a3103c	ebs				hvm	xen	gvbrm1445450295866	sg-fe41019a	default	false	
+BLOCKDEVICE	/dev/sda1	vol-9db23171	2015-10-21T17:58:19.000Z	true		
+NIC	eni-d3420cf2	subnet-17a3103c	vpc-c44018a1	796215334267	in-use	172.31.50.240	ip-172-31-50-240.ec2.internal	true
+NICATTACHMENT	eni-attach-62fdcc12	0	attached	2015-10-22T01:58:16+0800	true
+NICASSOCIATION	52.91.162.29	amazon	172.31.50.240
+GROUP	sg-fe41019a	all-traffic
+PRIVATEIPADDRESS	172.31.50.240	ip-172-31-50-240.ec2.internal	ec2-52-91-162-29.compute-1.amazonaws.com
+TAG	instance	i-d8512c67	Name	amiller-bitcoin-5
+RESERVATION	r-7d70f391	796215334267	
+INSTANCE	i-67bcfe9b	ami-d05e75b8	ec2-52-6-56-16.compute-1.amazonaws.com	ip-172-31-16-16.ec2.internal	running	shi-websites	0		t2.micro	2015-04-16T14:01:22+0000	us-east-1c				monitoring-disabled	52.6.56.16	172.31.16.16	vpc-c44018a1	subnet-8477ffdd	ebs				hvm	xen	BoIyu1429192882006	sg-4e17502a	default	false	
+BLOCKDEVICE	/dev/sda1	vol-799ae73e	2015-04-16T14:01:24.000Z	true		
+NIC	eni-fc136aa7	subnet-8477ffdd	vpc-c44018a1	796215334267	in-use	172.31.16.16	ip-172-31-16-16.ec2.internal	true
+NICATTACHMENT	eni-attach-7d47f204	0	attached	2015-04-16T22:01:22+0800	true
+NICASSOCIATION	52.6.56.16	amazon	172.31.16.16
+GROUP	sg-4e17502a	launch-wizard-2
+PRIVATEIPADDRESS	172.31.16.16	ip-172-31-16-16.ec2.internal	ec2-52-6-56-16.compute-1.amazonaws.com
+TAG	instance	i-67bcfe9b	Name	emil website
+RESERVATION	r-fd678554	796215334267	
+INSTANCE	i-1e999ea1	ami-e3106686	ec2-54-172-2-191.compute-1.amazonaws.com	ip-172-31-56-170.ec2.internal	running	Pmail3	0		t2.micro	2015-10-31T17:58:16+0000	us-east-1a				monitoring-disabled	54.172.2.191	172.31.56.170	vpc-c44018a1	subnet-17a3103c	ebs				hvm	xen	CfamO1446313850521	sg-8aaa1eec, sg-50a91d36	default	false	
+BLOCKDEVICE	/dev/xvda	vol-57f388bb	2015-10-31T17:50:53.000Z	true		
+NIC	eni-7eeaea5f	subnet-17a3103c	vpc-c44018a1	796215334267	in-use	172.31.56.170	ip-172-31-56-170.ec2.internal	true
+NICATTACHMENT	eni-attach-86d033f5	0	attached	2015-11-01T01:50:51+0800	true
+NICASSOCIATION	54.172.2.191	amazon	172.31.56.170
+GROUP	sg-8aaa1eec	Pmail
+GROUP	sg-50a91d36	launch-wizard-22
+PRIVATEIPADDRESS	172.31.56.170	ip-172-31-56-170.ec2.internal	ec2-54-172-2-191.compute-1.amazonaws.com
+TAG	instance	i-1e999ea1	Name	Pmail
