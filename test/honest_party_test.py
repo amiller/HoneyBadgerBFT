@@ -5,7 +5,7 @@ monkey.patch_all()
 
 from gevent.queue import *
 from gevent import Greenlet
-from utils import bcolors, mylog, initiateThresholdSig
+from ..core.utils import bcolors, mylog, initiateThresholdSig
 from includeTransaction import honestParty, Transaction
 from collections import defaultdict
 from ..core.bkr_acs import initBeforeBinaryConsensus
