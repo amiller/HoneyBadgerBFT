@@ -13,7 +13,7 @@ import cPickle as pickle
 from io import BytesIO
 import struct
 import gmpy2
-from ecdsa_ssl import KEY
+from ..ecdsa.ecdsa_ssl import KEY
 import os
 
 nameList = open('names.txt','r').read().strip().split('\n')
