@@ -1,0 +1,176 @@
+[52.9.34.138] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.9.34.138] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.9.34.138] out: 
+[52.9.34.138] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.9.34.138] out: 100    11  100    11    0     0   3664      0 --:--:-- --:--:-- --:--:--  5500
+[52.9.34.138] out: [1] Parameters: N 4, t 1
+[52.9.34.138] out: [1] IP_LIST: ['52.9.19.57', '52.9.34.138', '52.9.27.184', '52.8.155.26']
+[52.9.34.138] out: servers started
+[52.9.34.138] out: Trying to connect to ('52.9.19.57', 49500) for party 1
+[52.9.34.138] out: Trying to connect to ('52.9.34.138', 49500) for party 1
+[52.9.34.138] out: Trying to connect to ('52.9.27.184', 49500) for party 1
+[52.9.34.138] out: Trying to connect to ('52.8.155.26', 49500) for party 1
+[52.9.34.138] out: Summoned party 1 at time 1446913019.651580
+[52.9.34.138] out: [1] Honest party started at 1446913019.651668.
+[52.9.34.138] out: set([[94m{{Transaction from David to Christina with 97}}[0m])
+[52.9.34.138] out: [1] Beginning A-Cast on set([[94m{{Transaction from David to Christina with 97}}[0m])
+[52.9.34.138] out: [1] Beginning ACS
+[52.9.34.138] out: B[1]binary consensus_2_starts with 1 at 1446913019.664028
+[52.9.34.138] out: [93m[1]m enters round 1 with decision None[0m
+[52.9.34.138] out: B[1]binary consensus_1_starts with 1 at 1446913019.670408
+[52.9.34.138] out: [93m[1]m enters round 1 with decision None[0m
+[52.9.34.138] out: B[1]binary consensus_0_starts with 1 at 1446913019.672574
+[52.9.34.138] out: [93m[1]m enters round 1 with decision None[0m
+[52.9.34.138] out: B[1]binary consensus_3_starts with 1 at 1446913019.675525
+[52.9.34.138] out: [93m[1]m enters round 1 with decision None[0m
+[52.9.34.138] out: [93m[1]m enters round 2 with decision decides on 1[0m
+[52.9.34.138] out: [93m[1]m enters round 2 with decision decides on 1[0m
+[52.9.34.138] out: B[1]binary consensus_1_ends at 1446913019.700475
+[52.9.34.138] out: B[1]binary consensus_2_ends at 1446913019.700586
+[52.9.34.138] out: [93m[1]m enters round 2 with decision decides on 1[0m
+[52.9.34.138] out: [93m[1]m enters round 2 with decision decides on 1[0m
+[52.9.34.138] out: B[1]binary consensus_3_ends at 1446913019.709150
+[52.9.34.138] out: B[1]binary consensus_0_ends at 1446913019.709728
+[52.9.34.138] out: [1] synced transactions set([[94m{{Transaction from Eco to Alice with 52}}[0m, [94m{{Transaction from Francis to Harris with 42}}[0m, [94m{{Transaction from David to Christina with 97}}[0m, [94m{{Transaction from Francis to Alice with 1}}[0m]), now cached set([])
+[52.9.34.138] out: [1] advances rounds from 2 caused by values[0](1)!=s(0)
+[52.9.34.138] out: [93m[1]m enters round 3 with decision decides on 1[0m
+[52.9.34.138] out: [1] advances rounds from 2 caused by values[0](1)!=s(0)
+[52.9.34.138] out: [93m[1]m enters round 3 with decision decides on 1[0m
+[52.9.34.138] out: [1] advances rounds from 2 caused by values[0](1)!=s(0)
+[52.9.34.138] out: [93m[1]m enters round 3 with decision decides on 1[0m
+[52.9.34.138] out: [1] advances rounds from 2 caused by values[0](1)!=s(0)
+[52.9.34.138] out: [93m[1]m enters round 3 with decision decides on 1[0m
+[52.9.34.138] out: /bin/bash: line 1:  8053 Terminated              python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys
+[52.9.34.138] out: 
+[52.9.27.184] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.9.27.184] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.9.27.184] out: 
+[52.9.27.184] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.9.27.184] out: 100    11  100    11    0     0   3047      0 --:--:-- --:--:-- --:--:--  3666
+[52.9.27.184] out: [2] Parameters: N 4, t 1
+[52.9.27.184] out: [2] IP_LIST: ['52.9.19.57', '52.9.34.138', '52.9.27.184', '52.8.155.26']
+[52.9.27.184] out: servers started
+[52.9.27.184] out: Trying to connect to ('52.9.19.57', 49500) for party 2
+[52.9.27.184] out: Trying to connect to ('52.9.34.138', 49500) for party 2
+[52.9.27.184] out: Trying to connect to ('52.9.27.184', 49500) for party 2
+[52.9.27.184] out: Trying to connect to ('52.8.155.26', 49500) for party 2
+[52.9.27.184] out: Summoned party 2 at time 1446913020.460045
+[52.9.27.184] out: [2] Honest party started at 1446913020.460143.
+[52.9.27.184] out: set([[94m{{Transaction from Francis to Alice with 1}}[0m])
+[52.9.27.184] out: [2] Beginning A-Cast on set([[94m{{Transaction from Francis to Alice with 1}}[0m])
+[52.9.27.184] out: [2] Beginning ACS
+[52.9.27.184] out: B[2]binary consensus_2_starts with 1 at 1446913020.487616
+[52.9.27.184] out: [93m[2]m enters round 1 with decision None[0m
+[52.9.27.184] out: B[2]binary consensus_1_starts with 1 at 1446913020.495383
+[52.9.27.184] out: [93m[2]m enters round 1 with decision None[0m
+[52.9.27.184] out: B[2]binary consensus_3_starts with 1 at 1446913020.499079
+[52.9.27.184] out: B[2]binary consensus_0_starts with 1 at 1446913020.499200
+[52.9.27.184] out: [93m[2]m enters round 1 with decision None[0m
+[52.9.27.184] out: [93m[2]m enters round 1 with decision None[0m
+[52.9.27.184] out: [93m[2]m enters round 2 with decision decides on 1[0m
+[52.9.27.184] out: [93m[2]m enters round 2 with decision decides on 1[0m
+[52.9.27.184] out: B[2]binary consensus_1_ends at 1446913020.529661
+[52.9.27.184] out: B[2]binary consensus_2_ends at 1446913020.529789
+[52.9.27.184] out: [93m[2]m enters round 2 with decision decides on 1[0m
+[52.9.27.184] out: [93m[2]m enters round 2 with decision decides on 1[0m
+[52.9.27.184] out: B[2]binary consensus_3_ends at 1446913020.533661
+[52.9.27.184] out: B[2]binary consensus_0_ends at 1446913020.533773
+[52.9.27.184] out: [2] synced transactions set([[94m{{Transaction from Eco to Alice with 52}}[0m, [94m{{Transaction from Francis to Harris with 42}}[0m, [94m{{Transaction from David to Christina with 97}}[0m, [94m{{Transaction from Francis to Alice with 1}}[0m]), now cached set([])
+[52.9.27.184] out: [2] advances rounds from 2 caused by values[0](1)!=s(0)
+[52.9.27.184] out: [93m[2]m enters round 3 with decision decides on 1[0m
+[52.9.27.184] out: [2] advances rounds from 2 caused by values[0](1)!=s(0)
+[52.9.27.184] out: [93m[2]m enters round 3 with decision decides on 1[0m
+[52.9.27.184] out: [2] advances rounds from 2 caused by values[0](1)!=s(0)
+[52.9.27.184] out: [93m[2]m enters round 3 with decision decides on 1[0m
+[52.9.27.184] out: [2] advances rounds from 2 caused by values[0](1)!=s(0)
+[52.9.27.184] out: [93m[2]m enters round 3 with decision decides on 1[0m
+[52.9.27.184] out: /bin/bash: line 1:  7928 Terminated              python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys
+[52.9.27.184] out: 
+[52.9.19.57] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.9.19.57] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.9.19.57] out: 
+[52.9.19.57] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.9.19.57] out: 100    10  100    10    0     0   3271      0 --:--:-- --:--:-- --:--:--  5000
+[52.9.19.57] out: [0] Parameters: N 4, t 1
+[52.9.19.57] out: [0] IP_LIST: ['52.9.19.57', '52.9.34.138', '52.9.27.184', '52.8.155.26']
+[52.9.19.57] out: servers started
+[52.9.19.57] out: Trying to connect to ('52.9.19.57', 49500) for party 0
+[52.9.19.57] out: Trying to connect to ('52.9.34.138', 49500) for party 0
+[52.9.19.57] out: Trying to connect to ('52.9.27.184', 49500) for party 0
+[52.9.19.57] out: Trying to connect to ('52.8.155.26', 49500) for party 0
+[52.9.19.57] out: Summoned party 0 at time 1446913019.570831
+[52.9.19.57] out: [0] Honest party started at 1446913019.570918.
+[52.9.19.57] out: set([[94m{{Transaction from Eco to Alice with 52}}[0m])
+[52.9.19.57] out: [0] Beginning A-Cast on set([[94m{{Transaction from Eco to Alice with 52}}[0m])
+[52.9.19.57] out: [0] Beginning ACS
+[52.9.19.57] out: B[0]binary consensus_2_starts with 1 at 1446913019.584651
+[52.9.19.57] out: B[0]binary consensus_1_starts with 1 at 1446913019.584729
+[52.9.19.57] out: [93m[0]m enters round 1 with decision None[0m
+[52.9.19.57] out: [93m[0]m enters round 1 with decision None[0m
+[52.9.19.57] out: B[0]binary consensus_3_starts with 1 at 1446913019.590353
+[52.9.19.57] out: B[0]binary consensus_0_starts with 1 at 1446913019.590434
+[52.9.19.57] out: [93m[0]m enters round 1 with decision None[0m
+[52.9.19.57] out: [93m[0]m enters round 1 with decision None[0m
+[52.9.19.57] out: [93m[0]m enters round 2 with decision decides on 1[0m
+[52.9.19.57] out: [93m[0]m enters round 2 with decision decides on 1[0m
+[52.9.19.57] out: B[0]binary consensus_1_ends at 1446913019.616233
+[52.9.19.57] out: B[0]binary consensus_2_ends at 1446913019.616342
+[52.9.19.57] out: [93m[0]m enters round 2 with decision decides on 1[0m
+[52.9.19.57] out: B[0]binary consensus_3_ends at 1446913019.618491
+[52.9.19.57] out: [0] synced transactions set([[94m{{Transaction from Francis to Harris with 42}}[0m, [94m{{Transaction from David to Christina with 97}}[0m, [94m{{Transaction from Francis to Alice with 1}}[0m]), now cached set([[94m{{Transaction from Eco to Alice with 52}}[0m])
+[52.9.19.57] out: [93m[0]m enters round 2 with decision decides on 1[0m
+[52.9.19.57] out: B[0]binary consensus_0_ends at 1446913019.620048
+[52.9.19.57] out: [0] advances rounds from 2 caused by values[0](1)!=s(0)
+[52.9.19.57] out: [93m[0]m enters round 3 with decision decides on 1[0m
+[52.9.19.57] out: [0] advances rounds from 2 caused by values[0](1)!=s(0)
+[52.9.19.57] out: [93m[0]m enters round 3 with decision decides on 1[0m
+[52.9.19.57] out: [0] advances rounds from 2 caused by values[0](1)!=s(0)
+[52.9.19.57] out: [93m[0]m enters round 3 with decision decides on 1[0m
+[52.9.19.57] out: [0] advances rounds from 2 caused by values[0](1)!=s(0)
+[52.9.19.57] out: [93m[0]m enters round 3 with decision decides on 1[0m
+[52.9.19.57] out: /bin/bash: line 1:  7936 Terminated              python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys
+[52.9.19.57] out: 
+[52.8.155.26] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.8.155.26] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.8.155.26] out: 
+[52.8.155.26] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.8.155.26] out: 100    11  100    11    0     0   3086      0 --:--:-- --:--:-- --:--:--  3666
+[52.8.155.26] out: [3] Parameters: N 4, t 1
+[52.8.155.26] out: [3] IP_LIST: ['52.9.19.57', '52.9.34.138', '52.9.27.184', '52.8.155.26']
+[52.8.155.26] out: servers started
+[52.8.155.26] out: Trying to connect to ('52.9.19.57', 49500) for party 3
+[52.8.155.26] out: Trying to connect to ('52.9.34.138', 49500) for party 3
+[52.8.155.26] out: Trying to connect to ('52.9.27.184', 49500) for party 3
+[52.8.155.26] out: Trying to connect to ('52.8.155.26', 49500) for party 3
+[52.8.155.26] out: Summoned party 3 at time 1446913018.932310
+[52.8.155.26] out: [3] Honest party started at 1446913018.932441.
+[52.8.155.26] out: set([[94m{{Transaction from Francis to Harris with 42}}[0m])
+[52.8.155.26] out: [3] Beginning A-Cast on set([[94m{{Transaction from Francis to Harris with 42}}[0m])
+[52.8.155.26] out: [3] Beginning ACS
+[52.8.155.26] out: B[3]binary consensus_2_starts with 1 at 1446913018.947615
+[52.8.155.26] out: B[3]binary consensus_1_starts with 1 at 1446913018.947787
+[52.8.155.26] out: [93m[3]m enters round 1 with decision None[0m
+[52.8.155.26] out: [93m[3]m enters round 1 with decision None[0m
+[52.8.155.26] out: B[3]binary consensus_3_starts with 1 at 1446913018.954886
+[52.8.155.26] out: B[3]binary consensus_0_starts with 1 at 1446913018.954999
+[52.8.155.26] out: [93m[3]m enters round 1 with decision None[0m
+[52.8.155.26] out: [93m[3]m enters round 1 with decision None[0m
+[52.8.155.26] out: [93m[3]m enters round 2 with decision decides on 1[0m
+[52.8.155.26] out: [93m[3]m enters round 2 with decision decides on 1[0m
+[52.8.155.26] out: B[3]binary consensus_1_ends at 1446913018.985229
+[52.8.155.26] out: B[3]binary consensus_2_ends at 1446913018.985468
+[52.8.155.26] out: [93m[3]m enters round 2 with decision decides on 1[0m
+[52.8.155.26] out: [93m[3]m enters round 2 with decision decides on 1[0m
+[52.8.155.26] out: B[3]binary consensus_3_ends at 1446913018.990829
+[52.8.155.26] out: B[3]binary consensus_0_ends at 1446913018.990937
+[52.8.155.26] out: [3] synced transactions set([[94m{{Transaction from Eco to Alice with 52}}[0m, [94m{{Transaction from Francis to Harris with 42}}[0m, [94m{{Transaction from David to Christina with 97}}[0m, [94m{{Transaction from Francis to Alice with 1}}[0m]), now cached set([])
+[52.8.155.26] out: [3] advances rounds from 2 caused by values[0](1)!=s(0)
+[52.8.155.26] out: [93m[3]m enters round 3 with decision decides on 1[0m
+[52.8.155.26] out: [3] advances rounds from 2 caused by values[0](1)!=s(0)
+[52.8.155.26] out: [93m[3]m enters round 3 with decision decides on 1[0m
+[52.8.155.26] out: [3] advances rounds from 2 caused by values[0](1)!=s(0)
+[52.8.155.26] out: [93m[3]m enters round 3 with decision decides on 1[0m
+[52.8.155.26] out: [3] advances rounds from 2 caused by values[0](1)!=s(0)
+[52.8.155.26] out: [93m[3]m enters round 3 with decision decides on 1[0m
+[52.8.155.26] out: /bin/bash: line 1:  7925 Terminated              python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys
+[52.8.155.26] out: 
