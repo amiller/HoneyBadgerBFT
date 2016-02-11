@@ -16,8 +16,8 @@ import gmpy2
 from ..ecdsa.ecdsa_ssl import KEY
 import os
 
-print os.path.dirname(os.path.abspath(__file__))
-nameList = open(os.path.dirname(os.path.abspath(__file__)) + '../test/names.txt','r').read().strip().split('\n')
+
+nameList = open(os.path.dirname(os.path.abspath(__file__)) + '/../test/names.txt','r').read().strip().split('\n')
 # nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 TR_SIZE = 250
 
