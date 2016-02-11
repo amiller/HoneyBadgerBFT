@@ -38,18 +38,6 @@ def randomTransaction():
 def randomTransactionStr():
     return repr(randomTransaction())
 
-# def encode(m):
-#    return zlib.compress(pickle.dumps(m), 9)
-
-# def decode(s):
-    # mylog('decoding %s' % repr(s))
-    #if True:
-#    try:
-#        result = pickle.loads(zlib.decompress(s))
-#    except:
-#        result = None
-#    return result
-
 msgCounter = 0
 starting_time = dict()
 ending_time = dict()

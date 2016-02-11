@@ -71,15 +71,8 @@ def connect_to_channel(hostname, port, party):
     def _handle():
         while True:
             obj = q.get()
-            # retry = True
-            # s.sendall(base64.b64encode(encode(obj)) + '\n')
             content = encode(obj)
             s.sendall(struct.pack('<I', len(content)) + content)
-            # s.sendall(content)
-            #        retry = False
-            #    except:
-            #        retry = True
-            #        mylog('retrying...', verboseLevel=-1)
                 
     gtemp = Greenlet(_handle)
     gtemp.parent_args = (hostname, port, party)
@@ -222,13 +215,7 @@ def encode(m):  # TODO
     global msgCounter
     msgCounter += 1
     starting_time[msgCounter] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
-    #intermediate = deepEncode(msgCounter, m)
     result = deepEncode(msgCounter, m)
-    #result = zlib.compress(
-    #    #pickle.dumps(deepEncode(msgCounter, m)),
-    #    intermediate,
-    #9)  # Highest compression level
-    #print 'intermediateLen', len(intermediate), 'compressed', len(result)
     msgSize[msgCounter] = len(result)
     msgFrom[msgCounter] = m[1]
     msgTo[msgCounter] = m[0]

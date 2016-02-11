@@ -61,7 +61,6 @@ def connect_to_channel(hostname, port, party):
     while retry:
       try:
         s = socks.socksocket()
-        # s.setproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", TOR_SOCKSPORT[party], True)
         s.connect((hostname, port))
         retry = False
       except Exception, e:  # socks.SOCKS5Error:
@@ -73,15 +72,8 @@ def connect_to_channel(hostname, port, party):
     def _handle():
         while True:
             obj = q.get()
-            # retry = True
-            # s.sendall(base64.b64encode(encode(obj)) + '\n')
             content = encode(obj)
             s.sendall(struct.pack('<I', len(content)) + content)
-            # s.sendall(content)
-            #        retry = False
-            #    except:
-            #        retry = True
-            #        mylog('retrying...', verboseLevel=-1)
                 
     gtemp = Greenlet(_handle)
     gtemp.parent_args = (hostname, port, party)
@@ -111,12 +103,7 @@ def prepareIPList(content):
     IP_MAPPINGS = [(host, BASE_PORT) for host in IP_LIST if host]
     #print IP_LIST
 
-# TOR_MAPPINGS = [(host, BASE_PORT+i) for i, host in enumerate(TOR_MAPPING_LIST)]
-
 mylog("[INIT] IP_MAPPINGS: %s" % repr(IP_MAPPINGS))
-
-# nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
-
 
 def exception(msg):
     mylog(bcolors.WARNING + "Exception: %s\n" % msg + bcolors.ENDC)
@@ -145,11 +132,6 @@ def encode(m):  # TODO
     starting_time[msgCounter] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
     #intermediate = deepEncode(msgCounter, m)
     result = deepEncode(msgCounter, m)
-    #result = zlib.compress(
-    #    #pickle.dumps(deepEncode(msgCounter, m)),
-    #    intermediate,
-    #9)  # Highest compression level
-    #print 'intermediateLen', len(intermediate), 'compressed', len(result)
     msgSize[msgCounter] = len(result)
     msgFrom[msgCounter] = m[1]
     msgTo[msgCounter] = m[0]

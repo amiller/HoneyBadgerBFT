@@ -189,23 +189,7 @@ def random_delay_binary_consensus(N, t):
 def random_delay_multivalue_consensus(N, t, inputs):
 
     mylog("[Tor] Making circuits...")
-    circuit_ids = []
-
-    comments = '''for i in range(N*N):
-        while True:
-            try:
-                circuit_id = controller.new_circuit(await_build=True)
-                #circuit_id = controller.new_circuit([random.choice(nodesList), random.choice(
-                #    nodesList)], await_build=True)
-                break
-            except ControllerError:
-                print "Requesting Circuit Failed. Re-Trying..."
-                pass
-        circuit_ids.append(circuit_id)
-
-    def attach_stream(stream):
-        if stream.status == 'NEW':
-            controller.attach_stream(stream.id, random.choice(circuit_ids))'''
+    # circuit_ids = []
 
     # Now we don't use stem
     #controller.add_event_listener(attach_stream, stem.control.EventType.STREAM)
@@ -213,19 +197,6 @@ def random_delay_multivalue_consensus(N, t, inputs):
     maxdelay = 0.01
 
     buffers = map(lambda _: Queue(1), range(N))
-
-    # Instantiate the "broadcast" instruction
-    #def makeBroadcast(i):
-    #    def _broadcast(v):
-    #        def _deliver(j):
-    #            #print 'Delivering', v, 'from', i, 'to', j
-    #            mylog(bcolors.OKGREEN + "MSG: [%d] -> [%d]: %s" % (i, j, repr(v)) + bcolors.ENDC)
-    #            buffers[j].put((i,v))
-    #            mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
-    #        for j in range(N):
-    #            Greenlet(_deliver, j).start_later(random.random()*maxdelay)
-    #    return _broadcast
-
 
     # Instantiate the "broadcast" instruction
     def makeBroadcast(i):
@@ -285,11 +256,4 @@ if __name__=='__main__':
     #random_delay_binary_consensus(5,1)
     print "Testing multivalue consensus with different inputs..."
     random_delay_multivalue_consensus(5, 1, [random.randint(0, 10) for x in range(5)])
-    #print "[ =========== ]"
-    #print "Testing multivalue consensus with identical inputs..."
-    #initBeforeBinaryConsensus()
-    #random_delay_multivalue_consensus(5, 1, [10]*5)
-    #print "[ =========== ]"
-    #print "Testing multivalue consensus with byzantine inputs..."
-    #initBeforeBinaryConsensus()
-    #random_delay_multivalue_consensus(5, 1, [10,10,10,10,5])
+

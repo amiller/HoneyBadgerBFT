@@ -107,66 +107,10 @@ def acs(pid, N, t, Q, broadcast, receive):
     # mylog("[%d] Get subset %s" % (pid, BA), verboseLevel=-2)
     return BA
 
-comment = '''
-def acs_mapping(pid, N, t, Q, broadcast, receive):
-    assert(isinstance(Q, list))
-    assert(len(Q) == N)
-
-    def make_bc(i):
-        def _bc(m):
-            broadcast(
-                (i, m)
-            )
-        return _bc
-
-    reliableBroadcastReceiveQueue = [Queue() for x in range(N)]
-
-    def _listener():
-        while True:
-            sender, (instance, m) = receive()
-            mylog("[%d] received %s on instance %d" % (pid, repr((sender, m)), instance))
-            reliableBroadcastReceiveQueue[instance].put(
-                    (sender, m)
-                )
-
-    Greenlet(_listener).start()
-
-    BA = [0]*N
-    locker = Queue(1)
-    callbackCounter = [0]
-
-    def callbackFactory(i):
-        def _callback(result):
-            BA[i] = result
-            if result:
-                if callbackCounter[0] >= 2*t:
-                        locker.put("Key") # Now we've got 2t+1 1's
-                callbackCounter[0] += 1
-        return _callback
-
-
-    for i in range(N):
-        Greenlet(callBackWrap(binary_consensus, callbackFactory(i)), pid,
-                     N, t, Q[i], make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
-    locker.get()
-    mylog(bcolors.UNDERLINE + "[%d] Get subset %s" % (pid, BA) + bcolors.ENDC)
-    return BA
-    #open('result','a').write("[%d] Get subset %s" % (pid, BA))
-'''
-
 def checkBA(BA, N, t):
     global defaultBA
     if sum(BA) < N-t:  # If acs failed, we use a pre-set default common subset
         raise ACSException
-        # This part should never be executed
-        if not defaultBA:
-            lockBA.get()
-            if not defaultBA:
-                num = random.randint(2*t+1, N)
-                defaultBA = [1]*num+[0]*(N-num)
-                random.shuffle(defaultBA)
-            lockBA.put(1)
-        return [_ for _ in defaultBA]  # Clone
     return BA
 
 

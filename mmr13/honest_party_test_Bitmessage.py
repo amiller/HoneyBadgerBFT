@@ -132,7 +132,6 @@ def client_test_freenet(N, t):
             th.start_later(random.random() * maxdelay)
             ts.append(th)
 
-        #Greenlet(monitorUserInput).start()
         try:
             gevent.joinall(ts)
         except ACSException:
@@ -140,8 +139,6 @@ def client_test_freenet(N, t):
         except gevent.hub.LoopExit: # Manual fix for early stop
             print "Concensus Finished"
             mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
-
-    #   shutdownNodes()
 
 if __name__ == '__main__':
     client_test_freenet(5, 1)
