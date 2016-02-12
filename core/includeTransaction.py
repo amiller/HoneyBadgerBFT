@@ -122,7 +122,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         # print repr(buf)
                         fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
                         mt = merkleTree(fragList, dummyHash)
-                        mb = getMerkleBranch(mt, pid)
+                        mb = getMerkleBranch(pid, mt)
                         rootHash = mt[0]
                         # print sender, 'fragList', fragList
                         # print sender, 'encoded', zfecEncoder.encode(fragList)
