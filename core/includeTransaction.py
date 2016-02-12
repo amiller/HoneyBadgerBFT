@@ -47,9 +47,11 @@ def dummyHash(x):  # TODO: replace this guy with good ones
     return x + 1
 
 def coolSHA256Hash(x):
-    if isinstance(x, str):
-        return int(hashlib.sha224(x).hexdigest(), 16)
-    return int(hashlib.sha224(str(x)).hexdigest(), 16)  # TODO: to see if this is proper (low entropy)
+    #if isinstance(x, str):
+    #    return hashlib.sha224(x).digest()
+        # return int(hashlib.sha224(x).hexdigest(), 16)
+    #return int(hashlib.sha224(str(x)).hexdigest(), 16)  # TODO: to see if this is proper (low entropy)
+    return hashlib.sha224(x).digest()
 
 @greenletFunction
 def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
@@ -76,7 +78,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         for i in range(len(strList)):
             mt[i + treeLength] = someHash(strList[i])  # TODO: need to change strList[i] from a string to an integer here.
         for i in range(treeLength - 1, 0, -1):  # 1, 2, 3, ..., treeLength - 1
-            mt[i] = someHash(mt[i*2] ^ mt[i*2+1])  # XOR is commutative
+            # mt[i] = someHash(''.join([chr(ord(a) ^ ord(b)) for a, b in zip(mt[i*2], mt[i*2+1])]))  # XOR is commutative
+            mt[i] = someHash(mt[i*2] + mt[i*2+1])  # concat is not commutative
         return mt
 
     def getMerkleBranch(index, mt):
@@ -87,10 +90,13 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
             t /= 2
         return res
 
-    def merkleVerify(val, rootHash, branch, someHash):
+    def merkleVerify(val, rootHash, branch, someHash, index):
+        # index has information on whether we are facing a left sibling or a right sibling
         tmp = someHash(val)
+        tindex = index
         for br in branch:
-            tmp = someHash(tmp ^ br)
+            tmp = someHash((tindex & 1) and br + tmp or tmp + br)
+            tindex >>= 1
         if tmp != rootHash:
             print "verification with", someHash(val), rootHash, branch, tmp == rootHash
         return tmp == rootHash
@@ -155,7 +161,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 # if keys[msgBundle[1]].verify(sha1hash(hex((msgBundle[2][0]+37)*setHash(msgBundle[2][1]))), msgBundle[3]):
                 if keys[msgBundle[1]].verify(sha1hash(repr(msgBundle[2])), msgBundle[3]):
                     originBundle = msgBundle[2]
-                    if not merkleVerify(originBundle[1], originBundle[2], originBundle[3], coolSHA256Hash):
+                    if not merkleVerify(originBundle[1], originBundle[2], originBundle[3], coolSHA256Hash, msgBundle[1]):
                         continue
                     opinions[originBundle[0]][sender] = originBundle[1]   # We are going to move this part to kekeketktktktk
                     if len(opinions[originBundle[0]]) >= Threshold2 and not readySent[originBundle[0]]:

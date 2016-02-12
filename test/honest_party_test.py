@@ -133,7 +133,7 @@ def client_test_freenet(N, t, options):
             recv = recvWithDecode(buffers[i])
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
             controlChannels[i].put(('IncludeTransaction',
-                set([randomTransaction() for trC in range(int(sys.argv[3]))])))
+                set([randomTransaction() for trC in range(int(options.tx))])))
             #controlChannels[i].put(('IncludeTransaction', randomTransaction()))
             th.start_later(random.random() * maxdelay)
             ts.append(th)
@@ -218,13 +218,14 @@ if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-e", "--ecdsa-keys", dest="ecdsa",
                       help="Location of ECDSA keys", metavar="KEYS")
-    parser.add_option("-k", "--threshold-keys", dest="thresold_keys",
+    parser.add_option("-k", "--threshold-keys", dest="threshold_keys",
                       help="Location of threshold encryption keys", metavar="KEYS")
     parser.add_option("-n", "--number", dest="n",
                       help="Number of parties", metavar="N", type="int")
     parser.add_option("-t", "--tolerance", dest="t",
                       help="Tolerance of adversaries", metavar="T", type="int")
-
+    parser.add_option("-x", "--transactions", dest="tx",
+                      help="Number of transactions proposed by each party", metavar="TX", type="int", default=1)
     (options, args) = parser.parse_args()
     if (options.ecdsa and options.threshold_keys and options.n and options.t):
         client_test_freenet(options.n , options.t, options)

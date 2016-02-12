@@ -20,6 +20,7 @@ from ..commoncoin import shoup as shoup
 nameList = open(os.path.dirname(os.path.abspath(__file__)) + '/../test/names.txt','r').read().strip().split('\n')
 # nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 TR_SIZE = 250
+SHA_LENGTH = 256
 
 verbose = -2
 goodseed = random.randint(1, 10000)
@@ -106,6 +107,7 @@ def encodeTransaction(tr):
 # + round index can be expressed in 2 bytes.
 # + transactions with ammount > 0 [THIS IS IMPORTANT for separation]
 # + transaction set fragments is less than 2^32 bytes
+# +
 
 def deepEncode(mc, m):
     buf = BytesIO()
@@ -122,10 +124,12 @@ def deepEncode(mc, m):
         #    buf.write(encodeTransaction(tr))
         buf.write(sig)
     elif c[0]=='e':
+        print c
         buf.write('\x02')
-        t2, p1, (p2, s), sig = c
+        t2, p1, (p2, s, rh, mb), sig = c  # rh is the root hash and mb is the merkle branch
         buf.write(struct.pack('<BBI', p1, p2, len(s)))
         buf.write(s)  ## here we already have them encoded
+        buf.write(struct.pack(''))  ### TODO
         # print 'wrote', repr(s)
         # for tr in s:
         #     buf.write(encodeTransaction(tr))
