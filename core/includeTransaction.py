@@ -70,7 +70,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
             mt[i + treeLength] = someHash(strList[i])  # TODO: need to change strList[i] from a string to an integer here.
         for i in range(treeLength-1, 0, -1):  # 1, 2, 3, ..., treeLength - 1
             mt[i] = someHash(mt[i*2] ^ mt[i*2+1])  # XOR is commutative
-        return
+        return mt
 
     def getMerkleBranch(index, mt):
         res = []
