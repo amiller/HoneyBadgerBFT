@@ -51,7 +51,7 @@ def coolSHA256Hash(x):
     #    return hashlib.sha224(x).digest()
         # return int(hashlib.sha224(x).hexdigest(), 16)
     #return int(hashlib.sha224(str(x)).hexdigest(), 16)  # TODO: to see if this is proper (low entropy)
-    return hashlib.sha224(x).digest()
+    return hashlib.sha256(x).digest()
 
 @greenletFunction
 def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):

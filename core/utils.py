@@ -20,7 +20,7 @@ from ..commoncoin import shoup as shoup
 nameList = open(os.path.dirname(os.path.abspath(__file__)) + '/../test/names.txt','r').read().strip().split('\n')
 # nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 TR_SIZE = 250
-SHA_LENGTH = 256
+SHA_LENGTH = 32
 
 verbose = -2
 goodseed = random.randint(1, 10000)
@@ -107,7 +107,7 @@ def encodeTransaction(tr):
 # + round index can be expressed in 2 bytes.
 # + transactions with ammount > 0 [THIS IS IMPORTANT for separation]
 # + transaction set fragments is less than 2^32 bytes
-# +
+# + the length of Merkle Branch is no more than a byte (256).
 
 def deepEncode(mc, m):
     buf = BytesIO()
@@ -124,12 +124,14 @@ def deepEncode(mc, m):
         #    buf.write(encodeTransaction(tr))
         buf.write(sig)
     elif c[0]=='e':
-        print c
+        # print c
         buf.write('\x02')
         t2, p1, (p2, s, rh, mb), sig = c  # rh is the root hash and mb is the merkle branch
-        buf.write(struct.pack('<BBI', p1, p2, len(s)))
+        buf.write(struct.pack('<BBIB', p1, p2, len(s), len(mb)))
         buf.write(s)  ## here we already have them encoded
-        buf.write(struct.pack(''))  ### TODO
+        buf.write(rh)  ## it's SHA_LENGTH bytes
+        for br in mb:
+            buf.write(br)  ## still SHA_LENGTH bytes each
         # print 'wrote', repr(s)
         # for tr in s:
         #     buf.write(encodeTransaction(tr))
@@ -194,11 +196,15 @@ def deepDecode(m, msgTypeCounter):
         sig = buf.read()
         return mc, (f, t, ('B', ('i', p1, trSet, sig)),)
     elif msgtype == 2:
-        p1, p2, trSetLen = struct.unpack('<BBI', buf.read(6))
+        p1, p2, trSetLen, nrBr = struct.unpack('<BBIB', buf.read(7))
         trSet = buf.read(trSetLen)
+        rh = buf.read(SHA_LENGTH)
+        mb = []
+        for nr in range(nrBr):
+            mb.append(buf.read(SHA_LENGTH))
         # print 'read', repr(trSet)
         sig = buf.read()
-        return mc, (f, t, ('B', ('e', p1, (p2, trSet), sig)),)
+        return mc, (f, t, ('B', ('e', p1, (p2, trSet, rh, mb), sig)),)
     elif msgtype == 3:
         p1, p2, p3 = struct.unpack('BBB', buf.read(3))
         return mc, (f, t, ('A', (p1, ('B', (p2, p3)))),)
