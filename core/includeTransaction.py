@@ -83,6 +83,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         tmp = someHash(val)
         for br in branch:
             tmp = someHash(tmp ^ br)
+        print "verification with", val, rootHash, branch, tmp == rootHash
         return tmp == rootHash
 
     def Listener():
