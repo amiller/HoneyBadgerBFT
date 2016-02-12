@@ -139,28 +139,10 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 # if keys[msgBundle[1]].verify(sha1hash(hex((msgBundle[2][0]+37)*setHash(msgBundle[2][1]))), msgBundle[3]):
                 if keys[msgBundle[1]].verify(sha1hash(repr(msgBundle[2])), msgBundle[3]):
                     originBundle = msgBundle[2]
-                    if not (originBundle[2] == mt[0] and merkleVerify(originBundle[1], originBundle[2], originBundle[3])):
+                    if not merkleVerify(originBundle[1], originBundle[2], originBundle[3]):
                         continue
-                    opinions[originBundle[0]][sender] = originBundle[1]
-                    if len(opinions[originBundle[0]]) >= Threshold2 and not reconstDone[originBundle[0]]:
-                        reconstDone[originBundle[0]] = True
-                        # mylog("[%d] got %d echos for %d to reconstruction" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
-                        #  verboseLevel=-2)
-                        if opinions[originBundle[0]].values()[0] == '':
-                            reconstruction = ['']
-                        else:
-                            reconstruction = zfecDecoder.decode(opinions[originBundle[0]].values()[:Threshold],
-                                opinions[originBundle[0]].keys()[:Threshold])  # We only take the first [Threshold] fragments
-                        # assert len(reconstruction) == Threshold
-                        buf = ''.join(reconstruction).rstrip('\xFF')
-                        # print opinions[originBundle[0]].values()[:Threshold]
-                        # print opinions[originBundle[0]].keys()[:Threshold]
-                        # print originBundle[0], '->', sender, len(buf), repr(buf)
-                        assert len(buf) % TR_SIZE == 0
-                        if reconsLocker[originBundle[0]].empty():
-                            reconsLocker[originBundle[0]].put(buf)
-                        # mylog("[%d] put reconsLocker for %d" % (pid, originBundle[0]), verboseLevel=-2)
-                        if not readySent[originBundle[0]]:
+                    opinions[originBundle[0]][sender] = originBundle[1]   # We are going to move this part to kekeketktktktk
+                    if len(opinions[originBundle[0]]) >= Threshold2 and not readySent[originBundle[0]]:
                             readySent[originBundle[0]] = True
                             Greenlet(broadcast, ('r', originBundle[0], sha1hash(buf))).start()
                         # broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to
@@ -174,7 +156,24 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     readySent[msgBundle[1]] = True
                     Greenlet(broadcast, ('r', msgBundle[1], msgBundle[2])).start()
                     # broadcast(('r', msgBundle[1], msgBundle[2]))  # relay the msg
-                if tmp >= 2*t+1 and not outputs[msgBundle[1]].full() and finalTrigger[msgBundle[1]].empty():
+                if tmp >= 2*t+1 and not outputs[msgBundle[1]].full() and finalTrigger[msgBundle[1]].empty() and not reconstDone[originBundle[0]]:
+                    reconstDone[msgBundle[1]] = True
+                    # mylog("[%d] got %d echos for %d to reconstruction" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
+                    #  verboseLevel=-2)
+                    if opinions[msgBundle[1]].values()[0] == '':
+                        reconstruction = ['']
+                    else:
+                        reconstruction = zfecDecoder.decode(opinions[msgBundle[1]].values()[:Threshold],
+                                opinions[msgBundle[1]].keys()[:Threshold])  # We only take the first [Threshold] fragments
+                    # assert len(reconstruction) == Threshold
+                    buf = ''.join(reconstruction).rstrip('\xFF')
+                    # print opinions[originBundle[0]].values()[:Threshold]
+                    # print opinions[originBundle[0]].keys()[:Threshold]
+                    # print originBundle[0], '->', sender, len(buf), repr(buf)
+                    assert len(buf) % TR_SIZE == 0s
+                    if reconsLocker[msgBundle[1]].empty():
+                        reconsLocker[msgBundle[1]].put(buf)
+                    # mylog("[%d] put reconsLocker for %d" % (pid, originBundle[0]), verboseLevel=-2)
                     finalTrigger[msgBundle[1]].put(1)
                     # mylog("[%d] put finalTrigger for %d" % (pid, msgBundle[1]), verboseLevel=-2)
 
