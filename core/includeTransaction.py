@@ -124,7 +124,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
                         mt = merkleTree(fragList, dummyHash)
                         mb = getMerkleBranch(pid, mt)
-                        rootHash = mt[0]
+                        rootHash = mt[1]  # full binary tree
                         # print sender, 'fragList', fragList
                         # print sender, 'encoded', zfecEncoder.encode(fragList)
                         newBundle = (msgBundle[1], zfecEncoder.encode(fragList)[pid], rootHash, mb)  # assert each frag has a length of step
