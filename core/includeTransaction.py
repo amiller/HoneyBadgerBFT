@@ -64,17 +64,18 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
 
     def merkleTree(strList, someHash = dummyHash):
         # someHash is a mapping from a int to a int
-        treeLength = 2**ceil(math.log(len(strList)) / math.log(2))
-        mt = [0] * (treeLength*2)  # find a place to put our leaves
+        treeLength = 2 ** ceil(math.log(len(strList)) / math.log(2))
+        # print "treeLength", treeLength
+        mt = [0] * (treeLength * 2)  # find a place to put our leaves
         for i in range(len(strList)):
             mt[i + treeLength] = someHash(strList[i])  # TODO: need to change strList[i] from a string to an integer here.
-        for i in range(treeLength-1, 0, -1):  # 1, 2, 3, ..., treeLength - 1
+        for i in range(treeLength - 1, 0, -1):  # 1, 2, 3, ..., treeLength - 1
             mt[i] = someHash(mt[i*2] ^ mt[i*2+1])  # XOR is commutative
         return mt
 
     def getMerkleBranch(index, mt):
         res = []
-        t = index + len(mt) >> 1
+        t = index + (len(mt) >> 1)
         while t > 1:
             res.append(mt[t ^ 1])  # we are picking up the sibling
             t /= 2
@@ -84,7 +85,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         tmp = someHash(val)
         for br in branch:
             tmp = someHash(tmp ^ br)
-        # print "verification with", val, rootHash, branch, tmp == rootHash
+        if tmp != rootHash:
+            print "verification with", someHash(val), rootHash, branch, tmp == rootHash
         return tmp == rootHash
 
     def Listener():
@@ -123,12 +125,13 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         # print 'step', step, 'len(buf)', len(buf), 'Threshold', Threshold
                         # print repr(buf)
                         fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
-                        mt = merkleTree(fragList, dummyHash)
+                        encodedFragList = zfecEncoder.encode(fragList)
+                        mt = merkleTree(encodedFragList, dummyHash)
                         mb = getMerkleBranch(pid, mt)
                         rootHash = mt[1]  # full binary tree
                         # print sender, 'fragList', fragList
                         # print sender, 'encoded', zfecEncoder.encode(fragList)
-                        newBundle = (msgBundle[1], zfecEncoder.encode(fragList)[pid], rootHash, mb)  # assert each frag has a length of step
+                        newBundle = (msgBundle[1], encodedFragList[pid], rootHash, mb)  # assert each frag has a length of step
                         # newBundle = (msgBundle[1], msgBundle[2])
                         # mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
                         # mylog("[%d] and now signed is %s" % (pid, repr(signed)), verboseLevel=-1)
