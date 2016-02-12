@@ -80,7 +80,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         return res
 
     def merkleVerify(val, rootHash, branch, someHash):
-        tmp = val
+        tmp = someHash(val)
         for br in branch:
             tmp = someHash(tmp ^ br)
         return tmp == rootHash
