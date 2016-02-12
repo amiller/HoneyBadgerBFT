@@ -84,7 +84,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         tmp = someHash(val)
         for br in branch:
             tmp = someHash(tmp ^ br)
-        print "verification with", val, rootHash, branch, tmp == rootHash
+        # print "verification with", val, rootHash, branch, tmp == rootHash
         return tmp == rootHash
 
     def Listener():
@@ -163,7 +163,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     readySent[msgBundle[1]] = True
                     Greenlet(broadcast, ('r', msgBundle[1], msgBundle[2])).start()
                     # broadcast(('r', msgBundle[1], msgBundle[2]))  # relay the msg
-                if tmp >= 2*t+1 and not outputs[msgBundle[1]].full() and finalTrigger[msgBundle[1]].empty() and not reconstDone[originBundle[0]]:
+                if tmp >= 2*t+1 and not outputs[msgBundle[1]].full() and finalTrigger[msgBundle[1]].empty() and \
+                        not reconstDone[msgBundle[1]]:
                     reconstDone[msgBundle[1]] = True
                     # mylog("[%d] got %d echos for %d to reconstruction" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
                     #  verboseLevel=-2)
