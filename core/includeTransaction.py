@@ -122,7 +122,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         # print repr(buf)
                         fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
                         mt = merkleTree(fragList, dummyHash)
-                        mb = getMerkleBranch(mt)
+                        mb = getMerkleBranch(mt, pid)
                         rootHash = mt[0]
                         # print sender, 'fragList', fragList
                         # print sender, 'encoded', zfecEncoder.encode(fragList)
@@ -144,7 +144,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 # if keys[msgBundle[1]].verify(sha1hash(hex((msgBundle[2][0]+37)*setHash(msgBundle[2][1]))), msgBundle[3]):
                 if keys[msgBundle[1]].verify(sha1hash(repr(msgBundle[2])), msgBundle[3]):
                     originBundle = msgBundle[2]
-                    if not merkleVerify(originBundle[1], originBundle[2], originBundle[3]):
+                    if not merkleVerify(originBundle[1], originBundle[2], originBundle[3], dummyHash):
                         continue
                     opinions[originBundle[0]][sender] = originBundle[1]   # We are going to move this part to kekeketktktktk
                     if len(opinions[originBundle[0]]) >= Threshold2 and not readySent[originBundle[0]]:
