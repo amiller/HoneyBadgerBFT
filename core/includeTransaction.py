@@ -62,14 +62,14 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
     zfecEncoder = zfec.Encoder(Threshold, N)
     zfecDecoder = zfec.Decoder(Threshold, N)
 
-    def merkleTree(strList, someHash):
+    def merkleTree(strList, someHash = dummyHash):
         # someHash is a mapping from a int to a int
         treeLength = 2**ceil(math.log(len(strList)) / math.log(2))
         mt = [0] * (treeLength*2)  # find a place to put our leaves
         for i in range(len(strList)):
             mt[i + treeLength] = someHash(strList[i])  # TODO: need to change strList[i] from a string to an integer here.
         for i in range(treeLength, 0, -1):  # 1, 2, 3, ..., treeLength - 1
-            mt[i] = someHash(mt[i*2] ^ mt[i*2+1])
+            mt[i] = someHash(mt[i*2] ^ mt[i*2+1])  # XOR is commutative
         return
 
     def getMerkleBranch(index, mt):
@@ -79,10 +79,10 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
             index /= 2
         return res
 
-    def merkleVerify(val, rootHash, branch):
+    def merkleVerify(val, rootHash, branch, someHash):
         tmp = val
         for br in branch:
-            tmp ^= br
+            tmp = someHash(tmp ^ br)
         return tmp == rootHash
 
     def Listener():
@@ -121,7 +121,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         # print 'step', step, 'len(buf)', len(buf), 'Threshold', Threshold
                         # print repr(buf)
                         fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
-                        mt = merkleTree(fragList)
+                        mt = merkleTree(fragList, dummyHash)
                         mb = getMerkleBranch(mt)
                         rootHash = mt[0]
                         # print sender, 'fragList', fragList
