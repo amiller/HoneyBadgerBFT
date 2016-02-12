@@ -49,11 +49,36 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         assert(isinstance(i, Queue))
 
     keys = getECDSAKeys()
-    Threshold = ceil((N-t+1)/2.0)
-    Threshold2 = ceil((N+t+1)/2.0)
+    #Threshold = ceil((N-t+1)/2.0)
+    Threshold = N - 2 * t
+    #Threshold2 = ceil((N+t+1)/2.0)
+    Threshold2 = N - t
 
     zfecEncoder = zfec.Encoder(Threshold, N)
     zfecDecoder = zfec.Decoder(Threshold, N)
+
+    def merkleTree(strList, someHash):
+        # someHash is a mapping from a int to a int
+        treeLength = 2**ceil(math.log(len(strList)) / math.log(2))
+        mt = [0] * (treeLength*2)  # find a place to put our leaves
+        for i in range(len(strList)):
+            mt[i + treeLength] = someHash(strList[i])  # TODO: need to change strList[i] from a string to an integer here.
+        for i in range(treeLength, 0, -1):  # 1, 2, 3, ..., treeLength - 1
+            mt[i] = someHash(mt[i*2] ^ mt[i*2+1])
+        return
+
+    def getMerkleBranch(index, mt):
+        res = []
+        while index > 0:
+            res.append(mt[index ^ 1])  # we are picking up the sibling
+            index /= 2
+        return res
+
+    def merkleVerify(val, rootHash, branch):
+        tmp = val
+        for br in branch:
+            tmp ^= br
+        return tmp == rootHash
 
     def Listener():
         opinions = [defaultdict(lambda: 0) for _ in range(N)]
@@ -63,6 +88,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         reconstDone = [False] * N
         reconsLocker = [Queue() for _ in range(N)]
         finalTrigger = [Queue() for _ in range(N)]
+
         def final(i):  # only one time
             buf = reconsLocker[i].get()
             finalTrigger[i].get()
@@ -90,9 +116,12 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         # print 'step', step, 'len(buf)', len(buf), 'Threshold', Threshold
                         # print repr(buf)
                         fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
+                        mt = merkleTree(fragList)
+                        mb = getMerkleBranch(mt)
+                        rootHash = mt[0]
                         # print sender, 'fragList', fragList
                         # print sender, 'encoded', zfecEncoder.encode(fragList)
-                        newBundle = (msgBundle[1], zfecEncoder.encode(fragList)[pid])  # assert each frag has a length of step
+                        newBundle = (msgBundle[1], zfecEncoder.encode(fragList)[pid], rootHash, mb)  # assert each frag has a length of step
                         # newBundle = (msgBundle[1], msgBundle[2])
                         # mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
                         # mylog("[%d] and now signed is %s" % (pid, repr(signed)), verboseLevel=-1)
@@ -110,13 +139,9 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 # if keys[msgBundle[1]].verify(sha1hash(hex((msgBundle[2][0]+37)*setHash(msgBundle[2][1]))), msgBundle[3]):
                 if keys[msgBundle[1]].verify(sha1hash(repr(msgBundle[2])), msgBundle[3]):
                     originBundle = msgBundle[2]
+                    if not (originBundle[2] == mt[0] and merkleVerify(originBundle[1], originBundle[2], originBundle[3])):
+                        continue
                     opinions[originBundle[0]][sender] = originBundle[1]
-                    # mylog("[%d] got %d echos for %d" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
-                    #      verboseLevel=-2)
-                    # opinions[originBundle[0]][repr(originBundle[1])] += 1
-                    # mylog("[%d] counter for (%d, %s) is now %d" % (pid, originBundle[0],
-                    #    repr(originBundle[1]), opinions[originBundle[0]][repr(originBundle[1])]))
-                    # if opinions[originBundle[0]][repr(originBundle[1])] > (N+t)/2 and not outputs[originBundle[0]].full():
                     if len(opinions[originBundle[0]]) >= Threshold2 and not reconstDone[originBundle[0]]:
                         reconstDone[originBundle[0]] = True
                         # mylog("[%d] got %d echos for %d to reconstruction" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
