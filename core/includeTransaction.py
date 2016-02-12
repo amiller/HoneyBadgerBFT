@@ -170,7 +170,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     # print opinions[originBundle[0]].values()[:Threshold]
                     # print opinions[originBundle[0]].keys()[:Threshold]
                     # print originBundle[0], '->', sender, len(buf), repr(buf)
-                    assert len(buf) % TR_SIZE == 0s
+                    assert len(buf) % TR_SIZE == 0
                     if reconsLocker[msgBundle[1]].empty():
                         reconsLocker[msgBundle[1]].put(buf)
                     # mylog("[%d] put reconsLocker for %d" % (pid, originBundle[0]), verboseLevel=-2)
