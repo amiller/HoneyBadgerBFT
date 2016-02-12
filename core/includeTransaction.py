@@ -11,6 +11,7 @@ import zfec
 import socket
 from io import BytesIO
 import struct
+import hashlib
 
 
 def calcSum(dd):
@@ -43,7 +44,12 @@ def ceil(x):
 def dummyHash(x):  # TODO: replace this guy with good ones
     if isinstance(x, str):
         return int(x.encode('hex'), 16)
-    return x
+    return x + 1
+
+def coolSHA256Hash(x):
+    if isinstance(x, str):
+        return int(hashlib.sha224(x).hexdigest(), 16)
+    return int(hashlib.sha224(str(x)).hexdigest(), 16)  # TODO: to see if this is proper (low entropy)
 
 @greenletFunction
 def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
@@ -62,7 +68,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
     zfecEncoder = zfec.Encoder(Threshold, N)
     zfecDecoder = zfec.Decoder(Threshold, N)
 
-    def merkleTree(strList, someHash = dummyHash):
+    def merkleTree(strList, someHash = coolSHA256Hash):
         # someHash is a mapping from a int to a int
         treeLength = 2 ** ceil(math.log(len(strList)) / math.log(2))
         # print "treeLength", treeLength
@@ -126,8 +132,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                         # print repr(buf)
                         fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
                         encodedFragList = zfecEncoder.encode(fragList)
-                        mt = merkleTree(encodedFragList, dummyHash)
-                        mb = getMerkleBranch(pid, mt)
+                        mt = merkleTree(encodedFragList, coolSHA256Hash)
+                        mb = getMerkleBranch(pid, mt)  # notice that index starts from 1 and pid starts from 0
                         rootHash = mt[1]  # full binary tree
                         # print sender, 'fragList', fragList
                         # print sender, 'encoded', zfecEncoder.encode(fragList)
@@ -149,7 +155,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                 # if keys[msgBundle[1]].verify(sha1hash(hex((msgBundle[2][0]+37)*setHash(msgBundle[2][1]))), msgBundle[3]):
                 if keys[msgBundle[1]].verify(sha1hash(repr(msgBundle[2])), msgBundle[3]):
                     originBundle = msgBundle[2]
-                    if not merkleVerify(originBundle[1], originBundle[2], originBundle[3], dummyHash):
+                    if not merkleVerify(originBundle[1], originBundle[2], originBundle[3], coolSHA256Hash):
                         continue
                     opinions[originBundle[0]][sender] = originBundle[1]   # We are going to move this part to kekeketktktktk
                     if len(opinions[originBundle[0]]) >= Threshold2 and not readySent[originBundle[0]]:
