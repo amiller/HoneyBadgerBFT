@@ -74,6 +74,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
 
     def getMerkleBranch(index, mt):
         res = []
+        index += len(mt) >> 1
         while index > 0:
             res.append(mt[index ^ 1])  # we are picking up the sibling
             index /= 2
