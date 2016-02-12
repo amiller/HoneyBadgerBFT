@@ -40,6 +40,11 @@ import math
 def ceil(x):
     return int(math.ceil(x))
 
+def dummyHash(x):  # TODO: replace this guy with good ones
+    if isinstance(x, str):
+        return int(x.encode('hex'), 16)
+    return x
+
 @greenletFunction
 def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
     # Since all the parties we have are symmetric, so I implement this function for N instances of A-cast as a whole
