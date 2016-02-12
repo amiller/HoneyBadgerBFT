@@ -80,7 +80,7 @@ def decode(s):  # TODO
                     starting_time[result[0]], ending_time[result[0]], repr(result[1])))
     return result[1]
 
-def client_test_freenet(N, t):
+def client_test_freenet(N, t, options):
     '''
     Test for the client with random delay channels
 
@@ -95,8 +95,8 @@ def client_test_freenet(N, t):
     :return None:
     '''
     maxdelay = 0.01
-    initiateThresholdSig(open(sys.argv[1], 'r').read())
-    initiateECDSAKeys(open(sys.argv[2], 'r').read())
+    initiateThresholdSig(open(options.threshold_keys, 'r').read())
+    initiateECDSAKeys(open(options.ecdsa, 'r').read())
     buffers = map(lambda _: Queue(1), range(N))
     global logGreenlet
     logGreenlet = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
@@ -213,5 +213,22 @@ if __name__ == '__main__':
     atexit.register(exit)
     if USE_PROFILE:
         GreenletProfiler.start()
-    client_test_freenet(int(sys.argv[4]), int(sys.argv[5]))
+
+    from optparse import OptionParser
+    parser = OptionParser()
+    parser.add_option("-e", "--ecdsa-keys", dest="ecdsa",
+                      help="Location of ECDSA keys", metavar="KEYS")
+    parser.add_option("-k", "--threshold-keys", dest="thresold_keys",
+                      help="Location of threshold encryption keys", metavar="KEYS")
+    parser.add_option("-n", "--number", dest="n",
+                      help="Number of parties", metavar="N", type="int")
+    parser.add_option("-t", "--tolerance", dest="t",
+                      help="Tolerance of adversaries", metavar="T", type="int")
+
+    (options, args) = parser.parse_args()
+    if (options.ecdsa and options.threshold_keys and options.n and options.t):
+        client_test_freenet(options.n , options.t, options)
+    else:
+        parser.error('Please specify the arguments')
+
 
