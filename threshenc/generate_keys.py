@@ -1,7 +1,6 @@
-from shoup import *
+from tpke import dealer, serialize, group
 import argparse
 import cPickle
-
 
 def main():
     parser = argparse.ArgumentParser()
@@ -9,9 +8,14 @@ def main():
     parser.add_argument('k', help='k')
     args = parser.parse_args()
     players = int(args.players)
-    k = int(args.k)
+    if args.k:
+        k = int(args.k)
+    else:
+        k = players / 2  # N - 2 * t
     PK, SKs = dealer(players=players, k=k)
-    print cPickle.dumps((PK, SKs))
+    content = (PK.l, PK.k, serialize(PK.VK), [serialize(VKp) for VKp in PK.VKs],
+               [(SK.i, group.serialize(SK.SK)[2:]) for SK in SKs])
+    print cPickle.dumps(content)
 
 if __name__ == '__main__':
     main()

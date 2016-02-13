@@ -16,9 +16,11 @@ import gmpy2
 from ..ecdsa.ecdsa_ssl import KEY
 import os
 from ..commoncoin import shoup as shoup
+from ..threshenc.tpke import deserialize, TPKEPublicKey, TPKEPrivateKey, group
 
 nameList = open(os.path.dirname(os.path.abspath(__file__)) + '/../test/names.txt','r').read().strip().split('\n')
 # nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
+# TR_SIZE = 250
 TR_SIZE = 250
 SHA_LENGTH = 32
 
@@ -36,6 +38,7 @@ def callBackWrap(func, callback):
     return _callBackWrap
 
 PK, SKs = None, None
+encPK, encSKs = None, None
 
 ecdsa_key_list = []
 
@@ -161,8 +164,10 @@ def deepEncode(mc, m):
     buf.seek(0)
     return buf.read()
 
-
 def constructTransactionFromRepr(r):
+    return (r[:65], r[65:65+32], r[65+32:65+32+65])  # for 65 + 32 + 65
+
+def constructTransactionFromRepr_(r):
     # print repr(r[:4])
     sourceInd, targetInd, amount = struct.unpack('<BBH', r[:4])
     tr = Transaction()
@@ -225,8 +230,18 @@ def deepDecode(m, msgTypeCounter):
 def initiateThresholdSig(contents):
     global PK, SKs
     PK, SKs = pickle.loads(contents)
+    # return PK, SKs
     #print PK
     #print SKs
+
+def initiateThresholdEnc(contents):
+    global encPK, encSKs
+    # (PK.l, PK.k, serialize(PK.VK), [serialize(VKp) for VKp in PK.VKs],
+    #       [(SK.i, serialize(SK.SK)) for SK in SKs])
+    (l, k, sVK, sVKs, SKs) = pickle.loads(contents)
+    encPK, encSKs = TPKEPublicKey(l, k, deserialize(sVK), [deserialize(sVKp) for sVKp in sVKs]), \
+           [TPKEPrivateKey(l, k, deserialize(sVK), [deserialize(sVKp) for sVKp in sVKs], group.deserialize('0:'+SKp[1]), SKp[0]) for SKp in SKs]
+    # return encPK, encSKs
 
 def initiateECDSAKeys(contents):
     global ecdsa_key_list
@@ -237,6 +252,9 @@ def initiateECDSAKeys(contents):
         k.generate(secret)
         k.set_compressed(True)
         ecdsa_key_list.append(k)
+
+def getEncKeys():
+    return encPK, encSKs
 
 def setHash(s):
     result = 0

@@ -5,14 +5,25 @@ from gevent.queue import Queue, Empty
 from mmr13 import binary_consensus
 from bkr_acs import acs, initBeforeBinaryConsensus
 from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, \
-    greenletPacker, PK, SKs, Transaction, getECDSAKeys, sha1hash, setHash, finishTransactionLeap, encodeTransaction, constructTransactionFromRepr, TR_SIZE
+    greenletPacker, PK, SKs, getEncKeys, Transaction, getECDSAKeys, sha1hash, setHash, finishTransactionLeap, encodeTransaction, constructTransactionFromRepr, TR_SIZE
 from collections import defaultdict
 import zfec
 import socket
 from io import BytesIO
 import struct
 import hashlib
-from ..threshenc.tpke import dealer
+from ..threshenc.tpke import dealer, serialize, deserialize
+import random
+
+
+def serializeEnc(C):
+    assert len(serialize(C[0]))==65
+    assert len(C[1]) == 32
+    assert len(serialize(C[2]))==65
+    return (serialize(C[0]), C[1], serialize(C[2]))
+
+def deserializeEnc(T):
+    return (deserialize(T[0]), T[1], deserialize(T[2]))
 
 def calcSum(dd):
     return sum([x for _, x in dd.items()])
@@ -201,7 +212,8 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     # mylog("[%d] put finalTrigger for %d" % (pid, msgBundle[1]), verboseLevel=-2)
 
     greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()
-    encodedMsg = ''.join([encodeTransaction(tr) for tr in msg])
+    # encodedMsg = ''.join([encodeTransaction(tr) for tr in msg])
+    encodedMsg = ''.join([tr[0] + tr[1] + tr[2] + ' '*(250 - 162) for tr in msg])  # each is 65 + 32 + 65 = 162 bytes
     # broadcast(('i', pid, msg, keys[pid].sign(sha1hash(hex(setHash(msg))))))  # Kick Off!
     broadcast(('i', pid, encodedMsg, keys[pid].sign(sha1hash(encodedMsg))))  # Kick Off!
 
@@ -221,8 +233,8 @@ def union(listOfTXSet):
 @greenletFunction
 def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
 
-    for tx in setToInclude:
-        assert(isinstance(tx, Transaction))
+    #for tx in setToInclude:
+    #    assert(isinstance(tx, Transaction))  # This is no longer true
 
     CBChannel = Queue()
     ACSChannel = Queue()
@@ -304,24 +316,28 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
     # transactionCache = set()
     transactionCache = []
     # sessionID = 0
-    locks = defaultdict(lambda _: Queue(1))
+    locks = defaultdict(lambda : Queue(1))
     ENC_THRESHOLD = N - 2 * t
-    PK, SKs = dealer(players = N, k = ENC_THRESHOLD)  # TODO: need to figure out the K here
     B = int(math.ceil(N * math.log(N)))    # parameter for the pool
     global finishcount
-    encCounter = defaultdict(lambda _: {})
+    encPK, encSKs = getEncKeys()
+    encCounter = defaultdict(lambda : {})
+    includeTransactionChannel = Queue()
     def listener():
         while True:
             sender, msgBundle = receive()
-            encCounter[msgBundle[0]][sender] = msgBundle[1]
-            if len(encCounter[msgBundle[0]]) == ENC_THRESHOLD:  # by == this part only executes once.
-                oriM = PK.combine_shares(C, encCounter[msgBundle[0]])
-                locks[msgBundle[0]].put(oriM)
+            if msgBundle[0] == 'O':
+                encCounter[msgBundle[1]][sender] = msgBundle[2]
+                if len(encCounter[msgBundle[1]]) == ENC_THRESHOLD:  # by == this part only executes once.
+                    oriM = encPK.combine_shares(deserializeEnc(msgBundle[1]), encCounter[msgBundle[1]])
+                    locks[msgBundle[1]].put(oriM)
+            else:
+                includeTransactionChannel.put((sender, msgBundle))  # redirect to includeTransaction
 
     Greenlet(listener).start()
 
     while True:
-        if True:
+        # if True:  # to adjust the indents
         # try:
             # op, msg = controlChannel.get(timeout=HONEST_PARTY_TIMEOUT)
             op, msg = controlChannel.get()
@@ -330,8 +346,9 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
                 if isinstance(msg, Transaction):
                     # transactionCache.add(msg)
                     transactionCache.append(msg)
-                #elif isinstance(msg, set):
-                #    transactionCache.update(msg)
+                elif isinstance(msg, set):
+                    for tx in msg:
+                        transactionCache.append(tx)
                 elif isinstance(msg, list):
                     transactionCache.extend(msg)
                 print 'got', len(transactionCache), 'TXs'
@@ -343,24 +360,37 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             #    print ">>>"
             #finally:
             mylog("timestampB (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
-            if len(transactionCache) < B:
+            mylog("[%d] Expecting %d transactions" % (pid, B), verboseLevel=-2)
+            if len(transactionCache) < B:  # Let's wait for many transactions. : )
+                time.sleep(0.5)
                 continue
             oldest_B = transactionCache[:B]
-            selected_B = random.sample(oldest_B, B/N)
+            selected_B = random.sample(oldest_B, min(B/N, len(oldest_B)))
+            print selected_B
             encrypted_B = set()
             for tx in selected_B:
-                encrypted_B.add(PK.encrypt(tx))
+                encrypted_B.add(serializeEnc(encPK.encrypt(coolSHA256Hash(encodeTransaction(tx)))))
             ### TODO: now we require the protocol can deal with plain string transactions
-            syncedTXSet = includeTransaction(pid, N, t, encrypted_B, broadcast, receive)
+            print "starts to include transactions"
+            syncedTXSet = includeTransaction(pid, N, t, encrypted_B, broadcast, includeTransactionChannel.get)
             assert(isinstance(syncedTXSet, set))
+            for stx in syncedTXSet:  # stx is the same for every party
+                # print stx
+                share = encSKs[pid].decrypt_share(deserializeEnc(stx))
+                broadcast(('O', stx, share))  # it seems share is good for python
+            # recoveredSyncedTXSet = set()
             for stx in syncedTXSet:
-                share = SKs[pid].decrypt_share(stx)
-                broadcast((stx, share))
-            recoveredSyncedTXSet = set()
-            for stx in syncedTXSet:
-                recoveredSyncedTXSet.add(lock[stx].get())
-            transactionCache = transactionCache.difference(recoveredSyncedTXSet)    # TODO
-            #mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)), verboseLevel = -1)
+                # recoveredSyncedTXSet.add(lock[stx].get())
+                recoveredSyncedTx = locks[stx].get()
+                for tx in transactionCache[:B]:
+                    if recoveredSyncedTx == coolSHA256Hash(encodeTransaction(tx)):
+                        transactionCache.remove(tx)
+                        mylog("[%d] synced transactions %s" % (pid, repr(tx)), verboseLevel = -2)
+                        break
+                mylog("[%d] now caches %s" % (pid, repr(transactionCache)), verboseLevel = -2)
+
+            # transactionCache = transactionCache.difference(recoveredSyncedTXSet)    # TODO
+            # mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)), verboseLevel = -1)
             mylog("[%d] synced transactions." % pid, verboseLevel = -2)
             mylog("timestampE (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
             lock.get()

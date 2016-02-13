@@ -13,7 +13,7 @@ import gevent
 import os
 from ..core.utils import myRandom as random
 from ..core.utils import ACSException, checkExceptionPerGreenlet, getSignatureCost, \
-    deepEncode, deepDecode, randomTransaction, initiateECDSAKeys, finishTransactionLeap
+    deepEncode, deepDecode, randomTransaction, initiateECDSAKeys, initiateThresholdEnc, finishTransactionLeap
 import json
 import cPickle as pickle
 import time
@@ -97,6 +97,7 @@ def client_test_freenet(N, t, options):
     maxdelay = 0.01
     initiateThresholdSig(open(options.threshold_keys, 'r').read())
     initiateECDSAKeys(open(options.ecdsa, 'r').read())
+    initiateThresholdEnc(open(options.threshold_encs, 'r').read())
     buffers = map(lambda _: Queue(1), range(N))
     global logGreenlet
     logGreenlet = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
@@ -219,6 +220,8 @@ if __name__ == '__main__':
     parser.add_option("-e", "--ecdsa-keys", dest="ecdsa",
                       help="Location of ECDSA keys", metavar="KEYS")
     parser.add_option("-k", "--threshold-keys", dest="threshold_keys",
+                      help="Location of threshold signature keys", metavar="KEYS")
+    parser.add_option("-c", "--threshold-enc", dest="threshold_encs",
                       help="Location of threshold encryption keys", metavar="KEYS")
     parser.add_option("-n", "--number", dest="n",
                       help="Number of parties", metavar="N", type="int")
@@ -227,7 +230,7 @@ if __name__ == '__main__':
     parser.add_option("-x", "--transactions", dest="tx",
                       help="Number of transactions proposed by each party", metavar="TX", type="int", default=1)
     (options, args) = parser.parse_args()
-    if (options.ecdsa and options.threshold_keys and options.n and options.t):
+    if (options.ecdsa and options.threshold_keys and options.threshold_encs and options.n and options.t):
         client_test_freenet(options.n , options.t, options)
     else:
         parser.error('Please specify the arguments')

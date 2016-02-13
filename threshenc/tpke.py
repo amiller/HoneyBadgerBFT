@@ -23,6 +23,7 @@ def serialize(g):
     # Only work in G1 here
     return decodestring(group.serialize(g)[2:])
 
+
 def deserialize(g):
     # Only work in G1 here 
     return group.deserialize('1:'+encodestring(g))
@@ -67,10 +68,15 @@ class TPKEPublicKey(object):
     def encrypt(self, m):
         # Only encrypt 32 byte strings
         assert len(m) == 32
+        #print '1'
         r = group.random(ZR)
+        #print '2'
         U = g ** r
+        #print '3'
         V = xor(m, hashG(self.VK ** r))
+        #print '4'
         W = hashH(U, V) ** r
+        #print '5'
         C = (U, V, W)
         return C
 
@@ -111,8 +117,12 @@ class TPKEPrivateKey(TPKEPublicKey):
         # ASSUMPTION
         # assert self.verify_ciphertext((U,V,W))
 
-        H = hashH(U, V)        
+        # H = hashH(U, V)
+        # print U, V, W
+        # print U
+        # print self.SK
         U_i = U ** self.SK
+
         return U_i
         
 
@@ -159,7 +169,7 @@ def test():
     global PK, SKs
     PK, SKs = dealer(players=100,k=35)
 
-    m = SHA256.new('hi').digest()
+    m = SHA256.new('how').digest()
     C = PK.encrypt(m)
 
     shares = [sk.decrypt_share(C) for sk in SKs]
