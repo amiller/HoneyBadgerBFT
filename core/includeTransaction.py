@@ -343,10 +343,11 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
                 continue
             oldest_B = transactionCache[:B]
             selected_B = random.sample(oldest_B, B/N)
-            encrypted_B = []
+            encrypted_B = set()
             for tx in selected_B:
-                encrypted_B.append(PK.encrypt(tx))
-            syncedTXSet = includeTransaction(pid, N, t, set(encrypted_B), broadcast, receive)
+                encrypted_B.add(PK.encrypt(tx))
+            ### TODO: now we require the protocol can deal with plain string  news
+            syncedTXSet = includeTransaction(pid, N, t, encrypted_B, broadcast, receive)
             assert(isinstance(syncedTXSet, set))
             for stx in syncedTXSet:
                 share = SKs[pid].decrypt_share(stx)
