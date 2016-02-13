@@ -96,15 +96,16 @@ class finishTransactionLeap(Exception):
     pass
 
 def encodeTransactionEnc(trE):
+    # print 'encTr', trE
     return ''.join(trE).ljust(TR_SIZE, ' ')
 
 # assumptions: amount of the money transferred can be expressed in 2 bytes.
-def encodeTransaction(tr):
+def encodeTransaction(tr, length=TR_SIZE):
     sourceInd = nameList.index(tr.source)
     targetInd = nameList.index(tr.target)
     return struct.pack(
         '<BBH', sourceInd, targetInd, tr.amount
-    ) + ' ' * (TR_SIZE-5) + '\x90' # os.urandom(TR_SIZE - 5) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
+    ) + ' ' * (length-5) + '\x90' # os.urandom(TR_SIZE - 5) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
 
 
 # assumptions:
@@ -167,10 +168,10 @@ def deepEncode(mc, m):
     buf.seek(0)
     return buf.read()
 
-def constructTransactionFromRepr(r):
+def constructTransactionFromReprEnc(r):
     return (r[:65], r[65:65+32], r[65+32:65+32+65])  # for 65 + 32 + 65
 
-def constructTransactionFromRepr_(r):
+def constructTransactionFromRepr(r):
     # print repr(r[:4])
     sourceInd, targetInd, amount = struct.unpack('<BBH', r[:4])
     tr = Transaction()
@@ -394,7 +395,7 @@ def greenletFunction(func):
     return func
 
 def checkExceptionPerGreenlet(outfileName=None, ignoreHealthyOnes=True):
-    mylog("Tring to detect greenlets...", verboseLevel=-2)
+    mylog("Trying to detect greenlets...", verboseLevel=-2)
     if not outfileName:
         for ob in gc.get_objects():
             if not hasattr(ob, 'parent_args'):
