@@ -4,7 +4,7 @@ from gevent import Greenlet
 from gevent.queue import Queue, Empty
 from mmr13 import binary_consensus
 from bkr_acs import acs, initBeforeBinaryConsensus
-from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, \
+from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, encodeTransactionEnc, \
     greenletPacker, PK, SKs, getEncKeys, Transaction, getECDSAKeys, sha1hash, setHash, finishTransactionLeap, encodeTransaction, constructTransactionFromRepr, TR_SIZE
 from collections import defaultdict
 import zfec
@@ -109,7 +109,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
             tmp = someHash((tindex & 1) and br + tmp or tmp + br)
             tindex >>= 1
         if tmp != rootHash:
-            print "verification with", someHash(val), rootHash, branch, tmp == rootHash
+            print "Verification failed with", someHash(val), rootHash, branch, tmp == rootHash
         return tmp == rootHash
 
     def Listener():
@@ -177,7 +177,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     opinions[originBundle[0]][sender] = originBundle[1]   # We are going to move this part to kekeketktktktk
                     if len(opinions[originBundle[0]]) >= Threshold2 and not readySent[originBundle[0]]:
                             readySent[originBundle[0]] = True
-                            Greenlet(broadcast, ('r', originBundle[0], sha1hash(buf))).start()
+                            Greenlet(broadcast, ('r', originBundle[0], originBundle[2])).start()  # We are broadcasting its hash
                         # broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to
                 else:
                     raise ECDSASignatureError()
@@ -213,7 +213,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
 
     greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()
     # encodedMsg = ''.join([encodeTransaction(tr) for tr in msg])
-    encodedMsg = ''.join([tr[0] + tr[1] + tr[2] + ' '*(250 - 162) for tr in msg])  # each is 65 + 32 + 65 = 162 bytes
+    encodedMsg = ''.join([encodeTransactionEnc(tr) for tr in msg])
     # broadcast(('i', pid, msg, keys[pid].sign(sha1hash(hex(setHash(msg))))))  # Kick Off!
     broadcast(('i', pid, encodedMsg, keys[pid].sign(sha1hash(encodedMsg))))  # Kick Off!
 
@@ -366,9 +366,10 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
                 continue
             oldest_B = transactionCache[:B]
             selected_B = random.sample(oldest_B, min(B/N, len(oldest_B)))
-            print selected_B
+            print repr(selected_B)
             encrypted_B = set()
             for tx in selected_B:
+                print repr(coolSHA256Hash(encodeTransaction(tx)))
                 encrypted_B.add(serializeEnc(encPK.encrypt(coolSHA256Hash(encodeTransaction(tx)))))
             ### TODO: now we require the protocol can deal with plain string transactions
             print "starts to include transactions"
@@ -382,16 +383,17 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             for stx in syncedTXSet:
                 # recoveredSyncedTXSet.add(lock[stx].get())
                 recoveredSyncedTx = locks[stx].get()
+                print repr(recoveredSyncedTx)
                 for tx in transactionCache[:B]:
                     if recoveredSyncedTx == coolSHA256Hash(encodeTransaction(tx)):
-                        transactionCache.remove(tx)
+                        print "!!!!"
                         mylog("[%d] synced transactions %s" % (pid, repr(tx)), verboseLevel = -2)
+                        transactionCache.remove(tx)
                         break
-                mylog("[%d] now caches %s" % (pid, repr(transactionCache)), verboseLevel = -2)
+            mylog("[%d] now caches %s" % (pid, repr(transactionCache)), verboseLevel = -2)
 
             # transactionCache = transactionCache.difference(recoveredSyncedTXSet)    # TODO
             # mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)), verboseLevel = -1)
-            mylog("[%d] synced transactions." % pid, verboseLevel = -2)
             mylog("timestampE (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
             lock.get()
             finishcount += 1

@@ -95,13 +95,16 @@ class deepDecodeException(Exception):
 class finishTransactionLeap(Exception):
     pass
 
+def encodeTransactionEnc(trE):
+    return ''.join(trE).ljust(TR_SIZE, ' ')
+
 # assumptions: amount of the money transferred can be expressed in 2 bytes.
 def encodeTransaction(tr):
     sourceInd = nameList.index(tr.source)
     targetInd = nameList.index(tr.target)
     return struct.pack(
         '<BBH', sourceInd, targetInd, tr.amount
-    ) + os.urandom(TR_SIZE - 5) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
+    ) + ' ' * (TR_SIZE-5) + '\x90' # os.urandom(TR_SIZE - 5) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
 
 
 # assumptions:
