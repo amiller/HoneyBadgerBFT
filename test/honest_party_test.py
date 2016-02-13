@@ -24,7 +24,7 @@ import struct
 from io import BytesIO
 
 USE_DEEP_ENCODE = False
-QUIET_MODE = True
+QUIET_MODE = False
 
 def exception(msg):
     mylog(bcolors.WARNING + "Exception: %s\n" % msg + bcolors.ENDC)

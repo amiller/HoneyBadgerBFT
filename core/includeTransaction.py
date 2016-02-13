@@ -12,7 +12,7 @@ import socket
 from io import BytesIO
 import struct
 import hashlib
-
+from ..threshenc.tpke import *
 
 def calcSum(dd):
     return sum([x for _, x in dd.items()])
@@ -179,7 +179,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     Greenlet(broadcast, ('r', msgBundle[1], msgBundle[2])).start()
                     # broadcast(('r', msgBundle[1], msgBundle[2]))  # relay the msg
                 if tmp >= 2*t+1 and not outputs[msgBundle[1]].full() and finalTrigger[msgBundle[1]].empty() and \
-                        not reconstDone[msgBundle[1]]:
+                        not reconstDone[msgBundle[1]] and len(opinions[msgBundle[1]]) >= Threshold:
                     reconstDone[msgBundle[1]] = True
                     # mylog("[%d] got %d echos for %d to reconstruction" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
                     #  verboseLevel=-2)
@@ -300,32 +300,61 @@ lock.put(1)
 @greenletFunction
 def honestParty(pid, N, t, controlChannel, broadcast, receive):
     # RequestChannel is called by the client and it is the client's duty to broadcast the tx it wants to include
-    #sock = socket.create_connection((sys.argv[4], 51234))
-    transactionCache = set()
+    # sock = socket.create_connection((sys.argv[4], 51234))
+    # transactionCache = set()
+    transactionCache = []
     sessionID = 0
+    locks = defaultdict(lambda _: Queue(1))
+    PK, SKs = dealer(players = N, k = N - 2 * t)  # TODO: need to figure out the K here
+    B = int(math.ceil(N * math.log(N)))    # parameter for the pool
     global finishcount
+    encCounter = defaultdict(lambda _: {})
+    def receive():
+        while True:
+            sender, msgBundle = receive()
+            encCounter[msgBundle[0]][sender] = msgBundle[1]
+            if len(encCounter[msgBundle[0]]) == N - 2*t:
+                oriM = PK.combine_shares(C, encCounter[msgBundle[0]])
+                locks[msgBundle[0]].put(oriM)
     while True:
-        try:
+        if True:
+        # try:
             # op, msg = controlChannel.get(timeout=HONEST_PARTY_TIMEOUT)
             op, msg = controlChannel.get()
             mylog("[%d] gets some msg %s" % (pid, repr(msg)))
             if op == "IncludeTransaction":
                 if isinstance(msg, Transaction):
-                    transactionCache.add(msg)
-                elif isinstance(msg, set):
-                    transactionCache.update(msg)
+                    # transactionCache.add(msg)
+                    transactionCache.append(msg)
+                #elif isinstance(msg, set):
+                #    transactionCache.update(msg)
+                elif isinstance(msg, list):
+                    transactionCache.extend(msg)
                 print 'got', len(transactionCache), 'TXs'
             elif op == "Halt":
                 break
             elif op == "Msg":
                 broadcast(eval(msg))  # now the msg is something we mannually send
-        except Empty:
-            print ">>>"
-        finally:
+        #except Empty:
+        #    print ">>>"
+        #finally:
             mylog("timestampB (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
-            syncedTXSet = includeTransaction(pid, N, t, transactionCache, broadcast, receive)
+            if len(transactionCache) < B:
+                continue
+            oldest_B = transactionCache[:B]
+            selected_B = random.sample(oldest_B, B/N)
+            encrypted_B = []
+            for tx in selected_B:
+                encrypted_B.append(PK.encrypt(tx))
+            syncedTXSet = includeTransaction(pid, N, t, set(encrypted_B), broadcast, receive)
             assert(isinstance(syncedTXSet, set))
-            transactionCache = transactionCache.difference(syncedTXSet)
+            for stx in syncedTXSet:
+                share = SKs[pid].decrypt_share(stx)
+                broadcast((stx, share))
+            recoveredSyncedTXSet = set()
+            for stx in syncedTXSet:
+                recoveredSyncedTXSet.add(lock[stx].get())
+            transactionCache = transactionCache.difference(recoveredSyncedTXSet)    # TODO
             #mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)), verboseLevel = -1)
             mylog("[%d] synced transactions." % pid, verboseLevel = -2)
             mylog("timestampE (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
