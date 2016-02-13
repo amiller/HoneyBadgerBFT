@@ -10,7 +10,8 @@ import random
 # 
 
 
-group = PairingGroup('SS512')
+#group = PairingGroup('SS512')
+group = PairingGroup('MNT224')
 
 def serialize(g):
     # Only work in G1 here
