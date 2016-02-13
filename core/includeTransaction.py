@@ -305,17 +305,21 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
     transactionCache = []
     sessionID = 0
     locks = defaultdict(lambda _: Queue(1))
-    PK, SKs = dealer(players = N, k = N - 2 * t)  # TODO: need to figure out the K here
+    ENC_THRESHOLD = N - 2 * t
+    PK, SKs = dealer(players = N, k = ENC_THRESHOLD)  # TODO: need to figure out the K here
     B = int(math.ceil(N * math.log(N)))    # parameter for the pool
     global finishcount
     encCounter = defaultdict(lambda _: {})
-    def receive():
+    def listener():
         while True:
             sender, msgBundle = receive()
             encCounter[msgBundle[0]][sender] = msgBundle[1]
-            if len(encCounter[msgBundle[0]]) == N - 2*t:
+            if len(encCounter[msgBundle[0]]) == ENC_THRESHOLD:  # by == this part only executes once.
                 oriM = PK.combine_shares(C, encCounter[msgBundle[0]])
                 locks[msgBundle[0]].put(oriM)
+
+    Greenlet(listener).start()
+
     while True:
         if True:
         # try:
@@ -346,7 +350,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             encrypted_B = set()
             for tx in selected_B:
                 encrypted_B.add(PK.encrypt(tx))
-            ### TODO: now we require the protocol can deal with plain string  news
+            ### TODO: now we require the protocol can deal with plain string transactions
             syncedTXSet = includeTransaction(pid, N, t, encrypted_B, broadcast, receive)
             assert(isinstance(syncedTXSet, set))
             for stx in syncedTXSet:
