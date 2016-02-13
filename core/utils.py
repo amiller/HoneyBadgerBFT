@@ -16,7 +16,7 @@ import gmpy2
 from ..ecdsa.ecdsa_ssl import KEY
 import os
 from ..commoncoin import shoup as shoup
-from ..threshenc.tpke import deserialize, TPKEPublicKey, TPKEPrivateKey, group
+from ..threshenc.tpke import serialize, deserialize, TPKEPublicKey, TPKEPrivateKey, group
 
 nameList = open(os.path.dirname(os.path.abspath(__file__)) + '/../test/names.txt','r').read().strip().split('\n')
 # nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
@@ -119,52 +119,62 @@ def encodeTransaction(tr, length=TR_SIZE):
 def deepEncode(mc, m):
     buf = BytesIO()
     buf.write(struct.pack('<I', mc))
-    f, t, (tag, c) = m
+    f, t, bundle = m
     buf.write(struct.pack('BB', f, t))
-    # totally we have 4 msg types
-    if c[0]=='i':
-        buf.write('\x01')
-        t2, p1, s, sig = c
-        buf.write(struct.pack('<BI', p1, len(s)))  # here we write the # of tx instead of # of bytes
-        buf.write(s)  # here we assume s is an encoded set of transaction
-        # for tr in s:
-        #    buf.write(encodeTransaction(tr))
-        buf.write(sig)
-    elif c[0]=='e':
-        # print c
-        buf.write('\x02')
-        t2, p1, (p2, s, rh, mb), sig = c  # rh is the root hash and mb is the merkle branch
-        buf.write(struct.pack('<BBIB', p1, p2, len(s), len(mb)))
-        buf.write(s)  ## here we already have them encoded
-        buf.write(rh)  ## it's SHA_LENGTH bytes
-        for br in mb:
-            buf.write(br)  ## still SHA_LENGTH bytes each
-        # print 'wrote', repr(s)
-        # for tr in s:
-        #     buf.write(encodeTransaction(tr))
-        # buf.write('\x00'*4)
-        buf.write(sig)
-    elif c[0]=='r':
-        buf.write('\x06')
-        t2, p1, hm = c
-        buf.write(struct.pack('B', p1))
-        buf.write(hm)
+    if bundle[0] == 'O':
+        tag, stx, share = bundle
+        buf.write('\x07')
+        buf.write(stx[0])
+        buf.write(stx[1])
+        buf.write(stx[2])
+        buf.write(serialize(share))
     else:
-        p1, (t2, m2) = c
-        if t2 == 'B':
-            buf.write('\x03')
-        elif t2 == 'A':
-            buf.write('\x04')
-        elif t2 == 'C':
-            buf.write('\x05')
-            r, sig = m2
-            buf.write(struct.pack('<BH', p1, r) + gmpy2.to_binary(sig)[2:])
-            buf.seek(0)
-            return buf.read()
+        (tag, c) = bundle
+        # buf.write(struct.pack('BB', f, t))
+        # totally we have 4 msg types
+        if c[0]=='i':
+            buf.write('\x01')
+            t2, p1, s, sig = c
+            buf.write(struct.pack('<BI', p1, len(s)))  # here we write the # of tx instead of # of bytes
+            buf.write(s)  # here we assume s is an encoded set of transaction
+            # for tr in s:
+            #    buf.write(encodeTransaction(tr))
+            buf.write(sig)
+        elif c[0]=='e':
+            # print c
+            buf.write('\x02')
+            t2, p1, (p2, s, rh, mb), sig = c  # rh is the root hash and mb is the merkle branch
+            buf.write(struct.pack('<BBIB', p1, p2, len(s), len(mb)))
+            buf.write(s)  ## here we already have them encoded
+            buf.write(rh)  ## it's SHA_LENGTH bytes
+            for br in mb:
+                buf.write(br)  ## still SHA_LENGTH bytes each
+            # print 'wrote', repr(s)
+            # for tr in s:
+            #     buf.write(encodeTransaction(tr))
+            # buf.write('\x00'*4)
+            buf.write(sig)
+        elif c[0]=='r':
+            buf.write('\x06')
+            t2, p1, hm = c
+            buf.write(struct.pack('B', p1))
+            buf.write(hm)
         else:
-            raise deepEncodeException()
-        (p2, p3) = m2
-        buf.write(struct.pack('BBB', p1, p2, p3))
+            p1, (t2, m2) = c
+            if t2 == 'B':
+                buf.write('\x03')
+            elif t2 == 'A':
+                buf.write('\x04')
+            elif t2 == 'C':
+                buf.write('\x05')
+                r, sig = m2
+                buf.write(struct.pack('<BH', p1, r) + gmpy2.to_binary(sig)[2:])
+                buf.seek(0)
+                return buf.read()
+            else:
+                raise deepEncodeException()
+            (p2, p3) = m2
+            buf.write(struct.pack('BBB', p1, p2, p3))
     buf.seek(0)
     return buf.read()
 
@@ -228,6 +238,10 @@ def deepDecode(m, msgTypeCounter):
         p1, = struct.unpack('B', buf.read(1))
         hm = buf.read()
         return mc, (f, t, ('B', ('r', p1, hm)))
+    elif msgtype == 7:
+        stx = (buf.read(65), buf.read(32), buf.read(65))
+        share = deserialize(buf.read(65))
+        return mc, (f, t, ('O', stx, share))
     else:
         raise deepDecodeException()
 
