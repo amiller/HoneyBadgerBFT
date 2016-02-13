@@ -12,7 +12,7 @@ import socket
 from io import BytesIO
 import struct
 import hashlib
-from ..threshenc.tpke import *
+from ..threshenc.tpke import dealer
 
 def calcSum(dd):
     return sum([x for _, x in dd.items()])
@@ -303,7 +303,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
     # sock = socket.create_connection((sys.argv[4], 51234))
     # transactionCache = set()
     transactionCache = []
-    sessionID = 0
+    # sessionID = 0
     locks = defaultdict(lambda _: Queue(1))
     ENC_THRESHOLD = N - 2 * t
     PK, SKs = dealer(players = N, k = ENC_THRESHOLD)  # TODO: need to figure out the K here
@@ -339,9 +339,9 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
                 break
             elif op == "Msg":
                 broadcast(eval(msg))  # now the msg is something we mannually send
-        #except Empty:
-        #    print ">>>"
-        #finally:
+            #except Empty:
+            #    print ">>>"
+            #finally:
             mylog("timestampB (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
             if len(transactionCache) < B:
                 continue
@@ -373,6 +373,6 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
                 #raise finishTransactionLeap()  # long-jump
                 # sys.exit()
             # raw_input()
-        sessionID = sessionID + 1
+        #  sessionID = sessionID + 1
     mylog("[%d] Now halting..." % (pid))
 
