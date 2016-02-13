@@ -23,6 +23,8 @@ nameList = open(os.path.dirname(os.path.abspath(__file__)) + '/../test/names.txt
 # TR_SIZE = 250
 TR_SIZE = 250
 SHA_LENGTH = 32
+PAIRING_SERIALIZED = 65
+CURVE_LENGTH = 32
 
 verbose = -2
 goodseed = random.randint(1, 10000)
@@ -179,7 +181,9 @@ def deepEncode(mc, m):
     return buf.read()
 
 def constructTransactionFromReprEnc(r):
-    return (r[:65], r[65:65+32], r[65+32:65+32+65])  # for 65 + 32 + 65
+    return (r[:PAIRING_SERIALIZED],
+            r[PAIRING_SERIALIZED:PAIRING_SERIALIZED+CURVE_LENGTH],
+            r[PAIRING_SERIALIZED+CURVE_LENGTH:PAIRING_SERIALIZED*2+CURVE_LENGTH])  # for 65 + 32 + 65
 
 def constructTransactionFromRepr(r):
     # print repr(r[:4])
@@ -239,8 +243,8 @@ def deepDecode(m, msgTypeCounter):
         hm = buf.read()
         return mc, (f, t, ('B', ('r', p1, hm)))
     elif msgtype == 7:
-        stx = (buf.read(65), buf.read(32), buf.read(65))
-        share = deserialize(buf.read(65))
+        stx = (buf.read(PAIRING_SERIALIZED), buf.read(CURVE_LENGTH), buf.read(PAIRING_SERIALIZED))
+        share = deserialize(buf.read(PAIRING_SERIALIZED))
         return mc, (f, t, ('O', stx, share))
     else:
         raise deepDecodeException()
