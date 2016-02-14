@@ -12,21 +12,21 @@ import socket
 from io import BytesIO
 import struct
 import hashlib
-from ..threshenc.tpke import dealer, serialize, deserialize
-from utils import PAIRING_SERIALIZED, CURVE_LENGTH
+from ..threshenc.tpke import dealer, serialize, deserialize0, deserialize1, deserialize2
+from utils import PAIRING_SERIALIZED_0, PAIRING_SERIALIZED_1, PAIRING_SERIALIZED_2, CURVE_LENGTH
 import random
 
 
 def serializeEnc(C):
     # print len(serialize(C[0]))
     # print len(C[1])
-    assert len(serialize(C[0]))==PAIRING_SERIALIZED
+    assert len(serialize(C[0]))==PAIRING_SERIALIZED_1
     assert len(C[1]) == CURVE_LENGTH
-    assert len(serialize(C[2]))==PAIRING_SERIALIZED
+    assert len(serialize(C[2]))==PAIRING_SERIALIZED_2
     return (serialize(C[0]), C[1], serialize(C[2]))
 
 def deserializeEnc(T):
-    return (deserialize(T[0]), T[1], deserialize(T[2]))
+    return (deserialize1(T[0]), T[1], deserialize2(T[2]))
 
 def calcSum(dd):
     return sum([x for _, x in dd.items()])
@@ -384,7 +384,14 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
                 # print pid, 'SHA256', repr(coolSHA256Hash(encodeTransaction(tx)))
                 # encrypted_B.add(encS)
                 # encrypted_B.add(serializeEnc(encPK.encrypt(coolSHA256Hash(encodeTransaction(tx)))))
-                encrypted_B.add(serializeEnc(encPK.encrypt(encodeTransaction(tx, 32))))
+                eTX = encodeTransaction(tx, 32)
+                # print pid, 'ori', repr(eTX)
+                enc = encPK.encrypt(eTX)
+                encS = serializeEnc(enc)
+                # shares = [encSKs[i].decrypt_share(enc) for i in range(N)]
+                # print pid, 'dec', repr(encPK.combine_shares(enc, dict((s, shares[s]) for s in range(ENC_THRESHOLD))))
+                # print pid, repr(encS)
+                encrypted_B.add(encS)
             ### TODO: now we require the protocol can deal with plain string transactions
             print "starts to include transactions"
             # print pid, 'encrypted_B', encrypted_B
@@ -399,7 +406,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
                 # recoveredSyncedTXSet.add(lock[stx].get())
                 # recoveredSyncedTx = locks[stx].get()
                 rec = locks[stx].get()
-                print pid, repr(rec)
+                # print pid, repr(rec)
                 recoveredSyncedTx = constructTransactionFromRepr(rec)
                 finishedTx.append(recoveredSyncedTx)
                 if recoveredSyncedTx in transactionCache:
@@ -410,8 +417,8 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
                 #        mylog("[%d] synced transactions %s" % (pid, repr(tx)), verboseLevel = -2)
                 #        transactionCache.remove(tx)
                 #        break
-            mylog("[%d] now caches %s" % (pid, repr(transactionCache)), verboseLevel = -2)
-            mylog("[%d] synced transactions %s" % (pid, repr(finishedTx)), verboseLevel = -2)
+            mylog("[%d] now caches %s" % (pid, repr(transactionCache)), verboseLevel = -1)
+            mylog("[%d] synced transactions %s" % (pid, repr(finishedTx)), verboseLevel = -1)
 
             # transactionCache = transactionCache.difference(recoveredSyncedTXSet)    # TODO
             # mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)), verboseLevel = -1)

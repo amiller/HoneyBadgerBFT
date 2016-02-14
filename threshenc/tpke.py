@@ -24,10 +24,17 @@ def serialize(g):
     # Only work in G1 here
     return decodestring(group.serialize(g)[2:])
 
+def deserialize0(g):
+    # Only work in G1 here
+    return group.deserialize('0:'+encodestring(g))
 
-def deserialize(g):
-    # Only work in G1 here 
+def deserialize1(g):
+    # Only work in G1 here
     return group.deserialize('1:'+encodestring(g))
+
+def deserialize2(g):
+    # Only work in G1 here
+    return group.deserialize('2:'+encodestring(g))
 
 def xor(x,y):
     assert len(x) == len(y) == 32
