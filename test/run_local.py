@@ -2,8 +2,11 @@ import subprocess, sys, signal
 
 def runOnTransaction(N, t, Tx):
     # p = subprocess.Popen(
+    # -k 4_2.keys -e ecdsa.keys -x 8 -n 4 -t 1 -c threshenc_4_2.keys
     p = subprocess.check_output(
-        ['python', './honest_party_test.py', '%d_%d.key' % (N, t), 'ecdsa_keys', '%d' % Tx, str(N), str(t)],
+        ['python', '-m', 'HoneyBadgerBFT.test.honest_party_test',
+            '-k', '%d_%d.key' % (N, t), '-e', 'ecdsa.keys', '-x', '%d' % Tx,
+            '-n', str(N), '-t', str(t), '-c', 'th_%d_%d.keys' % (N, t)],
         shell=False,
         # stdout=subprocess.PIPE,
         # stderr=subprocess.PIPE,
