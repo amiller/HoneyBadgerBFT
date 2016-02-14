@@ -417,8 +417,8 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
                 #        mylog("[%d] synced transactions %s" % (pid, repr(tx)), verboseLevel = -2)
                 #        transactionCache.remove(tx)
                 #        break
-            mylog("[%d] now caches %s" % (pid, repr(transactionCache)), verboseLevel = -2)
-            mylog("[%d] synced transactions %s" % (pid, repr(finishedTx)), verboseLevel = -2)
+            mylog("[%d] now caches %s" % (pid, repr(transactionCache)), verboseLevel = -1)
+            mylog("[%d] synced transactions %s" % (pid, repr(finishedTx)), verboseLevel = -1)
 
             # transactionCache = transactionCache.difference(recoveredSyncedTXSet)    # TODO
             # mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)), verboseLevel = -1)
