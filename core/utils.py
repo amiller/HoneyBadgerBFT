@@ -15,7 +15,7 @@ import struct
 import gmpy2
 from ..ecdsa.ecdsa_ssl import KEY
 import os
-from ..commoncoin import shoup as shoup
+from ..commoncoin import boldyreva as boldyreva
 from ..threshenc.tpke import serialize, deserialize0, deserialize1, deserialize2, TPKEPublicKey, TPKEPrivateKey, group
 
 nameList = open(os.path.dirname(os.path.abspath(__file__)) + '/../test/names.txt','r').read().strip().split('\n')
@@ -26,6 +26,7 @@ SHA_LENGTH = 32
 PAIRING_SERIALIZED_0 = 28
 PAIRING_SERIALIZED_1 = 65 # 29  # 65
 PAIRING_SERIALIZED_2 = 85
+BOLDYREVA_SERIALIZED_1 = 29
 CURVE_LENGTH = 32
 
 verbose = -2
@@ -172,7 +173,9 @@ def deepEncode(mc, m):
             elif t2 == 'C':
                 buf.write('\x05')
                 r, sig = m2
-                buf.write(struct.pack('<BH', p1, r) + gmpy2.to_binary(sig)[2:])
+                #buf.write(struct.pack('<BH', p1, r) + gmpy2.to_binary(sig)[2:])
+                buf.write(struct.pack('<BH', p1, r))
+                buf.write(boldyreva.serialize(sig))
                 buf.seek(0)
                 return buf.read()
             else:
@@ -238,7 +241,8 @@ def deepDecode(m, msgTypeCounter):
         return mc, (f, t, ('A', (p1, ('A', (p2, p3)))),)
     elif msgtype == 5:
         p1, r = struct.unpack('<BH', buf.read(3))
-        sig = gmpy2.from_binary('\x01\x01'+buf.read())
+        sig = boldyreva.deserialize1(buf.read())
+        # sig = gmpy2.from_binary('\x01\x01'+buf.read())
         return mc, (f, t, ('A', (p1, ('C', (r, sig)))))
     elif msgtype == 6:
         p1, = struct.unpack('B', buf.read(1))
@@ -253,7 +257,11 @@ def deepDecode(m, msgTypeCounter):
 
 def initiateThresholdSig(contents):
     global PK, SKs
-    PK, SKs = pickle.loads(contents)
+    (l, k, sVK, sVKs, SKs) = pickle.loads(contents)
+    PK, SKs = boldyreva.TBLSPublicKey(l, k, boldyreva.deserialize2(sVK), [boldyreva.deserialize2(sVKp) for sVKp in sVKs]), \
+           [boldyreva.TBLSPrivateKey(l, k, boldyreva.deserialize2(sVK), [boldyreva.deserialize2(sVKp) for sVKp in sVKs], \
+                           boldyreva.deserialize0(SKp[1]), SKp[0]) for SKp in SKs]
+    # PK, SKs = pickle.loads(contents)
     # return PK, SKs
     #print PK
     #print SKs

@@ -4,6 +4,7 @@ from gevent import Greenlet
 from gevent.queue import Queue
 from collections import defaultdict
 from utils import dummyCoin, greenletPacker, getKeys
+from ..commoncoin.boldyreva import serialize, deserialize1
 # import random
 import sys
 
@@ -103,30 +104,30 @@ def shared_coin(instance, pid, N, t, broadcast, receive):
             # mylog('[%d] finished line 114' % pid)
             assert i in range(N)
             assert r >= 0
-            for ip, sigIp in received[r]:
-                if ip == i+1:
-                    continue
-            received[r].add((i+1, sig))
+            #for ip, sigIp in received[r]:
+            #    if ip == i+1:
+            #        continue
+            received[r].add((i, serialize(sig)))
 
             # After reaching the threshold, compute the output and
             # make it available locally
             if len(received[r]) == t + 1:  #####
                 #if True:
                 try:
-                    combsig = PK.combine_shares(str((r, instance)), dict(received[r]))
-                    assert PK.verify_signature(combsig, str((r, instance)))
+                    combsig = PK.combine_shares(dict((t, deserialize1(sig)) for t, sig in received[r]))
+                    assert PK.verify_signature(combsig, PK.hash_message(str((r, instance))))
                 except AssertionError, e:
                     raise CommonCoinFailureException()
                 # b = hash(r) % 2
                 # mylog('[%d] got a common coin %d at round %d' % (pid, combsig % 2, r), verboseLevel=-2)
                 # outputQueue[r].put(r % 2)
                 # outputQueue[r].put(combsig % 2)
-                outputQueue[r].put(combsig.bit_test(0) and 1 or 0)  # explicitly convert to int
+                outputQueue[r].put(ord(serialize(combsig)[0]) & 1)  # explicitly convert to int
 
     greenletPacker(Greenlet(_recv), 'shared_coin_dummy', (pid, N, t, broadcast, receive)).start()
 
     def getCoin(round):
-        broadcast((round, SKs[pid].sign(str((round,instance)))))   # I have to do mapping to 1..l
+        broadcast((round, SKs[pid].sign(PK.hash_message(str((round,instance))))))  # I have to do mapping to 1..l
         return outputQueue[round].get()
 
     return getCoin

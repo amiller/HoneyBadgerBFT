@@ -17,9 +17,17 @@ def serialize(g):
     # Only work in G1 here
     return decodestring(group.serialize(g)[2:])
 
-def deserialize(g):
-    # Only work in G1 here 
+def deserialize0(g):
+    # Only work in G1 here
+    return group.deserialize('0:'+encodestring(g))
+
+def deserialize1(g):
+    # Only work in G1 here
     return group.deserialize('1:'+encodestring(g))
+
+def deserialize2(g):
+    # Only work in G1 here 
+    return group.deserialize('2:'+encodestring(g))
 
 g1 = group.hash('geng1', G1)
 g1.initPP()
@@ -104,7 +112,7 @@ def dealer(players=10, k=5):
         return y
 
     # Shares of master secret key
-    SKs = [f(i) for i in range(1,players+1)]
+    SKs = [f(i) for i in range(1, players+1)]
     assert f(0) == secret
 
     # Verification keys
