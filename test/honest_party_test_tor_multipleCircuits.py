@@ -5,7 +5,7 @@ monkey.patch_all()
 
 from gevent.queue import *
 from gevent import Greenlet
-from ..core.utils import bcolors, mylog, initiateECDSAKeys, initiateThresholdSig, checkExceptionPerGreenlet
+from ..core.utils import bcolors, mylog, initiateThresholdSig
 from ..core.includeTransaction import honestParty, Transaction
 from collections import defaultdict
 from ..core.bkr_acs import initBeforeBinaryConsensus
@@ -14,12 +14,19 @@ import gevent
 import os
 from ..core.utils import myRandom as random
 from gevent.server import StreamServer
+from ..core.utils import ACSException, checkExceptionPerGreenlet, getSignatureCost, \
+    deepEncode, deepDecode, randomTransaction, initiateECDSAKeys, initiateThresholdEnc, finishTransactionLeap
+import json
+import cPickle as pickle
 import time
 import base64
 import socks, socket
 import struct
 from io import BytesIO
 import sys
+
+# USE_DEEP_ENCODE = True # It must be encoded
+QUIET_MODE = True
 
 TOR_SOCKSPORT = range(9050, 9150)
 
@@ -82,113 +89,14 @@ def connect_to_channel(hostname, port, party):
 
 BASE_PORT = 49500
 
-TOR_MAPPING_LIST = """
-3lejkcwieaamk2ea.onion
-l2y6c2tztpjbcjv5.onion
-cystbatihmcyj6nf.onion
-hhhegzzwem6v2rpx.onion
-za44dm5gbhkzif24.onion
-gjbcxcdek272x5kv.onion
-bgge235qrp2vc67b.onion
-qd5pf7tlzv7tgvfm.onion
-2gexsunkq5bruu2q.onion
-alh6vi2fwxobluq5.onion
-f3oqs4hq6lo6a7xl.onion
-5hrnuw7iz2fnfgkv.onion
-ijjkdw6fnrdhgt3d.onion
-l5yd4jelejc2gl3i.onion
-yyrdvlvucwbig56a.onion
-fpcak233m6ohegms.onion
-p2wvpc3tkdfqog6j.onion
-5phvu6syhjbm7n3w.onion
-hcgkkdxwvsc5qswe.onion
-udaba767u7aocmty.onion
-75ll7ngx7e6sq6rp.onion
-jyyjnevnavat3ud5.onion
-rpen3n6wguukl3fr.onion
-pwxrwkuhskjkf26y.onion
-akkrpjhtjar7yarw.onion
-ag6x77z66y55iguk.onion
-pztc6izyol5w3jaj.onion
-pz6ud2oybmsentni.onion
-qfq2jgfh7o32k2cj.onion
-u35gwataqartl2mt.onion
-47jglydcvty2ajti.onion
-nolmnj6sydrfjsbi.onion
-w7w5dfvh7b4uhfvf.onion
-6oxlexh3egtcocax.onion
-uta7m36evktozfly.onion
-xtq2j4o46gmk5liw.onion
-weizky5fuspvvcop.onion
-pksea5efjhktetyj.onion
-opb6sxzwoxyiacj2.onion
-ifpcfzorimmshzbr.onion
-rrcb7ig6rlq4icuw.onion
-klnkwktznrfd7xh7.onion
-k3p7vyopsssabkf5.onion
-h3jmbkx65wzhowto.onion
-i2bgufwjkbnncsyc.onion
-tn6km6tybxxv6xa4.onion
-o7clcncv6iyssmzg.onion
-oyryk4bgjj3nwbeu.onion
-z2bljpd5bznkqxc5.onion
-dlhjnxs5awxi5pdt.onion
-btwlcctwfo5cib4m.onion
-szfdodi4s5riz27o.onion
-6prcdgeestfe46a3.onion
-g6gz5mtn5wtmf7vy.onion
-ouzen35jbwspxhw7.onion
-yso3ej7dfifcpsbh.onion
-yrznvdn4nlu7qqbo.onion
-7nqrqtnvqrhe6lqu.onion
-xv4ankt2gxiixgp4.onion
-khklcuhms5nk65vy.onion
-zyhrbtnimfysuj3w.onion
-vqh5avrnbc55wykm.onion
-icwmhirkf2dtnh6j.onion
-oemvdbpphjrj3tbk.onion
-h26wnqcw5v6x6yuk.onion
-jjik6qz7ka4weijf.onion
-cqxcbi2vepvbzh7e.onion
-vmc6il7lg5hwt26p.onion
-ymaoog64u7hsq5vf.onion
-7wq5fmlxjejubpcg.onion
-m62btnlnxfkpwhme.onion
-2hdofxd47k2jqr24.onion
-re7l2oe6cct7qvls.onion
-pm4h7zat2427wk4p.onion
-tycuewubq36yda3i.onion
-3hni35xqzhmaobb7.onion
-y2t3ttxksas2liv4.onion
-ojodbuqpbgsnu2zm.onion
-eszv35asqgniiarw.onion
-ic25j4yqirfnuihw.onion
-hjidbaj56budwncn.onion
-z67nhcmcv64u4g5h.onion
-4eit34fwfoegbjae.onion
-n4tzfy6ptzdffs4o.onion
-7i5zs4vxsgubooqn.onion
-cq3ampvpbxlkbf4n.onion
-avhbcewtfxl2mikm.onion
-xbasrgkmxuehamun.onion
-awxpcqfk3xq6jtkf.onion
-7zk7wmijdd3rwpq2.onion
-t76n3uhiunubmr65.onion
-ww4jonpalspy6pq7.onion
-pocfuex33tlx6p3p.onion
-vnvrc2sswr25gnzx.onion
-xqiba42eladeyefr.onion
-qavjxdb5445wquw7.onion
-xzkvmf5dmf2lq5wn.onion
-7gwsdh3463dhahts.onion
-2ep34mm32vx7doiw.onion
-2ui2d4yzvgp2alxu.onion
-""".strip().split('\n')
+TOR_MAPPING_LIST, TOR_MAPPINGS = None, None
 
-TOR_MAPPINGS = [(host, BASE_PORT+i) for i, host in enumerate(TOR_MAPPING_LIST)]
 mylog("[INIT] TOR_MAPPINGS: %s" % repr(TOR_MAPPINGS))
 
-# nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
+def initTorConfiguration(hosts):
+    global TOR_MAPPINGS, TOR_MAPPING_LIST
+    TOR_MAPPING_LIST = open(hosts,'r').read().strip().split('\n')
+    TOR_MAPPINGS = [(host, BASE_PORT+i) for i, host in enumerate(TOR_MAPPING_LIST)]
 
 def exception(msg):
     mylog(bcolors.WARNING + "Exception: %s\n" % msg + bcolors.ENDC)
@@ -202,12 +110,13 @@ msgSize = defaultdict(lambda: 0)
 msgFrom = defaultdict(lambda: 0)
 msgTo = defaultdict(lambda: 0)
 msgContent = defaultdict(lambda: '')
-msgTypeCounter = [[0, 0]] * 7
+msgTypeCounter = [[0, 0] for _ in range(8)]
 logChannel = Queue()
 
 def logWriter(fileHandler):
     while True:
         msgCounter, msgSize, msgFrom, msgTo, st, et, content = logChannel.get()
+        #if not QUIET_MODE:
         fileHandler.write("%d:%d(%d->%d)[%s]-[%s]%s\n" % (msgCounter, msgSize, msgFrom, msgTo, st, et, content))
         fileHandler.flush()
 
@@ -215,6 +124,7 @@ def encode(m):  # TODO
     global msgCounter
     msgCounter += 1
     starting_time[msgCounter] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
+    #intermediate = deepEncode(msgCounter, m)
     result = deepEncode(msgCounter, m)
     msgSize[msgCounter] = len(result)
     msgFrom[msgCounter] = m[1]
@@ -231,10 +141,12 @@ def decode(s):  # TODO
     global totalMessageSize
     totalMessageSize += msgSize[result[0]]
     # print totalMessageSize
-    logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
+    if not QUIET_MODE:
+        logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]],
+                    starting_time[result[0]], ending_time[result[0]], repr(result[1])))
     return result[1]
 
-def client_test_freenet(N, t):
+def client_test_freenet(N, t, options):
     '''
     Test for the client with random delay channels
 
@@ -248,14 +160,17 @@ def client_test_freenet(N, t):
     :param t: the number of malicious parties
     :return None:
     '''
-
-    initiateThresholdSig(open(sys.argv[2], 'r').read())
-    initiateECDSAKeys(open(sys.argv[3], 'r').read())
+    initTorConfiguration(options.hosts)
+    initiateThresholdSig(open(options.threshold_keys, 'r').read())
+    initiateECDSAKeys(open(options.ecdsa, 'r').read())
+    initiateThresholdEnc(open(options.threshold_encs, 'r').read())
     #buffers = map(lambda _: Queue(1), range(N))
-    gtemp = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
-    gtemp.parent_args = (N, t)
-    gtemp.name = 'client_test_freenet.logWriter'
-    gtemp.start()
+    global logGreenlet
+    logGreenlet = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
+    logGreenlet.parent_args = (N, t)
+    logGreenlet.name = 'client_test_freenet.logWriter'
+    logGreenlet.start()
+
     # Instantiate the "broadcast" instruction
     def makeBroadcast(i):
         chans = []
@@ -276,7 +191,7 @@ def client_test_freenet(N, t):
     gevent.sleep(2)
     print 'servers started'
 
-    #while True:
+    # while True:
     if True:  # We only test for once
         initBeforeBinaryConsensus()
         ts = []
@@ -313,12 +228,25 @@ def client_test_freenet(N, t):
             gevent.joinall(ts)
         except ACSException:
             gevent.killall(ts)
+        except finishTransactionLeap:  ### Manually jump to this level
+            print 'msgCounter', msgCounter
+            print 'msgTypeCounter', msgTypeCounter
+            # message id 0 (duplicated) for signatureCost
+            #logChannel.put((0, getSignatureCost(), 0, 0, str(time.time()), str(time.time()), '[signature cost]'))
+            logChannel.put(StopIteration)
+            mylog("=====", verboseLevel=-1)
+            for item in logChannel:
+                mylog(item, verboseLevel=-1)
+            mylog("=====", verboseLevel=-1)
+            #checkExceptionPerGreenlet()
+            # print getSignatureCost()
+            pass
         except gevent.hub.LoopExit: # Manual fix for early stop
-            print "Concensus Finished"
-            mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
+            while True:
+                gevent.sleep(1)
+            checkExceptionPerGreenlet()
         finally:
-            mylog("Total Message size %d" % totalMessageSize, verboseLevel=-2)
-
+            print "Concensus Finished"
 
 import atexit
 import gc
@@ -334,6 +262,13 @@ if USE_PROFILE:
 
 def exit():
     print "Entering atexit()"
+    print 'msgCounter', msgCounter
+    print 'msgTypeCounter', msgTypeCounter
+    nums,lens = zip(*msgTypeCounter)
+    print '    Init      Echo      Val       Aux      Coin     Ready    Share'
+    print '%8d %8d %9d %9d %9d %9d %9d' % nums[1:]
+    print '%8d %8d %9d %9d %9d %9d %9d' % lens[1:]
+    mylog("Total Message size %d" % totalMessageSize, verboseLevel=-2)
     if OUTPUT_HALF_MSG:
         halfmsgCounter = 0
         for msgindex in starting_time.keys():
@@ -353,14 +288,32 @@ def exit():
         stats.save('profile.callgrind', type='callgrind')
 
 if __name__ == '__main__':
-    if len(sys.argv) < 4:
-        print '[Usage] %s hosts shoup_keys ecdsa_keys'
+    # GreenletProfiler.set_clock_type('cpu')
+    # print "Started"
+    atexit.register(exit)
+    if USE_PROFILE:
+        GreenletProfiler.set_clock_type('cpu')
+        GreenletProfiler.start()
+
+    from optparse import OptionParser
+    parser = OptionParser()
+    parser.add_option("-e", "--ecdsa-keys", dest="ecdsa",
+                      help="Location of ECDSA keys", metavar="KEYS")
+    parser.add_option("-k", "--threshold-keys", dest="threshold_keys",
+                      help="Location of threshold signature keys", metavar="KEYS")
+    parser.add_option("-c", "--threshold-enc", dest="threshold_encs",
+                      help="Location of threshold encryption keys", metavar="KEYS")
+    parser.add_option("-s", "--hosts", dest="hosts",
+                      help="Host list file", metavar="HOSTS", default="~/hosts")
+    parser.add_option("-n", "--number", dest="n",
+                      help="Number of parties", metavar="N", type="int")
+    parser.add_option("-t", "--tolerance", dest="t",
+                      help="Tolerance of adversaries", metavar="T", type="int")
+    parser.add_option("-x", "--transactions", dest="tx",
+                      help="Number of transactions proposed by each party", metavar="TX", type="int", default=1)
+    (options, args) = parser.parse_args()
+    if (options.ecdsa and options.threshold_keys and options.threshold_encs and options.n and options.t):
+        client_test_freenet(options.n , options.t, options)
     else:
-        if USE_PROFILE:
-            GreenletProfiler.set_clock_type('cpu')
-        atexit.register(exit)
-        # prepareIPList(open(sys.argv[1], 'r').read())
-        if USE_PROFILE:
-            GreenletProfiler.start()
-        client_test_freenet(int(sys.argv[5]), int(sys.argv[6]))  # Here N is no longer used
+        parser.error('Please specify the arguments')
 

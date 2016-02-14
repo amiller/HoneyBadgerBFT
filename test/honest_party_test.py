@@ -139,12 +139,6 @@ def client_test_freenet(N, t, options):
             th.start_later(random.random() * maxdelay)
             ts.append(th)
 
-        #def monitorUserInput(): # No idea why raw_input will block the whole gevent, need some investigation
-        #    while True:
-        #        mylog(">>>")
-        #        tokens = [s for s in raw_input().strip().split() if s]
-        #        mylog("= %s\n" % repr(parser[tokens[0]](tokens)))
-
         #Greenlet(monitorUserInput).start()
         try:
             gevent.joinall(ts)
@@ -163,7 +157,6 @@ def client_test_freenet(N, t, options):
             #checkExceptionPerGreenlet()
             # print getSignatureCost()
             continue
-            pass
         except gevent.hub.LoopExit: # Manual fix for early stop
             while True:
                 gevent.sleep(1)
@@ -178,9 +171,11 @@ import traceback
 from greenlet import greenlet
 
 USE_PROFILE = False
-# GEVENT_DEBUG = False
-GEVENT_DEBUG = True
+GEVENT_DEBUG = False
 OUTPUT_HALF_MSG = False
+
+if USE_PROFILE:
+    import GreenletProfiler
 
 def exit():
     print "Entering atexit()"
@@ -214,6 +209,7 @@ if __name__ == '__main__':
     # print "Started"
     atexit.register(exit)
     if USE_PROFILE:
+        GreenletProfiler.set_clock_type('cpu')
         GreenletProfiler.start()
 
     from optparse import OptionParser
@@ -235,5 +231,4 @@ if __name__ == '__main__':
         client_test_freenet(options.n , options.t, options)
     else:
         parser.error('Please specify the arguments')
-
 
