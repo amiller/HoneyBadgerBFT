@@ -24,6 +24,7 @@ import socks, socket
 import struct
 from io import BytesIO
 import sys
+from os.path import expanduser
 
 # USE_DEEP_ENCODE = True # It must be encoded
 QUIET_MODE = False  # we are logging the messages
@@ -93,9 +94,10 @@ TOR_MAPPING_LIST, TOR_MAPPINGS = None, None
 
 mylog("[INIT] TOR_MAPPINGS: %s" % repr(TOR_MAPPINGS))
 
+
 def initTorConfiguration(hosts):
     global TOR_MAPPINGS, TOR_MAPPING_LIST
-    TOR_MAPPING_LIST = open(hosts,'r').read().strip().split('\n')
+    TOR_MAPPING_LIST = open(expanduser(hosts),'r').read().strip().split('\n')
     TOR_MAPPINGS = [(host, BASE_PORT+i) for i, host in enumerate(TOR_MAPPING_LIST)]
 
 def exception(msg):
