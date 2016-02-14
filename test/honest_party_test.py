@@ -139,7 +139,7 @@ def client_test_freenet(N, t, options):
         for i in range(N):
             bc = makeBroadcast(i)
             recv = recvWithDecode(buffers[i])
-            th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv, makeSend(i))
+            th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv, makeSend(i), options.B)
             controlChannels[i].put(('IncludeTransaction', transactionSet))
             #controlChannels[i].put(('IncludeTransaction', randomTransaction()))
             th.start_later(random.random() * maxdelay)
@@ -233,11 +233,13 @@ if __name__ == '__main__':
     parser.add_option("-t", "--tolerance", dest="t",
                       help="Tolerance of adversaries", metavar="T", type="int")
     parser.add_option("-x", "--transactions", dest="tx",
-                      help="Number of transactions proposed by each party", metavar="TX", type="int", default=1)
+                      help="Number of transactions proposed by each party", metavar="TX", type="int", default=-1)
     (options, args) = parser.parse_args()
     if (options.ecdsa and options.threshold_keys and options.threshold_encs and options.n and options.t):
         if not options.B:
             options.B = int(math.ceil(options.n * math.log(options.n)))
+        if options.tx < 0:
+            options.tx = options.B
         client_test_freenet(options.n , options.t, options)
     else:
         parser.error('Please specify the arguments')

@@ -397,6 +397,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
             mylog("[%d] Expecting %d transactions" % (pid, B), verboseLevel=-2)
             if len(transactionCache) < B:  # Let's wait for many transactions. : )
                 time.sleep(0.5)
+                print "Not enough transactions", len(transactionCache)
                 continue
             oldest_B = transactionCache[:B]
             selected_B = random.sample(oldest_B, min(B/N, len(oldest_B)))

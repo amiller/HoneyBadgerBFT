@@ -217,7 +217,7 @@ def client_test_freenet(N, t, options):
         gevent.joinall(tList)
         for i in range(N):
             recv = servers[i].get
-            th = Greenlet(honestParty, i, N, t, controlChannels[i], bcList[i], recv, sdList[i])
+            th = Greenlet(honestParty, i, N, t, controlChannels[i], bcList[i], recv, sdList[i], options.B)
             th.parent_args = (N, t)
             th.name = 'client_test_freenet.honestParty(%d)' % i
             # controlChannels[i].put(('IncludeTransaction', randomTransactionStr()))
@@ -313,12 +313,18 @@ if __name__ == '__main__':
                       help="Host list file", metavar="HOSTS", default="~/hosts")
     parser.add_option("-n", "--number", dest="n",
                       help="Number of parties", metavar="N", type="int")
+    parser.add_option("-b", "--propose-size", dest="B",
+                      help="Number of transactions to propose", metavar="B", type="int")
     parser.add_option("-t", "--tolerance", dest="t",
                       help="Tolerance of adversaries", metavar="T", type="int")
     parser.add_option("-x", "--transactions", dest="tx",
-                      help="Number of transactions proposed by each party", metavar="TX", type="int", default=1)
+                      help="Number of transactions proposed by each party", metavar="TX", type="int", default=-1)
     (options, args) = parser.parse_args()
     if (options.ecdsa and options.threshold_keys and options.threshold_encs and options.n and options.t):
+        if not options.B:
+            options.B = int(math.ceil(options.n * math.log(options.n)))
+        if options.tx < 0:
+            options.tx = options.B  # right B transactions
         client_test_freenet(options.n , options.t, options)
     else:
         parser.error('Please specify the arguments')
