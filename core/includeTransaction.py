@@ -12,8 +12,8 @@ import socket
 from io import BytesIO
 import struct
 import hashlib
-from ..threshenc.tpke import dealer, serialize, deserialize
-from utils import PAIRING_SERIALIZED, CURVE_LENGTH
+from ..threshenc.tpke import dealer, serialize, deserialize0, deserialize1, deserialize2  # , deserialize
+from utils import PAIRING_SERIALIZED_1, PAIRING_SERIALIZED_2, CURVE_LENGTH
 import random
 
 
@@ -26,7 +26,7 @@ def serializeEnc(C):
     return (serialize(C[0]), C[1], serialize(C[2]))
 
 def deserializeEnc(T):
-    return (deserialize(T[0]), T[1], deserialize(T[2]))
+    return (deserialize1(T[0]), T[1], deserialize2(T[2]))
 
 def calcSum(dd):
     return sum([x for _, x in dd.items()])

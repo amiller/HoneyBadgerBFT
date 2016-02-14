@@ -16,14 +16,15 @@ import gmpy2
 from ..ecdsa.ecdsa_ssl import KEY
 import os
 from ..commoncoin import shoup as shoup
-from ..threshenc.tpke import serialize, deserialize, TPKEPublicKey, TPKEPrivateKey, group
+from ..threshenc.tpke import serialize, TPKEPublicKey, TPKEPrivateKey, group, deserialize0, deserialize1, deserialize2
 
 nameList = open(os.path.dirname(os.path.abspath(__file__)) + '/../test/names.txt','r').read().strip().split('\n')
 # nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 # TR_SIZE = 250
 TR_SIZE = 250
 SHA_LENGTH = 32
-PAIRING_SERIALIZED = 29  # 65
+PAIRING_SERIALIZED_1 = 65
+PAIRING_SERIALIZED_2 = 118
 CURVE_LENGTH = 32
 
 verbose = -2
@@ -181,9 +182,9 @@ def deepEncode(mc, m):
     return buf.read()
 
 def constructTransactionFromReprEnc(r):
-    return (r[:PAIRING_SERIALIZED],
-            r[PAIRING_SERIALIZED:PAIRING_SERIALIZED+CURVE_LENGTH],
-            r[PAIRING_SERIALIZED+CURVE_LENGTH:PAIRING_SERIALIZED*2+CURVE_LENGTH])  # for 65 + 32 + 65
+    return (r[:PAIRING_SERIALIZED_1],
+            r[PAIRING_SERIALIZED_1:PAIRING_SERIALIZED_1+CURVE_LENGTH],
+            r[PAIRING_SERIALIZED_1+CURVE_LENGTH:PAIRING_SERIALIZED_1 + PAIRING_SERIALIZED_2 + CURVE_LENGTH])  # for 65 + 32 + 65
 
 def constructTransactionFromRepr(r):
     # print repr(r[:4])
@@ -261,8 +262,9 @@ def initiateThresholdEnc(contents):
     # (PK.l, PK.k, serialize(PK.VK), [serialize(VKp) for VKp in PK.VKs],
     #       [(SK.i, serialize(SK.SK)) for SK in SKs])
     (l, k, sVK, sVKs, SKs) = pickle.loads(contents)
-    encPK, encSKs = TPKEPublicKey(l, k, deserialize(sVK), [deserialize(sVKp) for sVKp in sVKs]), \
-           [TPKEPrivateKey(l, k, deserialize(sVK), [deserialize(sVKp) for sVKp in sVKs], group.deserialize('0:'+SKp[1]), SKp[0]) for SKp in SKs]
+    encPK, encSKs = TPKEPublicKey(l, k, deserialize2(sVK), [deserialize2(sVKp) for sVKp in sVKs]), \
+           [TPKEPrivateKey(l, k, deserialize2(sVK), [deserialize2(sVKp) for sVKp in sVKs], \
+                           deserialize0(SKp[1]), SKp[0]) for SKp in SKs]
     # return encPK, encSKs
 
 def initiateECDSAKeys(contents):
