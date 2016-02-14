@@ -16,15 +16,16 @@ import gmpy2
 from ..ecdsa.ecdsa_ssl import KEY
 import os
 from ..commoncoin import shoup as shoup
-from ..threshenc.tpke import serialize, TPKEPublicKey, TPKEPrivateKey, group, deserialize0, deserialize1, deserialize2
+from ..threshenc.tpke import serialize, deserialize0, deserialize1, deserialize2, TPKEPublicKey, TPKEPrivateKey, group
 
 nameList = open(os.path.dirname(os.path.abspath(__file__)) + '/../test/names.txt','r').read().strip().split('\n')
 # nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 # TR_SIZE = 250
 TR_SIZE = 250
 SHA_LENGTH = 32
-PAIRING_SERIALIZED_1 = 65
-PAIRING_SERIALIZED_2 = 118
+PAIRING_SERIALIZED_0 = 28
+PAIRING_SERIALIZED_1 = 29  # 65
+PAIRING_SERIALIZED_2 = 85
 CURVE_LENGTH = 32
 
 verbose = -2
@@ -184,7 +185,7 @@ def deepEncode(mc, m):
 def constructTransactionFromReprEnc(r):
     return (r[:PAIRING_SERIALIZED_1],
             r[PAIRING_SERIALIZED_1:PAIRING_SERIALIZED_1+CURVE_LENGTH],
-            r[PAIRING_SERIALIZED_1+CURVE_LENGTH:PAIRING_SERIALIZED_1 + PAIRING_SERIALIZED_2 + CURVE_LENGTH])  # for 65 + 32 + 65
+            r[PAIRING_SERIALIZED_1+CURVE_LENGTH:PAIRING_SERIALIZED_1+PAIRING_SERIALIZED_2+CURVE_LENGTH])  # for 65 + 32 + 65
 
 def constructTransactionFromRepr(r):
     # print repr(r[:4])
@@ -244,8 +245,8 @@ def deepDecode(m, msgTypeCounter):
         hm = buf.read()
         return mc, (f, t, ('B', ('r', p1, hm)))
     elif msgtype == 7:
-        stx = (buf.read(PAIRING_SERIALIZED), buf.read(CURVE_LENGTH), buf.read(PAIRING_SERIALIZED))
-        share = deserialize(buf.read(PAIRING_SERIALIZED))
+        stx = (buf.read(PAIRING_SERIALIZED_1), buf.read(CURVE_LENGTH), buf.read(PAIRING_SERIALIZED_2))
+        share = deserialize1(buf.read(PAIRING_SERIALIZED_1))
         return mc, (f, t, ('O', stx, share))
     else:
         raise deepDecodeException()

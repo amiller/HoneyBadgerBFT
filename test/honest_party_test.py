@@ -211,6 +211,7 @@ def exit():
 
 if __name__ == '__main__':
     # GreenletProfiler.set_clock_type('cpu')
+    # print "Started"
     atexit.register(exit)
     if USE_PROFILE:
         GreenletProfiler.start()

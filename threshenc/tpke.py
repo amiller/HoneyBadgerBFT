@@ -25,7 +25,7 @@ def serialize(g):
     return decodestring(group.serialize(g)[2:])
 
 def deserialize0(g):
-    # Only work in G1 here 
+    # Only work in G1 here
     return group.deserialize('0:'+encodestring(g))
 
 def deserialize1(g):

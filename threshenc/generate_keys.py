@@ -14,7 +14,7 @@ def main():
         k = players / 2  # N - 2 * t
     PK, SKs = dealer(players=players, k=k)
     content = (PK.l, PK.k, serialize(PK.VK), [serialize(VKp) for VKp in PK.VKs],
-               [(SK.i, group.serialize(SK.SK)[2:]) for SK in SKs])
+               [(SK.i, serialize(SK.SK)) for SK in SKs])
     print cPickle.dumps(content)
 
 if __name__ == '__main__':
