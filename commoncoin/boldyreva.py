@@ -21,8 +21,11 @@ def deserialize(g):
     # Only work in G1 here 
     return group.deserialize('1:'+encodestring(g))
 
-g = group.hash('geng0', G1)
-g.initPP()
+g1 = group.hash('geng1', G1)
+g1.initPP()
+#g2 = g1
+g2 = group.hash('geng2', G2)
+g2.initPP()
 ZERO = group.random(ZR)*0
 ONE = group.random(ZR)*0+1
 
@@ -54,11 +57,11 @@ class TBLSPublicKey(object):
     def verify_share(self, sig, i, h):
         assert 0 <= i < self.l
         B = self.VKs[i]
-        assert pair(g, sig) == pair(B, h)
+        assert pair(sig, g2) == pair(h, B)
         return True
 
     def verify_signature(self, sig, h):
-        assert pair(g, sig) == pair(self.VK, h)
+        assert pair(sig, g2) == pair(h, self.VK)
         return True
 
     def combine_shares(self, sigs):
@@ -105,8 +108,8 @@ def dealer(players=10, k=5):
     assert f(0) == secret
 
     # Verification keys
-    VK = g ** secret
-    VKs = [g ** xx for xx in SKs]
+    VK = g2 ** secret
+    VKs = [g2 ** xx for xx in SKs]
 
     public_key = TBLSPublicKey(players, k, VK, VKs)
     private_keys = [TBLSPrivateKey(players, k, VK, VKs, SK, i)
