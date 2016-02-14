@@ -129,11 +129,9 @@ def deepEncode(mc, m):
     f, t, bundle = m
     buf.write(struct.pack('BB', f, t))
     if bundle[0] == 'O':
-        tag, stx, share = bundle
+        tag, id, share = bundle
         buf.write('\x07')
-        buf.write(stx[0])
-        buf.write(stx[1])
-        buf.write(stx[2])
+        buf.write(struct.pack('B', id))
         buf.write(serialize(share))
     else:
         (tag, c) = bundle
@@ -258,9 +256,9 @@ def deepDecode(m, msgTypeCounter):
         hm = buf.read()
         return mc, (f, t, ('B', ('r', p1, hm)))
     elif msgtype == 7:
-        stx = (buf.read(PAIRING_SERIALIZED_1), buf.read(CURVE_LENGTH), buf.read(PAIRING_SERIALIZED_1))
+        id = struct.unpack('B', buf.read(1))[0]
         share = deserialize1(buf.read(PAIRING_SERIALIZED_1))
-        return mc, (f, t, ('O', stx, share))
+        return mc, (f, t, ('O', id, share))
     else:
         raise deepDecodeException()
 

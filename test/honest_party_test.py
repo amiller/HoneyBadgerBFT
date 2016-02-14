@@ -23,7 +23,7 @@ import base64
 import struct
 from io import BytesIO
 
-USE_DEEP_ENCODE = False
+USE_DEEP_ENCODE = True
 QUIET_MODE = True
 
 def exception(msg):
