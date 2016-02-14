@@ -139,17 +139,20 @@ def deepEncode(mc, m):
         # totally we have 4 msg types
         if c[0]=='i':
             buf.write('\x01')
-            t2, p1, s, sig = c
-            buf.write(struct.pack('<BI', p1, len(s)))  # here we write the # of tx instead of # of bytes
+            t2, (s, rh, mb), sig = c
+            buf.write(struct.pack('<IB', len(s), len(mb)))  # here we write the # of tx instead of # of bytes
             buf.write(s)  # here we assume s is an encoded set of transaction
+            buf.write(rh)
+            for br in mb:
+                buf.write(br)  ## still SHA_LENGTH bytes each
             # for tr in s:
             #    buf.write(encodeTransaction(tr))
             buf.write(sig)
         elif c[0]=='e':
             # print c
             buf.write('\x02')
-            t2, p1, (p2, s, rh, mb), sig = c  # rh is the root hash and mb is the merkle branch
-            buf.write(struct.pack('<BBIB', p1, p2, len(s), len(mb)))
+            t2, (p2, s, rh, mb), sig = c  # rh is the root hash and mb is the merkle branch
+            buf.write(struct.pack('<BIB', p2, len(s), len(mb)))
             buf.write(s)  ## here we already have them encoded
             buf.write(rh)  ## it's SHA_LENGTH bytes
             for br in mb:
@@ -223,15 +226,19 @@ def deepDecode(m, msgTypeCounter):
     msgTypeCounter[msgtype][0] += 1
     msgTypeCounter[msgtype][1] += len(m)
     if msgtype == 1:
-        p1, lenS = struct.unpack('<BI', buf.read(5))
+        lenS, nrBr = struct.unpack('<IB', buf.read(5))
         trSet = buf.read(lenS)
+        rh = buf.read(SHA_LENGTH)
+        mb = []
+        for nr in range(nrBr):
+            mb.append(buf.read(SHA_LENGTH))
         #for i in range(lenS):
         #    trRepr = buf.read(TR_SIZE)
         #    trSet.add(constructTransactionFromRepr(trRepr))
         sig = buf.read()
-        return mc, (f, t, ('B', ('i', p1, trSet, sig)),)
+        return mc, (f, t, ('B', ('i', (trSet, rh, mb), sig)),)
     elif msgtype == 2:
-        p1, p2, trSetLen, nrBr = struct.unpack('<BBIB', buf.read(7))
+        p2, trSetLen, nrBr = struct.unpack('<BIB', buf.read(6))
         trSet = buf.read(trSetLen)
         rh = buf.read(SHA_LENGTH)
         mb = []
@@ -239,7 +246,7 @@ def deepDecode(m, msgTypeCounter):
             mb.append(buf.read(SHA_LENGTH))
         # print 'read', repr(trSet)
         sig = buf.read()
-        return mc, (f, t, ('B', ('e', p1, (p2, trSet, rh, mb), sig)),)
+        return mc, (f, t, ('B', ('e', (p2, trSet, rh, mb), sig)),)
     elif msgtype == 3:
         p1, p2, p3 = struct.unpack('BBB', buf.read(3))
         return mc, (f, t, ('A', (p1, ('B', (p2, p3)))),)

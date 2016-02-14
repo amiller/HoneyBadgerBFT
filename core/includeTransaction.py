@@ -56,7 +56,7 @@ def coolSHA256Hash(x):
     return hashlib.sha256(x).digest()
 
 @greenletFunction
-def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
+def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
     # Since all the parties we have are symmetric, so I implement this function for N instances of A-cast as a whole
     # Here msg is a set of transactions
     assert(isinstance(outputs, list))
@@ -105,6 +105,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
 
     def Listener():
         opinions = [defaultdict(lambda: 0) for _ in range(N)]
+        rootHashes = dict()
         readyCounter = [defaultdict(lambda: 0) for _ in range(N)]
         signed = [False]*N
         readySent = [False] * N
@@ -124,49 +125,46 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
             sender, msgBundle = receive()
             # mylog("[%d] multiSigBr received msgBundle %s" % (pid, msgBundle), verboseLevel=-1)
             # vki = Pubkeys[msgBundle[1]].peek()
-            if msgBundle[0] == 'i' and not signed[msgBundle[1]]:
+            if msgBundle[0] == 'i' and not signed[sender]:
                 # if keys[msgBundle[1]].verify(sha1hash(hex(setHash(msgBundle[2]))), msgBundle[3]):
-                if keys[msgBundle[1]].verify(sha1hash(msgBundle[2]), msgBundle[3]):
+                if keys[sender].verify(sha1hash(repr(msgBundle[1])), msgBundle[2]):
                     # Here we should remove the randomness of the signature
                     # assert isinstance(msgBundle[2], set)
-                    assert isinstance(msgBundle[2], str)
-                    buf = msgBundle[2] # now it is a string  # ''.join([encodeTransaction(tr) for tr in msgBundle[2]])
-                    # print sender, 'sent', len(buf), repr(buf)
-                    if buf == '':  # in case someone proposed an empty string
-                        newBundle = (msgBundle[1], '')
+                    assert isinstance(msgBundle[1], tuple)
+                    if not merkleVerify(msgBundle[1][0], msgBundle[1][1], msgBundle[1][2], coolSHA256Hash, pid):
+                        continue
+                    if sender in rootHashes:
+                        if rootHashes[sender]!= msgBundle[1][1]:
+                            print "Cheating caught, exiting"
+                            sys.exit(0)
                     else:
-                        step = len(buf) % Threshold == 0 and len(buf) / Threshold or (len(buf) / Threshold + 1)
-                        # print 'zfec split', pid, repr(buf)
-                        buf = buf.ljust(step * Threshold, '\xFF')
-                        # print 'step', step, 'len(buf)', len(buf), 'Threshold', Threshold
-                        # print repr(buf)
-                        fragList = [buf[i*step:(i+1)*step] for i in range(Threshold)]
-                        encodedFragList = zfecEncoder.encode(fragList)
-                        mt = merkleTree(encodedFragList, coolSHA256Hash)
-                        mb = getMerkleBranch(pid, mt)  # notice that index starts from 1 and pid starts from 0
-                        rootHash = mt[1]  # full binary tree
-                        # print sender, 'fragList', fragList
-                        # print sender, 'encoded', zfecEncoder.encode(fragList)
-                        newBundle = (msgBundle[1], encodedFragList[pid], rootHash, mb)  # assert each frag has a length of step
+                        rootHashes[sender] = msgBundle[1][1]
+                    newBundle = (sender, msgBundle[1][0], msgBundle[1][1], msgBundle[1][2])  # assert each frag has a length of step
                         # newBundle = (msgBundle[1], msgBundle[2])
                         # mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
                         # mylog("[%d] and now signed is %s" % (pid, repr(signed)), verboseLevel=-1)
                         # broadcast(('e', pid, newBundle, keys[pid].sign(sha1hash(hex((newBundle[0]+37)*setHash(newBundle[1]))))))
-                    Greenlet(broadcast, ('e', pid, newBundle, keys[pid].sign(
+                    Greenlet(broadcast, ('e', newBundle, keys[pid].sign(
                         sha1hash(repr(newBundle))
                     ))).start()
                     # broadcast(('e', pid, newBundle, keys[pid].sign(
                     #     sha1hash(repr(newBundle))
                     # )))
-                    signed[msgBundle[1]] = True
+                    signed[sender] = True
                 else:
                     raise ECDSASignatureError()
             elif msgBundle[0] == 'e':
                 # if keys[msgBundle[1]].verify(sha1hash(hex((msgBundle[2][0]+37)*setHash(msgBundle[2][1]))), msgBundle[3]):
-                if keys[msgBundle[1]].verify(sha1hash(repr(msgBundle[2])), msgBundle[3]):
-                    originBundle = msgBundle[2]
-                    if not merkleVerify(originBundle[1], originBundle[2], originBundle[3], coolSHA256Hash, msgBundle[1]):
+                if keys[sender].verify(sha1hash(repr(msgBundle[1])), msgBundle[2]):
+                    originBundle = msgBundle[1]
+                    if not merkleVerify(originBundle[1], originBundle[2], originBundle[3], coolSHA256Hash, sender):
                         continue
+                    if originBundle[0] in rootHashes:
+                        if rootHashes[originBundle[0]]!= originBundle[2]:
+                            print "Cheating caught, exiting"
+                            sys.exit(0)
+                    else:
+                        rootHashes[originBundle[0]] = originBundle[2]
                     opinions[originBundle[0]][sender] = originBundle[1]   # We are going to move this part to kekeketktktktk
                     if len(opinions[originBundle[0]]) >= Threshold2 and not readySent[originBundle[0]]:
                             readySent[originBundle[0]] = True
@@ -182,11 +180,17 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     readySent[msgBundle[1]] = True
                     Greenlet(broadcast, ('r', msgBundle[1], msgBundle[2])).start()
                     # broadcast(('r', msgBundle[1], msgBundle[2]))  # relay the msg
-                if tmp >= 2*t+1 and not outputs[msgBundle[1]].full() and \
+                if tmp >= Threshold2 and not outputs[msgBundle[1]].full() and \
                         not reconstDone[msgBundle[1]] and len(opinions[msgBundle[1]]) >= Threshold:
                     reconstDone[msgBundle[1]] = True
                     # mylog("[%d] got %d echos for %d to reconstruction" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
                     #  verboseLevel=-2)
+                    if msgBundle[1] in rootHashes:
+                        if rootHashes[msgBundle[1]]!= msgBundle[2]:
+                            print "Cheating caught, exiting"
+                            sys.exit(0)
+                    else:
+                        rootHashes[msgBundle[1]] = msgBundle[2]
                     if opinions[msgBundle[1]].values()[0] == '':
                         reconstruction = ['']
                     else:
@@ -194,6 +198,16 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                                 opinions[msgBundle[1]].keys()[:Threshold])  # We only take the first [Threshold] fragments
                     # assert len(reconstruction) == Threshold
                     buf = ''.join(reconstruction).rstrip('\xFF')
+                    # Check root hash
+                    step = len(buf) % Threshold == 0 and len(buf) / Threshold or (len(buf) / Threshold + 1)
+                    # print 'zfec split', pid, repr(buf)
+                    buf = buf.ljust(step * Threshold, '\xFF')
+                    # print 'step', step, 'len(buf)', len(buf), 'Threshold', Threshold
+                    # print repr(buf)
+                    fragList = [buf[i*step : (i+1)*step] for i in range(Threshold)]
+                    encodedFragList = zfecEncoder.encode(fragList)
+                    mt = merkleTree(encodedFragList, coolSHA256Hash)
+                    assert rootHashes[msgBundle[1]] == mt[1]  # full binary tree
                     # print 'zfec Recons', pid, repr(buf)
                     # print opinions[originBundle[0]].values()[:Threshold]
                     # print opinions[originBundle[0]].keys()[:Threshold]
@@ -208,15 +222,29 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
 
     greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()
     # encodedMsg = ''.join([encodeTransaction(tr) for tr in msg])
-    encodedMsg = msg  # We already assumed the proposals are byte strings
+    buf = msg  # We already assumed the proposals are byte strings
     # encodedMsg = ''.joinencodedMsg([encodeTransactionEnc(tr) for tr in msg])
     # print pid, 'encodedMsg', repr(encodedMsg)
     # broadcast(('i', pid, msg, keys[pid].sign(sha1hash(hex(setHash(msg))))))  # Kick Off!
-    broadcast(('i', pid, encodedMsg, keys[pid].sign(sha1hash(encodedMsg))))  # Kick Off!
+
+    step = len(buf) % Threshold == 0 and len(buf) / Threshold or (len(buf) / Threshold + 1)
+    # print 'zfec split', pid, repr(buf)
+    buf = buf.ljust(step * Threshold, '\xFF')
+    # print 'step', step, 'len(buf)', len(buf), 'Threshold', Threshold
+    # print repr(buf)
+    fragList = [buf[i*step : (i+1)*step] for i in range(Threshold)]
+    encodedFragList = zfecEncoder.encode(fragList)
+    mt = merkleTree(encodedFragList, coolSHA256Hash)
+    rootHash = mt[1]  # full binary tree
+    # broadcast(('i', newBundle, keys[pid].sign(sha1hash(repr(newBundle)))))  # Kick Off!
+    for i in range(N):
+        mb = getMerkleBranch(i, mt)  # notice that index starts from 1 and pid starts from 0
+        newBundle = (encodedFragList[i], rootHash, mb)
+        send(i, ('i', newBundle, keys[pid].sign(sha1hash(repr(newBundle)))))
 
 @greenletFunction
-def consensusBroadcast(pid, N, t, msg, broadcast, receive, outputs, method=multiSigBr):
-    return method(pid, N, t, msg, broadcast, receive, outputs)
+def consensusBroadcast(pid, N, t, msg, broadcast, receive, outputs, send, method=multiSigBr):
+    return method(pid, N, t, msg, broadcast, receive, outputs, send)
 
 
 def union(listOfTXSet):
@@ -228,7 +256,7 @@ def union(listOfTXSet):
 
 # tx is the transaction we are going to include
 @greenletFunction
-def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
+def includeTransaction(pid, N, t, setToInclude, broadcast, receive, send):
     #print pid, 'setToInclude', setToInclude
     #for tx in setToInclude:
     #    assert(isinstance(tx, Transaction))  # This is no longer true
@@ -246,6 +274,11 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
         def _acs_br(m):
             broadcast(('A', m))
         return _acs_br
+
+    def make_bc_send(i):
+        def _layer_send(j, m):
+            send(j, ('B', m))
+        return _layer_send
 
     def _listener():
         while True:
@@ -288,7 +321,7 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
     monitoredIntList = [MonitoredInt() for _ in range(N)]
 
     mylog("[%d] Beginning A-Cast on %s" % (pid, repr(setToInclude)), verboseLevel=-1)
-    greenletPacker(Greenlet(consensusBroadcast, pid, N, t, setToInclude, make_bc_br(pid), CBChannel.get, outputChannel),
+    greenletPacker(Greenlet(consensusBroadcast, pid, N, t, setToInclude, make_bc_br(pid), CBChannel.get, outputChannel, make_bc_send(pid)),
         'includeTransaction.consensusBroadcast', (pid, N, t, setToInclude, broadcast, receive)).start()
     mylog("[%d] Beginning ACS" % pid, verboseLevel=-1)
     greenletPacker(Greenlet(callBackWrap(acs, callbackFactoryACS()), pid, N, t, monitoredIntList, make_acs_br(pid), ACSChannel.get),
@@ -307,10 +340,12 @@ finishcount = 0
 lock.put(1)
 
 @greenletFunction
-def honestParty(pid, N, t, controlChannel, broadcast, receive):
+def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
     # RequestChannel is called by the client and it is the client's duty to broadcast the tx it wants to include
     # sock = socket.create_connection((sys.argv[4], 51234))
     # transactionCache = set()
+    if B < 0:
+        B = int(math.ceil(N * math.log(N)))
     transactionCache = []
     finishedTx = set()
     proposals = []
@@ -318,7 +353,6 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
     # sessionID = 0
     locks = defaultdict(lambda : Queue(1))
     ENC_THRESHOLD = N - 2 * t
-    B = int(math.ceil(N * math.log(N)))    # parameter for the pool
     global finishcount
     encPK, encSKs = getEncKeys()
     encCounter = defaultdict(lambda : {})
@@ -374,7 +408,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             proposal = serializeEnc(encryptedAESKey) + encrypted_B
             print "starts to include transactions"
             # print pid, 'encrypted_B', encrypted_B
-            commonSet, proposals = includeTransaction(pid, N, t, proposal, broadcast, includeTransactionChannel.get)
+            commonSet, proposals = includeTransaction(pid, N, t, proposal, broadcast, includeTransactionChannel.get, send)
             # subProposals = [proposals[x] for x in range(N) if commonSet[x] == 1]
             # assert(isinstance(syncedTXSet, set))
             for i, c in enumerate(commonSet):  # stx is the same for every party

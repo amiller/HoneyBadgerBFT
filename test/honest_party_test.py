@@ -22,6 +22,7 @@ import zlib
 import base64
 import struct
 from io import BytesIO
+import math
 
 USE_DEEP_ENCODE = True
 QUIET_MODE = True
@@ -124,6 +125,11 @@ def client_test_freenet(N, t, options):
             return decode(s)[1:]
         return recv
 
+    def makeSend(i):  # point to point message delivery
+        def _send(j, v):
+            buffers[j].put(encode((j, i, v)))
+        return _send
+
     while True:
     #if True:
         initBeforeBinaryConsensus()
@@ -133,7 +139,7 @@ def client_test_freenet(N, t, options):
         for i in range(N):
             bc = makeBroadcast(i)
             recv = recvWithDecode(buffers[i])
-            th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
+            th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv, makeSend(i))
             controlChannels[i].put(('IncludeTransaction', transactionSet))
             #controlChannels[i].put(('IncludeTransaction', randomTransaction()))
             th.start_later(random.random() * maxdelay)
@@ -222,12 +228,16 @@ if __name__ == '__main__':
                       help="Location of threshold encryption keys", metavar="KEYS")
     parser.add_option("-n", "--number", dest="n",
                       help="Number of parties", metavar="N", type="int")
+    parser.add_option("-b", "--propose-size", dest="B",
+                      help="Number of transactions to propose", metavar="B", type="int")
     parser.add_option("-t", "--tolerance", dest="t",
                       help="Tolerance of adversaries", metavar="T", type="int")
     parser.add_option("-x", "--transactions", dest="tx",
                       help="Number of transactions proposed by each party", metavar="TX", type="int", default=1)
     (options, args) = parser.parse_args()
     if (options.ecdsa and options.threshold_keys and options.threshold_encs and options.n and options.t):
+        if not options.B:
+            options.B = int(math.ceil(options.n * math.log(options.n)))
         client_test_freenet(options.n , options.t, options)
     else:
         parser.error('Please specify the arguments')
