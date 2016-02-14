@@ -26,7 +26,7 @@ from io import BytesIO
 import sys
 
 # USE_DEEP_ENCODE = True # It must be encoded
-QUIET_MODE = True
+QUIET_MODE = False  # we are logging the messages
 
 TOR_SOCKSPORT = range(9050, 9150)
 
