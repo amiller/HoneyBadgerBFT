@@ -198,7 +198,7 @@ def client_test_freenet(N, t, options):
         controlChannels = [Queue() for _ in range(N)]
         bcList = dict()
         tList = []
-
+        transactionSet = set([encodeTransaction(randomTransaction()) for trC in range(int(options.tx))])  # we are using the same one
         def _makeBroadcast(x):
             bc = makeBroadcast(x)
             bcList[x] = bc
@@ -220,8 +220,9 @@ def client_test_freenet(N, t, options):
             mylog('Summoned party %i at time %f' % (i, time.time()), verboseLevel=-1)
             ts.append(th)
         for i in range(N):
-            controlChannels[i].put(('IncludeTransaction',
-                set([randomTransaction() for trC in range(int(sys.argv[4]))])))
+            controlChannels[i].put(('IncludeTransaction', transactionSet))
+            #controlChannels[i].put(('IncludeTransaction',
+            #    set([randomTransaction() for trC in range(int(sys.argv[4]))])))
 
         #Greenlet(monitorUserInput).start()
         try:
