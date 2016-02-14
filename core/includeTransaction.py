@@ -22,11 +22,11 @@ def serializeEnc(C):
     # print len(C[1])
     assert len(serialize(C[0]))==PAIRING_SERIALIZED_1
     assert len(C[1]) == CURVE_LENGTH
-    assert len(serialize(C[2]))==PAIRING_SERIALIZED_2
+    assert len(serialize(C[2]))==PAIRING_SERIALIZED_1
     return (serialize(C[0]), C[1], serialize(C[2]))
 
 def deserializeEnc(T):
-    return (deserialize1(T[0]), T[1], deserialize2(T[2]))
+    return (deserialize1(T[0]), T[1], deserialize1(T[2]))
 
 def calcSum(dd):
     return sum([x for _, x in dd.items()])

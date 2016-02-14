@@ -24,7 +24,7 @@ nameList = open(os.path.dirname(os.path.abspath(__file__)) + '/../test/names.txt
 TR_SIZE = 250
 SHA_LENGTH = 32
 PAIRING_SERIALIZED_0 = 28
-PAIRING_SERIALIZED_1 = 29  # 65
+PAIRING_SERIALIZED_1 = 65 # 29  # 65
 PAIRING_SERIALIZED_2 = 85
 CURVE_LENGTH = 32
 
@@ -185,7 +185,7 @@ def deepEncode(mc, m):
 def constructTransactionFromReprEnc(r):
     return (r[:PAIRING_SERIALIZED_1],
             r[PAIRING_SERIALIZED_1:PAIRING_SERIALIZED_1+CURVE_LENGTH],
-            r[PAIRING_SERIALIZED_1+CURVE_LENGTH:PAIRING_SERIALIZED_1+PAIRING_SERIALIZED_2+CURVE_LENGTH])  # for 65 + 32 + 65
+            r[PAIRING_SERIALIZED_1+CURVE_LENGTH:PAIRING_SERIALIZED_1+PAIRING_SERIALIZED_1+CURVE_LENGTH])  # for 65 + 32 + 65
 
 def constructTransactionFromRepr(r):
     # print repr(r[:4])
@@ -245,7 +245,7 @@ def deepDecode(m, msgTypeCounter):
         hm = buf.read()
         return mc, (f, t, ('B', ('r', p1, hm)))
     elif msgtype == 7:
-        stx = (buf.read(PAIRING_SERIALIZED_1), buf.read(CURVE_LENGTH), buf.read(PAIRING_SERIALIZED_2))
+        stx = (buf.read(PAIRING_SERIALIZED_1), buf.read(CURVE_LENGTH), buf.read(PAIRING_SERIALIZED_1))
         share = deserialize1(buf.read(PAIRING_SERIALIZED_1))
         return mc, (f, t, ('O', stx, share))
     else:
@@ -263,8 +263,8 @@ def initiateThresholdEnc(contents):
     # (PK.l, PK.k, serialize(PK.VK), [serialize(VKp) for VKp in PK.VKs],
     #       [(SK.i, serialize(SK.SK)) for SK in SKs])
     (l, k, sVK, sVKs, SKs) = pickle.loads(contents)
-    encPK, encSKs = TPKEPublicKey(l, k, deserialize2(sVK), [deserialize2(sVKp) for sVKp in sVKs]), \
-           [TPKEPrivateKey(l, k, deserialize2(sVK), [deserialize2(sVKp) for sVKp in sVKs], \
+    encPK, encSKs = TPKEPublicKey(l, k, deserialize1(sVK), [deserialize1(sVKp) for sVKp in sVKs]), \
+           [TPKEPrivateKey(l, k, deserialize1(sVK), [deserialize1(sVKp) for sVKp in sVKs], \
                            deserialize0(SKp[1]), SKp[0]) for SKp in SKs]
     # return encPK, encSKs
 
