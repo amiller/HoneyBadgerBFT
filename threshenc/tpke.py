@@ -33,8 +33,11 @@ def xor(x,y):
     assert len(x) == len(y) == 32
     return ''.join(chr(ord(x_)^ord(y_)) for x_,y_ in zip(x,y))
 
-g = group.hash('geng0', G1)
-g.initPP()
+g1 = group.hash('geng1', G1)
+g1.initPP()
+#g2 = g1
+g2 = group.hash('geng2', G2)
+g2.initPP()
 ZERO = group.random(ZR)*0
 ONE = group.random(ZR)*0+1
 
@@ -43,7 +46,7 @@ def hashG(g):
 
 def hashH(g, x):
     assert len(x) == 32
-    return group.hash(serialize(g) + x, G1)
+    return group.hash(serialize(g) + x, G2)
 
 class TPKEPublicKey(object):
     def __init__(self, l, k, VK, VKs):
@@ -72,9 +75,9 @@ class TPKEPublicKey(object):
         #print '1'
         r = group.random(ZR)
         #print '2'
-        U = g ** r
+        U = g1 ** r
         #print '3'
-        V = xor(m, hashG(self.VK ** r))
+        V = xor(m, hashG(pair(g1, self.VK ** r)))
         #print '4'
         W = hashH(U, V) ** r
         #print '5'
@@ -83,13 +86,14 @@ class TPKEPublicKey(object):
 
     def verify_ciphertext(self, (U, V, W)):
         # Check correctness of ciphertext
-        assert pair(g, W) == pair(U, H)
+        H = hashH(U, V)
+        assert pair(g1, W) == pair(U, H)
         return True
 
     def verify_share(self, i, U_i, (U,V,W)):
         assert 0 <= i < self.l
         Y_i = self.VKs[i]
-        assert pair(g, U_i) == pair(U, Y_i)
+        assert pair(U_i, g2) == pair(U, Y_i)
         return True
 
     def combine_shares(self, (U,V,W), shares):
@@ -104,7 +108,7 @@ class TPKEPublicKey(object):
         res = reduce(mul, 
                      [share ** self.lagrange(S, j)
                       for j,share in shares.iteritems()], ONE)
-        return xor(hashG(res), V)
+        return xor(hashG(pair(res, g2)), V)
 
 
 class TPKEPrivateKey(TPKEPublicKey):
@@ -149,8 +153,8 @@ def dealer(players=10, k=5):
     assert f(0) == secret
 
     # Verification keys
-    VK = g ** secret
-    VKs = [g ** xx for xx in SKs]
+    VK = g2 ** secret
+    VKs = [g2 ** xx for xx in SKs]
 
     public_key = TPKEPublicKey(players, k, VK, VKs)
     private_keys = [TPKEPrivateKey(players, k, VK, VKs, SK, i)
@@ -173,8 +177,10 @@ def test():
     m = SHA256.new('how').digest()
     C = PK.encrypt(m)
 
+    #assert PK.verify_ciphertext(C)
+
     shares = [sk.decrypt_share(C) for sk in SKs]
-    #for i, share in shares:
+    #for i,share in enumerate(shares):
     #    assert PK.verify_share(i, share, C)
 
     SS = range(PK.l)
