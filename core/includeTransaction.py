@@ -4,7 +4,7 @@ from gevent import Greenlet
 from gevent.queue import Queue, Empty
 from mmr13 import binary_consensus
 from bkr_acs import acs, initBeforeBinaryConsensus
-from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, encodeTransactionEnc, constructTransactionFromReprEnc, \
+from utils import bcolors, mylog, MonitoredInt, callBackWrap, greenletFunction, encodeTransactionEnc, \
     greenletPacker, PK, SKs, getEncKeys, Transaction, getECDSAKeys, sha1hash, setHash, finishTransactionLeap, encodeTransaction, constructTransactionFromRepr, TR_SIZE
 from collections import defaultdict
 import zfec
@@ -12,21 +12,9 @@ import socket
 from io import BytesIO
 import struct
 import hashlib
-from ..threshenc.tpke import dealer, serialize, deserialize0, deserialize1, deserialize2
-from utils import PAIRING_SERIALIZED_0, PAIRING_SERIALIZED_1, PAIRING_SERIALIZED_2, CURVE_LENGTH
+from ..threshenc.tpke import dealer, serialize, deserialize0, deserialize1, deserialize2, encrypt, decrypt
+from utils import PAIRING_SERIALIZED_0, PAIRING_SERIALIZED_1, PAIRING_SERIALIZED_2, CURVE_LENGTH, serializeEnc, deserializeEnc, ENC_SERIALIZED_LENGTH
 import random
-
-
-def serializeEnc(C):
-    # print len(serialize(C[0]))
-    # print len(C[1])
-    assert len(serialize(C[0]))==PAIRING_SERIALIZED_1
-    assert len(C[1]) == CURVE_LENGTH
-    assert len(serialize(C[2]))==PAIRING_SERIALIZED_1
-    return (serialize(C[0]), C[1], serialize(C[2]))
-
-def deserializeEnc(T):
-    return (deserialize1(T[0]), T[1], deserialize1(T[2]))
 
 def calcSum(dd):
     return sum([x for _, x in dd.items()])
@@ -122,13 +110,14 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
         readySent = [False] * N
         reconstDone = [False] * N
         reconsLocker = [Queue() for _ in range(N)]
-        finalTrigger = [Queue() for _ in range(N)]
+        # finalTrigger = [Queue() for _ in range(N)]
 
         def final(i):  # only one time
             buf = reconsLocker[i].get()
-            finalTrigger[i].get()
+            # finalTrigger[i].get()
+            outputs[i].put(buf)
             # mylog("[%d] finished acast on msg from %d." % (pid, i), verboseLevel=-2)
-            outputs[i].put([constructTransactionFromReprEnc(buf[i:i+TR_SIZE]) for i in range(0, len(buf), TR_SIZE)])
+            # outputs[i].put([constructTransactionFromReprEnc(buf[i:i+TR_SIZE]) for i in range(0, len(buf), TR_SIZE)])
         for i in range(N):
             Greenlet(final, i).start()
         while True:
@@ -193,7 +182,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     readySent[msgBundle[1]] = True
                     Greenlet(broadcast, ('r', msgBundle[1], msgBundle[2])).start()
                     # broadcast(('r', msgBundle[1], msgBundle[2]))  # relay the msg
-                if tmp >= 2*t+1 and not outputs[msgBundle[1]].full() and finalTrigger[msgBundle[1]].empty() and \
+                if tmp >= 2*t+1 and not outputs[msgBundle[1]].full() and \
                         not reconstDone[msgBundle[1]] and len(opinions[msgBundle[1]]) >= Threshold:
                     reconstDone[msgBundle[1]] = True
                     # mylog("[%d] got %d echos for %d to reconstruction" % (pid, len(opinions[originBundle[0]]), originBundle[0]),
@@ -209,16 +198,18 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs):
                     # print opinions[originBundle[0]].values()[:Threshold]
                     # print opinions[originBundle[0]].keys()[:Threshold]
                     # print originBundle[0], '->', sender, len(buf), repr(buf)
-                    assert len(buf) % TR_SIZE == 0
+                    # print repr(buf)
+                    # assert len(buf) % TR_SIZE == 0  # after encryption this is not true
                     if reconsLocker[msgBundle[1]].empty():
                         reconsLocker[msgBundle[1]].put(buf)
                     # mylog("[%d] put reconsLocker for %d" % (pid, originBundle[0]), verboseLevel=-2)
-                    finalTrigger[msgBundle[1]].put(1)
+                    # finalTrigger[msgBundle[1]].put(1)
                     # mylog("[%d] put finalTrigger for %d" % (pid, msgBundle[1]), verboseLevel=-2)
 
     greenletPacker(Greenlet(Listener), 'multiSigBr.Listener', (pid, N, t, msg, broadcast, receive, outputs)).start()
     # encodedMsg = ''.join([encodeTransaction(tr) for tr in msg])
-    encodedMsg = ''.join([encodeTransactionEnc(tr) for tr in msg])
+    encodedMsg = msg  # We already assumed the proposals are byte strings
+    # encodedMsg = ''.joinencodedMsg([encodeTransactionEnc(tr) for tr in msg])
     # print pid, 'encodedMsg', repr(encodedMsg)
     # broadcast(('i', pid, msg, keys[pid].sign(sha1hash(hex(setHash(msg))))))  # Kick Off!
     broadcast(('i', pid, encodedMsg, keys[pid].sign(sha1hash(encodedMsg))))  # Kick Off!
@@ -304,9 +295,9 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive):
         'includeTransaction.callBackWrap(acs, callbackFactoryACS())', (pid, N, t, setToInclude, broadcast, receive)).start()
 
     commonSet = locker.get()
-    subTXSet = [TXSet[x] for x in range(N) if commonSet[x] == 1]
+    # subTXSet = [TXSet[x] for x in range(N) if commonSet[x] == 1]
 
-    return union(subTXSet)
+    return commonSet, TXSet
 
 HONEST_PARTY_TIMEOUT = 1
 
@@ -321,7 +312,9 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
     # sock = socket.create_connection((sys.argv[4], 51234))
     # transactionCache = set()
     transactionCache = []
-    finishedTx = []
+    finishedTx = set()
+    proposals = []
+    commonSet = []
     # sessionID = 0
     locks = defaultdict(lambda : Queue(1))
     ENC_THRESHOLD = N - 2 * t
@@ -336,7 +329,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             if msgBundle[0] == 'O':
                 encCounter[msgBundle[1]][sender] = msgBundle[2]
                 if len(encCounter[msgBundle[1]]) == ENC_THRESHOLD:  # by == this part only executes once.
-                    oriM = encPK.combine_shares(deserializeEnc(msgBundle[1]), encCounter[msgBundle[1]])
+                    oriM = encPK.combine_shares(deserializeEnc(proposals[msgBundle[1]][:ENC_SERIALIZED_LENGTH]), encCounter[msgBundle[1]])
                     locks[msgBundle[1]].put(oriM)
             else:
                 includeTransactionChannel.put((sender, msgBundle))  # redirect to includeTransaction
@@ -358,7 +351,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
                         transactionCache.append(tx)
                 elif isinstance(msg, list):
                     transactionCache.extend(msg)
-                print 'got', len(transactionCache), 'TXs'
+                # print pid, 'got', len(transactionCache), 'TXs'
             elif op == "Halt":
                 break
             elif op == "Msg":
@@ -373,56 +366,51 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
                 continue
             oldest_B = transactionCache[:B]
             selected_B = random.sample(oldest_B, min(B/N, len(oldest_B)))
-            # print repr(selected_B)
-            encrypted_B = set()
-            for tx in selected_B:
-                # enc = encPK.encrypt(coolSHA256Hash(encodeTransaction(tx)))
-                # encS = serializeEnc(enc)
-                # assert deserializeEnc(encS) == enc
-                # shares = [encSKs[i].decrypt_share(enc) for i in range(N)]
-                # print pid, 'dec', repr(encPK.combine_shares(enc, dict((s, shares[s]) for s in range(ENC_THRESHOLD))))
-                # print pid, 'SHA256', repr(coolSHA256Hash(encodeTransaction(tx)))
-                # encrypted_B.add(encS)
-                # encrypted_B.add(serializeEnc(encPK.encrypt(coolSHA256Hash(encodeTransaction(tx)))))
-                eTX = encodeTransaction(tx, 32)
-                # print pid, 'ori', repr(eTX)
-                enc = encPK.encrypt(eTX)
-                encS = serializeEnc(enc)
-                # shares = [encSKs[i].decrypt_share(enc) for i in range(N)]
-                # print pid, 'dec', repr(encPK.combine_shares(enc, dict((s, shares[s]) for s in range(ENC_THRESHOLD))))
-                # print pid, repr(encS)
-                encrypted_B.add(encS)
-            ### TODO: now we require the protocol can deal with plain string transactions
+            print pid, repr([constructTransactionFromRepr(tx) for tx in selected_B])
+            aesKey = random._urandom(32)  #
+            # encrypted_B = encrypt(aesKey, ''.join([encodeTransaction(tx) for tx in selected_B]))
+            encrypted_B = encrypt(aesKey, ''.join(selected_B))
+            encryptedAESKey = encPK.encrypt(aesKey)
+            proposal = serializeEnc(encryptedAESKey) + encrypted_B
             print "starts to include transactions"
             # print pid, 'encrypted_B', encrypted_B
-            syncedTXSet = includeTransaction(pid, N, t, encrypted_B, broadcast, includeTransactionChannel.get)
-            assert(isinstance(syncedTXSet, set))
-            for stx in syncedTXSet:  # stx is the same for every party
-                # print pid, stx
-                share = encSKs[pid].decrypt_share(deserializeEnc(stx))
-                broadcast(('O', stx, share))  # it seems share is good for python
+            commonSet, proposals = includeTransaction(pid, N, t, proposal, broadcast, includeTransactionChannel.get)
+            # subProposals = [proposals[x] for x in range(N) if commonSet[x] == 1]
+            # assert(isinstance(syncedTXSet, set))
+            for i, c in enumerate(commonSet):  # stx is the same for every party
+                if c:
+                    share = encSKs[pid].decrypt_share(deserializeEnc(proposals[i][:ENC_SERIALIZED_LENGTH]))
+                    # broadcast(('O', stx, share))  # it seems share is good for python
+                    broadcast(('O', i, share))
             # recoveredSyncedTXSet = set()
-            for stx in syncedTXSet:
+            #for stx in syncedTXSet:
+            for i, c in enumerate(commonSet):  # stx is the same for every party
+                if c:
                 # recoveredSyncedTXSet.add(lock[stx].get())
                 # recoveredSyncedTx = locks[stx].get()
-                rec = locks[stx].get()
-                # print pid, repr(rec)
-                recoveredSyncedTx = constructTransactionFromRepr(rec)
-                finishedTx.append(recoveredSyncedTx)
-                if recoveredSyncedTx in transactionCache:
-                    transactionCache.remove(recoveredSyncedTx)
-                # print repr(recoveredSyncedTx)
-                #for tx in transactionCache[:B]:
-                #    if recoveredSyncedTx == coolSHA256Hash(encodeTransaction(tx)):
-                #        mylog("[%d] synced transactions %s" % (pid, repr(tx)), verboseLevel = -2)
-                #        transactionCache.remove(tx)
-                #        break
-            mylog("[%d] now caches %s" % (pid, repr(transactionCache)), verboseLevel = -1)
-            mylog("[%d] synced transactions %s" % (pid, repr(finishedTx)), verboseLevel = -1)
-
+                    # rec = locks[stx].get()
+                    rec = locks[i].get()
+                    # print pid, repr(rec)
+                    encodedTxSet = decrypt(rec, proposals[i][ENC_SERIALIZED_LENGTH:])
+                    assert len(encodedTxSet) % TR_SIZE == 0
+                    # recoveredSyncedTx = [constructTransactionFromRepr(encodedTxSet[i:i+TR_SIZE]) for i in range(0, len(encodedTxSet), TR_SIZE)]
+                    recoveredSyncedTx = [encodedTxSet[i:i+TR_SIZE] for i in range(0, len(encodedTxSet), TR_SIZE)]
+                    for tx in recoveredSyncedTx:
+                        if tx in transactionCache:
+                            transactionCache.remove(tx)
+                            finishedTx.add(tx)
+                    # print repr(recoveredSyncedTx)
+                    #for tx in transactionCache[:B]:
+                    #    if recoveredSyncedTx == coolSHA256Hash(encodeTransaction(tx)):
+                    #        mylog("[%d] synced transactions %s" % (pid, repr(tx)), verboseLevel = -2)
+                    #        transactionCache.remove(tx)
+                    #        break
+            mylog("timestampE (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
+            mylog("[%d] now caches %s" % (pid, repr([constructTransactionFromRepr(tx) for tx in transactionCache])), verboseLevel = -2)
+            mylog("[%d] synced transactions %s" % (pid, repr([constructTransactionFromRepr(tx) for tx in finishedTx])), verboseLevel = -2)
+            mylog("[%d] %d distinct tx synced and %d tx left in the pool." % (pid, len(finishedTx), len(transactionCache)), verboseLevel=-2)
             # transactionCache = transactionCache.difference(recoveredSyncedTXSet)    # TODO
             # mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)), verboseLevel = -1)
-            mylog("timestampE (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
             lock.get()
             finishcount += 1
             lock.put(1)

@@ -29,6 +29,8 @@ PAIRING_SERIALIZED_2 = 85
 BOLDYREVA_SERIALIZED_1 = 29
 CURVE_LENGTH = 32
 
+ENC_SERIALIZED_LENGTH = PAIRING_SERIALIZED_1 * 2 + CURVE_LENGTH
+
 verbose = -2
 goodseed = random.randint(1, 10000)
 myRandom = random.Random(goodseed)
@@ -110,7 +112,7 @@ def encodeTransaction(tr, length=TR_SIZE):
     targetInd = nameList.index(tr.target)
     return struct.pack(
         '<BBH', sourceInd, targetInd, tr.amount
-    ) + ' ' * (length-5) + '\x90' # os.urandom(TR_SIZE - 5) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
+    ) + os.urandom(TR_SIZE - 5) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
 
 
 # assumptions:
@@ -185,10 +187,17 @@ def deepEncode(mc, m):
     buf.seek(0)
     return buf.read()
 
-def constructTransactionFromReprEnc(r):
-    return (r[:PAIRING_SERIALIZED_1],
-            r[PAIRING_SERIALIZED_1:PAIRING_SERIALIZED_1+CURVE_LENGTH],
-            r[PAIRING_SERIALIZED_1+CURVE_LENGTH:PAIRING_SERIALIZED_1+PAIRING_SERIALIZED_1+CURVE_LENGTH])  # for 65 + 32 + 65
+def serializeEnc(C):
+    # print len(serialize(C[0]))
+    # print len(C[1])
+    assert len(serialize(C[0]))==PAIRING_SERIALIZED_1
+    assert len(C[1]) == CURVE_LENGTH
+    assert len(serialize(C[2]))==PAIRING_SERIALIZED_1
+    return ''.join((serialize(C[0]), C[1], serialize(C[2])))
+
+def deserializeEnc(r):
+    return (deserialize1(r[:PAIRING_SERIALIZED_1]), r[PAIRING_SERIALIZED_1:PAIRING_SERIALIZED_1+CURVE_LENGTH],
+            deserialize1(r[PAIRING_SERIALIZED_1+CURVE_LENGTH:PAIRING_SERIALIZED_1+PAIRING_SERIALIZED_1+CURVE_LENGTH]))
 
 def constructTransactionFromRepr(r):
     # print repr(r[:4])

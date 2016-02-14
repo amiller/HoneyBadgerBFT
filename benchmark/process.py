@@ -19,10 +19,14 @@ def main(filename):
     msgsize = []
     outputObj = []
     import json
+    infoList = [a for a in infoExtractor.finditer(content)]
+    if not infoList:
+        return
 
-    for mat in infoExtractor.finditer(content):
+    for mat in infoList:
         res = mat.groupdict()
         start_times.append(float(res['start_time']))
+        print start_times
         end_times.append(float(res['end_time']))
         time_diff = float(res['end_time']) - float(res['start_time'])
         timelap.append(time_diff)

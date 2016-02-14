@@ -12,7 +12,7 @@ from ..core.bkr_acs import initBeforeBinaryConsensus
 import gevent
 import os
 from ..core.utils import myRandom as random
-from ..core.utils import ACSException, checkExceptionPerGreenlet, getSignatureCost, \
+from ..core.utils import ACSException, checkExceptionPerGreenlet, getSignatureCost, encodeTransaction, \
     deepEncode, deepDecode, randomTransaction, initiateECDSAKeys, initiateThresholdEnc, finishTransactionLeap
 import json
 import cPickle as pickle
@@ -23,7 +23,7 @@ import base64
 import struct
 from io import BytesIO
 
-USE_DEEP_ENCODE = True
+USE_DEEP_ENCODE = False
 QUIET_MODE = True
 
 def exception(msg):
@@ -129,12 +129,13 @@ def client_test_freenet(N, t, options):
         initBeforeBinaryConsensus()
         ts = []
         controlChannels = [Queue() for _ in range(N)]
+        transactionSet = set([encodeTransaction(randomTransaction()) for trC in range(int(options.tx))])  # we are using the same one
         for i in range(N):
             bc = makeBroadcast(i)
             recv = recvWithDecode(buffers[i])
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
-            controlChannels[i].put(('IncludeTransaction',
-                set([randomTransaction() for trC in range(int(options.tx))])))
+            controlChannels[i].put(('IncludeTransaction', transactionSet
+                ))
             #controlChannels[i].put(('IncludeTransaction', randomTransaction()))
             th.start_later(random.random() * maxdelay)
             ts.append(th)

@@ -3,6 +3,7 @@ from base64 import encodestring, decodestring
 import random
 from Crypto.Hash import SHA256
 from Crypto import Random
+from Crypto.Cipher import AES
 
 # Threshold encryption based on Gap-Diffie-Hellman
 # - Only encrypts messages that are 32-byte strings
