@@ -14,7 +14,7 @@ import gevent
 import os
 from ..core.utils import myRandom as random
 from gevent.server import StreamServer
-from ..core.utils import ACSException, checkExceptionPerGreenlet, getSignatureCost, \
+from ..core.utils import ACSException, checkExceptionPerGreenlet, getSignatureCost, encodeTransaction, \
     deepEncode, deepDecode, randomTransaction, initiateECDSAKeys, initiateThresholdEnc, finishTransactionLeap
 import json
 import cPickle as pickle
