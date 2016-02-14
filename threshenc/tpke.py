@@ -17,8 +17,8 @@ from Crypto import Random
 #         a wrapper for PBC (Pairing based crypto)
 
 
-#group = PairingGroup('SS512')
-group = PairingGroup('MNT224')
+group = PairingGroup('SS512')
+#group = PairingGroup('MNT224')
 
 def serialize(g):
     # Only work in G1 here
@@ -35,9 +35,9 @@ def xor(x,y):
 
 g1 = group.hash('geng1', G1)
 g1.initPP()
-#g2 = g1
-g2 = group.hash('geng2', G2)
-g2.initPP()
+g2 = g1
+#g2 = group.hash('geng2', G2)
+#g2.initPP()
 ZERO = group.random(ZR)*0
 ONE = group.random(ZR)*0+1
 
@@ -77,7 +77,9 @@ class TPKEPublicKey(object):
         #print '2'
         U = g1 ** r
         #print '3'
-        V = xor(m, hashG(pair(g1, self.VK ** r)))
+        #V = xor(m, hashG(pair(g1, self.VK ** r)))
+        #V = xor(m, hashG(pair(g1, self.VK ** r)))
+        V = xor(m, hashG(self.VK ** r))
         #print '4'
         W = hashH(U, V) ** r
         #print '5'
@@ -108,7 +110,7 @@ class TPKEPublicKey(object):
         res = reduce(mul, 
                      [share ** self.lagrange(S, j)
                       for j,share in shares.iteritems()], ONE)
-        return xor(hashG(pair(res, g2)), V)
+        return xor(hashG(res), V)
 
 
 class TPKEPrivateKey(TPKEPublicKey):
@@ -177,11 +179,11 @@ def test():
     m = SHA256.new('how').digest()
     C = PK.encrypt(m)
 
-    #assert PK.verify_ciphertext(C)
+    assert PK.verify_ciphertext(C)
 
     shares = [sk.decrypt_share(C) for sk in SKs]
-    #for i,share in enumerate(shares):
-    #    assert PK.verify_share(i, share, C)
+    for i,share in enumerate(shares):
+        assert PK.verify_share(i, share, C)
 
     SS = range(PK.l)
     for i in range(1):
