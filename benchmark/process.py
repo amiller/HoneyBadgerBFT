@@ -26,7 +26,7 @@ def main(filename):
     for mat in infoList:
         res = mat.groupdict()
         start_times.append(float(res['start_time']))
-        print start_times
+        # print start_times
         end_times.append(float(res['end_time']))
         time_diff = float(res['end_time']) - float(res['start_time'])
         timelap.append(time_diff)
