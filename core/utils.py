@@ -23,7 +23,7 @@ nameList = open(os.path.dirname(os.path.abspath(__file__)) + '/../test/names.txt
 # TR_SIZE = 250
 TR_SIZE = 250
 SHA_LENGTH = 32
-PAIRING_SERIALIZED = 65
+PAIRING_SERIALIZED = 29  # 65
 CURVE_LENGTH = 32
 
 verbose = -2

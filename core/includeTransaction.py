@@ -13,13 +13,16 @@ from io import BytesIO
 import struct
 import hashlib
 from ..threshenc.tpke import dealer, serialize, deserialize
+from utils import PAIRING_SERIALIZED, CURVE_LENGTH
 import random
 
 
 def serializeEnc(C):
-    assert len(serialize(C[0]))==65
-    assert len(C[1]) == 32
-    assert len(serialize(C[2]))==65
+    # print len(serialize(C[0]))
+    # print len(C[1])
+    assert len(serialize(C[0]))==PAIRING_SERIALIZED
+    assert len(C[1]) == CURVE_LENGTH
+    assert len(serialize(C[2]))==PAIRING_SERIALIZED
     return (serialize(C[0]), C[1], serialize(C[2]))
 
 def deserializeEnc(T):
@@ -395,7 +398,9 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive):
             for stx in syncedTXSet:
                 # recoveredSyncedTXSet.add(lock[stx].get())
                 # recoveredSyncedTx = locks[stx].get()
-                recoveredSyncedTx = constructTransactionFromRepr(locks[stx].get())
+                rec = locks[stx].get()
+                print pid, repr(rec)
+                recoveredSyncedTx = constructTransactionFromRepr(rec)
                 finishedTx.append(recoveredSyncedTx)
                 if recoveredSyncedTx in transactionCache:
                     transactionCache.remove(recoveredSyncedTx)
