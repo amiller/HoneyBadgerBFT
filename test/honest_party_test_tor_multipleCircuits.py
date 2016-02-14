@@ -184,7 +184,9 @@ def client_test_freenet(N, t, options):
             # mylog(bcolors.OKGREEN + "[%d] Broadcasted %s" % (i, repr(v)) + bcolors.ENDC, verboseLevel=-1)
             for j in range(N):
                 chans[j].put((j, i, v))  # from i to j
-        return _broadcast
+        def _delivery(j, v):
+            chans[j].put((j, i, v))
+        return _broadcast, _delivery
 
     servers = []
     for i in range(N):
@@ -199,11 +201,13 @@ def client_test_freenet(N, t, options):
         ts = []
         controlChannels = [Queue() for _ in range(N)]
         bcList = dict()
+        sdList = dict()
         tList = []
         transactionSet = set([encodeTransaction(randomTransaction()) for trC in range(int(options.tx))])  # we are using the same one
         def _makeBroadcast(x):
-            bc = makeBroadcast(x)
+            bc, sd = makeBroadcast(x)
             bcList[x] = bc
+            sdList[x] = sd
         for i in range(N):
             tmp_t = Greenlet(_makeBroadcast, i)
             tmp_t.parent_args = (N, t)
@@ -212,9 +216,8 @@ def client_test_freenet(N, t, options):
             tList.append(tmp_t)
         gevent.joinall(tList)
         for i in range(N):
-            bc = bcList[i]  # makeBroadcast(i)
             recv = servers[i].get
-            th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
+            th = Greenlet(honestParty, i, N, t, controlChannels[i], bcList[i], recv, sdList[i])
             th.parent_args = (N, t)
             th.name = 'client_test_freenet.honestParty(%d)' % i
             # controlChannels[i].put(('IncludeTransaction', randomTransactionStr()))
