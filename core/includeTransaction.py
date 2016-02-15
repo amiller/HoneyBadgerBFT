@@ -15,6 +15,7 @@ import hashlib
 from ..threshenc.tpke import dealer, serialize, deserialize0, deserialize1, deserialize2, encrypt, decrypt
 from utils import PAIRING_SERIALIZED_0, PAIRING_SERIALIZED_1, PAIRING_SERIALIZED_2, CURVE_LENGTH, serializeEnc, deserializeEnc, ENC_SERIALIZED_LENGTH
 import random
+import itertools
 
 def calcSum(dd):
     return sum([x for _, x in dd.items()])
@@ -355,6 +356,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
     transactionCache = []
     finishedTx = set()
     proposals = []
+    receivedProposals = False
     commonSet = []
     # sessionID = 0
     locks = defaultdict(lambda : Queue(1))
@@ -368,9 +370,12 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
             sender, msgBundle = receive()
             if msgBundle[0] == 'O':
                 encCounter[msgBundle[1]][sender] = msgBundle[2]
-                if len(encCounter[msgBundle[1]]) == ENC_THRESHOLD:  # by == this part only executes once.
-                    oriM = encPK.combine_shares(deserializeEnc(proposals[msgBundle[1]][:ENC_SERIALIZED_LENGTH]), encCounter[msgBundle[1]])
-                    locks[msgBundle[1]].put(oriM)
+                if len(encCounter[msgBundle[1]]) >= ENC_THRESHOLD and receivedProposals and not locks[msgBundle[1]].full():  # by == this part only executes once.
+                        oriM = encPK.combine_shares(deserializeEnc(proposals[msgBundle[1]][:ENC_SERIALIZED_LENGTH]),
+                                                    # dict(encCounter[msgBundle[1]].items()[:ENC_THRESHOLD])
+                                                    dict(itertools.islice(encCounter[msgBundle[1]].iteritems(), 500))
+                                )
+                        locks[msgBundle[1]].put(oriM)
             else:
                 includeTransactionChannel.put((sender, msgBundle))  # redirect to includeTransaction
 
@@ -416,6 +421,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
             print "[%d] starts to include proposal of length %d" % (pid, len(proposal))
             # print pid, 'encrypted_B', encrypted_B
             commonSet, proposals = includeTransaction(pid, N, t, proposal, broadcast, includeTransactionChannel.get, send)
+            receivedProposals = True
             # subProposals = [proposals[x] for x in range(N) if commonSet[x] == 1]
             # assert(isinstance(syncedTXSet, set))
             for i, c in enumerate(commonSet):  # stx is the same for every party
