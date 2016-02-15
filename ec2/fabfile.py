@@ -38,6 +38,7 @@ def install_dependencies():
     sudo('apt-get -y install python-gmpy2')
     sudo('apt-get -y install flex')
     sudo('apt-get -y install bison')
+    sudo('apt-get -y install libgmp-dev')
     sudo('pip install pycrypto')
     sudo('pip install ecdsa')
     sudo('pip install zfec')
