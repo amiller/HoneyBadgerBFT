@@ -25,6 +25,7 @@ import struct
 from io import BytesIO
 import sys
 from subprocess import check_output
+from os.path import expanduser
 
 TOR_SOCKSPORT = range(9050, 9150)
 WAITING_SETUP_TIME_IN_SEC = 3
@@ -347,7 +348,7 @@ if __name__ == '__main__':
     parser.add_option("-x", "--transactions", dest="tx",
                       help="Number of transactions proposed by each party", metavar="TX", type="int", default=-1)
     (options, args) = parser.parse_args()
-    prepareIPList(open(options.hosts, 'r').read())
+    prepareIPList(open(expanduser(options.hosts), 'r').read())
     if (options.ecdsa and options.threshold_keys and options.threshold_encs and options.n and options.t):
         if not options.B:
             options.B = int(math.ceil(options.n * math.log(options.n)))
