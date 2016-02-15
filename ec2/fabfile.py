@@ -136,7 +136,8 @@ def runProtocol(N_, t_, B_):
     t = int(t_)
     B = int(B_)
     # s = StringIO()
-    with prefix('export LIBRARY_PATH=/usr/local/lib LD_LIBRARY_PATH=/usr/local/lib'):
+    # with prefix('export LIBRARY_PATH=/usr/local/lib LD_LIBRARY_PATH=/usr/local/lib'):
+    with shell_env(LIBRARY_PATH='/usr/local/lib', LD_LIBRARY_PATH='/usr/local/lib'):
         run('python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k'
             ' thsig%d_%d.keys -e ecdsa.keys -b %d -n %d -t %d -c thenc%d_%d.keys' % (N, t, B, N, t, N, t))
 
