@@ -243,7 +243,7 @@ def client_test_freenet(N, t, options):
 
         rnd = Random()
         rnd.seed(123123)
-        mylog("[%d] random transaction generator fingerprints %s" % (pid, hex(rnd.getrandbits(32*8))))
+        mylog("[%d] random transaction generator fingerprints %s" % (myID, hex(rnd.getrandbits(32*8))))
         #This makes sure that all the EC2 instances have the same transaction pool
 
         transactionSet = set([encodeTransaction(randomTransaction(rnd), randomGenerator=rnd) for trC in range(int(options.tx))])  # we are using the same one
