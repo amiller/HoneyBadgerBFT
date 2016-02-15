@@ -135,6 +135,7 @@ def runProtocol(N_, t_, B_):
     N = int(N_)
     t = int(t_)
     B = int(B_)
+    print N, t, B
     # s = StringIO()
     # with prefix('export LIBRARY_PATH=/usr/local/lib LD_LIBRARY_PATH=/usr/local/lib'):
     with shell_env(LIBRARY_PATH='/usr/local/lib', LD_LIBRARY_PATH='/usr/local/lib'):
