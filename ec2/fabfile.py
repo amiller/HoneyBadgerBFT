@@ -39,12 +39,14 @@ def install_dependencies():
     sudo('pip install zfec')
     put('~/pbc-0.5.14.tar.gz', '~/')
     run('tar -xvf pbc-0.5.14.tar.gz')
-    with cd('cd pbc-0.5.14'):
+    with cd('pbc-0.5.14'):
         run('./configure')
         run('make')
         sudo('make install')
-        with shell_env(LIBRARY_PATH='/usr/local/lib', LD_LIBRARY_PATH='/usr/local/lib'):
-            pass  # TODO
+    run('git clone https://github.com/JHUISI/charm.git')
+    with cd('charm'):
+        run('git checkout 2.7-dev')
+        sudo('python setup.py install')
 
 @parallel
 def prepare():

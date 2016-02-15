@@ -102,7 +102,7 @@ def launch_new_instances(region, number):
     bdm = boto.ec2.blockdevicemapping.BlockDeviceMapping()
     bdm['/dev/sda1'] = dev_sda1
     img = ec2_conn.get_all_images(filters={'name':'ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-20150325'})[0].id
-    reservation = ec2_conn.run_instances(image_id=img, #'ami-df6a8b9b', 
+    reservation = ec2_conn.run_instances(image_id=img, #'ami-df6a8b9b',  # ami-9f91a5f5
                                  min_count=number,
                                  max_count=number,
                                  key_name='amiller-mc2ec2', 

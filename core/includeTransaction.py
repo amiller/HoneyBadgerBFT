@@ -197,14 +197,18 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
                         reconstruction = zfecDecoder.decode(opinions[msgBundle[1]].values()[:Threshold],
                                 opinions[msgBundle[1]].keys()[:Threshold])  # We only take the first [Threshold] fragments
                     # assert len(reconstruction) == Threshold
-                    buf = ''.join(reconstruction).rstrip('\xFF')
+                    # buf = ''.join(reconstruction).rstrip('\xFF')
+                    rawbuf = ''.join(reconstruction)
+                    buf = rawbuf[:-ord(rawbuf[-1])]
                     # Check root hash
-                    step = len(buf) % Threshold == 0 and len(buf) / Threshold or (len(buf) / Threshold + 1)
+                    step = len(buf) / Threshold + 1 # len(buf) % Threshold == 0 and len(buf) / Threshold or (len(buf) / Threshold + 1)
+                    assert step * Threshold - len(buf) < 256  # assumption
                     # print 'zfec split', pid, repr(buf)
-                    buf = buf.ljust(step * Threshold, '\xFF')
+                    buf_ = buf.ljust(step * Threshold - 1, '\xFF') + chr(step * Threshold - len(buf))
+                    # buf = buf.ljust(step * Threshold, '\xFF')
                     # print 'step', step, 'len(buf)', len(buf), 'Threshold', Threshold
                     # print repr(buf)
-                    fragList = [buf[i*step : (i+1)*step] for i in range(Threshold)]
+                    fragList = [buf_[i*step : (i+1)*step] for i in range(Threshold)]
                     encodedFragList = zfecEncoder.encode(fragList)
                     mt = merkleTree(encodedFragList, coolSHA256Hash)
                     assert rootHashes[msgBundle[1]] == mt[1]  # full binary tree
@@ -227,9 +231,11 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
     # print pid, 'encodedMsg', repr(encodedMsg)
     # broadcast(('i', pid, msg, keys[pid].sign(sha1hash(hex(setHash(msg))))))  # Kick Off!
 
-    step = len(buf) % Threshold == 0 and len(buf) / Threshold or (len(buf) / Threshold + 1)
+    step = len(buf) / Threshold + 1 # len(buf) % Threshold == 0 and len(buf) / Threshold or (len(buf) / Threshold + 1)
     # print 'zfec split', pid, repr(buf)
-    buf = buf.ljust(step * Threshold, '\xFF')
+    # buf = buf.ljust(step * Threshold, '\xFF')
+    assert step * Threshold - len(buf) < 256  # assumption
+    buf = buf.ljust(step * Threshold - 1, '\xFF') + chr(step * Threshold - len(buf))
     # print 'step', step, 'len(buf)', len(buf), 'Threshold', Threshold
     # print repr(buf)
     fragList = [buf[i*step : (i+1)*step] for i in range(Threshold)]
@@ -401,13 +407,13 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
                 continue
             oldest_B = transactionCache[:B]
             selected_B = random.sample(oldest_B, min(B/N, len(oldest_B)))
-            print pid, repr([constructTransactionFromRepr(tx) for tx in selected_B])
+            # print pid, repr([constructTransactionFromRepr(tx) for tx in selected_B])
             aesKey = random._urandom(32)  #
             # encrypted_B = encrypt(aesKey, ''.join([encodeTransaction(tx) for tx in selected_B]))
             encrypted_B = encrypt(aesKey, ''.join(selected_B))
             encryptedAESKey = encPK.encrypt(aesKey)
             proposal = serializeEnc(encryptedAESKey) + encrypted_B
-            print "starts to include transactions"
+            print "[%d] starts to include proposal of length %d" % (pid, len(proposal))
             # print pid, 'encrypted_B', encrypted_B
             commonSet, proposals = includeTransaction(pid, N, t, proposal, broadcast, includeTransactionChannel.get, send)
             # subProposals = [proposals[x] for x in range(N) if commonSet[x] == 1]
@@ -426,6 +432,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
                     # rec = locks[stx].get()
                     rec = locks[i].get()
                     # print pid, repr(rec)
+                    # print "[%d] proposals[%d] has length of %d: %s" % (pid, i, len(proposals[i]), repr(proposals[i][-10:]))
                     encodedTxSet = decrypt(rec, proposals[i][ENC_SERIALIZED_LENGTH:])
                     assert len(encodedTxSet) % TR_SIZE == 0
                     # recoveredSyncedTx = [constructTransactionFromRepr(encodedTxSet[i:i+TR_SIZE]) for i in range(0, len(encodedTxSet), TR_SIZE)]
