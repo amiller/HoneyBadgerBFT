@@ -59,7 +59,11 @@ def encode(m):  # TODO
         result = deepEncode(msgCounter, m)
     else:
         result = (msgCounter, m)
-    msgSize[msgCounter] = len(result)
+    if m[0] == m[1] and m[2][0]!='O' and m[2][1][0] == 'e':
+        ### this is a self to self echo message
+        msgSize[msgCounter] = 0 # len(result)  # shortcut it
+    else:
+        msgSize[msgCounter] = len(result)
     msgFrom[msgCounter] = m[1]
     msgTo[msgCounter] = m[0]
     msgContent[msgCounter] = m
@@ -75,7 +79,7 @@ def decode(s):  # TODO
     ending_time[result[0]] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
     msgContent[result[0]] = None
     global totalMessageSize
-    totalMessageSize += len(s)
+    totalMessageSize += msgSize[result[0]]
     if not QUIET_MODE:
         logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]],
                     starting_time[result[0]], ending_time[result[0]], repr(result[1])))
