@@ -351,7 +351,6 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
     # RequestChannel is called by the client and it is the client's duty to broadcast the tx it wants to include
     # sock = socket.create_connection((sys.argv[4], 51234))
     # transactionCache = set()
-    print pid, 'B=', B
     if B < 0:
         B = int(math.ceil(N * math.log(N)))
     transactionCache = []
@@ -418,7 +417,8 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
 
             oldest_B = transactionCache[:B]
             selected_B = random.sample(oldest_B, min(B/N, len(oldest_B)))
-            # print pid, repr([constructTransactionFromRepr(tx) for tx in selected_B])
+            print "[%d] proposing %d transactions" % (pid, min(B/N, len(oldest_B)))
+            # print pid, repr([constructTransactionFromRepr(tx) for tx in selected_sB])
             aesKey = random._urandom(32)  #
             # encrypted_B = encrypt(aesKey, ''.join([encodeTransaction(tx) for tx in selected_B]))
             encrypted_B = encrypt(aesKey, ''.join(selected_B))
