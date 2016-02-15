@@ -22,6 +22,8 @@ def ping():
 @parallel
 def cloneRepo():
     run('git clone https://github.com/amiller/HoneyBadgerBFT.git')
+    with cd('HoneyBadgerBFT'):
+        run('git checkout another-dev')
 
 @parallel
 def install_dependencies():
@@ -79,8 +81,8 @@ def fetchLogs():
 
 @parallel
 def syncKeys():
-    put('./*.key', '~/')
-    put('./ecdsa_keys', '~/')
+    put('~/*.keys', '~/')
+    # put('~/ecdsa.keys', '~/')
 
 import SocketServer, time
 start_time = 0
@@ -121,10 +123,16 @@ def runProtocolFromClient(client, key):
         run('python honest_party_test_EC2.py ~/hosts %s ~/ecdsa_keys %s' % (key, client))
 
 @parallel
-def runProtocol():
+def runProtocol(N_, t_, B_):
+    N = int(N_)
+    t = int(t_)
+    B = int(B_)
     # s = StringIO()
-    with cd('~/HoneyBadgerBFT/mmr13'):
-        run('python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys')
+    run('python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k'
+        ' thsig%d_%d.keys -e ecdsa.keys -b %d -n %d -t %d -c thenc%d_%d.keys' % (N, t, B, N, t, N, t))
+
+    # with cd('~/HoneyBadgerBFT/mmr13'):
+    #    run('python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys')
 
 @parallel
 def checkout():

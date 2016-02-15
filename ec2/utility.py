@@ -13,9 +13,10 @@ secgroups = {
     'eu-west-1':'sg-368c3152',
     'sa-east-1':'sg-2a1f744f',
     'ap-southeast-1':'sg-2d491c48',
-#    'ap-southeast-2':'sg-d58dd4b0',
+    'ap-southeast-2':'sg-d58dd4b0',
     'ap-northeast-1':'sg-499fb02c',
-    'eu-central-1':'sg-2bfe9342'}
+#    'eu-central-1':'sg-2bfe9342'
+}
 regions = sorted(secgroups.keys())[::-1]
 
 NameFilter = 'Badger'
@@ -245,7 +246,7 @@ def callStartProtocolAndMonitorOutput(N, t, l, work='runProtocol'):
 
 
 
-def callFab(s, work):  # Depracated
+def callFab(s, work):  # Deprecated
     # open('hosts','w').write('\n'.join(getAddrFromEC2Summary(s)))
     print Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem', 
             '-u', 'ubuntu', '-H', ','.join(getAddrFromEC2Summary(s)),
