@@ -247,7 +247,7 @@ def client_test_freenet(N, t, options):
             sd = sdList[i]
             #recv = servers[i].get
             recv = servers[0].get
-            th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv, sd)
+            th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv, sd, options.B)
             th.parent_args = (N, t)
             th.name = 'client_test_freenet.honestParty(%d)' % i
             controlChannels[i].put(('IncludeTransaction',
