@@ -52,6 +52,7 @@ def install_dependencies():
     run('git clone https://github.com/JHUISI/charm.git')
     with cd('charm'):
         run('git checkout 2.7-dev')
+        run('./configure.sh')
         sudo('python setup.py install')
 
 @parallel
