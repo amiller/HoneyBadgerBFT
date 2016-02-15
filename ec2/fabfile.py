@@ -53,10 +53,10 @@ def install_dependencies():
     with settings(warn_only=True):
         if run('test -d charm').failed:
             run('git clone https://github.com/JHUISI/charm.git')
-    with cd('charm'):
-        run('git checkout 2.7-dev')
-        run('./configure.sh')
-        sudo('python setup.py install')
+        with cd('charm'):
+            run('git checkout 2.7-dev')
+            run('./configure.sh')
+            sudo('python setup.py install')
 
 @parallel
 def prepare():
