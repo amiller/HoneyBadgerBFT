@@ -39,7 +39,7 @@ def install_dependencies():
     sudo('apt-get -y install flex')
     sudo('apt-get -y install bison')
     sudo('apt-get -y install libgmp-dev')
-    sudo('apt-get -y install libssh-dev')
+    sudo('apt-get -y install libssl-dev')
     sudo('pip install pycrypto')
     sudo('pip install ecdsa')
     sudo('pip install zfec')
