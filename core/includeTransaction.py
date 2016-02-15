@@ -370,7 +370,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
         if len(encCounter[i]) >= ENC_THRESHOLD and receivedProposals and not locks[i].full():  # by == this part only executes once.
             oriM = encPK.combine_shares(deserializeEnc(proposals[i][:ENC_SERIALIZED_LENGTH]),
                                         # dict(encCounter[msgBundle[1]].items()[:ENC_THRESHOLD])
-                                        dict(itertools.islice(encCounter[i].iteritems(), 500))
+                                        dict(itertools.islice(encCounter[i].iteritems(), ENC_THRESHOLD))
                                         )
             locks[i].put(oriM)
 
