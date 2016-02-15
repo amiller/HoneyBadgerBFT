@@ -454,7 +454,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
                     for tx in recoveredSyncedTx:
                         if tx in transactionCache:
                             transactionCache.remove(tx)
-                            finishedTx.add(tx)
+                        finishedTx.add(tx)
                     # print repr(recoveredSyncedTx)
                     #for tx in transactionCache[:B]:
                     #    if recoveredSyncedTx == coolSHA256Hash(encodeTransaction(tx)):

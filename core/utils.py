@@ -83,11 +83,11 @@ class Transaction:  # assume amout is in term of short
     #    return struct.pack('BBH', int(self.source.encode('hex'), 16) & 255, int(self.target.encode('hex'), 16) & 255,
     #                       self.amount)
 
-def randomTransaction():
+def randomTransaction(randomGenerator=random):
     tx = Transaction()
-    tx.source = random.choice(nameList)
-    tx.target = random.choice(nameList)
-    tx.amount = random.randint(1, 32767)  # not 0
+    tx.source = randomGenerator.choice(nameList)
+    tx.target = randomGenerator.choice(nameList)
+    tx.amount = randomGenerator.randint(1, 32767)  # not 0
     return tx
 
 def randomTransactionStr():
@@ -107,9 +107,13 @@ def encodeTransactionEnc(trE):
     return ''.join(trE).ljust(TR_SIZE, ' ')
 
 # assumptions: amount of the money transferred can be expressed in 2 bytes.
-def encodeTransaction(tr, length=TR_SIZE):
+def encodeTransaction(tr, randomGenerator=None, length=TR_SIZE):
     sourceInd = nameList.index(tr.source)
     targetInd = nameList.index(tr.target)
+    if randomGenerator:
+        return struct.pack(
+        '<BBH', sourceInd, targetInd, tr.amount
+    ) + ''.join([struct.pack('B', randomGenerator.randint(0,255)) for t in range(TR_SIZE - 5)]) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
     return struct.pack(
         '<BBH', sourceInd, targetInd, tr.amount
     ) + os.urandom(TR_SIZE - 5) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding

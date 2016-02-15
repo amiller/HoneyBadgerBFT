@@ -26,6 +26,7 @@ from io import BytesIO
 import sys
 from subprocess import check_output
 from os.path import expanduser
+from random import Random
 
 TOR_SOCKSPORT = range(9050, 9150)
 WAITING_SETUP_TIME_IN_SEC = 3
@@ -240,7 +241,11 @@ def client_test_freenet(N, t, options):
             tList.append(tmp_t)
         gevent.joinall(tList)
 
-        transactionSet = set([encodeTransaction(randomTransaction()) for trC in range(int(options.tx))])  # we are using the same one
+        rnd = Random()
+        rnd.seed(123123)
+        #This makes sure that all the EC2 instances have the same transaction pool
+
+        transactionSet = set([encodeTransaction(randomTransaction(rnd), randomGenerator=rnd) for trC in range(int(options.tx))])  # we are using the same one
 
         for i in iterList:
             bc = bcList[i]  # makeBroadcast(i)

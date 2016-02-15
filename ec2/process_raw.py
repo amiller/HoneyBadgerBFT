@@ -31,6 +31,13 @@ def process(s, N=-1, t=-1):
     print 'avg', sum(tList) / len(tList)
     print 'range', max(endtime.values()) - min(starttime.values())
 
+def p(N, t, b):
+    fileName = "logs/%d_%d_%d.txt" % (N, t, b)
+    contents = open(fileName).read().strip().split('\n\n')
+    for c in contents:
+        if c:
+            process(c, N, t)
+
 if  __name__ =='__main__':
   try: __IPYTHON__
   except NameError:
