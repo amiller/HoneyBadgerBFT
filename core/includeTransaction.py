@@ -365,17 +365,21 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
     encPK, encSKs = getEncKeys()
     encCounter = defaultdict(lambda : {})
     includeTransactionChannel = Queue()
+
+    def probe(i):
+        if len(encCounter[i]) >= ENC_THRESHOLD and receivedProposals and not locks[i].full():  # by == this part only executes once.
+            oriM = encPK.combine_shares(deserializeEnc(proposals[i][:ENC_SERIALIZED_LENGTH]),
+                                        # dict(encCounter[msgBundle[1]].items()[:ENC_THRESHOLD])
+                                        dict(itertools.islice(encCounter[i].iteritems(), 500))
+                                        )
+            locks[i].put(oriM)
+
     def listener():
         while True:
             sender, msgBundle = receive()
             if msgBundle[0] == 'O':
                 encCounter[msgBundle[1]][sender] = msgBundle[2]
-                if len(encCounter[msgBundle[1]]) >= ENC_THRESHOLD and receivedProposals and not locks[msgBundle[1]].full():  # by == this part only executes once.
-                        oriM = encPK.combine_shares(deserializeEnc(proposals[msgBundle[1]][:ENC_SERIALIZED_LENGTH]),
-                                                    # dict(encCounter[msgBundle[1]].items()[:ENC_THRESHOLD])
-                                                    dict(itertools.islice(encCounter[msgBundle[1]].iteritems(), 500))
-                                )
-                        locks[msgBundle[1]].put(oriM)
+                probe(msgBundle[1])
             else:
                 includeTransactionChannel.put((sender, msgBundle))  # redirect to includeTransaction
 
@@ -422,6 +426,8 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
             # print pid, 'encrypted_B', encrypted_B
             commonSet, proposals = includeTransaction(pid, N, t, proposal, broadcast, includeTransactionChannel.get, send)
             receivedProposals = True
+            for i in range(N):
+                probe(i)
             # subProposals = [proposals[x] for x in range(N) if commonSet[x] == 1]
             # assert(isinstance(syncedTXSet, set))
             for i, c in enumerate(commonSet):  # stx is the same for every party
