@@ -128,7 +128,10 @@ def encode(m):  # TODO
     starting_time[msgCounter] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
     #intermediate = deepEncode(msgCounter, m)
     result = deepEncode(msgCounter, m)
-    msgSize[msgCounter] = len(result)
+    if m[0] == m[1]:
+        msgSize[msgCounter] = 0
+    else:
+        msgSize[msgCounter] = len(result)
     msgFrom[msgCounter] = m[1]
     msgTo[msgCounter] = m[0]
     msgContent[msgCounter] = m
@@ -173,6 +176,11 @@ def client_test_freenet(N, t, options):
     logGreenlet.name = 'client_test_freenet.logWriter'
     logGreenlet.start()
 
+    servers = []
+    for i in range(N):
+        _, port = TOR_MAPPINGS[i]
+        servers.append(listen_to_channel(port))
+
     # Instantiate the "broadcast" instruction
     def makeBroadcast(i):
         chans = []
@@ -183,15 +191,13 @@ def client_test_freenet(N, t, options):
         def _broadcast(v):
             # mylog(bcolors.OKGREEN + "[%d] Broadcasted %s" % (i, repr(v)) + bcolors.ENDC, verboseLevel=-1)
             for j in range(N):
-                chans[j].put((j, i, v))  # from i to j
+                if j != i:
+                    chans[j].put((j, i, v))  # from i to j
+            servers[i].put((i, v)) # this is what the reader see. We are doing a shortcut.
         def _delivery(j, v):
             chans[j].put((j, i, v))
         return _broadcast, _delivery
 
-    servers = []
-    for i in range(N):
-        _, port = TOR_MAPPINGS[i]
-        servers.append(listen_to_channel(port))
     gevent.sleep(2)
     print 'servers started'
 
