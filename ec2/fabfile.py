@@ -39,7 +39,8 @@ def install_dependencies():
     sudo('pip install pycrypto')
     sudo('pip install ecdsa')
     sudo('pip install zfec')
-    put('~/pbc-0.5.14.tar.gz', '~/')
+    #put('./pbc-0.5.14.tar.gz', '~/')
+    run('wget https://crypto.stanford.edu/pbc/files/pbc-0.5.14.tar.gz')
     run('tar -xvf pbc-0.5.14.tar.gz')
     with cd('pbc-0.5.14'):
         run('./configure')
@@ -81,8 +82,8 @@ def fetchLogs():
 
 @parallel
 def syncKeys():
-    put('~/*.keys', '~/')
-    # put('~/ecdsa.keys', '~/')
+    put('./*.keys', '~/')
+    # put('./ecdsa.keys', '~/')
 
 import SocketServer, time
 start_time = 0
