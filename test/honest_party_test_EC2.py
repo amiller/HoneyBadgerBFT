@@ -5,7 +5,7 @@ monkey.patch_all()
 
 from gevent.queue import *
 from gevent import Greenlet
-from ..core.utils import bcolors, mylog, initiateECDSAKeys, initiateThresholdSig, checkExceptionPerGreenlet
+from ..core.utils import bcolors, mylog, initiateThresholdSig
 from ..core.includeTransaction import honestParty, Transaction
 from collections import defaultdict
 from ..core.bkr_acs import initBeforeBinaryConsensus
@@ -13,6 +13,10 @@ from ..core.utils import ACSException, deepEncode, deepDecode, randomTransaction
 import gevent
 import os
 from ..core.utils import myRandom as random
+from ..core.utils import ACSException, checkExceptionPerGreenlet, getSignatureCost, encodeTransaction, \
+    deepEncode, deepDecode, randomTransaction, initiateECDSAKeys, initiateThresholdEnc, finishTransactionLeap
+import json
+import cPickle as pickle
 from gevent.server import StreamServer
 import time
 import base64
@@ -119,6 +123,8 @@ msgTo = defaultdict(lambda: 0)
 msgContent = defaultdict(lambda: '')
 msgTypeCounter = [[0, 0]] * 7
 logChannel = Queue()
+msgTypeCounter = [[0, 0] for _ in range(8)]
+logGreenlet = None
 
 def logWriter(fileHandler):
     while True:
@@ -152,7 +158,7 @@ def decode(s):  # TODO
     logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
     return result[1]
 
-def client_test_freenet(N, t):
+def client_test_freenet(N, t, options):
     '''
     Test for the client with random delay channels
 
@@ -166,9 +172,14 @@ def client_test_freenet(N, t):
     :param t: the number of malicious parties
     :return None:
     '''
-
-    initiateThresholdSig(open(sys.argv[2], 'r').read())
-    initiateECDSAKeys(open(sys.argv[3], 'r').read())
+    initiateThresholdSig(open(options.threshold_keys, 'r').read())
+    initiateECDSAKeys(open(options.ecdsa, 'r').read())
+    initiateThresholdEnc(open(options.threshold_encs, 'r').read())
+    global logGreenlet
+    logGreenlet = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
+    logGreenlet.parent_args = (N, t)
+    logGreenlet.name = 'client_test_freenet.logWriter'
+    logGreenlet.start()
 
     # query amazon meta-data
     localIP = check_output(['curl', 'http://169.254.169.254/latest/meta-data/public-ipv4'])  #  socket.gethostbyname(socket.gethostname())
@@ -192,7 +203,10 @@ def client_test_freenet(N, t):
             # mylog(bcolors.OKGREEN + "[%d] Broadcasted %s" % (i, repr(v)) + bcolors.ENDC, verboseLevel=-1)
             for j in range(N):
                 chans[j].put((j, i, v))  # from i to j
-        return _broadcast
+        def _send(j, v):
+            chans[j].put((j, i, v))
+        return _broadcast, _send
+
     iterList = [myID] #range(N)
     servers = []
     for i in iterList:
@@ -209,11 +223,13 @@ def client_test_freenet(N, t):
         ts = []
         controlChannels = [Queue() for _ in range(N)]
         bcList = dict()
+        sdList = dict()
         tList = []
 
         def _makeBroadcast(x):
-            bc = makeBroadcast(x)
+            bc, sd = makeBroadcast(x)
             bcList[x] = bc
+            sdList[x] = sd
 
         for i in iterList:
             tmp_t = Greenlet(_makeBroadcast, i)
@@ -223,15 +239,18 @@ def client_test_freenet(N, t):
             tList.append(tmp_t)
         gevent.joinall(tList)
 
+        transactionSet = set([encodeTransaction(randomTransaction()) for trC in range(int(options.tx))])  # we are using the same one
+
         for i in iterList:
             bc = bcList[i]  # makeBroadcast(i)
+            sd = sdList[i]
             #recv = servers[i].get
             recv = servers[0].get
-            th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
+            th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv, sd)
             th.parent_args = (N, t)
             th.name = 'client_test_freenet.honestParty(%d)' % i
             controlChannels[i].put(('IncludeTransaction',
-                set([randomTransaction() for trC in range(int(sys.argv[4]))])))
+                transactionSet))
             th.start()
             mylog('Summoned party %i at time %f' % (i, time.time()), verboseLevel=-1)
             ts.append(th)
@@ -241,11 +260,25 @@ def client_test_freenet(N, t):
             gevent.joinall(ts)
         except ACSException:
             gevent.killall(ts)
+        except finishTransactionLeap:  ### Manually jump to this level
+            print 'msgCounter', msgCounter
+            print 'msgTypeCounter', msgTypeCounter
+            # message id 0 (duplicated) for signatureCost
+            #logChannel.put((0, getSignatureCost(), 0, 0, str(time.time()), str(time.time()), '[signature cost]'))
+            logChannel.put(StopIteration)
+            mylog("=====", verboseLevel=-1)
+            for item in logChannel:
+                mylog(item, verboseLevel=-1)
+            mylog("=====", verboseLevel=-1)
+            #checkExceptionPerGreenlet()
+            # print getSignatureCost()
+            pass
         except gevent.hub.LoopExit: # Manual fix for early stop
-            print "Concensus Finished"
-            mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
+            while True:
+                gevent.sleep(1)
+            checkExceptionPerGreenlet()
         finally:
-            mylog("Total Message size %d" % totalMessageSize, verboseLevel=-2)
+            print "Concensus Finished"
 
 
 import atexit
@@ -254,7 +287,7 @@ import traceback
 from greenlet import greenlet
 
 USE_PROFILE = False
-GEVENT_DEBUG = True
+GEVENT_DEBUG = False
 OUTPUT_HALF_MSG = False
 
 if USE_PROFILE:
@@ -262,6 +295,13 @@ if USE_PROFILE:
 
 def exit():
     print "Entering atexit()"
+    print 'msgCounter', msgCounter
+    print 'msgTypeCounter', msgTypeCounter
+    nums,lens = zip(*msgTypeCounter)
+    print '    Init      Echo      Val       Aux      Coin     Ready    Share'
+    print '%8d %8d %9d %9d %9d %9d %9d' % nums[1:]
+    print '%8d %8d %9d %9d %9d %9d %9d' % lens[1:]
+    mylog("Total Message size %d" % totalMessageSize, verboseLevel=-2)
     if OUTPUT_HALF_MSG:
         halfmsgCounter = 0
         for msgindex in starting_time.keys():
@@ -281,14 +321,39 @@ def exit():
         stats.save('profile.callgrind', type='callgrind')
 
 if __name__ == '__main__':
-    if len(sys.argv) < 4:
-        print '[Usage] %s hosts shoup_keys ecdsa_keys'
+    # GreenletProfiler.set_clock_type('cpu')
+    # print "Started"
+    atexit.register(exit)
+    if USE_PROFILE:
+        GreenletProfiler.set_clock_type('cpu')
+        GreenletProfiler.start()
+
+    from optparse import OptionParser
+    parser = OptionParser()
+    parser.add_option("-e", "--ecdsa-keys", dest="ecdsa",
+                      help="Location of ECDSA keys", metavar="KEYS")
+    parser.add_option("-k", "--threshold-keys", dest="threshold_keys",
+                      help="Location of threshold signature keys", metavar="KEYS")
+    parser.add_option("-c", "--threshold-enc", dest="threshold_encs",
+                      help="Location of threshold encryption keys", metavar="KEYS")
+    parser.add_option("-s", "--hosts", dest="hosts",
+                      help="Host list file", metavar="HOSTS", default="~/hosts")
+    parser.add_option("-n", "--number", dest="n",
+                      help="Number of parties", metavar="N", type="int")
+    parser.add_option("-b", "--propose-size", dest="B",
+                      help="Number of transactions to propose", metavar="B", type="int")
+    parser.add_option("-t", "--tolerance", dest="t",
+                      help="Tolerance of adversaries", metavar="T", type="int")
+    parser.add_option("-x", "--transactions", dest="tx",
+                      help="Number of transactions proposed by each party", metavar="TX", type="int", default=-1)
+    (options, args) = parser.parse_args()
+    prepareIPList(open(options.hosts, 'r').read())
+    if (options.ecdsa and options.threshold_keys and options.threshold_encs and options.n and options.t):
+        if not options.B:
+            options.B = int(math.ceil(options.n * math.log(options.n)))
+        if options.tx < 0:
+            options.tx = options.B
+        client_test_freenet(options.n , options.t, options)
     else:
-        if USE_PROFILE:
-            GreenletProfiler.set_clock_type('cpu')
-        atexit.register(exit)
-        prepareIPList(open(sys.argv[1], 'r').read())
-        if USE_PROFILE:
-            GreenletProfiler.start()
-        client_test_freenet(int(sys.argv[5]), int(sys.argv[6]))  # Here N is no longer used
+        parser.error('Please specify the arguments')
 
