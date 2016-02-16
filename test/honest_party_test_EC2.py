@@ -27,6 +27,7 @@ import sys
 from subprocess import check_output
 from os.path import expanduser
 from random import Random
+import shred
 
 TOR_SOCKSPORT = range(9050, 9150)
 WAITING_SETUP_TIME_IN_SEC = 3
@@ -246,46 +247,56 @@ def client_test_freenet(N, t, options):
         # mylog("[%d] random transaction generator fingerprints %s" % (myID, hex(rnd.getrandbits(32*8))), verboseLevel=-2)
         # This makes sure that all the EC2 instances have the same transaction pool
 
-        transactionSet = pickle.load(open(options.txpath, 'r'))[:int(options.tx)]
+        # transactionSet = pickle.load(open(options.txpath, 'r'))[:int(options.tx)]
+        transactionSet = set([encodeTransaction(randomTransaction(rnd), randomGenerator=rnd) for trC in range(int(options.tx))])  # we are using the same one
 
-        for i in iterList:
-            bc = bcList[i]  # makeBroadcast(i)
-            sd = sdList[i]
-            #recv = servers[i].get
-            recv = servers[0].get
-            th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv, sd, options.B)
-            th.parent_args = (N, t)
-            th.name = 'client_test_freenet.honestParty(%d)' % i
-            controlChannels[i].put(('IncludeTransaction',
-                transactionSet))
-            th.start()
-            mylog('Summoned party %i at time %f' % (i, time.time()), verboseLevel=-1)
-            ts.append(th)
+        def toBeScheduled():
+            for i in iterList:
+                bc = bcList[i]  # makeBroadcast(i)
+                sd = sdList[i]
+                #recv = servers[i].get
+                recv = servers[0].get
+                th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv, sd, options.B)
+                th.parent_args = (N, t)
+                th.name = 'client_test_freenet.honestParty(%d)' % i
+                controlChannels[i].put(('IncludeTransaction',
+                    transactionSet))
+                th.start()
+                mylog('Summoned party %i at time %f' % (i, time.time()), verboseLevel=-1)
+                ts.append(th)
 
-        #Greenlet(monitorUserInput).start()
-        try:
-            gevent.joinall(ts)
-        except ACSException:
-            gevent.killall(ts)
-        except finishTransactionLeap:  ### Manually jump to this level
-            print 'msgCounter', msgCounter
-            print 'msgTypeCounter', msgTypeCounter
-            # message id 0 (duplicated) for signatureCost
-            #logChannel.put((0, getSignatureCost(), 0, 0, str(time.time()), str(time.time()), '[signature cost]'))
-            logChannel.put(StopIteration)
-            mylog("=====", verboseLevel=-1)
-            for item in logChannel:
-                mylog(item, verboseLevel=-1)
-            mylog("=====", verboseLevel=-1)
-            #checkExceptionPerGreenlet()
-            # print getSignatureCost()
-            pass
-        except gevent.hub.LoopExit: # Manual fix for early stop
-            while True:
-                gevent.sleep(1)
-            checkExceptionPerGreenlet()
-        finally:
-            print "Concensus Finished"
+            #Greenlet(monitorUserInput).start()
+            try:
+                gevent.joinall(ts)
+            except ACSException:
+                gevent.killall(ts)
+            except finishTransactionLeap:  ### Manually jump to this level
+                print 'msgCounter', msgCounter
+                print 'msgTypeCounter', msgTypeCounter
+                # message id 0 (duplicated) for signatureCost
+                #logChannel.put((0, getSignatureCost(), 0, 0, str(time.time()), str(time.time()), '[signature cost]'))
+                logChannel.put(StopIteration)
+                mylog("=====", verboseLevel=-1)
+                for item in logChannel:
+                    mylog(item, verboseLevel=-1)
+                mylog("=====", verboseLevel=-1)
+                #checkExceptionPerGreenlet()
+                # print getSignatureCost()
+                pass
+            except gevent.hub.LoopExit: # Manual fix for early stop
+                while True:
+                    gevent.sleep(1)
+                checkExceptionPerGreenlet()
+            finally:
+                print "Concensus Finished"
+
+        s = shred.scheduler(time.time, time.sleep)
+        time_now = time.time()
+        delay = options.delaytime - time_now % options.delaytime
+
+        s.enter(delay, 1, toBeScheduled, ())
+
+
 
 
 import atexit
@@ -349,6 +360,8 @@ if __name__ == '__main__':
                       help="Number of parties", metavar="N", type="int")
     parser.add_option("-p", "--tx-path", dest="txpath",
                       help="File path of the transaction set", metavar="FILE", default='tx')
+    parser.add_option("-c", "--negotiated-time", dest="delaytime",
+                      help="will start the protocol at some multiple of c", metavar="C", type="int", default=50)
     parser.add_option("-b", "--propose-size", dest="B",
                       help="Number of transactions to propose", metavar="B", type="int")
     parser.add_option("-t", "--tolerance", dest="t",
