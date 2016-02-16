@@ -242,8 +242,8 @@ def client_test_freenet(N, t, options):
             tList.append(tmp_t)
         gevent.joinall(tList)
 
-        # rnd = Random()
-        # rnd.seed(123123)
+        rnd = Random()
+        rnd.seed(123123)
         # mylog("[%d] random transaction generator fingerprints %s" % (myID, hex(rnd.getrandbits(32*8))), verboseLevel=-2)
         # This makes sure that all the EC2 instances have the same transaction pool
 
@@ -291,11 +291,11 @@ def client_test_freenet(N, t, options):
                 print "Concensus Finished"
 
         s = shred.scheduler(time.time, time.sleep)
+
         time_now = time.time()
         delay = options.delaytime - time_now % options.delaytime
-
         s.enter(delay, 1, toBeScheduled, ())
-
+        print myID, "waits for", time_now + delay
 
 
 
