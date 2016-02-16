@@ -31,7 +31,7 @@ def acs(pid, N, t, Q, broadcast, receive):
             #         N, t, 1, make_bc(i), reliableBroadcastReceiveQueue[i].get).start()
             if not i in receivedChannelsFlags:
                 receivedChannelsFlags.append(i)
-                mylog('B[%d]binary consensus_%d_starts with 1 at %f' % (pid, i, time.time()), verboseLevel=-1)
+                # mylog('B[%d]binary consensus_%d_starts with 1 at %f' % (pid, i, time.time()), verboseLevel=-1)
                 greenletPacker(Greenlet(binary_consensus, i, pid,
                     N, t, 1, decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get),
                         'acs.callbackFactory.binary_consensus', (pid, N, t, Q, broadcast, receive)).start()
@@ -79,7 +79,7 @@ def acs(pid, N, t, Q, broadcast, receive):
             BA[i] = channel.get()
             # if BA[i]:   # Al: used to be a short-cut, but only works when the N in line 87 changed as (N-t)
             if True:
-                mylog('B[%d]binary consensus_%d_ends at %f' % (pid, i, time.time()), verboseLevel=-1)
+                # mylog('B[%d]binary consensus_%d_ends at %f' % (pid, i, time.time()), verboseLevel=-1)
                 if callbackCounter[0] >= 2*t and (not locker2.full()):
                         locker2.put("Key")  # Now we've got 2t+1 1's
                 callbackCounter[0] += 1
@@ -97,7 +97,7 @@ def acs(pid, N, t, Q, broadcast, receive):
     for i in range(N):
         if not i in receivedChannelsFlags:
             receivedChannelsFlags.append(i)
-            mylog('B[%d]binary_%d_starts with 0 at %f' % (pid, i, time.time()))
+            # mylog('B[%d]binary_%d_starts with 0 at %f' % (pid, i, time.time()))
             greenletPacker(Greenlet(binary_consensus, i, pid, N, t, 0,
                      decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get),
                            'acs.binary_consensus', (pid, N, t, Q, broadcast, receive)).start()
@@ -125,9 +125,9 @@ def random_delay_acs(N, t, inputs):
         def _broadcast(v):
            def _deliver(j):
                # print 'Delivering', v, 'from', i, 'to', j
-               mylog(bcolors.OKGREEN + "MSG: [%d] -> [%d]: %s" % (i, j, repr(v)) + bcolors.ENDC)
+               # mylog(bcolors.OKGREEN + "MSG: [%d] -> [%d]: %s" % (i, j, repr(v)) + bcolors.ENDC)
                buffers[j].put((i,v))
-               mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
+               # mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
 
            for j in range(N):
                greenletPacker(Greenlet(_deliver, j),

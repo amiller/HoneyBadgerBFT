@@ -112,24 +112,24 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
         signed = [False]*N
         readySent = [False] * N
         reconstDone = [False] * N
-        reconsLocker = [Queue() for _ in range(N)]
+        # reconsLocker = [Queue() for _ in range(N)]
         # finalTrigger = [Queue() for _ in range(N)]
 
-        def final(i):  # only one time
-            buf = reconsLocker[i].get()
-            # finalTrigger[i].get()
-            outputs[i].put(buf)
-            # mylog("[%d] finished acast on msg from %d." % (pid, i), verboseLevel=-2)
-            # outputs[i].put([constructTransactionFromReprEnc(buf[i:i+TR_SIZE]) for i in range(0, len(buf), TR_SIZE)])
-        for i in range(N):
-            Greenlet(final, i).start()
+        #def final(i):  # only one time
+        #    buf = reconsLocker[i].get()
+        #    # finalTrigger[i].get()
+        #    outputs[i].put(buf)
+        #    # mylog("[%d] finished acast on msg from %d." % (pid, i), verboseLevel=-2)
+        #    # outputs[i].put([constructTransactionFromReprEnc(buf[i:i+TR_SIZE]) for i in range(0, len(buf), TR_SIZE)])
+        #for i in range(N):
+        #    Greenlet(final, i).start()
         while True:
             sender, msgBundle = receive()
             # mylog("[%d] multiSigBr received msgBundle %s" % (pid, msgBundle), verboseLevel=-1)
             # vki = Pubkeys[msgBundle[1]].peek()
             if msgBundle[0] == 'i' and not signed[sender]:
                 # if keys[msgBundle[1]].verify(sha1hash(hex(setHash(msgBundle[2]))), msgBundle[3]):
-                if keys[sender].verify(sha1hash(repr(msgBundle[1])), msgBundle[2]):
+                if keys[sender].verify(sha1hash(''.join([msgBundle[1][0], msgBundle[1][1], ''.join(msgBundle[1][2])])), msgBundle[2]):
                     # Here we should remove the randomness of the signature
                     # assert isinstance(msgBundle[2], set)
                     assert isinstance(msgBundle[1], tuple)
@@ -146,9 +146,11 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
                         # mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
                         # mylog("[%d] and now signed is %s" % (pid, repr(signed)), verboseLevel=-1)
                         # broadcast(('e', pid, newBundle, keys[pid].sign(sha1hash(hex((newBundle[0]+37)*setHash(newBundle[1]))))))
-                    Greenlet(broadcast, ('e', newBundle, keys[pid].sign(
-                        sha1hash(repr(newBundle))
-                    ))).start()
+                    # mylog("RBC.echo started (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
+                    broadcast(('e', newBundle, keys[pid].sign(
+                        #sha1hash(repr(newBundle))
+                        sha1hash(''.join([str(newBundle[0]), newBundle[1], newBundle[2], ''.join(newBundle[3])]))
+                    )))
                     # broadcast(('e', pid, newBundle, keys[pid].sign(
                     #     sha1hash(repr(newBundle))
                     # )))
@@ -157,7 +159,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
                     raise ECDSASignatureError()
             elif msgBundle[0] == 'e':
                 # if keys[msgBundle[1]].verify(sha1hash(hex((msgBundle[2][0]+37)*setHash(msgBundle[2][1]))), msgBundle[3]):
-                if keys[sender].verify(sha1hash(repr(msgBundle[1])), msgBundle[2]):
+                if keys[sender].verify(sha1hash(''.join([str(msgBundle[1][0]), msgBundle[1][1], msgBundle[1][2], ''.join(msgBundle[1][3])])), msgBundle[2]):
                     originBundle = msgBundle[1]
                     if not merkleVerify(originBundle[1], originBundle[2], originBundle[3], coolSHA256Hash, sender):
                         continue
@@ -169,8 +171,9 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
                         rootHashes[originBundle[0]] = originBundle[2]
                     opinions[originBundle[0]][sender] = originBundle[1]   # We are going to move this part to kekeketktktktk
                     if len(opinions[originBundle[0]]) >= Threshold2 and not readySent[originBundle[0]]:
+                            # mylog("RBC.ready started (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
                             readySent[originBundle[0]] = True
-                            Greenlet(broadcast, ('r', originBundle[0], originBundle[2])).start()  # We are broadcasting its hash
+                            broadcast(('r', originBundle[0], originBundle[2]))  # We are broadcasting its hash
                         # broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to
                 else:
                     raise ECDSASignatureError()
@@ -180,7 +183,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
                 # print pid, msgBundle[1], tmp
                 if tmp >= t+1 and not readySent[msgBundle[1]]:
                     readySent[msgBundle[1]] = True
-                    Greenlet(broadcast, ('r', msgBundle[1], msgBundle[2])).start()
+                    broadcast(('r', msgBundle[1], msgBundle[2]))
                     # broadcast(('r', msgBundle[1], msgBundle[2]))  # relay the msg
                 if tmp >= Threshold2 and not outputs[msgBundle[1]].full() and \
                         not reconstDone[msgBundle[1]] and len(opinions[msgBundle[1]]) >= Threshold:
@@ -220,8 +223,11 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
                     # print originBundle[0], '->', sender, len(buf), repr(buf)
                     # print repr(buf)
                     # assert len(buf) % TR_SIZE == 0  # after encryption this is not true
-                    if reconsLocker[msgBundle[1]].empty():
-                        reconsLocker[msgBundle[1]].put(buf)
+                    #if reconsLocker[msgBundle[1]].empty():
+                        #reconsLocker[msgBundle[1]].put(buf)
+                    if outputs[msgBundle[1]].empty():
+                        outputs[msgBundle[1]].put(buf)
+                        # mylog("RBC Finished (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
                     # mylog("[%d] put reconsLocker for %d" % (pid, originBundle[0]), verboseLevel=-2)
                     # finalTrigger[msgBundle[1]].put(1)
                     # mylog("[%d] put finalTrigger for %d" % (pid, msgBundle[1]), verboseLevel=-2)
@@ -248,7 +254,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
     for i in range(N):
         mb = getMerkleBranch(i, mt)  # notice that index starts from 1 and pid starts from 0
         newBundle = (encodedFragList[i], rootHash, mb)
-        send(i, ('i', newBundle, keys[pid].sign(sha1hash(repr(newBundle)))))
+        send(i, ('i', newBundle, keys[pid].sign(sha1hash(''.join([newBundle[0], newBundle[1], ''.join(newBundle[2])])))))
 
 @greenletFunction
 def consensusBroadcast(pid, N, t, msg, broadcast, receive, outputs, send, method=multiSigBr):
@@ -259,7 +265,7 @@ def union(listOfTXSet):
     result = set() # Informal Union: actually we don't know how it compares ...
     for s in listOfTXSet:
         result = result.union(s)
-    mylog("Union on %s gives %s" % (repr(listOfTXSet), repr(result)))
+    # mylog("Union on %s gives %s" % (repr(listOfTXSet), repr(result)))
     return result
 
 # tx is the transaction we are going to include
@@ -308,7 +314,7 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive, send):
 
     def outputCallBack(i):
         TXSet[i] = outputChannel[i].get()
-        mylog(bcolors.OKGREEN + "[%d] get output(%d) as TXSet: %s" % (pid, i, repr(TXSet[i])) + bcolors.ENDC)
+        # mylog(bcolors.OKGREEN + "[%d] get output(%d) as TXSet: %s" % (pid, i, repr(TXSet[i])) + bcolors.ENDC)
         monitoredIntList[i].data = 1
 
     for i in range(N):
@@ -328,10 +334,10 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive, send):
     includeTransaction.callbackCounter = 0
     monitoredIntList = [MonitoredInt() for _ in range(N)]
 
-    mylog("[%d] Beginning A-Cast on %s" % (pid, repr(setToInclude)), verboseLevel=-1)
+    # mylog("[%d] Beginning A-Cast on %s" % (pid, repr(setToInclude)), verboseLevel=-1)
     greenletPacker(Greenlet(consensusBroadcast, pid, N, t, setToInclude, make_bc_br(pid), CBChannel.get, outputChannel, make_bc_send(pid)),
         'includeTransaction.consensusBroadcast', (pid, N, t, setToInclude, broadcast, receive)).start()
-    mylog("[%d] Beginning ACS" % pid, verboseLevel=-1)
+    # mylog("[%d] Beginning ACS" % pid, verboseLevel=-1)
     greenletPacker(Greenlet(callBackWrap(acs, callbackFactoryACS()), pid, N, t, monitoredIntList, make_acs_br(pid), ACSChannel.get),
         'includeTransaction.callBackWrap(acs, callbackFactoryACS())', (pid, N, t, setToInclude, broadcast, receive)).start()
 
@@ -391,7 +397,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
         # try:
             # op, msg = controlChannel.get(timeout=HONEST_PARTY_TIMEOUT)
             op, msg = controlChannel.get()
-            mylog("[%d] gets some msg %s" % (pid, repr(msg)))
+            # mylog("[%d] gets some msg %s" % (pid, repr(msg)))
             if op == "IncludeTransaction":
                 if isinstance(msg, Transaction):
                     # transactionCache.add(msg)
@@ -474,8 +480,8 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
             for rtx in recoveredSyncedTxList:
                 finishedTx.update(set(rtx))
 
-            mylog("[%d] now caches %s" % (pid, repr([constructTransactionFromRepr(tx) for tx in transactionCache])), verboseLevel = -1)
-            mylog("[%d] synced transactions %s" % (pid, repr([constructTransactionFromRepr(tx) for tx in finishedTx])), verboseLevel = -1)
+            # mylog("[%d] now caches %s" % (pid, repr([constructTransactionFromRepr(tx) for tx in transactionCache])), verboseLevel = -1)
+            # mylog("[%d] synced transactions %s" % (pid, repr([constructTransactionFromRepr(tx) for tx in finishedTx])), verboseLevel = -1)
             mylog("[%d] %d distinct tx synced and %d tx left in the pool." % (pid, len(finishedTx), len(transactionCache) - len(finishedTx)), verboseLevel=-2)
             # transactionCache = transactionCache.difference(recoveredSyncedTXSet)    # TODO
             # mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)), verboseLevel = -1)
