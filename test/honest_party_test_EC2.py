@@ -360,7 +360,7 @@ if __name__ == '__main__':
                       help="Number of parties", metavar="N", type="int")
     parser.add_option("-p", "--tx-path", dest="txpath",
                       help="File path of the transaction set", metavar="FILE", default='tx')
-    parser.add_option("-c", "--negotiated-time", dest="delaytime",
+    parser.add_option("-a", "--negotiated-time", dest="delaytime",
                       help="will start the protocol at some multiple of c", metavar="C", type="int", default=50)
     parser.add_option("-b", "--propose-size", dest="B",
                       help="Number of transactions to propose", metavar="B", type="int")
