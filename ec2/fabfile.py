@@ -131,7 +131,12 @@ def runProtocolFromClient(client, key):
         run('python honest_party_test_EC2.py ~/hosts %s ~/ecdsa_keys %s' % (key, client))
 
 @parallel
-def runProtocol(N_, t_, B_):
+def generateTX(N_):
+    N = int(N_)
+    run('python -m HoneyBadgerBFT.ec2.generate_tx %d > tx' % N)
+
+@parallel
+def runProtocol(N_, t_, B_, tx='tx'):
     N = int(N_)
     t = int(t_)
     B = int(B_)

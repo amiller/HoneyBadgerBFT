@@ -190,10 +190,10 @@ def client_test_freenet(N, t, options):
     mylog("[%d] Parameters: N %d, t %d" % (myID, N, t), verboseLevel=-1)
     mylog("[%d] IP_LIST: %s" % (myID, IP_LIST), verboseLevel=-1)
     #buffers = map(lambda _: Queue(1), range(N))
-    gtemp = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
-    gtemp.parent_args = (N, t)
-    gtemp.name = 'client_test_freenet.logWriter'
-    gtemp.start()
+    #gtemp = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
+    #gtemp.parent_args = (N, t)
+    #gtemp.name = 'client_test_freenet.logWriter'
+    #gtemp.start()
     # Instantiate the "broadcast" instruction
     def makeBroadcast(i):
         chans = []
@@ -241,12 +241,12 @@ def client_test_freenet(N, t, options):
             tList.append(tmp_t)
         gevent.joinall(tList)
 
-        rnd = Random()
-        rnd.seed(123123)
-        mylog("[%d] random transaction generator fingerprints %s" % (myID, hex(rnd.getrandbits(32*8))), verboseLevel=-2)
-        #This makes sure that all the EC2 instances have the same transaction pool
+        # rnd = Random()
+        # rnd.seed(123123)
+        # mylog("[%d] random transaction generator fingerprints %s" % (myID, hex(rnd.getrandbits(32*8))), verboseLevel=-2)
+        # This makes sure that all the EC2 instances have the same transaction pool
 
-        transactionSet = set([encodeTransaction(randomTransaction(rnd), randomGenerator=rnd) for trC in range(int(options.tx))])  # we are using the same one
+        transactionSet = pickle.load(open(options.txpath, 'r'))
 
         for i in iterList:
             bc = bcList[i]  # makeBroadcast(i)
@@ -347,6 +347,8 @@ if __name__ == '__main__':
                       help="Host list file", metavar="HOSTS", default="~/hosts")
     parser.add_option("-n", "--number", dest="n",
                       help="Number of parties", metavar="N", type="int")
+    parser.add_option("-p", "--tx-path", dest="txpath",
+                      help="File path of the transaction set", metavar="FILE", default='tx')
     parser.add_option("-b", "--propose-size", dest="B",
                       help="Number of transactions to propose", metavar="B", type="int")
     parser.add_option("-t", "--tolerance", dest="t",
