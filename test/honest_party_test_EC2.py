@@ -246,7 +246,7 @@ def client_test_freenet(N, t, options):
         # mylog("[%d] random transaction generator fingerprints %s" % (myID, hex(rnd.getrandbits(32*8))), verboseLevel=-2)
         # This makes sure that all the EC2 instances have the same transaction pool
 
-        transactionSet = pickle.load(open(options.txpath, 'r'))
+        transactionSet = pickle.load(open(options.txpath, 'r'))[:int(options.tx)]
 
         for i in iterList:
             bc = bcList[i]  # makeBroadcast(i)

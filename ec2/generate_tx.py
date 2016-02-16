@@ -16,7 +16,7 @@ def main():
         seed = 123
     rnd = random.Random(seed)
     print "Random transaction generator fingerprints %s" % (hex(rnd.getrandbits(32*8)))
-    transactionSet = set([encodeTransaction(randomTransaction(rnd), randomGenerator=rnd) for trC in range(int(options.tx))])  # we are using the same one
+    transactionSet = set([encodeTransaction(randomTransaction(rnd), randomGenerator=rnd) for trC in range(ntx)])  # we are using the same one
     print cPickle.dumps(transactionSet)
 
 if __name__ == '__main__':
