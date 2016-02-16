@@ -290,13 +290,13 @@ def client_test_freenet(N, t, options):
             finally:
                 print "Concensus Finished"
 
-        s = shred.scheduler(time.time, time.sleep)
+        s = sched.scheduler(time.time, time.sleep)
 
         time_now = time.time()
         delay = options.delaytime - time_now % options.delaytime
         s.enter(delay, 1, toBeScheduled, ())
         print myID, "waits for", time_now + delay
-
+        s.run()
 
 
 import atexit
