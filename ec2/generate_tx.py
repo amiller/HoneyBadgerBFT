@@ -9,7 +9,7 @@ def main():
     parser.add_argument('n', help='The number of transactions')
     parser.add_argument('seed', help='seed')
     args = parser.parse_args()
-    ntx = int(args.players)
+    ntx = int(args.n)
     if args.seed:
         seed = int(args.seed)
     else:
