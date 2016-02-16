@@ -16,6 +16,7 @@ from ..threshenc.tpke import dealer, serialize, deserialize0, deserialize1, dese
 from utils import PAIRING_SERIALIZED_0, PAIRING_SERIALIZED_1, PAIRING_SERIALIZED_2, CURVE_LENGTH, serializeEnc, deserializeEnc, ENC_SERIALIZED_LENGTH
 import random
 import itertools
+import gevent
 
 def calcSum(dd):
     return sum([x for _, x in dd.items()])
@@ -426,7 +427,9 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
             proposal = serializeEnc(encryptedAESKey) + encrypted_B
             print "[%d] starts to include proposal of length %d" % (pid, len(proposal))
             # print pid, 'encrypted_B', encrypted_B
+            mylog("timestampIB (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
             commonSet, proposals = includeTransaction(pid, N, t, proposal, broadcast, includeTransactionChannel.get, send)
+            mylog("timestampIE (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
             receivedProposals = True
             for i in range(N):
                 probe(i)
@@ -437,34 +440,43 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
                     share = encSKs[pid].decrypt_share(deserializeEnc(proposals[i][:ENC_SERIALIZED_LENGTH]))
                     # broadcast(('O', stx, share))  # it seems share is good for python
                     broadcast(('O', i, share))
+            mylog("timestampIE2 (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
             # recoveredSyncedTXSet = set()
             #for stx in syncedTXSet:
+            recoveredSyncedTxList = []
+            def prepareTx(i):
+                rec = locks[i].get()
+                # print pid, repr(rec)
+                # print "[%d] proposals[%d] has length of %d: %s" % (pid, i, len(proposals[i]), repr(proposals[i][-10:]))
+                encodedTxSet = decrypt(rec, proposals[i][ENC_SERIALIZED_LENGTH:])
+                assert len(encodedTxSet) % TR_SIZE == 0
+                # recoveredSyncedTx = [constructTransactionFromRepr(encodedTxSet[i:i+TR_SIZE]) for i in range(0, len(encodedTxSet), TR_SIZE)]
+                recoveredSyncedTx = [encodedTxSet[i:i+TR_SIZE] for i in range(0, len(encodedTxSet), TR_SIZE)]
+                recoveredSyncedTxList.append(recoveredSyncedTx)
+                #for tx in recoveredSyncedTx:
+                #    if tx in transactionCache:
+                #        transactionCache.remove(tx)
+                #    finishedTx.add(tx)
+            thList = []
             for i, c in enumerate(commonSet):  # stx is the same for every party
                 if c:
-                # recoveredSyncedTXSet.add(lock[stx].get())
-                # recoveredSyncedTx = locks[stx].get()
-                    # rec = locks[stx].get()
-                    rec = locks[i].get()
-                    # print pid, repr(rec)
-                    # print "[%d] proposals[%d] has length of %d: %s" % (pid, i, len(proposals[i]), repr(proposals[i][-10:]))
-                    encodedTxSet = decrypt(rec, proposals[i][ENC_SERIALIZED_LENGTH:])
-                    assert len(encodedTxSet) % TR_SIZE == 0
-                    # recoveredSyncedTx = [constructTransactionFromRepr(encodedTxSet[i:i+TR_SIZE]) for i in range(0, len(encodedTxSet), TR_SIZE)]
-                    recoveredSyncedTx = [encodedTxSet[i:i+TR_SIZE] for i in range(0, len(encodedTxSet), TR_SIZE)]
-                    for tx in recoveredSyncedTx:
-                        if tx in transactionCache:
-                            transactionCache.remove(tx)
-                        finishedTx.add(tx)
+                    s = Greenlet(prepareTx, i)
+                    thList.append(s)
+                    s.start()
                     # print repr(recoveredSyncedTx)
                     #for tx in transactionCache[:B]:
                     #    if recoveredSyncedTx == coolSHA256Hash(encodeTransaction(tx)):
                     #        mylog("[%d] synced transactions %s" % (pid, repr(tx)), verboseLevel = -2)
                     #        transactionCache.remove(tx)
                     #        break
+            gevent.joinall(thList)
             mylog("timestampE (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
+            for rtx in recoveredSyncedTxList:
+                finishedTx.update(set(rtx))
+
             mylog("[%d] now caches %s" % (pid, repr([constructTransactionFromRepr(tx) for tx in transactionCache])), verboseLevel = -1)
             mylog("[%d] synced transactions %s" % (pid, repr([constructTransactionFromRepr(tx) for tx in finishedTx])), verboseLevel = -1)
-            mylog("[%d] %d distinct tx synced and %d tx left in the pool." % (pid, len(finishedTx), len(transactionCache)), verboseLevel=-2)
+            mylog("[%d] %d distinct tx synced and %d tx left in the pool." % (pid, len(finishedTx), len(transactionCache) - len(finishedTx)), verboseLevel=-2)
             # transactionCache = transactionCache.difference(recoveredSyncedTXSet)    # TODO
             # mylog("[%d] synced transactions %s, now cached %s" % (pid, repr(syncedTXSet), repr(transactionCache)), verboseLevel = -1)
             lock.get()

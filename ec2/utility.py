@@ -126,7 +126,7 @@ def start_all_instances(region):
         reservations = ec2_conn.get_all_reservations(filters={'tag:Name': NameFilter})
         for reservation in reservations:    
             for ins in reservation.instances:
-                idList.append(ins.instance_id)
+                idList.append(ins.id)
         ec2_conn.start_instances(instance_ids=idList)
 
 

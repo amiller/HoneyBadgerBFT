@@ -5,10 +5,10 @@ def process(s, N=-1, t=-1):
     tList = []
     lines = s.split('\n')
     for line in lines:
-        if 'timestampE' in line:
+        if 'timestampE ' in line:
             info = eval(line.split('timestampE')[1])
             endtime[info[0]] = info[1]
-        if 'timestampB' in line:
+        if 'timestampB ' in line:
             info = eval(line.split('timestampB')[1])
             starttime[info[0]] = info[1]
     maxLatency = 0
