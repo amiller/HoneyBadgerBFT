@@ -27,7 +27,7 @@ import sys
 from subprocess import check_output
 from os.path import expanduser
 from random import Random
-import shred
+import sched
 
 TOR_SOCKSPORT = range(9050, 9150)
 WAITING_SETUP_TIME_IN_SEC = 3
