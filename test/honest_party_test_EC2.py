@@ -295,7 +295,7 @@ def client_test_freenet(N, t, options):
         time_now = time.time()
         delay = options.delaytime - time_now % options.delaytime
         s.enter(delay, 1, toBeScheduled, ())
-        print myID, "waits for", time_now + delay
+        print myID, "waits for", time_now + delay, 'now is', time_now
         s.run()
 
 
