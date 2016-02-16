@@ -157,7 +157,7 @@ def decode(s):  # TODO
     global totalMessageSize
     totalMessageSize += msgSize[result[0]]
     # print totalMessageSize
-    logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
+    # logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
     return result[1]
 
 def client_test_freenet(N, t, options):
