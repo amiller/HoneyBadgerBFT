@@ -106,6 +106,11 @@ def encodeTransactionEnc(trE):
     # print 'encTr', trE
     return ''.join(trE).ljust(TR_SIZE, ' ')
 
+def long_string(n, seed='testbadger1'):
+    from subprocess import check_output
+    string = check_output('openssl enc -aes-256-ctr -pass pass:%s -nosalt < /dev/zero | head -c %d' % (seed, n), shell=True)
+    return string
+
 # assumptions: amount of the money transferred can be expressed in 2 bytes.
 def encodeTransaction(tr, randomGenerator=None, length=TR_SIZE):
     sourceInd = nameList.index(tr.source)
@@ -113,7 +118,7 @@ def encodeTransaction(tr, randomGenerator=None, length=TR_SIZE):
     if randomGenerator:
         return struct.pack(
         '<BBH', sourceInd, targetInd, tr.amount
-    ) + ''.join([struct.pack('B', randomGenerator.randint(0,255)) for t in range(TR_SIZE - 5)]) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
+    ) + long_string(TR_SIZE - 5) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
     return struct.pack(
         '<BBH', sourceInd, targetInd, tr.amount
     ) + os.urandom(TR_SIZE - 5) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
