@@ -178,7 +178,7 @@ def client_test_freenet(N, t, options):
     initiateThresholdSig(open(options.threshold_keys, 'r').read())
     initiateECDSAKeys(open(options.ecdsa, 'r').read())
     initiateThresholdEnc(open(options.threshold_encs, 'r').read())
-    initiateRND(options.tx)
+
     global logGreenlet
     logGreenlet = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
     logGreenlet.parent_args = (N, t)
@@ -191,6 +191,9 @@ def client_test_freenet(N, t, options):
     N = len(IP_LIST)
     mylog("[%d] Parameters: N %d, t %d" % (myID, N, t), verboseLevel=-1)
     mylog("[%d] IP_LIST: %s" % (myID, IP_LIST), verboseLevel=-1)
+    print myID, N, 'b'
+    initiateRND(options.tx)
+    print myID, N, 'e'
     #buffers = map(lambda _: Queue(1), range(N))
     #gtemp = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
     #gtemp.parent_args = (N, t)
