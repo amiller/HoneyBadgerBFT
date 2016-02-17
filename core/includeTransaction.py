@@ -70,7 +70,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
     Threshold = N - 2 * t
     #Threshold2 = ceil((N+t+1)/2.0)
     Threshold2 = N - t
-
+    print Threshold, N, t
     zfecEncoder = zfec.Encoder(Threshold, N)
     zfecDecoder = zfec.Decoder(Threshold, N)
 

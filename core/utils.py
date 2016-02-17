@@ -131,7 +131,7 @@ def encodeTransaction(tr, randomGenerator=None, length=TR_SIZE):
     if randomGenerator:
         return struct.pack(
         '<BBH', sourceInd, targetInd, tr.amount
-    ) + getSomeRandomBytes(TR_SIZE - 5)  + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
+    ) + getSomeRandomBytes(TR_SIZE - 5, randomGenerator)  + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
     return struct.pack(
         '<BBH', sourceInd, targetInd, tr.amount
     ) + os.urandom(TR_SIZE - 5) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
