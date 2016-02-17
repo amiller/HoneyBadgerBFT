@@ -103,6 +103,7 @@ def client_test_freenet(N, t, options):
     initiateThresholdSig(open(options.threshold_keys, 'r').read())
     initiateECDSAKeys(open(options.ecdsa, 'r').read())
     initiateThresholdEnc(open(options.threshold_encs, 'r').read())
+    initiateRND(options.tx)
     buffers = map(lambda _: Queue(1), range(N))
     global logGreenlet
     logGreenlet = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))

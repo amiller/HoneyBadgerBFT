@@ -14,7 +14,7 @@ import gevent
 import os
 from ..core.utils import myRandom as random
 from ..core.utils import ACSException, checkExceptionPerGreenlet, getSignatureCost, encodeTransaction, \
-    deepEncode, deepDecode, randomTransaction, initiateECDSAKeys, initiateThresholdEnc, finishTransactionLeap
+    deepEncode, deepDecode, randomTransaction, initiateECDSAKeys, initiateThresholdEnc, finishTransactionLeap, initiateRND
 import json
 import cPickle as pickle
 from gevent.server import StreamServer
@@ -178,6 +178,7 @@ def client_test_freenet(N, t, options):
     initiateThresholdSig(open(options.threshold_keys, 'r').read())
     initiateECDSAKeys(open(options.ecdsa, 'r').read())
     initiateThresholdEnc(open(options.threshold_encs, 'r').read())
+    initiateRND(options.tx)
     global logGreenlet
     logGreenlet = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
     logGreenlet.parent_args = (N, t)

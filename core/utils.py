@@ -18,6 +18,8 @@ import os
 from ..commoncoin import boldyreva as boldyreva
 from ..threshenc.tpke import serialize, deserialize0, deserialize1, deserialize2, TPKEPublicKey, TPKEPrivateKey, group
 
+from io import BytesIO
+
 nameList = open(os.path.dirname(os.path.abspath(__file__)) + '/../test/names.txt','r').read().strip().split('\n')
 # nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
 # TR_SIZE = 250
@@ -106,6 +108,9 @@ def encodeTransactionEnc(trE):
     # print 'encTr', trE
     return ''.join(trE).ljust(TR_SIZE, ' ')
 
+LONG_RND_STRING = ''
+bio = None
+
 def long_string(n, seed='testbadger1'):
     from subprocess import check_output
     import os
@@ -121,7 +126,7 @@ def encodeTransaction(tr, randomGenerator=None, length=TR_SIZE):
     if randomGenerator:
         return struct.pack(
         '<BBH', sourceInd, targetInd, tr.amount
-    ) + long_string(TR_SIZE - 5) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
+    ) + bio.read(TR_SIZE - 5)  + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
     return struct.pack(
         '<BBH', sourceInd, targetInd, tr.amount
     ) + os.urandom(TR_SIZE - 5) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
@@ -220,6 +225,11 @@ def constructTransactionFromRepr(r):
     tr.target = nameList[targetInd]
     tr.amount = amount
     return tr
+
+def initiateRND(TX):
+    global LONG_RND_STRING, bio
+    LONG_RND_STRING = long_string(TX * (TR_SIZE-5))
+    bio = BytesIO(LONG_RND_STRING)
 
 # Msg Types:
 # 1':(0, 0, ('B', ('i', 0, set([{{Transaction from Alice to Gerald with 22}}]),
