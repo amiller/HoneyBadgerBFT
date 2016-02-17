@@ -1,9 +1,14 @@
 ############# Process the latency from a raw screen log
+import scanf
+import math
+import numpy
+
 def process(s, N=-1, t=-1):
     endtime = dict()
     starttime = dict()
     tList = []
     lines = s.split('\n')
+    scheduleTime = dict()
     for line in lines:
         if 'timestampE ' in line:
             info = eval(line.split('timestampE')[1])
@@ -11,6 +16,17 @@ def process(s, N=-1, t=-1):
         if 'timestampB ' in line:
             info = eval(line.split('timestampB')[1])
             starttime[info[0]] = info[1]
+        if 'waits for' in line:
+            tl = scanf.sscanf(line, '%s out: %d waits for %f now is %f')
+            # ('[52.193.84.92]', 15, 1455657950.0, 1455657904.67)
+            scheduleTime[tl[1]] = tl[2]
+
+    uniqueScheduleTime = set(scheduleTime.values())
+    print uniqueScheduleTime
+    if len(uniqueScheduleTime) != 1:
+        print "\n\n!!!!!!!!!!!!! Starting Time Unsynced\n\n"
+        return
+
     maxLatency = 0
     for key, value in endtime.items():
         print key, starttime[key], value, value - starttime[key]
@@ -30,13 +46,18 @@ def process(s, N=-1, t=-1):
     print 'max', maxLatency
     print 'avg', sum(tList) / len(tList)
     print 'range', max(endtime.values()) - min(starttime.values())
+    return sorted(endtime.values())[N-t-1] - min(starttime.values())
 
 def p(N, t, b):
     fileName = "logs/%d_%d_%d.txt" % (N, t, b)
     contents = open(fileName).read().strip().split('\n\n')
+    re = []
     for c in contents:
         if c:
-            process(c, N, t)
+            ttt = process(c, N, t)
+            if ttt:
+                re.append(ttt)
+    print sum(re) / len(re), numpy.std(re)
 
 if  __name__ =='__main__':
   try: __IPYTHON__

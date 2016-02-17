@@ -9,7 +9,9 @@ def runOnTransaction(N, t, Tx):
     while retry:
         try:
             p = subprocess.check_output(
-                ['python', './honest_party_test_tor_multipleCircuits.py', 'lol', '%d_%d.key' % (N, t), 'ecdsa_keys', '%d' % Tx, str(N), str(t)],
+                ['python', '-m', 'HoneyBadgerBFT.test.honest_party_test',
+            '-k', '%d_%d.key' % (N, t), '-e', 'ecdsa.keys', '-b', '%d' % Tx,
+            '-n', str(N), '-t', str(t), '-c', 'th_%d_%d.keys' % (N, t)],
                 timeout = 30
                 # stdout=subprocess.PIPE,
                 # stderr=subprocess.PIPE,
