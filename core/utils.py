@@ -108,7 +108,10 @@ def encodeTransactionEnc(trE):
 
 def long_string(n, seed='testbadger1'):
     from subprocess import check_output
-    string = check_output('openssl enc -aes-256-ctr -pass pass:%s -nosalt < /dev/zero | head -c %d' % (seed, n), shell=True)
+    import os
+    FNULL = open(os.devnull, 'w')
+    string = check_output('openssl enc -aes-256-ctr -pass pass:%s -nosalt < /dev/zero | head -c %d' % (seed,n), shell=True, close_fds=True, stderr=FNULL)
+    assert len(string) == n
     return string
 
 # assumptions: amount of the money transferred can be expressed in 2 bytes.
