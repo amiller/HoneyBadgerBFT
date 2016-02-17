@@ -3,7 +3,7 @@ import scanf
 import math
 import numpy
 
-def process(s, N=-1, t=-1):
+def process(s, txpp, N=-1, t=-1):
     endtime = dict()
     starttime = dict()
     tList = []
@@ -20,6 +20,12 @@ def process(s, N=-1, t=-1):
             tl = scanf.sscanf(line, '%s out: %d waits for %f now is %f')
             # ('[52.193.84.92]', 15, 1455657950.0, 1455657904.67)
             scheduleTime[tl[1]] = tl[2]
+        if 'proposing' in line:
+            # [52.36.25.154] out: [0] proposing 4096 transactions
+            tl = scanf.sscanf(line, '%s out: [%d] proposing %d transactions')
+            if txpp!=tl[2]:
+                print "\n\n!!!!!!!!!!!!! File Inconsistent\n\n"
+                return
 
     uniqueScheduleTime = set(scheduleTime.values())
     print uniqueScheduleTime
@@ -48,7 +54,7 @@ def process(s, N=-1, t=-1):
     print 'range', max(endtime.values()) - min(starttime.values())
     return sorted(endtime.values())[N-t-1] - min(starttime.values())
 
-def processIncTx(s, N=-1, t=-1):
+def processIncTx(s, txpp, N=-1, t=-1):
     endtime = dict()
     starttime = dict()
     tList = []
@@ -68,6 +74,12 @@ def processIncTx(s, N=-1, t=-1):
                 tl = scanf.sscanf(line, '%s out: %d waits for %f')
             # ('[52.193.84.92]', 15, 1455657950.0, 1455657904.67)
             scheduleTime[tl[1]] = tl[2]
+        if 'proposing' in line:
+            # [52.36.25.154] out: [0] proposing 4096 transactions
+            tl = scanf.sscanf(line, '%s out: [%d] proposing %d transactions')
+            if txpp!=tl[2]:
+                print "\n\n!!!!!!!!!!!!! File Inconsistent\n\n"
+                return
 
     uniqueScheduleTime = set(scheduleTime.values())
     print uniqueScheduleTime
@@ -102,7 +114,7 @@ def p(N, t, b):
     re = []
     for c in contents:
         if c:
-            ttt = process(c, N, t)
+            ttt = process(c, b, N, t)
             if ttt:
                 re.append(ttt)
     print sum(re) / len(re), numpy.std(re)
@@ -113,7 +125,7 @@ def pIncTx(N, t, b):
     re = []
     for c in contents:
         if c:
-            ttt = processIncTx(c, N, t)
+            ttt = processIncTx(c, b, N, t)
             if ttt:
                 re.append(ttt)
     print sum(re) / len(re), numpy.std(re)
