@@ -48,7 +48,8 @@ def listen_to_channel(port):
         while True:
         #for line in f:
             # msglength = struct.unpack('<I', f.read(4))
-            msglength, = struct.unpack('<I', goodread(f, 4))
+            # msglength, = struct.unpack('<I', goodread(f, 4))
+            msglength, = struct.unpack('<Q', goodread(f, 8))
             line = goodread(f, msglength)  # f.read(msglength)
             # print 'line read from socket', line
             # obj = decode(base64.b64decode(line))
@@ -80,7 +81,8 @@ def connect_to_channel(hostname, port, party):
         while True:
             obj = q.get()
             content = encode(obj)
-            s.sendall(struct.pack('<I', len(content)) + content)
+            # s.sendall(struct.pack('<I', len(content)) + content)
+            s.sendall(struct.pack('<Q', len(content)) + content)
                 
     gtemp = Greenlet(_handle)
     gtemp.parent_args = (hostname, port, party)
