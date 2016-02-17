@@ -84,7 +84,7 @@ def connect_to_channel(hostname, port, party):
             content = encode(obj)
             try:
                 s.sendall(struct.pack('<I', len(content)) + content)
-            except SocketError as e:
+            except SocketError:
                 print '!! [to %d] sending %d bytes' % (party, len(content))
 
             # s.sendall(struct.pack('<Q', len(content)) + content)
