@@ -368,6 +368,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
     commonSet = []
     # sessionID = 0
     locks = defaultdict(lambda : Queue(1))
+    doneCombination = defaultdict(lambda : False)
     ENC_THRESHOLD = N - 2 * t
     global finishcount
     encPK, encSKs = getEncKeys()
@@ -375,12 +376,13 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
     includeTransactionChannel = Queue()
 
     def probe(i):
-        if len(encCounter[i]) >= ENC_THRESHOLD and receivedProposals and not locks[i].full():  # by == this part only executes once.
+        if len(encCounter[i]) >= ENC_THRESHOLD and receivedProposals and not locks[i].full() and not doneCombination[i]:  # by == this part only executes once.
             mylog("DEC_RECEIVE (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
             oriM = encPK.combine_shares(deserializeEnc(proposals[i][:ENC_SERIALIZED_LENGTH]),
                                         # dict(encCounter[msgBundle[1]].items()[:ENC_THRESHOLD])
                                         dict(itertools.islice(encCounter[i].iteritems(), ENC_THRESHOLD))
                                         )
+            doneCombination[i] = True
             locks[i].put(oriM)
 
     def listener():
