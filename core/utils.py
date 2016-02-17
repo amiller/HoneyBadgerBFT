@@ -119,6 +119,11 @@ def long_string(n, seed='testbadger1'):
     assert len(string) == n
     return string
 
+def getSomeRandomBytes(length, rnd=random):
+    maxL = len(LONG_RND_STRING) - 1 - length
+    startP = rnd.randint(0, maxL)
+    return LONG_RND_STRING[startP:startP+length]
+
 # assumptions: amount of the money transferred can be expressed in 2 bytes.
 def encodeTransaction(tr, randomGenerator=None, length=TR_SIZE):
     sourceInd = nameList.index(tr.source)
@@ -126,7 +131,7 @@ def encodeTransaction(tr, randomGenerator=None, length=TR_SIZE):
     if randomGenerator:
         return struct.pack(
         '<BBH', sourceInd, targetInd, tr.amount
-    ) + bio.read(TR_SIZE - 5)  + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
+    ) + getSomeRandomBytes(TR_SIZE - 5)  + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
     return struct.pack(
         '<BBH', sourceInd, targetInd, tr.amount
     ) + os.urandom(TR_SIZE - 5) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
@@ -228,7 +233,7 @@ def constructTransactionFromRepr(r):
 
 def initiateRND(TX):
     global LONG_RND_STRING, bio
-    LONG_RND_STRING = long_string(TX * (TR_SIZE-5))
+    LONG_RND_STRING = long_string(min(TX * (TR_SIZE-5), 1e5))
     bio = BytesIO(LONG_RND_STRING)
 
 # Msg Types:
