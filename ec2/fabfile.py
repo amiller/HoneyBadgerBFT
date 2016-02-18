@@ -163,7 +163,7 @@ def generateTX(N_, seed):
 def runProtocol(N_, t_, B_, timespan_, tx='tx'):
     N = int(N_)
     t = int(t_)
-    B = int(B_)
+    B = int(B_) * N   # now we don't have to calculate them anymore
     timespan = int(timespan_)
     print N, t, B, timespan
     # s = StringIO()
