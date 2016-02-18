@@ -267,7 +267,7 @@ def gp():
     c(getIP(), 'git_pull')
 
 def rp(srp):
-    c(getIP, 'runProtocol:%s' % srp)
+    c(getIP(), 'runProtocol:%s' % srp)
 
 if  __name__ =='__main__':
   try: __IPYTHON__
