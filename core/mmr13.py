@@ -8,6 +8,7 @@ from utils import dummyCoin, greenletPacker, getKeys
 from ..commoncoin.boldyreva_gipc import serialize, deserialize1, combine_and_verify
 # import random
 import sys
+import time
 
 
 verbose = 0
@@ -120,7 +121,7 @@ def shared_coin(instance, pid, N, t, broadcast, receive):
                     def tmpFunc(r, t):
                         combine_and_verify(h, dict(tuple((t, deserialize1(sig)) for t, sig in received[r])[:t+1]))
                         outputQueue[r].put(ord(serialize(h)[0]) & 1)  # explicitly convert to int
-                        print 'pid', pid, 'common coin round', r, 'instance', instance
+                        print 'pid', pid, 'common coin round', r, 'instance', instance, 'at time', time.time()
                     Greenlet(
                         tmpFunc, r, t
                     ).start()
