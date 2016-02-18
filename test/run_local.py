@@ -5,7 +5,7 @@ def runOnTransaction(N, t, Tx):
     # -k 4_2.keys -e ecdsa.keys -x 8 -n 4 -t 1 -c threshenc_4_2.keys
     p = subprocess.check_output(
         ['python', '-m', 'HoneyBadgerBFT.test.honest_party_test',
-            '-k', '%d_%d.key' % (N, t), '-e', 'ecdsa.keys', '-x', '%d' % Tx,
+            '-k', '%d_%d.key' % (N, t), '-e', 'ecdsa.keys', '-b', '%d' % Tx,
             '-n', str(N), '-t', str(t), '-c', 'th_%d_%d.keys' % (N, t)],
         shell=False,
         # stdout=subprocess.PIPE,
