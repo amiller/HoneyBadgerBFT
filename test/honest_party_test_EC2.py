@@ -257,7 +257,7 @@ def client_test_freenet(N, t, options):
         rnd.seed(123123)
         # mylog("[%d] random transaction generator fingerprints %s" % (myID, hex(rnd.getrandbits(32*8))), verboseLevel=-2)
         # This makes sure that all the EC2 instances have the same transaction pool
-
+        # options.tx = int(math.ceil((1 - exp(1 - 1.0/options.n, options.n)) * options.B))
         # transactionSet = pickle.load(open(options.txpath, 'r'))[:int(options.tx)]
         transactionSet = set([encodeTransaction(randomTransaction(rnd), randomGenerator=rnd) for trC in range(int(options.tx))])  # we are using the same one
 

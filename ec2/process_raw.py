@@ -117,7 +117,7 @@ def p(N, t, b):
             ttt = process(c, b, N, t)
             if ttt:
                 re.append(ttt)
-    print sum(re) / len(re), numpy.std(re)
+    print sum(re) / len(re), numpy.std(re), 'num', len(re)
 
 def pIncTx(N, t, b):
     fileName = "logs/%d_%d_%d.txt" % (N, t, b)

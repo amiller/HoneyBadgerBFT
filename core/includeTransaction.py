@@ -427,6 +427,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
                 continue
 
             oldest_B = transactionCache[:B]
+            # selected_B = transactionCache  # we are using all the prepared selected distinct transactions
             selected_B = random.sample(oldest_B, min(B/N, len(oldest_B)))
             print "[%d] proposing %d transactions" % (pid, min(B/N, len(oldest_B)))
             # print pid, repr([constructTransactionFromRepr(tx) for tx in selected_sB])
