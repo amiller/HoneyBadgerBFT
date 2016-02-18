@@ -168,7 +168,7 @@ def decode(s):  # TODO
     global totalMessageSize
     totalMessageSize += msgSize[result[0]]
     # print totalMessageSize
-    if result[2][0] == 'A' and result[2][1][0] == 0:
+    if result[1][2][0] == 'A' and result[1][2][1][0] == 0:
         logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
     return result[1]
 
