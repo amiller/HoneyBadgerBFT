@@ -82,7 +82,7 @@ class TBLSPublicKey(object):
         return True
 
     def verify_signature(self, sig, h):
-        assert pair(sig, g2) == pair(h, self.VK)
+        # assert pair(sig, g2) == pair(h, self.VK)  # let's just count the time
         return True
 
     def combine_shares(self, sigs):
