@@ -118,8 +118,8 @@ def shared_coin(instance, pid, N, t, broadcast, receive):
                 # try:
                     h = PK.hash_message(str((r, instance)))
                     def tmpFunc(r, t):
-                        combine_and_verify(h, dict((t, deserialize1(sig)) for t, sig in received[r])[:t+1])
-                        outputQueue[r].put(ord(h[0]) & 1)  # explicitly convert to int
+                        combine_and_verify(h, dict(tuple((t, deserialize1(sig)) for t, sig in received[r])[:t+1]))
+                        outputQueue[r].put(ord(serialize(h)[0]) & 1)  # explicitly convert to int
                     Greenlet(
                         tmpFunc, r, t
                     ).start()

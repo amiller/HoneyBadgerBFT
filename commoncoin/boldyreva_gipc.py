@@ -22,27 +22,19 @@ def _worker(PK,pipe):
         res = PK.verify_signature(sig, h)
         pipe.put(res)
 
+myPK = None
 
 def initialize(PK, size=2):
-    global _procs
+    global _procs, myPK
+    myPK = PK
     _procs = []
     for s in range(size):
         (r,w) = gipc.pipe(duplex=True)
         p = gipc.start_process(_worker, args=(PK, r,))
         _procs.append((p,w))
 
-def _combine_and_verify(h, sigs):
-    global _pool_PK
-    sigs = dict(sigs)
-    for s in sigs: 
-        sigs[s] = deserialize1(sigs[s])
-    h = deserialize1(h)
-    sig = PK.combine_shares(sigs)
-    assert PK.verify_signature(sig, h)
-    return True
-
 def combine_and_verify(h, sigs):
-    assert len(sigs) == PK.k
+    assert len(sigs) == myPK.k
     sigs = dict((s,serialize(v)) for s,v in sigs.iteritems())
     h = serialize(h)
     # Pick a random process
