@@ -4,7 +4,7 @@ from fabric.operations import put, get
 from fabric.contrib.console import confirm
 from fabric.contrib.files import append
 import time, sys, os, scanf
-from io import StringIO
+from io import BytesIO
 
 @parallel
 def host_type():
@@ -26,7 +26,7 @@ def checkLatency():
     '''
     resDict = []
     for destination in env.hosts:
-        waste = StringIO()
+        waste = BytesIO()
         res = run('ping -c 3 %s' % destination, stdout=waste, stderr=waste).strip().split('\n')[1].strip()
         lat = scanf.sscanf(res, '%d bytes from %s: icmp_seq=%d ttl=%d time=%d ms')[-1]
         resDict.append(lat)
