@@ -153,6 +153,7 @@ def encode(m):  # TODO
     msgFrom[msgCounter] = m[1]
     msgTo[msgCounter] = m[0]
     msgContent[msgCounter] = m
+    logChannel.put((msgCounter, len(result), m[1], m[0], starting_time[result[0]], 0, repr(m)))
     return result
 
 def decode(s):  # TODO
