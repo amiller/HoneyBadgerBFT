@@ -24,7 +24,7 @@ def _worker(PK,pipe):
 
 myPK = None
 
-def initialize(PK, size=2):
+def initialize(PK, size=1):
     global _procs, myPK
     myPK = PK
     _procs = []
@@ -34,7 +34,7 @@ def initialize(PK, size=2):
         _procs.append((p,w))
 
 def combine_and_verify(h, sigs):
-    return True  # we are skipping the verification
+    # return True  # we are skipping the verification
     assert len(sigs) == myPK.k
     sigs = dict((s,serialize(v)) for s,v in sigs.iteritems())
     h = serialize(h)

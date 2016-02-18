@@ -18,7 +18,10 @@ def process(s, txpp, N=-1, t=-1):
             info = eval(line.split('timestampB')[1])
             starttime[info[0]] = info[1]
         if 'waits for' in line:
-            tl = scanf.sscanf(line, '%s out: %d waits for %f now is %f')
+            if 'now is' in line:
+                tl = scanf.sscanf(line, '%s out: %d waits for %f now is %f')
+            else:
+                tl = scanf.sscanf(line, '%s out: %d waits for %f')
             # ('[52.193.84.92]', 15, 1455657950.0, 1455657904.67)
             # scheduleTime[tl[1]] = tl[2]
             scheduleTime[tl[2]] += 1 #.append(tl[1])
@@ -123,6 +126,7 @@ def p(N, t, b):
             ttt = process(c, b, N, t)
             if ttt:
                 re.append(ttt)
+    print tuple(re)
     print sum(re) / len(re), numpy.std(re), 'num', len(re)
 
 def pIncTx(N, t, b):
