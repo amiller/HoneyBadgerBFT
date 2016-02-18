@@ -146,7 +146,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
                         # mylog("[%d] we are to echo msgBundle: %s" % (pid, repr(msgBundle)), verboseLevel=-1)
                         # mylog("[%d] and now signed is %s" % (pid, repr(signed)), verboseLevel=-1)
                         # broadcast(('e', pid, newBundle, keys[pid].sign(sha1hash(hex((newBundle[0]+37)*setHash(newBundle[1]))))))
-                    mylog("RBC.echo at (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
+                    # mylog("RBC.echo at (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
                     broadcast(('e', newBundle, keys[pid].sign(
                         #sha1hash(repr(newBundle))
                         sha1hash(''.join([str(newBundle[0]), newBundle[1], newBundle[2], ''.join(newBundle[3])]))
@@ -171,7 +171,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
                         rootHashes[originBundle[0]] = originBundle[2]
                     opinions[originBundle[0]][sender] = originBundle[1]   # We are going to move this part to kekeketktktktk
                     if len(opinions[originBundle[0]]) >= Threshold2 and not readySent[originBundle[0]]:
-                            mylog("RBC.ready at (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
+                            # mylog("RBC.ready at (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
                             readySent[originBundle[0]] = True
                             broadcast(('r', originBundle[0], originBundle[2]))  # We are broadcasting its hash
                         # broadcast(('r', originBundle[0], sha1hash(buf)))  # to clarify which this ready msg refers to
@@ -226,7 +226,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
                     #if reconsLocker[msgBundle[1]].empty():
                         #reconsLocker[msgBundle[1]].put(buf)
                     if outputs[msgBundle[1]].empty():
-                        mylog("RBC Finished (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
+                        # mylog("RBC Finished (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
                         outputs[msgBundle[1]].put(buf)
                     # mylog("[%d] put reconsLocker for %d" % (pid, originBundle[0]), verboseLevel=-2)
                     # finalTrigger[msgBundle[1]].put(1)
