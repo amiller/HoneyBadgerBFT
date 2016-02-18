@@ -5,6 +5,7 @@ from fabric.contrib.console import confirm
 from fabric.contrib.files import append
 import time, sys, os, scanf
 from io import BytesIO
+import math
 
 @parallel
 def host_type():
@@ -25,6 +26,7 @@ def checkLatency():
     rtt min/avg/max/mdev = 141.722/141.722/141.722/0.000 ms
     '''
     resDict = []
+    totLen = len(env.hosts)
     for destination in env.hosts:
         waste = BytesIO()
         with hide('output', 'running'):
@@ -32,7 +34,7 @@ def checkLatency():
         # print repr(res)
         lat = scanf.sscanf(res, '%d bytes from %s icmp_seq=%d ttl=%d time=%f ms')[-1]
         resDict.append(lat)
-    print ' '.join([env.host_string, destination, str(sum(resDict) / len(resDict))])
+    print ' '.join([env.host_string, str(sorted(resDict)[int(math.ceil(totLen * 0.75))]), str(sum(resDict) / len(resDict))])
 
 @parallel
 def ping():
