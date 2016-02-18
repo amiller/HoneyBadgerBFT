@@ -44,6 +44,18 @@ class TBLSPublicKey(object):
         self.VK = VK
         self.VKs = VKs
 
+    def __getstate__(self):
+        d = dict(self.__dict__)
+        d['VK'] = serialize(self.VK)
+        d['VKs'] = map(serialize,self.VKs)
+        return d
+
+    def __setstate__(self, d):
+        self.__dict__ = d
+        self.VK = deserialize2(self.VK)
+        self.VKs = map(deserialize2,self.VKs)
+        print "I'm being depickled"
+
     def lagrange(self, S, j):
         # Assert S is a subset of range(0,self.l)
         assert len(S) == self.k
@@ -135,9 +147,9 @@ def dealer(players=10, k=5):
 
 def test():
     global PK, SKs
-    PK, SKs = dealer(players=100,k=35)
+    PK, SKs = dealer(players=64,k=17)
 
-    global sigs
+    global sigs,h
     sigs = {}
     h = PK.hash_message('hi')
     h.initPP()
@@ -146,9 +158,8 @@ def test():
         sigs[SK.i] = SK.sign(h)
 
     SS = range(PK.l)
-    for i in range(20):
+    for i in range(64*4):
         random.shuffle(SS)
         S = set(SS[:PK.k])
-        
         sig = PK.combine_shares(dict((s,sigs[s]) for s in S))
         assert PK.verify_signature(sig, h)
