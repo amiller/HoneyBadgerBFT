@@ -153,7 +153,8 @@ def encode(m):  # TODO
     msgFrom[msgCounter] = m[1]
     msgTo[msgCounter] = m[0]
     msgContent[msgCounter] = m
-    logChannel.put((msgCounter, len(result), m[1], m[0], starting_time[result[0]], 0, repr(m)))
+    if m[2][0] == 'A' and m[2][1][0] == 0:
+        logChannel.put((msgCounter, len(result), m[1], m[0], starting_time[result[0]], 0, repr(m)))
     return result
 
 def decode(s):  # TODO
@@ -167,7 +168,8 @@ def decode(s):  # TODO
     global totalMessageSize
     totalMessageSize += msgSize[result[0]]
     # print totalMessageSize
-    logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
+    if result[2][0] == 'A' and result[2][1][0] == 0:
+        logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
     return result[1]
 
 def client_test_freenet(N, t, options):
