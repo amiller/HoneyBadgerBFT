@@ -29,7 +29,7 @@ def checkLatency():
         waste = BytesIO()
         with hide('output', 'running'):
             res = run('ping -c 3 %s' % destination, stdout=waste, stderr=waste).strip().split('\n')[1].strip()
-        print repr(res)
+        # print repr(res)
         lat = scanf.sscanf(res, '%d bytes from %s icmp_seq=%d ttl=%d time=%f ms')[-1]
         resDict.append(lat)
     print ' '.join([env.host_string, destination, str(sum(lat) / len(lat))])
