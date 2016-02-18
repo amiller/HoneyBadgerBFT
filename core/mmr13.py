@@ -120,6 +120,7 @@ def shared_coin(instance, pid, N, t, broadcast, receive):
                     def tmpFunc(r, t):
                         combine_and_verify(h, dict(tuple((t, deserialize1(sig)) for t, sig in received[r])[:t+1]))
                         outputQueue[r].put(ord(serialize(h)[0]) & 1)  # explicitly convert to int
+                        print 'pid', pid, 'common coin', r
                     Greenlet(
                         tmpFunc, r, t
                     ).start()
