@@ -2,13 +2,14 @@
 import scanf
 import math
 import numpy
+from collections import defaultdict
 
 def process(s, txpp, N=-1, t=-1):
     endtime = dict()
     starttime = dict()
     tList = []
     lines = s.split('\n')
-    scheduleTime = dict()
+    scheduleTime = defaultdict(lambda: 0)
     for line in lines:
         if 'timestampE ' in line:
             info = eval(line.split('timestampE')[1])
@@ -19,7 +20,8 @@ def process(s, txpp, N=-1, t=-1):
         if 'waits for' in line:
             tl = scanf.sscanf(line, '%s out: %d waits for %f now is %f')
             # ('[52.193.84.92]', 15, 1455657950.0, 1455657904.67)
-            scheduleTime[tl[1]] = tl[2]
+            # scheduleTime[tl[1]] = tl[2]
+            scheduleTime[tl[2]] += 1 #.append(tl[1])
         if 'proposing' in line:
             # [52.36.25.154] out: [0] proposing 4096 transactions
             tl = scanf.sscanf(line, '%s out: [%d] proposing %d transactions')
@@ -27,11 +29,15 @@ def process(s, txpp, N=-1, t=-1):
                 print "\n\n!!!!!!!!!!!!! File Inconsistent\n\n"
                 return
 
-    uniqueScheduleTime = set(scheduleTime.values())
-    print uniqueScheduleTime
-    if len(uniqueScheduleTime) != 1:
+    earlyStart = min(scheduleTime.keys())
+    # print scheduleTime.keys(), earlyStart
+    if scheduleTime[earlyStart] < N - t:
         print "\n\n!!!!!!!!!!!!! Starting Time Unsynced\n\n"
         return
+
+    #uniqueScheduleTime = set(scheduleTime.values())
+    #print uniqueScheduleTime
+    #if len(uniqueScheduleTime) != 1:
 
     maxLatency = 0
     for key, value in endtime.items():
