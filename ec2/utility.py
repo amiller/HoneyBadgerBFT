@@ -255,7 +255,19 @@ def callFab(s, work):  # Deprecated
 #short-cuts
 
 c = callFabFromIPList
-rp = runProtocolfromClient
+# rp = runProtocolfromClient
+
+def sk():
+    c(getIP(), 'syncKeys')
+
+def id():
+    c(getIP(), 'install_dependencies')
+
+def gp():
+    c(getIP(), 'git_pull')
+
+def rp(srp):
+    c(getIP, 'runProtocol:%s' % srp)
 
 if  __name__ =='__main__':
   try: __IPYTHON__
