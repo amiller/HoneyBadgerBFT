@@ -14,7 +14,7 @@ import gevent
 import os
 from ..core.utils import myRandom as random
 from gevent.server import StreamServer
-from ..core.utils import ACSException, checkExceptionPerGreenlet, getSignatureCost, encodeTransaction, \
+from ..core.utils import ACSException, checkExceptionPerGreenlet, getSignatureCost, encodeTransaction, getKeys, \
     deepEncode, deepDecode, randomTransaction, initiateECDSAKeys, initiateThresholdEnc, finishTransactionLeap
 import json
 import cPickle as pickle
@@ -25,6 +25,7 @@ import struct
 from io import BytesIO
 import sys
 from os.path import expanduser
+from ..commoncoin.boldyreva_gipc import initialize as initializeGIPC
 
 # USE_DEEP_ENCODE = True # It must be encoded
 QUIET_MODE = False  # we are logging the messages
@@ -169,6 +170,7 @@ def client_test_freenet(N, t, options):
     initiateThresholdSig(open(options.threshold_keys, 'r').read())
     initiateECDSAKeys(open(options.ecdsa, 'r').read())
     initiateThresholdEnc(open(options.threshold_encs, 'r').read())
+    initializeGIPC(getKeys()[0])
     # initiateRND(options.tx)
     #buffers = map(lambda _: Queue(1), range(N))
     global logGreenlet

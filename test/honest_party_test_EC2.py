@@ -13,7 +13,7 @@ from ..core.utils import ACSException, deepEncode, deepDecode, randomTransaction
 import gevent
 import os
 from ..core.utils import myRandom as random
-from ..core.utils import ACSException, checkExceptionPerGreenlet, getSignatureCost, encodeTransaction, \
+from ..core.utils import ACSException, checkExceptionPerGreenlet, getSignatureCost, encodeTransaction, getKeys, \
     deepEncode, deepDecode, randomTransaction, initiateECDSAKeys, initiateThresholdEnc, finishTransactionLeap, initiateRND
 import json
 import cPickle as pickle
@@ -29,6 +29,7 @@ from os.path import expanduser
 from random import Random
 import sched
 from socket import error as SocketError
+from ..commoncoin.boldyreva_gipc import initialize as initializeGIPC
 
 TOR_SOCKSPORT = range(9050, 9150)
 WAITING_SETUP_TIME_IN_SEC = 3
@@ -185,6 +186,7 @@ def client_test_freenet(N, t, options):
     initiateThresholdSig(open(options.threshold_keys, 'r').read())
     initiateECDSAKeys(open(options.ecdsa, 'r').read())
     initiateThresholdEnc(open(options.threshold_encs, 'r').read())
+    initializeGIPC(PK=getKeys()[0])
 
     global logGreenlet
     logGreenlet = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))

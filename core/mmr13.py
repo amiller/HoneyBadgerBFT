@@ -4,9 +4,11 @@ from gevent import Greenlet
 from gevent.queue import Queue
 from collections import defaultdict
 from utils import dummyCoin, greenletPacker, getKeys
-from ..commoncoin.boldyreva import serialize, deserialize1
+# from ..commoncoin.boldyreva import serialize, deserialize1
+from ..commoncoin.boldyreva_gipc import serialize, deserialize1, combine_and_verify
 # import random
 import sys
+
 
 verbose = 0
 from utils import bcolors, mylog, joinQueues, makeCallOnce, \
@@ -113,16 +115,14 @@ def shared_coin(instance, pid, N, t, broadcast, receive):
             # make it available locally
             if len(received[r]) == t + 1:  #####
                 #if True:
-                try:
-                    combsig = PK.combine_shares(dict((t, deserialize1(sig)) for t, sig in received[r]))
-                    assert PK.verify_signature(combsig, PK.hash_message(str((r, instance))))
-                except AssertionError, e:
-                    raise CommonCoinFailureException()
-                # b = hash(r) % 2
-                # mylog('[%d] got a common coin %d at round %d' % (pid, combsig % 2, r), verboseLevel=-2)
-                # outputQueue[r].put(r % 2)
-                # outputQueue[r].put(combsig % 2)
-                outputQueue[r].put(ord(serialize(combsig)[0]) & 1)  # explicitly convert to int
+                # try:
+                    h = PK.hash_message(str((r, instance)))
+                    def tmpFunc(r, t):
+                        combine_and_verify(h, dict((t, deserialize1(sig)) for t, sig in received[r])[:t+1])
+                        outputQueue[r].put(ord(h[0]) & 1)  # explicitly convert to int
+                    Greenlet(
+                        tmpFunc, r, t
+                    ).start()
 
     greenletPacker(Greenlet(_recv), 'shared_coin_dummy', (pid, N, t, broadcast, receive)).start()
 
