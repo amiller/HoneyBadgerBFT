@@ -34,6 +34,7 @@ def initialize(PK, size=2):
         _procs.append((p,w))
 
 def combine_and_verify(h, sigs):
+    return True  # we are skipping the verification
     assert len(sigs) == myPK.k
     sigs = dict((s,serialize(v)) for s,v in sigs.iteritems())
     h = serialize(h)
