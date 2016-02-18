@@ -3,7 +3,8 @@ from fabric.api import *
 from fabric.operations import put, get
 from fabric.contrib.console import confirm
 from fabric.contrib.files import append
-import time
+import time, sys, os, scanf
+from io import StringIO
 
 @parallel
 def host_type():
@@ -12,6 +13,24 @@ def host_type():
 @parallel
 def gettime():
     run('date +%s.%N')
+
+@parallel
+def checkLatency():
+    '''
+    PING 52.49.163.101 (52.49.163.101) 56(84) bytes of data.
+    64 bytes from 52.49.163.101: icmp_seq=1 ttl=45 time=141 ms
+
+    --- 52.49.163.101 ping statistics ---
+    1 packets transmitted, 1 received, 0% packet loss, time 0ms
+    rtt min/avg/max/mdev = 141.722/141.722/141.722/0.000 ms
+    '''
+    resDict = []
+    for destination in env.hosts:
+        waste = StringIO()
+        res = run('ping -c 3 %s' % destination, stdout=waste, stderr=waste).strip().split('\n')[1].strip()
+        lat = scanf.sscanf(res, '%d bytes from %s: icmp_seq=%d ttl=%d time=%d ms')[-1]
+        resDict.append(lat)
+    print ' '.join([env.host_string, destination, str(sum(lat) / float(len(lat)))])
 
 @parallel
 def ping():
