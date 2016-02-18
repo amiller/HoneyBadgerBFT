@@ -32,7 +32,7 @@ def checkLatency():
         # print repr(res)
         lat = scanf.sscanf(res, '%d bytes from %s icmp_seq=%d ttl=%d time=%f ms')[-1]
         resDict.append(lat)
-    print ' '.join([env.host_string, destination, str(sum(lat) / len(lat))])
+    print ' '.join([env.host_string, destination, str(sum(resDict) / len(lat))])
 
 @parallel
 def ping():
