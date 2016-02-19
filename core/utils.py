@@ -233,7 +233,7 @@ def constructTransactionFromRepr(r):
 
 def initiateRND(TX):
     global LONG_RND_STRING, bio
-    LONG_RND_STRING = long_string(min(TX * (TR_SIZE-5), 1e5))
+    LONG_RND_STRING = long_string(min(TX * (TR_SIZE-5), 1e6))
     bio = BytesIO(LONG_RND_STRING)
 
 # Msg Types:
