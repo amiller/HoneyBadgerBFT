@@ -14,3 +14,7 @@ core/server_code*
 core/tor*
 core/local_experiment_logs/*
 commoncoin/keys
+msglog.*
+ec2/logs/*
+ec2/logs_old/*
+ec2/hosts
