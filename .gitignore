@@ -18,3 +18,4 @@ msglog.*
 ec2/logs/*
 ec2/logs_old/*
 ec2/hosts
+.idea/*
