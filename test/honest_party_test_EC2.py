@@ -235,7 +235,7 @@ def client_test_freenet(N, t, options):
     print 'servers started'
 
     gevent.sleep(WAITING_SETUP_TIME_IN_SEC) # wait for set-up to be ready
-
+    print 'sleep over'
     #while True:
     if True:  # We only test for once
         initBeforeBinaryConsensus()
@@ -304,12 +304,12 @@ def client_test_freenet(N, t, options):
                     gevent.sleep(1)
                 checkExceptionPerGreenlet()
             finally:
-                print "Concensus Finished"
+                print "Consensus Finished"
 
         s = sched.scheduler(time.time, time.sleep)
 
         time_now = time.time()
-        delay = options.delaytime - time_now % options.delaytime
+        delay = options.delaytime - time_now
         s.enter(delay, 1, toBeScheduled, ())
         print myID, "waits for", time_now + delay, 'now is', time_now
         s.run()
