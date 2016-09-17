@@ -3,11 +3,7 @@
 import sys
 import re
 
-# sample: 5[[09-08-15|11:51:19]]-[[09-08-15|11:51:19]](0, ('BC', ('initial', 0, set([[94m{{Transaction from Alice to Eco with 26}}[0m]), '\xcf\x04\xad1\x8b\x91-\x00\xf5\xdf\xdc\xa4\xc7N\xb9\xba\xa88\x19CPPnl\x1e\xd0\xb7\x00J\x9f\xb8$u4"r\xd9\xa5\xc4\xbdc\xf4\x90\x10\x92\xb8\xd28')))
-# infoExtractor = re.compile(r'(?P<index>\d+)\[\[(?P<start_time>[\d\-\|:]+)\]\]-\[\[(?P<end_time>[\d\-\|:]+)\]\]\((?P<sender>\d+),\s*(?P<content>.*)\)')
 infoExtractor = re.compile(r'(?P<index>\d+):(?P<bytes>\d+)\[(?P<start_time>[\d\.]+)\]-\[(?P<end_time>[\d\.]+)\]\((?P<sender>\d+),\s*(?P<content>.*)\)')
-# For bitmessage and Freenet (no sender)
-# infoExtractor = re.compile(r'(?P<index>\d+):(?P<bytes>\d+)\[(?P<start_time>[\d\.]+)\]-\[(?P<end_time>[\d\.]+)\]\(\s*(?P<content>.*)\)')
 
 def main(filename):
     content = open(filename, 'r').read().decode('utf-8','ignore')
