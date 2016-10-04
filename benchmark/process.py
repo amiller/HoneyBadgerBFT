@@ -6,6 +6,7 @@ import re
 infoExtractor = re.compile(r'(?P<index>\d+):(?P<bytes>\d+)\((?P<from>\d+)\-\>(?P<to>\d+)\)\[(?P<start_time>[\d\.]+)\]-\[(?P<end_time>[\d\.]+)\]\((?P<sender>\d+),\s*(?P<content>.*)\)')
 
 def main(filename):
+    # Generate summaries and chart.
     content = open(filename, 'r').read().decode('utf-8','ignore')
     timelap = []
     start_times = []

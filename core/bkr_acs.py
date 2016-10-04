@@ -1,18 +1,13 @@
 from gevent import monkey
 monkey.patch_all()
 
-from mmr13 import makeCallOnce, bv_broadcast, shared_coin, binary_consensus, \
-    bcolors, mylog, mv84consensus, initBeforeBinaryConsensus
-
-#import random
+from mmr13 import binary_consensus, initBeforeBinaryConsensus
 from utils import myRandom as random
 from gevent import Greenlet
 import gevent
 from gevent.queue import Queue
-from utils import callBackWrap
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
 from utils import MonitoredInt, ACSException, greenletPacker
-import time
 
 lockBA = Queue(1)
 defaultBA = []
@@ -53,7 +48,6 @@ def acs(pid, N, t, Q, broadcast, receive):
     def _listener():
         while True:
             sender, (instance, m) = receive()
-            #mylog("[%d] received %s on instance %d" % (pid, repr((sender, m)), instance))
             reliableBroadcastReceiveQueue[instance].put(
                     (sender, m)
                 )
@@ -65,26 +59,13 @@ def acs(pid, N, t, Q, broadcast, receive):
     locker2 = Queue(1)
     callbackCounter = [0]
 
-    comment = '''def callbackFactory(i):
-        def _callback(result):
-            BA[i] = result
-            if result:
-                if callbackCounter[0] >= 2*t:
-                        locker.put("Key") # Now we've got 2t+1 1's
-                callbackCounter[0] += 1
-        return _callback'''
-
     def listenerFactory(i, channel):
         def _listener():
             BA[i] = channel.get()
-            # if BA[i]:   # Al: used to be a short-cut, but only works when the N in line 87 changed as (N-t)
-            if True:
-                # mylog('B[%d]binary consensus_%d_ends at %f' % (pid, i, time.time()), verboseLevel=-1)
-                if callbackCounter[0] >= 2*t and (not locker2.full()):
+            if callbackCounter[0] >= 2*t and (not locker2.full()):
                         locker2.put("Key")  # Now we've got 2t+1 1's
-                callbackCounter[0] += 1
-                # mylog("[%d] got %d result for acs now, BA: %s" % (pid, callbackCounter[0], repr(BA)), verboseLevel=-2)
-                if callbackCounter[0] == N and (not locker.full()):  # if we have all of them responded
+            callbackCounter[0] += 1
+            if callbackCounter[0] == N and (not locker.full()):  # if we have all of them responded
                         locker.put("Key")
         return _listener
 
@@ -97,14 +78,11 @@ def acs(pid, N, t, Q, broadcast, receive):
     for i in range(N):
         if not i in receivedChannelsFlags:
             receivedChannelsFlags.append(i)
-            # mylog('B[%d]binary_%d_starts with 0 at %f' % (pid, i, time.time()))
             greenletPacker(Greenlet(binary_consensus, i, pid, N, t, 0,
                      decideChannel[i], make_bc(i), reliableBroadcastReceiveQueue[i].get),
                            'acs.binary_consensus', (pid, N, t, Q, broadcast, receive)).start()
     locker.get()  # Now we can check'''
     BA = checkBA(BA, N, t)
-    # gevent.sleep(1)
-    # mylog("[%d] Get subset %s" % (pid, BA), verboseLevel=-2)
     return BA
 
 def checkBA(BA, N, t):
@@ -124,10 +102,7 @@ def random_delay_acs(N, t, inputs):
     def makeBroadcast(i):
         def _broadcast(v):
            def _deliver(j):
-               # print 'Delivering', v, 'from', i, 'to', j
-               # mylog(bcolors.OKGREEN + "MSG: [%d] -> [%d]: %s" % (i, j, repr(v)) + bcolors.ENDC)
                buffers[j].put((i,v))
-               # mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
 
            for j in range(N):
                greenletPacker(Greenlet(_deliver, j),
@@ -142,17 +117,15 @@ def random_delay_acs(N, t, inputs):
         initBeforeBinaryConsensus()
         buffers = map(lambda _: Queue(1), range(N))
         ts = []
-        #cid = 1
         for i in range(N):
             bc = makeBroadcast(i)
-            recv = buffers[i].get #buffers[i].get
-            #vi = random.randint(0, 10)
+            recv = buffers[i].get
             input_clone = [MonitoredInt() for _ in range(N)]
             for j in range(N):
                 greenletPacker(Greenlet(modifyMonitoredInt, input_clone[j]),
                     'random_delay_acs.modifyMonitoredInt', (N, t, inputs)).start_later(maxdelay * random.random())
             th = greenletPacker(Greenlet(acs, i, N, t, input_clone, bc, recv), 'random_delay_acs.acs', (N, t, inputs))
-            th.start() # start_later(random.random() * maxdelay)
+            th.start() # start_later(random.random() * maxdelay) is not necessary here
             ts.append(th)
 
         #if True:

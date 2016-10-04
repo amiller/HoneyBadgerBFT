@@ -1,18 +1,13 @@
 # coding=utf-8
-import gevent
 from gevent import Greenlet
 from gevent.queue import Queue
 from collections import defaultdict
 from utils import dummyCoin, greenletPacker, getKeys
-# from ..commoncoin.boldyreva import serialize, deserialize1
 from ..commoncoin.boldyreva_gipc import serialize, deserialize1, combine_and_verify
-# import random
-import sys
-import time
 
 
 verbose = 0
-from utils import bcolors, mylog, joinQueues, makeCallOnce, \
+from utils import makeCallOnce, \
     makeBroadcastWithTag, makeBroadcastWithTagAndRound, garbageCleaner, loopWrapper
 
 
@@ -48,7 +43,6 @@ def bv_broadcast(pid, N, t, broadcast, receive, output, release=lambda: None):
         received = defaultdict(set)
 
         def _bc(v):
-            # mylog('[%d]' % pid, 'Relaying', v)
             broadcast(v)
 
         relay = (makeCallOnce(lambda: _bc(0)),
@@ -58,25 +52,20 @@ def bv_broadcast(pid, N, t, broadcast, receive, output, release=lambda: None):
         relay[my_v]()
         outputed = []
         while True:
-            # mylog('[%d]bv Now executing receive at line 56' % pid)
             (sender, v) = receive()
 
             assert v in (0, 1)
             assert sender in range(N)
             received[v].add(sender)
-            # mylog('[%d]bv finished 56 with msg %s and received %s' % (pid, repr((sender, v)), repr(received)))
             # Relay after reaching first threshold
             if len(received[v]) >= t + 1:
-                # mylog('[%d]bv relayed on %d' % (pid, v))
                 relay[v]()
 
             # Output after reaching second threshold
             if len(received[v]) >= 2 * t + 1:
-                # mylog('[%d]bv writing %d into output' % (pid, v))
                 out[v]()
                 if not v in outputed:
                     outputed.append(v)
-                # mylog('[%d]bv done with writing %d into output' % (pid, v))
                 if len(outputed) == 2:
                     release()  # Release Channel
                     return  # We don't have to wait more
@@ -102,26 +91,18 @@ def shared_coin(instance, pid, N, t, broadcast, receive):
     def _recv():
         while True:
             # New shares for some round r
-            # mylog('[%d] Now executing receive at line 114' % pid)
             (i, (r, sig)) = receive()
-            # mylog('[%d] finished line 114' % pid)
             assert i in range(N)
             assert r >= 0
-            #for ip, sigIp in received[r]:
-            #    if ip == i+1:
-            #        continue
             received[r].add((i, serialize(sig)))
 
             # After reaching the threshold, compute the output and
             # make it available locally
-            if len(received[r]) == t + 1:  #####
-                #if True:
-                # try:
+            if len(received[r]) == t + 1:
                     h = PK.hash_message(str((r, instance)))
                     def tmpFunc(r, t):
                         combine_and_verify(h, dict(tuple((t, deserialize1(sig)) for t, sig in received[r])[:t+1]))
                         outputQueue[r].put(ord(serialize(h)[0]) & 1)  # explicitly convert to int
-                        # print 'pid', pid, 'common coin round', r, 'instance', instance, 'at time', time.time()
                     Greenlet(
                         tmpFunc, r, t
                     ).start()
@@ -134,23 +115,13 @@ def shared_coin(instance, pid, N, t, broadcast, receive):
 
     return getCoin
 
-    # Broadcast our share
-    # round = 0
-    # while True:
-    #    broadcast(round)
-    #    # Wait until the value is ready
-    #    b = outputQueue[round].get()
-    #    # Advance round
-    #    round += 1
-    #    yield b
-
 
 def arbitary_adversary(pid, N, t, vi, broadcast, receive):
-    pass
+    pass  # TODO: implement our arbitrary adversaries
 
 globalState = defaultdict(str)  # Just for debugging
 
-def initBeforeBinaryConsensus():
+def initBeforeBinaryConsensus(): # A dummy function now
     '''
     Initialize all the variables used by binary consensus.
     Actually these variables should be described as local variables.
@@ -185,9 +156,6 @@ def mv84consensus(pid, N, t, vi, broadcast, receive):
     def _listener():  # Hard-working Router for this layer
         while True:
             sender, (tag, m) = receive()
-            # mylog("[%d] received %s" % (pid, repr(
-            #     (sender, (tag, m))
-            # )))
             if tag == 'V':
                 mv84v[sender] = m
                 if m != vi:
@@ -215,15 +183,12 @@ def mv84consensus(pid, N, t, vi, broadcast, receive):
 
     greenletPacker(Greenlet(_listener), 'mv84consensus._listener', (pid, N, t, vi, broadcast, receive)).start()
 
-    # mylog(bcolors.FAIL + "[%d] Starting Phase 1" % pid)
     makeBroadcastWithTag('V', broadcast)(vi)
     perplexed = mv84WaiterLock.get()  # See if I am perplexed
 
-    # mylog(bcolors.FAIL + "[%d] Starting Phase 2" % pid)
     makeBroadcastWithTag('B', broadcast)(perplexed)
     alert = mv84WaiterLock2.get() and 1 or 0  # See if we should alert
 
-    # mylog(bcolors.FAIL + "[%d] Starting binary consensus on alert: %d" % (pid, alert))
 
     decideChannel = Queue(1)
     greenletPacker(Greenlet(binary_consensus, pid, N, t, alert, decideChannel, broadcast, reliableBroadcastReceiveQueue.get),
@@ -231,10 +196,8 @@ def mv84consensus(pid, N, t, vi, broadcast, receive):
     agreedAlert = decideChannel.get()
 
     if agreedAlert:
-        # mylog(bcolors.FAIL + "[%d] agreed on Alert = True" % pid)
         return 0  # some pre-defined default consensus value
     else:
-        # mylog(bcolors.FAIL + "[%d] agreed on %s" % (pid, repr(vi)))
         return vi
 
 
@@ -265,16 +228,13 @@ def binary_consensus(instance, pid, N, t, vi, decide, broadcast, receive):
     :return:
     '''
     # Messages received are routed to either a shared coin, the broadcast, or AUX
-    # finished[pid] = False
     coinQ = Queue(1)
     bcQ = defaultdict(lambda: Queue(1))
     auxQ = defaultdict(lambda: Queue(1))
 
     def _recv():
         while True:  #not finished[pid]:
-            # mylog('[%d] Now executing receive at line 151' % pid)
             (i, (tag, m)) = receive()
-            # mylog('[%d] finished 151 with msg %s' % (pid, repr((tag, m))))
             if tag == 'B':
                 # Broadcast message
                 r, msg = m
@@ -305,24 +265,17 @@ def binary_consensus(instance, pid, N, t, vi, decide, broadcast, receive):
 
     def getWithProcessing(r, binValues, callBackWaiter):
         def _recv(*args, **kargs):
-            # mylog('[%d] Listening AUX' % pid)
             sender, v = auxQ[r].get(*args, **kargs)
             assert v in (0, 1)
             assert sender in range(N)
             received[v][r].add(sender)
             # Check if conditions are satisfied
-            # mylog("[%d] beginChecking..." % pid)
-            # mylog("[%d] binValues %s" % (pid, repr(binValues)))
-            # mylog("[%d] received AUX. 0: %s, 1: %s" % (pid, repr(received[0][r]), repr(received[1][r])))
             threshold = N - t  # 2*t + 1 # N - t
             if True: #not finished[pid]:
                 if len(binValues) == 1:
-                    # print len(received[(binValues[0], r)])
                     if len(received[binValues[0]][r]) >= threshold and not callBackWaiter[r].full():
                         # Check passed
-                        # mylog("[%d] Writing callBackWaiter" % pid)
                         callBackWaiter[r].put(binValues)
-                        # mylog("[%d] Done with writing callBackWaiter" % pid)
                 elif len(binValues) == 2:
                     if len(received[0][r].union(received[1][r])) >= threshold and not callBackWaiter[r].full():
                         callBackWaiter[r].put(binValues)
@@ -341,59 +294,38 @@ def binary_consensus(instance, pid, N, t, vi, decide, broadcast, receive):
 
     callBackWaiter = defaultdict(lambda: Queue(1))
 
-    while True: # checkFinishedWithGlobalState(N):
+    while True: # checkFinishedWithGlobalState(N): <- for distributed experiment we don't need this
         round += 1
-        # mylog(bcolors.WARNING + '[%d] at instance %d enters round %d with decision %s' % (pid, instance, round, globalState[pid] or 'None') + bcolors.ENDC, verboseLevel=-2)
         # Broadcast EST
         # TODO: let bv_broadcast receive
         bvOutputHolder = Queue(2)  # 2 possible values
-        # bvAuxHolder = Queue(2) # turns out we don't need the output of aux
         binValues = []
 
         def bvOutput(m):
             if not m in binValues:
                 binValues.append(m)
-                # mylog("[%d]" % pid + ' has bin_values: ' + repr(binValues))
-                # mylog(bcolors.OKGREEN + "[%d] Output holder received new value" % pid + bcolors.ENDC)
                 bvOutputHolder.put(m)
-                # mylog(bcolors.OKGREEN + "Done putting" + bcolors.ENDC)
 
         def getRelease(channel):
             def _release():
-                #channel.maxsize = None
                 greenletPacker(Greenlet(garbageCleaner, channel),
                     'binary_consensus.garbageCleaner', (pid, N, t, vi, decide, broadcast, receive)).start()
             return _release
 
-        # mylog('[%d]b begin phase 1 broadcasting' % pid)
         br1 = greenletPacker(Greenlet(
             bv_broadcast(
                 pid, N, t, makeBroadcastWithTagAndRound('B', broadcast, round),
                 brcast_get(round), bvOutput, getRelease(bcQ[round])),
             est), 'binary_consensus.bv_broadcast(%d, %d, %d)' % (pid, N, t), (pid, N, t, vi, decide, broadcast, receive))
         br1.start()
-        # mylog('[%d]b is waiting for phase 1' % pid)
         w = bvOutputHolder.get()  # Wait until output is not empty
-        # br1.kill(block=False)
-        # mylog(bcolors.OKBLUE + '[%d]b Phase 1 done and starts phase 2 broadcasting' % pid + bcolors.ENDC)
 
         broadcast(('A', (round, w)))
         greenletPacker(Greenlet(loopWrapper(getWithProcessing(round, binValues, callBackWaiter))),
             'binary_consensus.loopWrapper(getWithProcessing(round, binValues, callBackWaiter))',
                     (pid, N, t, vi, decide, broadcast, receive)).start()
 
-        comment = '''br2 = greenletPacker(Greenlet(
-            bv_broadcast(
-                pid, N, t, makeBroadcastWithTagAndRound('AUX', broadcast, round),
-                getWithProcessing(round, binValues, callBackWaiter), lambda _: None, getRelease(auxQ[round])
-            ), w), 'binary_consensus.bv_broadcast(%d, %d, %d)' % (pid, N, t), (pid, N, t, vi, decide, broadcast, receive))
-        br2.start() #'''
-
         values = callBackWaiter[round].get()  # wait until the conditions are satisfied
-        # br2.kill(block=False)
-        # mylog(bcolors.OKBLUE + '[%d]b Phase 2 done' % pid + bcolors.ENDC)
-        #s = hash(round) % 2
-        s = dummyCoin(round, N)  ## TODO: Change this to dummy coin
         s = coin(round)
         # Here corresponds to a proof that if one party decides at round r,
         # then in all the following rounds, everybody will propose r as an estimation. (Lemma 2, Lemma 1)
@@ -405,14 +337,11 @@ def binary_consensus(instance, pid, N, t, vi, decide, broadcast, receive):
             if values[0] == s:
                 # decide s
                 if not decided:
-                    # mylog("[%d] decides on %d in round %d at instance %d" % (pid, s, round, instance), verboseLevel=-2)
                     globalState[pid] = "%d" % s
                     decide.put(s)
                     decided = True
                     decidedNum = s
-                    # raw_input()
-                # finished[pid] = True
-                # return s
+
             else:
                 pass
                 # mylog('[%d] advances rounds from %d caused by values[0](%d)!=s(%d)' % (pid, round, values[0], s), verboseLevel=-1)

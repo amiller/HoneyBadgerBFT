@@ -1,8 +1,6 @@
-__author__ = 'aluex'
 from gevent import monkey
 monkey.patch_all()
 
-import sys
 from gevent.queue import Queue
 from gevent import Greenlet
 import random
@@ -10,9 +8,7 @@ import hashlib
 import gc
 import traceback
 import cPickle as pickle
-from io import BytesIO
 import struct
-import gmpy2
 from ..ecdsa.ecdsa_ssl import KEY
 import os
 from ..commoncoin import boldyreva as boldyreva
@@ -21,8 +17,7 @@ from ..threshenc.tpke import serialize, deserialize0, deserialize1, deserialize2
 from io import BytesIO
 
 nameList = open(os.path.dirname(os.path.abspath(__file__)) + '/../test/names.txt','r').read().strip().split('\n')
-# nameList = ["Alice", "Bob", "Christina", "David", "Eco", "Francis", "Gerald", "Harris", "Ive", "Jessica"]
-# TR_SIZE = 250
+
 TR_SIZE = 250
 SHA_LENGTH = 32
 PAIRING_SERIALIZED_0 = 28
@@ -57,7 +52,6 @@ sha1hash = lambda x: SHA256.new(x).digest()
 import sys
 import os
 sys.path.append(os.path.abspath('../commoncoin'))
-# import ..commoncoin.shoup
 
 
 class Transaction:  # assume amout is in term of short
@@ -81,9 +75,6 @@ class Transaction:  # assume amout is in term of short
     def __hash__(self):
         return hash(self.source) ^ hash(self.target) ^ hash(self.amount)
 
-    #def getBitsRepr(self):
-    #    return struct.pack('BBH', int(self.source.encode('hex'), 16) & 255, int(self.target.encode('hex'), 16) & 255,
-    #                       self.amount)
 
 def randomTransaction(randomGenerator=random):
     tx = Transaction()
@@ -131,10 +122,10 @@ def encodeTransaction(tr, randomGenerator=None, length=TR_SIZE):
     if randomGenerator:
         return struct.pack(
         '<BBH', sourceInd, targetInd, tr.amount
-    ) + getSomeRandomBytes(TR_SIZE - 5, randomGenerator)  + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
+    ) + getSomeRandomBytes(TR_SIZE - 5, randomGenerator)  + '\x90'
     return struct.pack(
         '<BBH', sourceInd, targetInd, tr.amount
-    ) + os.urandom(TR_SIZE - 5) + '\x90'  # ''.join([chr(random.randint(1, 254)) for i in range(TR_SIZE - 4)])  # padding
+    ) + os.urandom(TR_SIZE - 5) + '\x90'
 
 
 # assumptions:
@@ -157,7 +148,6 @@ def deepEncode(mc, m):
         buf.write(serialize(share))
     else:
         (tag, c) = bundle
-        # buf.write(struct.pack('BB', f, t))
         # totally we have 4 msg types
         if c[0]=='i':
             buf.write('\x01')
@@ -167,8 +157,6 @@ def deepEncode(mc, m):
             buf.write(rh)
             for br in mb:
                 buf.write(br)  ## still SHA_LENGTH bytes each
-            # for tr in s:
-            #    buf.write(encodeTransaction(tr))
             buf.write(sig)
         elif c[0]=='e':
             # print c
@@ -179,10 +167,6 @@ def deepEncode(mc, m):
             buf.write(rh)  ## it's SHA_LENGTH bytes
             for br in mb:
                 buf.write(br)  ## still SHA_LENGTH bytes each
-            # print 'wrote', repr(s)
-            # for tr in s:
-            #     buf.write(encodeTransaction(tr))
-            # buf.write('\x00'*4)
             buf.write(sig)
         elif c[0]=='r':
             buf.write('\x06')
@@ -198,7 +182,6 @@ def deepEncode(mc, m):
             elif t2 == 'C':
                 buf.write('\x05')
                 r, sig = m2
-                #buf.write(struct.pack('<BH', p1, r) + gmpy2.to_binary(sig)[2:])
                 buf.write(struct.pack('<BH', p1, r))
                 buf.write(boldyreva.serialize(sig))
                 buf.seek(0)
@@ -211,8 +194,6 @@ def deepEncode(mc, m):
     return buf.read()
 
 def serializeEnc(C):
-    # print len(serialize(C[0]))
-    # print len(C[1])
     assert len(serialize(C[0]))==PAIRING_SERIALIZED_1
     assert len(C[1]) == CURVE_LENGTH
     assert len(serialize(C[2]))==PAIRING_SERIALIZED_1
@@ -223,7 +204,6 @@ def deserializeEnc(r):
             deserialize1(r[PAIRING_SERIALIZED_1+CURVE_LENGTH:PAIRING_SERIALIZED_1+PAIRING_SERIALIZED_1+CURVE_LENGTH]))
 
 def constructTransactionFromRepr(r):
-    # print repr(r[:4])
     sourceInd, targetInd, amount = struct.unpack('<BBH', r[:4])
     tr = Transaction()
     tr.source = nameList[sourceInd]
@@ -236,7 +216,7 @@ def initiateRND(TX):
     LONG_RND_STRING = long_string(min(TX * (TR_SIZE-5), 1e6))
     bio = BytesIO(LONG_RND_STRING)
 
-# Msg Types:
+# Msg Type Note:
 # 1':(0, 0, ('B', ('i', 0, set([{{Transaction from Alice to Gerald with 22}}]),
 # '0E\x02 T\xf3\x05\xdc\xc6\xd8\x02\xa3\xb3D\xb4\xba\xe3\xd7<\xb1z\xb2\x9c/\x1a\xfdB\x9cZj\xe6\xbc\x9e\x16\x85\x05\x02!\x00\xd5\xee\xa2\xf1\xe7-\xbe\xb9\xefE\x8d\x12\xc4*\xe4D\x96\xa7\xa5\xbe\x13\xaa\x87\x93\x94c\xc4et\xa5\x1a\xc4')))
 # 1:(3, 1, ('B', ('i', 1, set([{{Transaction from Francis to Eco with 86}}]))))
@@ -259,9 +239,6 @@ def deepDecode(m, msgTypeCounter):
         mb = []
         for nr in range(nrBr):
             mb.append(buf.read(SHA_LENGTH))
-        #for i in range(lenS):
-        #    trRepr = buf.read(TR_SIZE)
-        #    trSet.add(constructTransactionFromRepr(trRepr))
         sig = buf.read()
         return mc, (f, t, ('B', ('i', (trSet, rh, mb), sig)),)
     elif msgtype == 2:
@@ -271,7 +248,6 @@ def deepDecode(m, msgTypeCounter):
         mb = []
         for nr in range(nrBr):
             mb.append(buf.read(SHA_LENGTH))
-        # print 'read', repr(trSet)
         sig = buf.read()
         return mc, (f, t, ('B', ('e', (p2, trSet, rh, mb), sig)),)
     elif msgtype == 3:
@@ -283,7 +259,6 @@ def deepDecode(m, msgTypeCounter):
     elif msgtype == 5:
         p1, r = struct.unpack('<BH', buf.read(3))
         sig = boldyreva.deserialize1(buf.read())
-        # sig = gmpy2.from_binary('\x01\x01'+buf.read())
         return mc, (f, t, ('A', (p1, ('C', (r, sig)))))
     elif msgtype == 6:
         p1, = struct.unpack('B', buf.read(1))
@@ -303,20 +278,13 @@ def initiateThresholdSig(contents):
     PK, SKs = boldyreva.TBLSPublicKey(l, k, boldyreva.deserialize2(sVK), [boldyreva.deserialize2(sVKp) for sVKp in sVKs]), \
            [boldyreva.TBLSPrivateKey(l, k, boldyreva.deserialize2(sVK), [boldyreva.deserialize2(sVKp) for sVKp in sVKs], \
                            boldyreva.deserialize0(SKp[1]), SKp[0]) for SKp in SKs]
-    # PK, SKs = pickle.loads(contents)
-    # return PK, SKs
-    #print PK
-    #print SKs
 
 def initiateThresholdEnc(contents):
     global encPK, encSKs
-    # (PK.l, PK.k, serialize(PK.VK), [serialize(VKp) for VKp in PK.VKs],
-    #       [(SK.i, serialize(SK.SK)) for SK in SKs])
     (l, k, sVK, sVKs, SKs) = pickle.loads(contents)
     encPK, encSKs = TPKEPublicKey(l, k, deserialize1(sVK), [deserialize1(sVKp) for sVKp in sVKs]), \
            [TPKEPrivateKey(l, k, deserialize1(sVK), [deserialize1(sVKp) for sVKp in sVKs], \
                            deserialize0(SKp[1]), SKp[0]) for SKp in SKs]
-    # return encPK, encSKs
 
 def initiateECDSAKeys(contents):
     global ecdsa_key_list
@@ -409,10 +377,7 @@ def getSignatureCost():
     return signatureCost
 
 def dummyCoin(round, N):
-    # global signatureCost
-    # signatureCost += 2048 / 8 * N
     return int(hashlib.md5(str(round)).hexdigest(), 16) % 2
-    # return round % 2   # Somehow hashlib does not work well on EC2. I always get 0 from this function.
 
 
 class MonitoredInt(object):
