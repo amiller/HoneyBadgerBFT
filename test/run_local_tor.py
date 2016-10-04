@@ -1,10 +1,8 @@
 __author__ = 'aluex'
 
 import subprocess32 as subprocess
-import sys, signal, time
-#./honest_party_test_tor_multipleCircuits.py . 4_1.key ecdsa_keys 1 4 1
+import time
 def runOnTransaction(N, t, Tx):
-    # p = subprocess.Popen(
     retry = True
     while retry:
         try:
@@ -13,9 +11,6 @@ def runOnTransaction(N, t, Tx):
             '-k', '%d_%d.key' % (N, t), '-e', 'ecdsa.keys', '-b', '%d' % Tx,
             '-n', str(N), '-t', str(t), '-c', 'th_%d_%d.keys' % (N, t)],
                 timeout = 30
-                # stdout=subprocess.PIPE,
-                # stderr=subprocess.PIPE,
-                # stdin=subprocess.PIPE
             )
             retry = False
         except subprocess.TimeoutExpired:
@@ -27,7 +22,6 @@ def runOnTransaction(N, t, Tx):
 import sys
 def main(N, t, start_i=0, end_i=11, start_j=0):
     for i in range(start_i, end_i):
-        # sys.stdout.write(str(2**i))
         for j in range(start_j, 4):
             runOnTransaction(N, t, 2**i)
         print 

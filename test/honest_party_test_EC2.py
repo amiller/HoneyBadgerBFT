@@ -6,24 +6,20 @@ monkey.patch_all()
 from gevent.queue import *
 from gevent import Greenlet
 from ..core.utils import bcolors, mylog, initiateThresholdSig
-from ..core.includeTransaction import honestParty, Transaction
+from ..core.includeTransaction import honestParty
 from collections import defaultdict
 from ..core.bkr_acs import initBeforeBinaryConsensus
-from ..core.utils import ACSException, deepEncode, deepDecode, randomTransaction, randomTransactionStr
 import gevent
 import os
-from ..core.utils import myRandom as random
-from ..core.utils import ACSException, checkExceptionPerGreenlet, getSignatureCost, encodeTransaction, getKeys, \
+from ..core.utils import ACSException, checkExceptionPerGreenlet, encodeTransaction, getKeys, \
     deepEncode, deepDecode, randomTransaction, initiateECDSAKeys, initiateThresholdEnc, finishTransactionLeap, initiateRND
-import json
-import cPickle as pickle
 from gevent.server import StreamServer
 import time
-import base64
-import socks, socket
+
+import socks
 import struct
-from io import BytesIO
-import sys
+import math
+
 from subprocess import check_output
 from os.path import expanduser
 from random import Random
@@ -48,18 +44,10 @@ def listen_to_channel(port):
     def _handle(socket, address):
         f = socket.makefile()
         while True:
-        #for line in f:
-            # msglength = struct.unpack('<I', f.read(4))
             msglength, = struct.unpack('<I', goodread(f, 4))
-            # msglength, = struct.unpack('<Q', goodread(f, 8))
-            line = goodread(f, msglength)  # f.read(msglength)
-            # print 'line read from socket', line
-            # obj = decode(base64.b64decode(line))
+            line = goodread(f, msglength)
             obj = decode(line)
-            # mylog('decoding')
-            # mylog(obj, verboseLevel=-1)
             q.put(obj[1:])
-            # mylog(bcolors.OKBLUE + 'received %s' % repr(obj[1:]) + bcolors.ENDC, verboseLevel=-1)
     server = StreamServer(('0.0.0.0', port), _handle)
     server.start()
     return q
@@ -88,8 +76,6 @@ def connect_to_channel(hostname, port, party):
             except SocketError:
                 print '!! [to %d] sending %d bytes' % (party, len(content))
 
-            # s.sendall(struct.pack('<Q', len(content)) + content)
-                
     gtemp = Greenlet(_handle)
     gtemp.parent_args = (hostname, port, party)
     gtemp.name = 'connect_to_channel._handle'
@@ -109,7 +95,7 @@ def getAddrFromEC2Summary(s):
 ).strip().split('\n')]
 
 IP_LIST = None
-IP_MAPPINGS = None  # [(host, BASE_PORT) for i, host in enumerate(IP_LIST)]
+IP_MAPPINGS = None
 
 
 def prepareIPList(content):
@@ -146,8 +132,7 @@ def logWriter(fileHandler):
 def encode(m):  # TODO
     global msgCounter
     msgCounter += 1
-    starting_time[msgCounter] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
-    #intermediate = deepEncode(msgCounter, m)
+    starting_time[msgCounter] = str(time.time())
     result = deepEncode(msgCounter, m)
     msgSize[msgCounter] = len(result)
     msgFrom[msgCounter] = m[1]
@@ -159,15 +144,13 @@ def encode(m):  # TODO
 
 def decode(s):  # TODO
     result = deepDecode(s, msgTypeCounter)
-    #result = deepDecode(zlib.decompress(s)) #pickle.loads(zlib.decompress(s))
     assert(isinstance(result, tuple))
-    ending_time[result[0]] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
+    ending_time[result[0]] = str(time.time())
     msgContent[result[0]] = None
     msgFrom[result[0]] = result[1][1]
     msgTo[result[0]] = result[1][0]
     global totalMessageSize
     totalMessageSize += msgSize[result[0]]
-    # print totalMessageSize
     if result[1][2][0] == 'A' and result[1][2][1][0] == 0:
         logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]], -1, ending_time[result[0]], 'o'+repr(result[1])))
     return result[1]
@@ -198,20 +181,10 @@ def client_test_freenet(N, t, options):
     logGreenlet.start()
 
     # query amazon meta-data
-    localIP = check_output(['curl', 'http://169.254.169.254/latest/meta-data/public-ipv4'])  #  socket.gethostbyname(socket.gethostname())
+    localIP = check_output(['curl', 'http://169.254.169.254/latest/meta-data/public-ipv4'])
     myID = IP_LIST.index(localIP)
     N = len(IP_LIST)
-    # mylog("[%d] Parameters: N %d, t %d" % (myID, N, t), verboseLevel=-1)
-    # mylog("[%d] IP_LIST: %s" % (myID, IP_LIST), verboseLevel=-1)
-    # print myID, N, 'b'
     initiateRND(options.tx)
-    # print myID, N, 'e'
-    #buffers = map(lambda _: Queue(1), range(N))
-    #gtemp = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
-    #gtemp.parent_args = (N, t)
-    #gtemp.name = 'client_test_freenet.logWriter'
-    #gtemp.start()
-    # Instantiate the "broadcast" instruction
     def makeBroadcast(i):
         chans = []
         # First establish N connections (including a self connection)
@@ -219,24 +192,21 @@ def client_test_freenet(N, t, options):
             host, port = IP_MAPPINGS[j] # TOR_MAPPINGS[j]
             chans.append(connect_to_channel(host, port, i))
         def _broadcast(v):
-            # mylog(bcolors.OKGREEN + "[%d] Broadcasted %s" % (i, repr(v)) + bcolors.ENDC, verboseLevel=-1)
             for j in range(N):
                 chans[j].put((j, i, v))  # from i to j
         def _send(j, v):
             chans[j].put((j, i, v))
         return _broadcast, _send
 
-    iterList = [myID] #range(N)
+    iterList = [myID]
     servers = []
     for i in iterList:
-        _, port = IP_MAPPINGS[i] # TOR_MAPPINGS[i]
+        _, port = IP_MAPPINGS[i]
         servers.append(listen_to_channel(port))
-    #gevent.sleep(2)
     print 'servers started'
 
     gevent.sleep(WAITING_SETUP_TIME_IN_SEC) # wait for set-up to be ready
     print 'sleep over'
-    #while True:
     if True:  # We only test for once
         initBeforeBinaryConsensus()
         ts = []
@@ -260,17 +230,13 @@ def client_test_freenet(N, t, options):
 
         rnd = Random()
         rnd.seed(123123)
-        # mylog("[%d] random transaction generator fingerprints %s" % (myID, hex(rnd.getrandbits(32*8))), verboseLevel=-2)
         # This makes sure that all the EC2 instances have the same transaction pool
-        # options.tx = int(math.ceil((1 - exp(1 - 1.0/options.n, options.n)) * options.B))
-        # transactionSet = pickle.load(open(options.txpath, 'r'))[:int(options.tx)]
         transactionSet = set([encodeTransaction(randomTransaction(rnd), randomGenerator=rnd) for trC in range(int(options.tx))])  # we are using the same one
 
         def toBeScheduled():
             for i in iterList:
                 bc = bcList[i]  # makeBroadcast(i)
                 sd = sdList[i]
-                #recv = servers[i].get
                 recv = servers[0].get
                 th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv, sd, options.B)
                 th.parent_args = (N, t)
@@ -281,7 +247,6 @@ def client_test_freenet(N, t, options):
                 mylog('Summoned party %i at time %f' % (i, time.time()), verboseLevel=-1)
                 ts.append(th)
 
-            #Greenlet(monitorUserInput).start()
             try:
                 gevent.joinall(ts)
             except ACSException:
@@ -290,16 +255,12 @@ def client_test_freenet(N, t, options):
                 print 'msgCounter', msgCounter
                 print 'msgTypeCounter', msgTypeCounter
                 # message id 0 (duplicated) for signatureCost
-                #logChannel.put((0, getSignatureCost(), 0, 0, str(time.time()), str(time.time()), '[signature cost]'))
                 logChannel.put(StopIteration)
                 mylog("=====", verboseLevel=-1)
                 for item in logChannel:
                     mylog(item, verboseLevel=-1)
                 mylog("=====", verboseLevel=-1)
-                #checkExceptionPerGreenlet()
-                # print getSignatureCost()
-                pass
-            except gevent.hub.LoopExit: # Manual fix for early stop
+            except gevent.hub.LoopExit:  # Manual fix for early stop
                 while True:
                     gevent.sleep(1)
                 checkExceptionPerGreenlet()
@@ -316,9 +277,6 @@ def client_test_freenet(N, t, options):
 
 
 import atexit
-import gc
-import traceback
-from greenlet import greenlet
 
 USE_PROFILE = False
 GEVENT_DEBUG = False
@@ -356,7 +314,6 @@ def exit():
 
 if __name__ == '__main__':
     # GreenletProfiler.set_clock_type('cpu')
-    # print "Started"
     atexit.register(exit)
     if USE_PROFILE:
         GreenletProfiler.set_clock_type('cpu')

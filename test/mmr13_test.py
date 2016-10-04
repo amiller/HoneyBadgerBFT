@@ -4,10 +4,9 @@ monkey.patch_all()
 import gevent
 from gevent import Greenlet
 from gevent.queue import Queue
-from collections import defaultdict
 import random
 
-from ..core.mmr13 import makeCallOnce, bv_broadcast, shared_coin, binary_consensus, bcolors, mylog, mv84consensus, initBeforeBinaryConsensus, globalState
+from ..core.mmr13 import bv_broadcast, binary_consensus, bcolors, mylog, mv84consensus, globalState
 
 
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
@@ -21,7 +20,6 @@ def random_delay_broadcast1(inputs, t):
     def makeBroadcast(i):
         def _broadcast(v):
             def _deliver(j):
-                #print 'Delivering', v, 'from', i, 'to', j
                 buffers[j].put((i,v))
             for j in range(N): 
                 Greenlet(_deliver, j).start_later(random.random()*maxdelay)
@@ -57,7 +55,6 @@ def random_delay_sharedcoin_dummy(N, t):
     def makeBroadcast(i):
         def _broadcast(v):
             def _deliver(j):
-                #print 'Delivering', v, 'from', i, 'to', j
                 buffers[j].put((i,v))
             for j in range(N): 
                 Greenlet(_deliver, j).start_later(random.random()*maxdelay)
@@ -91,15 +88,12 @@ def random_delay_sharedcoin_dummy(N, t):
 def random_delay_binary_consensus(N, t, inputs):
     maxdelay = 0.01
 
-    # msgThreads = []
-
     buffers = map(lambda _: Queue(1), range(N))
     random_delay_binary_consensus.msgCount = 0
     # Instantiate the "broadcast" instruction
     def makeBroadcast(i):
         def _broadcast(v):
             def _deliver(j):
-                #print 'Delivering', v, 'from', i, 'to', j
                 random_delay_binary_consensus.msgCount += 1
                 tmpCount = random_delay_binary_consensus.msgCount
                 mylog(bcolors.OKGREEN + "MSG: [%d] -[%d]-> [%d]: %s" % (i, tmpCount, j, repr(v)) + bcolors.ENDC)
@@ -107,9 +101,6 @@ def random_delay_binary_consensus(N, t, inputs):
                 mylog(bcolors.OKGREEN + "     [%d] -[%d]-> [%d]: Finish" % (i, tmpCount, j) + bcolors.ENDC)
             for j in range(N):
                 Greenlet(_deliver, j).start_later(random.random()*maxdelay)
-                #g = Greenlet(_deliver, j)
-                #g.start()  #.start_later(random.random()*maxdelay)
-                # msgThreads.append(g)  # keep references
         return _broadcast
 
     ts = []
@@ -122,17 +113,16 @@ def random_delay_binary_consensus(N, t, inputs):
         th.start_later(random.random() * maxdelay)
         ts.append(th)
 
-    if True:
-    #try:
-        gevent.joinall(ts)
-    #except gevent.hub.LoopExit: # Manual fix for early stop
-        agreed = ""
-        for key, item in globalState.items():
-            if item != globalState[0]:
-                mylog(bcolors.FAIL + 'Bad Concensus!' + bcolors.ENDC)
+
+
+    gevent.joinall(ts)
+
+    for key, item in globalState.items():
+        if item != globalState[0]:
+            mylog(bcolors.FAIL + 'Bad Concensus!' + bcolors.ENDC)
 
     print globalState
-    #pass
+
 
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
 def random_delay_multivalue_consensus(N, t, inputs):
@@ -147,7 +137,6 @@ def random_delay_multivalue_consensus(N, t, inputs):
     def makeBroadcast(i):
         def _broadcast(v):
             def _deliver(j):
-                #print 'Delivering', v, 'from', i, 'to', j
                 random_delay_multivalue_consensus.msgCount += 1
                 tmpCount = random_delay_multivalue_consensus.msgCount
                 mylog(bcolors.OKGREEN + "MSG: [%d] -[%d]-> [%d]: %s" % (i, tmpCount, j, repr(v)) + bcolors.ENDC)
@@ -165,13 +154,11 @@ def random_delay_multivalue_consensus(N, t, inputs):
     for i in range(N):
         bc = makeBroadcast(i)
         recv = buffers[i].get
-        #vi = random.randint(0, 10)
         vi = inputs[i]
         th = Greenlet(mv84consensus, i, N, t, vi, bc, recv)
         th.start_later(random.random() * maxdelay)
         ts.append(th)
 
-    #if True:
     try:
         gevent.joinall(ts)
     except gevent.hub.LoopExit: # Manual fix for early stop
@@ -187,7 +174,6 @@ def random_delay_multivalue_consensus(N, t, inputs):
 
 
     print globalState
-    #pass
 
 if __name__=='__main__':
     print "[ =========== ]"

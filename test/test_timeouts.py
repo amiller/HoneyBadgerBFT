@@ -4,7 +4,6 @@ monkey.patch_all()
 import gevent
 from gevent import Greenlet
 from gevent.queue import Queue
-from collections import defaultdict
 import random
 
 import mmr13

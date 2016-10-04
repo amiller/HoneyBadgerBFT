@@ -7,16 +7,11 @@ from gevent.server import StreamServer
 from gevent.queue import Queue
 import json
 
-from collections import defaultdict
 import random
 
-from ..core.mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, mv84consensus, initBeforeBinaryConsensus, globalState
-
-#import stem.control
-#from stem import ControllerError
+from ..core.mmr13 import bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, mv84consensus, globalState
 
 import socks
-#socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9050, True)
 
 TOR_SOCKSPORT = range(9050, 9055)
 
@@ -53,7 +48,7 @@ l2y6c2tztpjbcjv5.onion
 cystbatihmcyj6nf.onion
 hhhegzzwem6v2rpx.onion
 za44dm5gbhkzif24.onion
-""".strip().split('\n')
+""".strip().split('\n')  # hard-coded test
 
 
 
@@ -72,7 +67,6 @@ def random_delay_broadcast1(inputs, t):
     def makeBroadcast(i):
         def _broadcast(v):
             def _deliver(j):
-                #print 'Delivering', v, 'from', i, 'to', j
                 buffers[j].put((i,v))
             for j in range(N): 
                 Greenlet(_deliver, j).start_later(random.random()*maxdelay)
@@ -109,7 +103,6 @@ def random_delay_sharedcoin_dummy(N, t):
     def makeBroadcast(i):
         def _broadcast(v):
             def _deliver(j):
-                #print 'Delivering', v, 'from', i, 'to', j
                 buffers[j].put((i,v))
             for j in range(N): 
                 Greenlet(_deliver, j).start_later(random.random()*maxdelay)
@@ -149,7 +142,6 @@ def random_delay_binary_consensus(N, t):
     def makeBroadcast(i):
         def _broadcast(v):
             def _deliver(j):
-                #print 'Delivering', v, 'from', i, 'to', j
                 mylog(bcolors.OKGREEN + "MSG: [%d] -> [%d]: %s" % (i, j, repr(v)) + bcolors.ENDC)
                 buffers[j].put((i,v))
                 mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
@@ -167,7 +159,6 @@ def random_delay_binary_consensus(N, t):
         th.start_later(random.random() * maxdelay)
         ts.append(th)
 
-    #if True:
     try:
         gevent.joinall(ts)
     except gevent.hub.LoopExit: # Manual fix for early stop
@@ -182,16 +173,14 @@ def random_delay_binary_consensus(N, t):
                 print "Consensus Error"
 
     print globalState
-    #pass
+
 
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays
 def random_delay_multivalue_consensus(N, t, inputs):
 
     mylog("[Tor] Making circuits...")
-    # circuit_ids = []
 
     # Now we don't use stem
-    #controller.add_event_listener(attach_stream, stem.control.EventType.STREAM)
 
     maxdelay = 0.01
 
@@ -220,17 +209,15 @@ def random_delay_multivalue_consensus(N, t, inputs):
 
 
     ts = []
-    #cid = 1
     for i in range(N):
         bc = makeBroadcast(i)
-        recv = servers[i].get #buffers[i].get
-        #vi = random.randint(0, 10)
+        recv = servers[i].get
         vi = inputs[i]
         th = Greenlet(mv84consensus, i, N, t, vi, bc, recv)
         th.start() # start_later(random.random() * maxdelay)
         ts.append(th)
 
-    #if True:
+
     try:
         gevent.joinall(ts)
     except gevent.hub.LoopExit: # Manual fix for early stop
@@ -246,13 +233,10 @@ def random_delay_multivalue_consensus(N, t, inputs):
 
 
     print globalState
-    #pass
 
 if __name__=='__main__':
-    #initTor()
     print "[ =========== ]"
     print "Testing binary consensus..."
-    #random_delay_binary_consensus(5,1)
     print "Testing multivalue consensus with different inputs..."
     random_delay_multivalue_consensus(5, 1, [random.randint(0, 10) for x in range(5)])
 

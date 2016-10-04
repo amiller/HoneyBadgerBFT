@@ -7,7 +7,6 @@ from gevent.queue import Queue
 from gevent import Greenlet
 from ..core.utils import bcolors, mylog
 from ..core.includeTransaction import honestParty, Transaction
-from collections import defaultdict
 from ..core.bkr_acs import initBeforeBinaryConsensus
 from ..core.utils import ACSException
 import gevent
@@ -55,7 +54,7 @@ def logWriter(fileHandler):
 def encode(m):
     global msgCounter
     msgCounter += 1
-    starting_time[msgCounter] = str(time.time())  #time.strftime('[%m-%d-%y|%H:%M:%S]')
+    starting_time[msgCounter] = str(time.time())
     result = zlib.compress(
         pickle.dumps((msgCounter, m)),
         9)  # Highest compression level
@@ -66,13 +65,13 @@ def encode(m):
 def decode(s):
     result = pickle.loads(zlib.decompress(s))
     assert(isinstance(result, tuple))
-    ending_time[result[0]] = str(time.time())  #time.strftime('[%m-%d-%y|%H:%M:%S]')
+    ending_time[result[0]] = str(time.time())
     logChannel.put((result[0], msgSize[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
     return result[1]
 
 
 def trashAllMessages(N):
-    bitmessageServers = [('127.0.0.1', 8545+x) for x in range(N)]  # From 8337, 8338, ...
+    bitmessageServers = [('127.0.0.1', 8545+x) for x in range(N)]
     apis = [xmlrpclib.ServerProxy("http://user:badger@%s:%d" % (_[0], _[1])) for _ in bitmessageServers]
     for api in apis:
         msgs = json.loads(api.getAllInboxMessageIDs())['inboxMessageIds']
@@ -140,7 +139,7 @@ def client_test_freenet(N, t):
                 gevent.sleep(SLEEP_TIME)
                 msgs = json.loads(api_Read[i].getAllInboxMessages())['inboxMessages']
                 for msg in msgs:
-                    receipt_no = i  # address.index(msg['toAddress'])
+                    receipt_no = i
                     tmpvar = base64.b64decode(msg['message'])
                     if tmpvar[:3] == 'HB-':
                         result = decode(
@@ -169,20 +168,16 @@ def client_test_freenet(N, t):
             recv = makeListen(i)
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
             controlChannels[i].put(('IncludeTransaction', randomTransaction()))
-            # controlChannels[i].put(('IncludeTransaction', randomTransactionStr()))
             th.start_later(random.random() * maxdelay)
             ts.append(th)
 
-        #Greenlet(monitorUserInput).start()
         try:
             gevent.joinall(ts)
         except ACSException:
             gevent.killall(ts)
-        except gevent.hub.LoopExit: # Manual fix for early stop
+        except gevent.hub.LoopExit:  # Manual fix for early stop
             print "Concensus Finished"
             mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
-
-    #   shutdownNodes()
 
 if __name__ == '__main__':
     # utils.verbose = -1

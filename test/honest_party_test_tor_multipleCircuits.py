@@ -9,21 +9,14 @@ from ..core.utils import bcolors, mylog, initiateThresholdSig
 from ..core.includeTransaction import honestParty, Transaction
 from collections import defaultdict
 from ..core.bkr_acs import initBeforeBinaryConsensus
-from ..core.utils import ACSException, deepEncode, deepDecode, randomTransaction, randomTransactionStr
 import gevent
 import os
-from ..core.utils import myRandom as random
 from gevent.server import StreamServer
 from ..core.utils import ACSException, checkExceptionPerGreenlet, getSignatureCost, encodeTransaction, getKeys, \
     deepEncode, deepDecode, randomTransaction, initiateECDSAKeys, initiateThresholdEnc, finishTransactionLeap
-import json
-import cPickle as pickle
 import time
-import base64
-import socks, socket
+import socks
 import struct
-from io import BytesIO
-import sys
 from os.path import expanduser
 from ..commoncoin.boldyreva_gipc import initialize as initializeGIPC
 
@@ -46,17 +39,11 @@ def listen_to_channel(port):
     def _handle(socket, address):
         f = socket.makefile()
         while True:
-        #for line in f:
-            # msglength = struct.unpack('<I', f.read(4))
             msglength, = struct.unpack('<I', goodread(f, 4))
-            line = goodread(f, msglength)  # f.read(msglength)
-            # print 'line read from socket', line
-            # obj = decode(base64.b64decode(line))
+            line = goodread(f, msglength)
             obj = decode(line)
-            # mylog('decoding')
-            # mylog(obj, verboseLevel=-1)
             q.put(obj[1:])
-            # mylog(bcolors.OKBLUE + 'received %s' % repr(obj[1:]) + bcolors.ENDC, verboseLevel=-1)
+
     server = StreamServer(('0.0.0.0', port), _handle)
     server.start()
     return q
@@ -71,7 +58,7 @@ def connect_to_channel(hostname, port, party):
         s.setproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", TOR_SOCKSPORT[party], True)
         s.connect((hostname, port))
         retry = False
-      except Exception, e:  # socks.SOCKS5Error:
+      except Exception, e:  # socks.SOCKS5Error:  # still no idea why socks over tor would always generate this error
         retry = True
         gevent.sleep(1)
         s.close()
@@ -119,15 +106,13 @@ logChannel = Queue()
 def logWriter(fileHandler):
     while True:
         msgCounter, msgSize, msgFrom, msgTo, st, et, content = logChannel.get()
-        #if not QUIET_MODE:
         fileHandler.write("%d:%d(%d->%d)[%s]-[%s]%s\n" % (msgCounter, msgSize, msgFrom, msgTo, st, et, content))
         fileHandler.flush()
 
 def encode(m):  # TODO
     global msgCounter
     msgCounter += 1
-    starting_time[msgCounter] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
-    #intermediate = deepEncode(msgCounter, m)
+    starting_time[msgCounter] = str(time.time())
     result = deepEncode(msgCounter, m)
     if m[0] == m[1]:
         msgSize[msgCounter] = 0
@@ -140,13 +125,11 @@ def encode(m):  # TODO
 
 def decode(s):  # TODO
     result = deepDecode(s, msgTypeCounter)
-    #result = deepDecode(zlib.decompress(s)) #pickle.loads(zlib.decompress(s))
     assert(isinstance(result, tuple))
-    ending_time[result[0]] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
+    ending_time[result[0]] = str(time.time())
     msgContent[result[0]] = None
     global totalMessageSize
     totalMessageSize += msgSize[result[0]]
-    # print totalMessageSize
     if not QUIET_MODE:
         logChannel.put((result[0], msgSize[result[0]], msgFrom[result[0]], msgTo[result[0]],
                     starting_time[result[0]], ending_time[result[0]], repr(result[1])))
@@ -171,8 +154,6 @@ def client_test_freenet(N, t, options):
     initiateECDSAKeys(open(options.ecdsa, 'r').read())
     initiateThresholdEnc(open(options.threshold_encs, 'r').read())
     initializeGIPC(getKeys()[0])
-    # initiateRND(options.tx)
-    #buffers = map(lambda _: Queue(1), range(N))
     global logGreenlet
     logGreenlet = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
     logGreenlet.parent_args = (N, t)
@@ -192,11 +173,10 @@ def client_test_freenet(N, t, options):
             host, port = TOR_MAPPINGS[j]
             chans.append(connect_to_channel(host, port, i))
         def _broadcast(v):
-            # mylog(bcolors.OKGREEN + "[%d] Broadcasted %s" % (i, repr(v)) + bcolors.ENDC, verboseLevel=-1)
             for j in range(N):
                 if j != i:
                     chans[j].put((j, i, v))  # from i to j
-            servers[i].put((i, v)) # this is what the reader see. We are doing a shortcut.
+            servers[i].put((i, v))  # this is what the reader see. We are doing a shortcut.
         def _delivery(j, v):
             chans[j].put((j, i, v))
         return _broadcast, _delivery
@@ -229,16 +209,12 @@ def client_test_freenet(N, t, options):
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bcList[i], recv, sdList[i], options.B)
             th.parent_args = (N, t)
             th.name = 'client_test_freenet.honestParty(%d)' % i
-            # controlChannels[i].put(('IncludeTransaction', randomTransactionStr()))
             th.start()
             mylog('Summoned party %i at time %f' % (i, time.time()), verboseLevel=-1)
             ts.append(th)
         for i in range(N):
             controlChannels[i].put(('IncludeTransaction', transactionSet))
-            #controlChannels[i].put(('IncludeTransaction',
-            #    set([randomTransaction() for trC in range(int(sys.argv[4]))])))
 
-        #Greenlet(monitorUserInput).start()
         try:
             gevent.joinall(ts)
         except ACSException:
@@ -247,16 +223,15 @@ def client_test_freenet(N, t, options):
             print 'msgCounter', msgCounter
             print 'msgTypeCounter', msgTypeCounter
             # message id 0 (duplicated) for signatureCost
-            #logChannel.put((0, getSignatureCost(), 0, 0, str(time.time()), str(time.time()), '[signature cost]'))
             logChannel.put(StopIteration)
             mylog("=====", verboseLevel=-1)
             for item in logChannel:
                 mylog(item, verboseLevel=-1)
             mylog("=====", verboseLevel=-1)
-            #checkExceptionPerGreenlet()
+            # checkExceptionPerGreenlet()
             # print getSignatureCost()
             pass
-        except gevent.hub.LoopExit: # Manual fix for early stop
+        except gevent.hub.LoopExit:  # Manual fix for early stop
             while True:
                 gevent.sleep(1)
             checkExceptionPerGreenlet()
@@ -264,9 +239,6 @@ def client_test_freenet(N, t, options):
             print "Concensus Finished"
 
 import atexit
-import gc
-import traceback
-from greenlet import greenlet
 
 USE_PROFILE = False
 GEVENT_DEBUG = False

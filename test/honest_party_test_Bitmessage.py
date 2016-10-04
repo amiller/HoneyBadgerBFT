@@ -6,14 +6,12 @@ from gevent.queue import Queue
 from gevent import Greenlet
 from ..core.utils import bcolors, mylog
 from ..core.includeTransaction import honestParty, Transaction
-from collections import defaultdict
 from ..core.bkr_acs import initBeforeBinaryConsensus
 from ..core.utils import ACSException
 import gevent
 import os
 from ..core.utils import myRandom as random
 import xmlrpclib
-import time
 import json
 import pickle
 import zlib
@@ -43,8 +41,6 @@ def encode(m):
     return zlib.compress(pickle.dumps(m), 9)
 
 def decode(s):
-    # mylog('decoding %s' % repr(s))
-    #if True:
     try:
         result = pickle.loads(zlib.decompress(s))
     except:
@@ -127,7 +123,6 @@ def client_test_freenet(N, t):
             bc = makeBroadcast(i)
             recv = makeListen(i)
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
-            #controlChannels[i].put(('IncludeTransaction', randomTransaction()))
             controlChannels[i].put(('IncludeTransaction', randomTransactionStr()))
             th.start_later(random.random() * maxdelay)
             ts.append(th)

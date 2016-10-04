@@ -1,16 +1,11 @@
 import subprocess, sys, signal
 
 def runOnTransaction(N, t, Tx):
-    # p = subprocess.Popen(
-    # -k 4_2.keys -e ecdsa.keys -x 8 -n 4 -t 1 -c threshenc_4_2.keys
     p = subprocess.check_output(
         ['python', '-m', 'HoneyBadgerBFT.test.honest_party_test',
             '-k', '%d_%d.key' % (N, t), '-e', 'ecdsa.keys', '-b', '%d' % Tx,
             '-n', str(N), '-t', str(t), '-c', 'th_%d_%d.keys' % (N, t)],
         shell=False,
-        # stdout=subprocess.PIPE,
-        # stderr=subprocess.PIPE,
-        # stdin=subprocess.PIPE
     )
     return p.split('Total Message size ')[1].strip()
 
@@ -18,19 +13,15 @@ def runOnTransaction(N, t, Tx):
     sent = False
     while True:
         line = p.stdout.readline()
-        # print Tx, line
         if 'size' in line:
             return line.replace('Total Message size ','').strip()
         if line == '':
             break
-        # print(line.strip())  # remove extra ws between lines
         if 'synced' in line:
             counter += 1
         if counter >= N - t and not sent:
             p.send_signal(signal.SIGINT)
             sent = True
-            # print 'signal sent'
-        # print line, counter
 
     
 import sys

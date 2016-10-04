@@ -7,14 +7,14 @@ from gevent.queue import Queue
 from gevent import Greenlet
 from ..core.utils import bcolors, mylog
 from ..core.includeTransaction import honestParty, Transaction
-from collections import defaultdict
+
 from ..core.bkr_acs import initBeforeBinaryConsensus
 from ..core.utils import ACSException
 import gevent
 import os
 from ..core.utils import myRandom as random
 import fcp
-import json
+
 import pickle
 import time
 import zlib
@@ -90,7 +90,7 @@ def logWriter(fileHandler):
 def encode(m):
     global msgCounter
     msgCounter += 1
-    starting_time[msgCounter] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
+    starting_time[msgCounter] = str(time.time())
     result = zlib.compress(
         pickle.dumps((msgCounter, m)),
     9)  # Highest compression level
@@ -100,7 +100,7 @@ def encode(m):
 def decode(s):
     result = pickle.loads(zlib.decompress(s))
     assert(isinstance(result, tuple))
-    ending_time[result[0]] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
+    ending_time[result[0]] = str(time.time())
     logChannel.put((result[0], msgSize[result[0]], starting_time[result[0]], ending_time[result[0]], result[1]))
     return result[1]
 
@@ -122,7 +122,6 @@ def client_test_freenet(N, t):
     global publicKeys, nodeList
     privateList, USKPrivateList = generateFreenetKeys(N)
     Greenlet(logWriter, open('msglog', 'w')).start()
-    #buffers = map(lambda _: Queue(1), range(N))
 
     # Instantiate the "broadcast" instruction
     def makeBroadcast(i):
@@ -137,7 +136,7 @@ def client_test_freenet(N, t):
                 nodeList[actuall_i].put(uri=privateList[actuall_i] + str(counter[actuall_i]), data=encode(message),
                                 mimetype="application/octet-stream", realtime=True, priority=0)
                 mylog("[%d] Updating msg_counter[%d] to %d..." % (i, workno, counter[actuall_i]))
-                nodeList[actuall_i].put(uri=USKPrivateList[actuall_i], #.replace('/0', '/'+str(counter[i])),
+                nodeList[actuall_i].put(uri=USKPrivateList[actuall_i],
                                 data=str(counter[actuall_i]),
                                 mimetype="application/octet-stream", realtime=True, priority=0)
         for x in range(CONCURRENT_NUM):
@@ -151,7 +150,6 @@ def client_test_freenet(N, t):
         recvCounter = [0] * (N * CONCURRENT_NUM)
         def listener(j, recvCounter):
             while True:
-                # mylog("[%d] Updating msg_counter of %d..." % (i, j))
                 uskjob = nodeList[i].get(uri=USKPublicKeys[j],
                                          async=True, realtime=True, priority=2, followRedirect=True)
                 # The reason I use async here is that from the tutorial it is said this would be faster
@@ -164,7 +162,6 @@ def client_test_freenet(N, t):
                         job = nodeList[i].get(uri=publicKeys[j]+str(c+1),
                                               async=True, realtime=True, priority=0)
                         mime, data, meta = job.wait()
-                        #recvCounter[j] += 1
                         recvChannel.put((j / CONCURRENT_NUM, decode(data)))
                     recvCounter[j] = newestNum
         for k in range(N * CONCURRENT_NUM):
@@ -183,16 +180,14 @@ def client_test_freenet(N, t):
             recv = makeListen(i)
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv)
             controlChannels[i].put(('IncludeTransaction', randomTransaction()))
-            #controlChannels[i].put(('IncludeTransaction', randomTransactionStr()))
             th.start_later(random.random() * maxdelay)
             ts.append(th)
 
-        #Greenlet(monitorUserInput).start()
         try:
             gevent.joinall(ts)
         except ACSException:
             gevent.killall(ts)
-        except gevent.hub.LoopExit: # Manual fix for early stop
+        except gevent.hub.LoopExit:  # Manual fix for early stop
             print "Concensus Finished"
             mylog(bcolors.OKGREEN + ">>>" + bcolors.ENDC)
 

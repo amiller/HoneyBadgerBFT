@@ -5,10 +5,6 @@ import networkx as nx
 import numpy as np
 
 def random_graph(n=50,f=50/3,deg=5):
-    # Generate a random graph
-    #p = (1.6) * np.log(n) / n
-    #g = nx.random_graphs.erdos_renyi_graph(n=n,p=p)
-    #print 'random graph with p=', p
     g = nx.random_graphs.random_regular_graph(deg,n)
     print 'random regular graph with degree:', deg
 
@@ -26,7 +22,7 @@ def random_graph(n=50,f=50/3,deg=5):
 
     for i in g.nodes():
         # Determine the quorum slices according to the rule:
-        #  any 2/3 are valid
+        #  any 2/3 are valid  #???
         pass
 
     return g

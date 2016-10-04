@@ -1,6 +1,6 @@
 # -*- Mode: Python -*-
 
-# OpenSSL wrapper
+# OpenSSL wrapper, from
 # https://github.com/joric/brutus/blob/master/ecdsa_ssl.py
 
 import ctypes

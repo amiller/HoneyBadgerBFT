@@ -22,25 +22,17 @@ def process(s, txpp, N=-1, t=-1):
                 tl = scanf.sscanf(line, '%s out: %d waits for %f now is %f')
             else:
                 tl = scanf.sscanf(line, '%s out: %d waits for %f')
-            # ('[52.193.84.92]', 15, 1455657950.0, 1455657904.67)
-            # scheduleTime[tl[1]] = tl[2]
-            scheduleTime[tl[2]] += 1 #.append(tl[1])
+            scheduleTime[tl[2]] += 1
         if 'proposing' in line:
-            # [52.36.25.154] out: [0] proposing 4096 transactions
             tl = scanf.sscanf(line, '%s out: [%d] proposing %d transactions')
             if txpp!=tl[2]:
                 print "\n\n!!!!!!!!!!!!! File Inconsistent\n\n"
                 return
 
     earlyStart = min(scheduleTime.keys())
-    # print scheduleTime.keys(), earlyStart
     if scheduleTime[earlyStart] < N - t:
         print "\n\n!!!!!!!!!!!!! Starting Time Unsynced\n\n"
         return
-
-    #uniqueScheduleTime = set(scheduleTime.values())
-    #print uniqueScheduleTime
-    #if len(uniqueScheduleTime) != 1:
 
     maxLatency = 0
     for key, value in endtime.items():
@@ -81,10 +73,8 @@ def processIncTx(s, txpp, N=-1, t=-1):
                 tl = scanf.sscanf(line, '%s out: %d waits for %f now is %f')
             else:
                 tl = scanf.sscanf(line, '%s out: %d waits for %f')
-            # ('[52.193.84.92]', 15, 1455657950.0, 1455657904.67)
             scheduleTime[tl[1]] = tl[2]
         if 'proposing' in line:
-            # [52.36.25.154] out: [0] proposing 4096 transactions
             tl = scanf.sscanf(line, '%s out: [%d] proposing %d transactions')
             if txpp!=tl[2]:
                 print "\n\n!!!!!!!!!!!!! File Inconsistent\n\n"

@@ -6,8 +6,6 @@ import gevent
 from gevent import Greenlet
 from gevent.server import StreamServer
 from gevent.queue import Queue
-from collections import defaultdict
-import random
 import json
 
 # Import the algorithm
@@ -23,7 +21,6 @@ def listen_to_channel(port):
     def _handle(socket, address):
         f = socket.makefile()
         for line in f:
-            #print 'line read from socket', line
             obj = json.loads(line)
             q.put(obj)
     server = StreamServer(('127.0.0.1', port), _handle)

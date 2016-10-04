@@ -12,8 +12,7 @@ def get_ec2_instances(region):
         reservations = ec2_conn.get_all_reservations(filters={'tag:Name':'pbft'})
         for reservation in reservations:    
             for ins in reservation.instances:
-                if ins.public_dns_name: 
-                # ec2-54-153-121-229.us-west-1.compute.amazonaws.com
+                if ins.public_dns_name:
                     print ins.public_dns_name.split('.')[0][4:].replace('-','.')
 
 def get_ec2_instances_names(region):

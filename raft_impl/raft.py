@@ -123,8 +123,6 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
             if run.state == 'leader':
                 mylog(bcolors.WARNING + "\b[%d] received msg from client: %s" % (run.pid, repr(msg)) + bcolors.ENDC)
                 run.log.append(dict(term=run.term, msg=msg))
-                #Greenlet(clientMonitor).start_later(0)
-                ############################## Send msg to the leader
 
         def clientMonitor():
             while True:
@@ -202,7 +200,6 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
             if (run.state == 'leader' and
                     (run.heartbeatDue[j] <= getTime() or
                          (run.nextIndex[j] <= len(run.log) and run.rpcDue[j] <= getTime()))):
-                #displayInfo()
                 prevIndex = run.nextIndex[j] - 1
                 lastIndex = min(prevIndex + BATCH_SIZE, len(run.log))
                 if (run.matchIndex[j] + 1 < run.nextIndex[j]):
@@ -226,7 +223,6 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
             mylog("[%d] log: %s" % (run.pid, repr(run.log)), verboseLevel=1)
             matchIndexArray = run.matchIndex[:]
             matchIndexArray[run.pid] = len(run.log)
-            #mylog(matchIndexArray)
             n = sorted(matchIndexArray)[N / 2]
             if (run.state == 'leader' and (accessLog(n) == None or accessLog(n)['term'] == run.term)):
                 run.commitIndex = max(run.commitIndex, n)
@@ -325,9 +321,7 @@ def raftServer(pid, N, t, broadcast, send, receive, recvClient, output, getTime,
                     sendRequestVote(i)
                     sendAppendEntries(i)
             try:
-                #mylog("[%d] tries to fetch a msg" % run.pid)
                 result = receive(timeout=RECV_TIMEOUT)
-                #mylog("[%d] got a msg: %s" % (run.pid, repr(result)))
                 senderID, packedMSG = result
                 handleMessage(packedMSG)
             except gevent.queue.Empty:
@@ -348,7 +342,6 @@ def runRaft(inputs, clientsChannel, t, tMin, tMax, getTime):  # Everyone broadca
     def makeBroadcast(i):
         def _broadcast(v):
             def _deliver(j):
-                #print 'Delivering', v, 'from', i, 'to', j
                 buffers[j].put((i, v))
 
             for j in range(N):
@@ -367,10 +360,8 @@ def runRaft(inputs, clientsChannel, t, tMin, tMax, getTime):  # Everyone broadca
                     pass
 
         def _async_send(j, v):
-            #Greenlet(_send, j, v).start()
             Greenlet(_send, j, v).start_later(tMin + random.random() * (tMax - tMin))
 
-        #return _send
         return _async_send
 
     def makeReceiveFromClient(i):
@@ -403,7 +394,6 @@ def runRaft(inputs, clientsChannel, t, tMin, tMax, getTime):  # Everyone broadca
         gevent.joinall(ts)
     except gevent.hub.LoopExit:
         mylog("No more msgs, exited")
-        #except gevent.hub.LoopExit: pass
 
 
 def broadcastClient(channels):
@@ -452,8 +442,6 @@ if __name__ == '__main__':
     verbose = options.verbose
 
     def myGetTime():
-        #print "[C] Now is", int(time.time() * 1000)
-        #return int(time.time() * 1000) - TIME_START
         return time.time() - TIME_START
 
     TIME_START = myGetTime()

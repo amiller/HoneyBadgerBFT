@@ -53,11 +53,9 @@ def install_dependencies():
     sudo('apt-get update')
     sudo('apt-get -y install python-gevent')
     sudo('apt-get -y install git')
-    # sudo('apt-get -y install subversion')
     sudo('apt-get -y install python-socksipy')
     sudo('apt-get -y install python-pip')
     sudo('apt-get -y install python-dev')
-    # sudo('apt-get -y install dtach')
     sudo('apt-get -y install python-gmpy2')
     sudo('apt-get -y install flex')
     sudo('apt-get -y install bison')
@@ -67,7 +65,6 @@ def install_dependencies():
     sudo('pip install ecdsa')
     sudo('pip install zfec')
     sudo('pip install gipc')
-    #put('./pbc-0.5.14.tar.gz', '~/')
     run('wget https://crypto.stanford.edu/pbc/files/pbc-0.5.14.tar.gz')
     run('tar -xvf pbc-0.5.14.tar.gz')
     with cd('pbc-0.5.14'):
@@ -104,7 +101,6 @@ def removeHosts():
 @parallel
 def writeHosts():
     put('./hosts', '~/')
-    #append('~/hosts', open('hosts','r').read().split('\n'))
 
 @parallel
 def fetchLogs():
@@ -114,7 +110,6 @@ def fetchLogs():
 @parallel
 def syncKeys():
     put('./*.keys', '~/')
-    # put('./ecdsa.keys', '~/')
 
 import SocketServer, time
 start_time = 0
@@ -166,14 +161,9 @@ def runProtocol(N_, t_, B_, timespan_, tx='tx'):
     B = int(B_) * N   # now we don't have to calculate them anymore
     timespan = int(timespan_)
     print N, t, B, timespan
-    # s = StringIO()
-    # with prefix('export LIBRARY_PATH=/usr/local/lib LD_LIBRARY_PATH=/usr/local/lib'):
     with shell_env(LIBRARY_PATH='/usr/local/lib', LD_LIBRARY_PATH='/usr/local/lib'):
         run('python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k'
             ' thsig%d_%d.keys -e ecdsa.keys -a %d -b %d -n %d -t %d -c thenc%d_%d.keys' % (N, t, timespan, B, N, t, N, t))
-
-    # with cd('~/HoneyBadgerBFT/mmr13'):
-    #    run('python honest_party_test_EC2.py ~/hosts ~/keys ~/ecdsa_keys')
 
 @parallel
 def checkout():
@@ -208,7 +198,6 @@ def runbg(cmd, sockname="dtach"):
 def startPBFT(): ######## THIS SHOULD BE CALLED IN REVERSED HOST ORDER
     with cd('~/ktc-scratch'):
         runbg('python server.py')
-        #run('sleep 10')
 
 def startClient():
     with cd('~/ktc-scratch'):

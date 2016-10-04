@@ -6,22 +6,15 @@ monkey.patch_all()
 from gevent.queue import *
 from gevent import Greenlet
 from ..core.utils import bcolors, mylog, initiateThresholdSig
-from ..core.includeTransaction import honestParty, Transaction
-from collections import defaultdict
+from ..core.includeTransaction import honestParty
 from ..core.bkr_acs import initBeforeBinaryConsensus
 import gevent
 import os
 from ..core.utils import myRandom as random
 from ..core.utils import ACSException, checkExceptionPerGreenlet, getSignatureCost, encodeTransaction, getKeys,  \
     deepEncode, deepDecode, randomTransaction, initiateECDSAKeys, initiateThresholdEnc, finishTransactionLeap
-import json
-import cPickle as pickle
+
 import time
-import sys
-import zlib
-import base64
-import struct
-from io import BytesIO
 import math
 from ..commoncoin.boldyreva_gipc import initialize as initializeGIPC
 
@@ -47,22 +40,20 @@ logGreenlet = None
 def logWriter(fileHandler):
     while True:
         msgCounter, msgSize, msgFrom, msgTo, st, et, content = logChannel.get()
-        #if not QUIET_MODE:
         fileHandler.write("%d:%d(%d->%d)[%s]-[%s]%s\n" % (msgCounter, msgSize, msgFrom, msgTo, st, et, content))
         fileHandler.flush()
 
 def encode(m):  # TODO
     global msgCounter
     msgCounter += 1
-    starting_time[msgCounter] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
-    #intermediate = deepEncode(msgCounter, m)
+    starting_time[msgCounter] = str(time.time())
     if USE_DEEP_ENCODE:
         result = deepEncode(msgCounter, m)
     else:
         result = (msgCounter, m)
     if m[0] == m[1] and m[2][0]!='O' and m[2][1][0] == 'e':
         ### this is a self to self echo message
-        msgSize[msgCounter] = 0 # len(result)  # shortcut it
+        msgSize[msgCounter] = 0
     else:
         msgSize[msgCounter] = len(result)
     msgFrom[msgCounter] = m[1]
@@ -75,9 +66,8 @@ def decode(s):  # TODO
         result = deepDecode(s, msgTypeCounter)
     else:
         result = s
-    #result = deepDecode(zlib.decompress(s)) #pickle.loads(zlib.decompress(s))
     assert(isinstance(result, tuple))
-    ending_time[result[0]] = str(time.time())  # time.strftime('[%m-%d-%y|%H:%M:%S]')
+    ending_time[result[0]] = str(time.time())
     msgContent[result[0]] = None
     global totalMessageSize
     totalMessageSize += msgSize[result[0]]
@@ -105,7 +95,6 @@ def client_test_freenet(N, t, options):
     initiateECDSAKeys(open(options.ecdsa, 'r').read())
     initiateThresholdEnc(open(options.threshold_encs, 'r').read())
     initializeGIPC(getKeys()[0])
-    # initiateRND(options.tx)
     buffers = map(lambda _: Queue(1), range(N))
     global logGreenlet
     logGreenlet = Greenlet(logWriter, open('msglog.TorMultiple', 'w'))
@@ -117,13 +106,9 @@ def client_test_freenet(N, t, options):
     def makeBroadcast(i):
         def _broadcast(v):
             def _deliver(j):
-                #print 'Delivering', v, 'from', i, 'to', j
-                # mylog(bcolors.OKGREEN + "MSG: [%d] -> [%d]: %s" % (i, j, repr(v)) + bcolors.ENDC)
                 buffers[j].put(encode((j, i, v)))
-                # mylog(bcolors.OKGREEN + "     [%d] -> [%d]: Finish" % (i, j) + bcolors.ENDC)
             for j in range(N):
                 Greenlet(_deliver, j).start()
-                # Greenlet(_deliver, j).start_later(random.random()*maxdelay)
         return _broadcast
 
     def recvWithDecode(buf):
@@ -148,11 +133,9 @@ def client_test_freenet(N, t, options):
             recv = recvWithDecode(buffers[i])
             th = Greenlet(honestParty, i, N, t, controlChannels[i], bc, recv, makeSend(i), options.B)
             controlChannels[i].put(('IncludeTransaction', transactionSet))
-            #controlChannels[i].put(('IncludeTransaction', randomTransaction()))
             th.start_later(random.random() * maxdelay)
             ts.append(th)
 
-        #Greenlet(monitorUserInput).start()
         try:
             gevent.joinall(ts)
         except ACSException:
@@ -161,16 +144,13 @@ def client_test_freenet(N, t, options):
             print 'msgCounter', msgCounter
             print 'msgTypeCounter', msgTypeCounter
             # message id 0 (duplicated) for signatureCost
-            #logChannel.put((0, getSignatureCost(), 0, 0, str(time.time()), str(time.time()), '[signature cost]'))
             logChannel.put(StopIteration)
             mylog("=====", verboseLevel=-1)
             for item in logChannel:
                 mylog(item, verboseLevel=-1)
             mylog("=====", verboseLevel=-1)
-            #checkExceptionPerGreenlet()
-            # print getSignatureCost()
             continue
-        except gevent.hub.LoopExit: # Manual fix for early stop
+        except gevent.hub.LoopExit:  # Manual fix for early stop
             while True:
                 gevent.sleep(1)
             checkExceptionPerGreenlet()
@@ -179,9 +159,6 @@ def client_test_freenet(N, t, options):
 
 # import GreenletProfiler
 import atexit
-import gc
-import traceback
-from greenlet import greenlet
 
 USE_PROFILE = False
 GEVENT_DEBUG = False
@@ -219,7 +196,6 @@ def exit():
 
 if __name__ == '__main__':
     # GreenletProfiler.set_clock_type('cpu')
-    # print "Started"
     atexit.register(exit)
     if USE_PROFILE:
         GreenletProfiler.set_clock_type('cpu')

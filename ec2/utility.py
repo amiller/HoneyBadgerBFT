@@ -15,7 +15,7 @@ secgroups = {
     'ap-southeast-1':'sg-2d491c48',
     'ap-southeast-2':'sg-d58dd4b0',
     'ap-northeast-1':'sg-499fb02c',
-#    'eu-central-1':'sg-2bfe9342'
+#    'eu-central-1':'sg-2bfe9342'  # somehow this group does not work
 }
 regions = sorted(secgroups.keys())[::-1]
 
@@ -42,7 +42,6 @@ def get_ec2_instances_ip(region):
             if reservation:       
                 for ins in reservation.instances:
                     if ins.public_dns_name: 
-                    # ec2-54-153-121-229.us-west-1.compute.amazonaws.com
                         currentIP = ins.public_dns_name.split('.')[0][4:].replace('-','.')
                         result.append(currentIP)
                         print currentIP
@@ -109,8 +108,6 @@ def launch_new_instances(region, number):
                                  key_name='amiller-mc2ec2', 
                                  instance_type='t2.medium',
                                  security_group_ids = [secgroups[region], ],
-                                 
-                                 #subnet_id = 'vpc-037ab266',
                                  block_device_map = bdm)
     for instance in reservation.instances:
         instance.add_tag("Name", NameFilter)
@@ -214,7 +211,6 @@ def stopProtocol():
     callFabFromIPList(getIP(), 'stopProtocols')
 
 def callStartProtocolAndMonitorOutput(N, t, l, work='runProtocol'):
-    # starting_time = time.time()
     if platform.system() == 'Darwin':
         popen = Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem',
             '-u', 'ubuntu', '-H', ','.join(l),
@@ -222,7 +218,6 @@ def callStartProtocolAndMonitorOutput(N, t, l, work='runProtocol'):
     else:
         popen = Popen('fab -i ~/.ssh/amiller-mc2ec2.pem -u ubuntu -P -H %s %s' % (','.join(l), work),
             shell=True, stdout=PIPE, stderr=STDOUT, close_fds=True, bufsize=1, universal_newlines=True)
-    # lines_iterator = iter(popen.stdout.readline, b"")
     thread = Thread(target=monitor, args=[popen.stdout, N, t])
     thread.daemon = True
     thread.start()
@@ -247,15 +242,13 @@ def callStartProtocolAndMonitorOutput(N, t, l, work='runProtocol'):
 
 
 def callFab(s, work):  # Deprecated
-    # open('hosts','w').write('\n'.join(getAddrFromEC2Summary(s)))
-    print Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem', 
+    print Popen(['fab', '-i', '~/.ssh/amiller-mc2ec2.pem',
             '-u', 'ubuntu', '-H', ','.join(getAddrFromEC2Summary(s)),
             work])
 
 #short-cuts
 
 c = callFabFromIPList
-# rp = runProtocolfromClient
 
 def sk():
     c(getIP(), 'syncKeys')
