@@ -10,11 +10,14 @@ HoneyBadgerBFT is fault tolerance for the *wild*. Bagder nodes stay hidden behin
 
 ### Docker
 
-cd docker_build
+Build the docker image first.
 
-docker build -t honeybadgerbft .
+    cd docker_build
+    docker build -t honeybadgerbft .
 
-docker run -e N="8" -e t="2" -e B="16" -it honeybadgerbft
+Then for example you want to run an instance with N=8, t=2 and B=16:
+
+    docker run -e N="8" -e t="2" -e B="16" -it honeybadgerbft
 
 ### Installation && How to run the codes
 
