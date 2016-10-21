@@ -56,8 +56,8 @@ pycrypt
 
 Clone the codes:
 
-        git clone https://github.com/amiller/HoneyBadgerBFT.git
-        git checkout another-dev
+    git clone https://github.com/amiller/HoneyBadgerBFT.git
+    git checkout another-dev
 
 Generate the keys
 + Threshold Signature Keys
@@ -82,8 +82,37 @@ Notice that each party will expect at least NlgN many transactions. And usually 
 
 ### How to deploy on Amazon EC2
 
-TBA
+At HoneyBadger/ec2/ folder, run
 
+    python utility.py [ec2_access_key] [ec2_secret_key]
+
+In this interactive ipython environment, run the following:
+
++ Prepare the all the keys files and put them in your local directory (namely ec2 folder)
++ Launch new machines
+
+    launch_new_instances(region, number_of_machine)
+
++ Query IPs
+
+    ipAll()
+
++ Synchronize keys
+    
+    c(getIP(), 'syncKeys')
+
++ Install Dependencies
+    
+    c(getIP(), 'install_dependencies')
+
++ Clone and repo
+
+    c(getIP(), 'git_pull')
+
++ Launch the experiemnt
+
+    c(getIP(), 'runProtocol:N,t,B')
+where N, t, B are experiment parameters.
 
 ### Unit Tests
 
