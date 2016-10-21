@@ -89,30 +89,33 @@ At HoneyBadger/ec2/ folder, run
 In this interactive ipython environment, run the following:
 
 + Prepare the all the keys files and put them in your local directory (namely ec2 folder)
-+ Launch new machines
+	
+	(See the instructions above)
 
-    launch_new_instances(region, number_of_machine)
++ Launch new machines
+        
+        launch_new_instances(region, number_of_machine)
 
 + Query IPs
 
-    ipAll()
+        ipAll()
 
 + Synchronize keys
     
-    c(getIP(), 'syncKeys')
+        c(getIP(), 'syncKeys')
 
 + Install Dependencies
     
-    c(getIP(), 'install_dependencies')
+        c(getIP(), 'install_dependencies')
 
 + Clone and repo
 
-    c(getIP(), 'git_pull')
+    	c(getIP(), 'git_pull')
 
 + Launch the experiemnt
 
-    c(getIP(), 'runProtocol:N,t,B')
-where N, t, B are experiment parameters.
+    	c(getIP(), 'runProtocol:N,t,B')
+where N, t, B are experiment parameters (replace them with numbers).
 
 ### Unit Tests
 
