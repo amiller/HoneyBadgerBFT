@@ -9,7 +9,7 @@ import json
 
 import random
 
-from ..core.mmr13 import bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, mv84consensus, globalState
+from ..core.broadcasts import bv_broadcast, shared_coin_dummy, binary_consensus, bcolors, mylog, mv84consensus, globalState
 
 import socks
 

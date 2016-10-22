@@ -6,7 +6,7 @@ from gevent import Greenlet
 from gevent.queue import Queue
 import random
 
-from ..core.mmr13 import bv_broadcast, binary_consensus, bcolors, mylog, mv84consensus, globalState
+from ..core.broadcasts import bv_broadcast, binary_consensus, bcolors, mylog, mv84consensus, globalState
 
 
 # Run the BV_broadcast protocol with no corruptions and uniform random message delays

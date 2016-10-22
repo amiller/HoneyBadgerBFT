@@ -1,7 +1,7 @@
 from gevent import monkey
 monkey.patch_all()
 
-from mmr13 import binary_consensus, initBeforeBinaryConsensus
+from broadcasts import binary_consensus, initBeforeBinaryConsensus
 from utils import myRandom as random
 from gevent import Greenlet
 import gevent

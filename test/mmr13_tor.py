@@ -9,7 +9,7 @@ from gevent.queue import Queue
 import json
 
 # Import the algorithm
-from ..core.mmr13 import makeCallOnce, bv_broadcast, shared_coin_dummy
+from ..core.broadcasts import makeCallOnce, bv_broadcast, shared_coin_dummy
 
 # Sockets that route through Tor
 import socket
