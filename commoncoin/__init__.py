@@ -1,5 +1,3 @@
-__all__ = ["shoup", "millerrabin", "boldyreva", "generate_keys"]
-import shoup
+__all__ = ["millerrabin", "boldyreva", "boldyreva_gpic", "generate_keys"]
 import millerrabin
-# import boldyreva
 import generate_keys
