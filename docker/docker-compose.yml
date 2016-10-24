@@ -1,0 +1,35 @@
+version: '2'
+services:
+  h1:
+    image: honeybadgerbft
+    command: ifconfig
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.2
+  h2:
+    image: honeybadgerbft
+    command: ifconfig
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.3
+  h3:
+    image: honeybadgerbft
+    command: ifconfig
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.4
+  h4:
+    image: honeybadgerbft
+    command: ifconfig
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.5
+
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.238.0/24
+        gateway: 172.16.238.1
