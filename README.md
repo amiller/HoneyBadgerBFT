@@ -9,7 +9,7 @@ Even the so-called "robust" BFT protocols (like UpRight, RBFT, Prime, Spinning, 
 HoneyBadgerBFT is fault tolerance for the wild wild wide-area-network. HoneyBadger nodes can even stay hidden behind anonymizing relays like Tor, and the purely-asynchronous protocol will make progress at whatever rate the network supports.
 
 ### License
-This is released under the CARPL academic license. See ./CRAPL-LICENSE.txt
+This is released under the CRAPL academic license. See ./CRAPL-LICENSE.txt
 Other licenses may be issued at the authors' discretion.
 
 ### Docker
