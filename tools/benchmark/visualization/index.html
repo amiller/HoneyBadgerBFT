@@ -1,0 +1,45 @@
+<!-- Google Chart -->
+
+<script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization',
+       'version':'1','packages':['timeline']}]}"></script>
+<script type="text/javascript">
+
+function toDateTime(secs)
+{
+  var t = new Date(1970,0,1);
+  t.setSeconds(secs);
+  return t;
+}
+
+google.setOnLoadCallback(drawChart);
+function drawChart() {
+
+  var container = document.getElementById('example3.1');
+  var chart = new google.visualization.Timeline(container);
+
+  var dataTable = new google.visualization.DataTable();
+  dataTable.addColumn({ type: 'string', id: 'Position' });
+  dataTable.addColumn({ type: 'string', id: 'Name' });
+  dataTable.addColumn({ type: 'date', id: 'Start' });
+  dataTable.addColumn({ type: 'date', id: 'End' });
+  var fileName = location.search.split('data=')[1];
+  if(fileName!=undefined)
+  {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange=function()
+      {
+      if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+          //dataTable.addRows(JSON.parse(xmlhttp.responseText));
+          dataTable.addRows(eval(xmlhttp.responseText));
+          chart.draw(dataTable);
+        }
+      };
+    xmlhttp.open("GET", fileName, true);
+    xmlhttp.send();
+  }
+}
+
+</script>
+
+<div id="example3.1" style="width: 4000px; height: 5000px; overflow: scroll;"></div>

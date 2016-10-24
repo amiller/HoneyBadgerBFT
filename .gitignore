@@ -1,0 +1,22 @@
+# IDE junk files
+.idea/*
+*.pyc
+tmp*
+core/msglog*
+core/visual*
+core/benchmark*
+core/bin*
+thoughts
+mmr13/server_code*
+mmr13/tor*
+*~
+core/server_code*
+core/tor*
+core/local_experiment_logs/*
+commoncoin/keys
+msglog.*
+ec2/logs/*
+ec2/logs_old/*
+ec2/hosts
+.idea/*
+*_keys
