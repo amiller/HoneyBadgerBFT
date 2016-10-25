@@ -121,8 +121,16 @@ In this interactive ipython environment, run the following:
     	c(getIP(), 'runProtocol:N,t,B')
 where N, t, B are experiment parameters (replace them with numbers).
 
-### Unit Tests
+### Roadmap and TODO
 
-TBA
+- Implement distributed key generation
+
+- Investigate better parameterization and add support for larger key sizes
+
+- Replace plain TCP sockets with reliable/authenticated channels
+
+- Integration with Hyperledger, Open Blockchain, etc.
+
+Interested in contributing to HoneyBadgerBFT? Developers wanted. Contact ic3directors@systems.cs.cornell.edu for more info.
 
 
