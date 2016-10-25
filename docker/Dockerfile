@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM ubuntu:latest 
 RUN apt-get update
 RUN apt-get -y install python-gevent
 RUN apt-get -y install git
@@ -23,4 +23,5 @@ RUN cd charm && git checkout 2.7-dev && ./configure.sh && python setup.py instal
 RUN git clone https://github.com/amiller/HoneyBadgerBFT.git
 RUN cd HoneyBadgerBFT && git checkout another-dev
 COPY ./start.sh /
+COPY ./start_multiple.sh /
 CMD sh /start.sh

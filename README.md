@@ -16,12 +16,39 @@ Other licenses may be issued at the authors' discretion.
 
 Build the docker image first.
 
-    cd docker_build
+    cd docker
     docker build -t honeybadgerbft .
 
 Then for example you want to run an instance with N=8, t=2 and B=16:
 
     docker run -e N="8" -e t="2" -e B="16" -it honeybadgerbft
+
+If you see "Concensus Finished" and some message statistics, the consensus is successful. Due to some issues of gevent with threading, there will be a "Exception KeyError" at the end of the program, please just ignore it.
+
+### Docker with Multiple Containers
+
+Make sure you have built your docker image first:
+
+    cd docker
+    docker build -t honeybadgerbft .
+
+We provide a script to generate a docker-compose.yml for you to run test HoneyBadgerBFT on **N** containers.
+
+	python docker_compose_gen.py N t B > docker-compose.yml
+	
+where N, t, B are parameters. For example,
+
+	python docker_compose_gen.py 4 1 8 > docker-compose.yml
+	
+Then run your docker-compose. (Currently we let each container sleep for a second in order for the keys to become stable. Later we will fix this.)
+
+	docker-compose down && docker-compose up
+
+If you see at least **N-t** messages like 
+
+	[4] 10 distinct tx synced and 6 tx left in the pool.
+	
+then the consensus is finished.
 
 ### Installation && How to run the code
 
