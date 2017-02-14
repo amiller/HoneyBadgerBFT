@@ -20,7 +20,7 @@ def _worker(PK,pipe):
         h = deserialize1(h)
         sig = PK.combine_shares(sigs)
         res = PK.verify_signature(sig, h)
-        pipe.put(res)
+        pipe.put((res,serialize(sig)))
 
 myPK = None
 
@@ -41,7 +41,9 @@ def combine_and_verify(h, sigs):
     # Pick a random process
     _,pipe = _procs[random.choice(range(len(_procs)))] #random.choice(_procs)
     pipe.put((h,sigs))
-    assert pipe.get() == True
+    (r,s) = pipe.get() 
+    assert r == True
+    return s
 
 def pool_test():
     global PK, SKs
