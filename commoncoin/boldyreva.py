@@ -83,6 +83,7 @@ class TBLSPublicKey(object):
 
     def verify_signature(self, sig, h):
         assert pair(sig, g2) == pair(h, self.VK)
+        return True
 
     def combine_shares(self, sigs):
         # sigs: a mapping from idx -> sig
