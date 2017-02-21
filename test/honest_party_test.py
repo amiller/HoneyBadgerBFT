@@ -44,6 +44,8 @@ def logWriter(fileHandler):
         fileHandler.flush()
 
 def encode(m):  # TODO
+    # Inputs:
+    # m: (receiver, sender, msg)
     global msgCounter
     msgCounter += 1
     starting_time[msgCounter] = str(time.time())

@@ -110,7 +110,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
                         continue
                     if sender in rootHashes:
                         if rootHashes[sender]!= msgBundle[1][1]:
-                            print "Cheating caught, exiting"
+                            print "Cheating caught, exiting, msgbundle"
                             sys.exit(0)
                     else:
                         rootHashes[sender] = msgBundle[1][1]
@@ -128,7 +128,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
                         continue
                     if originBundle[0] in rootHashes:
                         if rootHashes[originBundle[0]]!= originBundle[2]:
-                            print "Cheating caught, exiting"
+                            print "Cheating caught, exiting, originbundle"
                             sys.exit(0)
                     else:
                         rootHashes[originBundle[0]] = originBundle[2]
@@ -149,7 +149,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
                     reconstDone[msgBundle[1]] = True
                     if msgBundle[1] in rootHashes:
                         if rootHashes[msgBundle[1]]!= msgBundle[2]:
-                            print "Cheating caught, exiting"
+                            print "Cheating caught, exiting, roothash"
                             sys.exit(0)
                     else:
                         rootHashes[msgBundle[1]] = msgBundle[2]
@@ -269,6 +269,21 @@ lock.put(1)
 
 @greenletFunction
 def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
+    """
+    Parameters:
+    - broadcast(m):
+       m is a tuple of the form:
+            ('O', i, share)
+            ('e', newbundle, keys, ...)
+            ('r', msgBundle[1], msgBundle[2])
+            ('B', ...) further encoding for reliable broadcast subprotocol
+            ('A', ...) further encoding for ACS subprotocol
+    - send(j, m): 
+       parses m the same way as broadcast
+    - receive():
+       sender, (tag, m)
+    Broadcast:
+    """
     # RequestChannel is called by the client and it is the client's duty to broadcast the tx it wants to include
     if B < 0:
         B = int(math.ceil(N * math.log(N)))
@@ -304,7 +319,9 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
 
     Greenlet(listener).start()
 
+    epoch_number = 0
     while True:
+            mylog("Beginning epoch: %d" % epoch_number, verboseLevel=-2)
             op, msg = controlChannel.get()
             if op == "IncludeTransaction":
                 if isinstance(msg, Transaction):
@@ -318,7 +335,7 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
             elif op == "Halt":
                 break
             elif op == "Msg":
-                broadcast(eval(msg))  # now the msg is something we mannually send
+                raise NotImplementedError
             mylog("timestampB (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
             if len(transactionCache) < B:  # Let's wait for many transactions. : )
                 time.sleep(0.5)
