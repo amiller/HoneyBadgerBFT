@@ -271,17 +271,18 @@ lock.put(1)
 def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
     """
     Parameters:
-    - broadcast(m):
+    - broadcast((epoch,m)):
+       epoch: integer indicting round number
        m is a tuple of the form:
             ('O', i, share)
             ('e', newbundle, keys, ...)
             ('r', msgBundle[1], msgBundle[2])
             ('B', ...) further encoding for reliable broadcast subprotocol
             ('A', ...) further encoding for ACS subprotocol
-    - send(j, m): 
+    - send(j, (epoch,m)): 
        parses m the same way as broadcast
     - receive():
-       sender, (tag, m)
+       sender, (epoch, ('O', ...))
     Broadcast:
     """
     # RequestChannel is called by the client and it is the client's duty to broadcast the tx it wants to include
@@ -289,39 +290,45 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
         B = int(math.ceil(N * math.log(N)))
     transactionCache = []
     finishedTx = set()
-    proposals = []
-    receivedProposals = False
-    commonSet = []
-    locks = defaultdict(lambda : Queue(1))
-    doneCombination = defaultdict(lambda : False)
     ENC_THRESHOLD = N - 2 * t
     global finishcount
     encPK, encSKs = getEncKeys()
-    encCounter = defaultdict(lambda : {})
-    includeTransactionChannel = Queue()
+    includeTransactionChannel = defaultdict(Queue) # indexed by epoch
 
-    def probe(i):
-        if len(encCounter[i]) >= ENC_THRESHOLD and receivedProposals and not locks[i].full() and not doneCombination[i]:  # by == this part only executes once.
-            oriM = encPK.combine_shares(deserializeEnc(proposals[i][:ENC_SERIALIZED_LENGTH]),
-                                        dict(itertools.islice(encCounter[i].iteritems(), ENC_THRESHOLD))
-                                        )
-            doneCombination[i] = True
-            locks[i].put(oriM)
+    # For threshold-decryption
+    proposals = {}
+    receivedProposals = defaultdict(lambda: False)
+    encCounter = defaultdict(lambda : {})
+    locks = defaultdict(lambda : Queue(1))
+    doneCombination = defaultdict(lambda : False)
+    
+    def probe(epoch, i):
+        if len(encCounter[(epoch,i)]) >= ENC_THRESHOLD and receivedProposals[epoch] and not locks[(epoch,i)].full() and not doneCombination[(epoch,i)]:  # by == this part only executes once.
+            oriM = encPK.combine_shares(deserializeEnc(proposals[epoch][i][:ENC_SERIALIZED_LENGTH]),
+                                        dict(itertools.islice(encCounter[(epoch,i)].iteritems(), ENC_THRESHOLD)))
+            doneCombination[(epoch,i)] = True
+            locks[(epoch,i)].put(oriM)
 
     def listener():
         while True:
-            sender, msgBundle = receive()
+            sender, (epoch, msgBundle) = receive()
+            assert type(epoch) is int and 0 <= epoch
             if msgBundle[0] == 'O':
-                encCounter[msgBundle[1]][sender] = msgBundle[2]
-                probe(msgBundle[1])
+                encCounter[(epoch,msgBundle[1])][sender] = msgBundle[2]
+                probe(epoch, msgBundle[1])
             else:
-                includeTransactionChannel.put((sender, msgBundle))  # redirect to includeTransaction
+                includeTransactionChannel[epoch].put((sender, msgBundle))  # redirect to includeTransaction
 
     Greenlet(listener).start()
 
-    epoch_number = 0
+    # The current "block" we are processing
+    epoch = 0
+
     while True:
-            mylog("Beginning epoch: %d" % epoch_number, verboseLevel=-2)
+            mylog("Beginning epoch: %d" % epoch, verboseLevel=-2)
+            # Specialize the broadcast/send functions
+            broadcastThisEpoch = lambda m: broadcast((epoch, m))
+            sendThisEpoch  = lambda j,m: send(j, (epoch, m))
             op, msg = controlChannel.get()
             if op == "IncludeTransaction":
                 if isinstance(msg, Transaction):
@@ -350,20 +357,20 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
             encryptedAESKey = encPK.encrypt(aesKey)
             proposal = serializeEnc(encryptedAESKey) + encrypted_B
             mylog("timestampIB (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
-            commonSet, proposals = includeTransaction(pid, N, t, proposal, broadcast, includeTransactionChannel.get, send)
+            commonSet, proposals[epoch] = includeTransaction(pid, N, t, proposal, broadcastThisEpoch, includeTransactionChannel[epoch].get, sendThisEpoch)
             mylog("timestampIE (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
-            receivedProposals = True
+            receivedProposals[epoch] = True
             for i in range(N):
-                probe(i)
+                probe(epoch, i)
             for i, c in enumerate(commonSet):  # stx is the same for every party
                 if c:
-                    share = encSKs[pid].decrypt_share(deserializeEnc(proposals[i][:ENC_SERIALIZED_LENGTH]))
-                    broadcast(('O', i, share))
+                    share = encSKs[pid].decrypt_share(deserializeEnc(proposals[epoch][i][:ENC_SERIALIZED_LENGTH]))
+                    broadcastThisEpoch(('O', i, share))
             mylog("timestampIE2 (%d, %lf)" % (pid, time.time()), verboseLevel=-2)
             recoveredSyncedTxList = []
             def prepareTx(i):
-                rec = locks[i].get()
-                encodedTxSet = decrypt(rec, proposals[i][ENC_SERIALIZED_LENGTH:])
+                rec = locks[(epoch,i)].get()
+                encodedTxSet = decrypt(rec, proposals[epoch][i][ENC_SERIALIZED_LENGTH:])
                 assert len(encodedTxSet) % TR_SIZE == 0
                 recoveredSyncedTx = [encodedTxSet[i:i+TR_SIZE] for i in range(0, len(encodedTxSet), TR_SIZE)]
                 recoveredSyncedTxList.append(recoveredSyncedTx)
@@ -379,10 +386,13 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
                 finishedTx.update(set(rtx))
 
             mylog("[%d] %d distinct tx synced and %d tx left in the pool." % (pid, len(finishedTx), len(transactionCache) - len(finishedTx)), verboseLevel=-2)
-            lock.get()
-            finishcount += 1
-            lock.put(1)
-            if finishcount >= N - t:  # convenient for local experiments
-                sys.exit()
+            #lock.get()
+            #finishcount += 1
+            #lock.put(1)
+            #if finishcount >= N - t:  # convenient for local experiments
+            #    sys.exit()
+
+            # Move to next epoch
+            epoch += 1
     mylog("[%d] Now halting..." % (pid))
 

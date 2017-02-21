@@ -130,16 +130,19 @@ def encodeTransaction(tr, randomGenerator=None, length=TR_SIZE):
 
 # assumptions:
 # + mc can be expressed in 4 bytes.
+# + epoch number can be expressed in 4 bytes
 # + party index can be expressed in 1 byte.
 # + round index can be expressed in 2 bytes.
-# + transactions with ammount > 0 [THIS IS IMPORTANT for separation]
+# + transactions with amount > 0 [THIS IS IMPORTANT for separation]
 # + transaction set fragments is less than 2^32 bytes
 # + the length of Merkle Branch is no more than a byte (256).
 
 def deepEncode(mc, m):
     buf = BytesIO()
     buf.write(struct.pack('<I', mc))
-    f, t, bundle = m
+    # Parse out the epoch number
+    f, t, (epoch, bundle) = m
+    buf.write(struct.pack('<I', epoch))
     buf.write(struct.pack('BB', f, t))
     if bundle[0] == 'O':
         tag, id, share = bundle
@@ -228,7 +231,7 @@ def initiateRND(TX):
 
 def deepDecode(m, msgTypeCounter):
     buf = BytesIO(m)
-    mc, f, t, msgtype = struct.unpack('<IBBB', buf.read(7))
+    mc, epoch, f, t, msgtype = struct.unpack('<IIBBB', buf.read(11))
     trSet = set()
     msgTypeCounter[msgtype][0] += 1
     msgTypeCounter[msgtype][1] += len(m)
@@ -240,7 +243,7 @@ def deepDecode(m, msgTypeCounter):
         for nr in range(nrBr):
             mb.append(buf.read(SHA_LENGTH))
         sig = buf.read()
-        return mc, (f, t, ('B', ('i', (trSet, rh, mb), sig)),)
+        return mc, (f, t, (epoch, ('B', ('i', (trSet, rh, mb), sig))))
     elif msgtype == 2:
         p2, trSetLen, nrBr = struct.unpack('<BIB', buf.read(6))
         trSet = buf.read(trSetLen)
@@ -249,25 +252,25 @@ def deepDecode(m, msgTypeCounter):
         for nr in range(nrBr):
             mb.append(buf.read(SHA_LENGTH))
         sig = buf.read()
-        return mc, (f, t, ('B', ('e', (p2, trSet, rh, mb), sig)),)
+        return mc, (f, t, (epoch, ('B', ('e', (p2, trSet, rh, mb), sig))))
     elif msgtype == 3:
         p1, p2, p3 = struct.unpack('BBB', buf.read(3))
-        return mc, (f, t, ('A', (p1, ('B', (p2, p3)))),)
+        return mc, (f, t, (epoch, ('A', (p1, ('B', (p2, p3))))))
     elif msgtype == 4:
         p1, p2, p3 = struct.unpack('BBB', buf.read(3))
-        return mc, (f, t, ('A', (p1, ('A', (p2, p3)))),)
+        return mc, (f, t, (epoch, ('A', (p1, ('A', (p2, p3))))))
     elif msgtype == 5:
         p1, r = struct.unpack('<BH', buf.read(3))
         sig = boldyreva.deserialize1(buf.read())
-        return mc, (f, t, ('A', (p1, ('C', (r, sig)))))
+        return mc, (f, t, (epoch, ('A', (p1, ('C', (r, sig))))))
     elif msgtype == 6:
         p1, = struct.unpack('B', buf.read(1))
         hm = buf.read()
-        return mc, (f, t, ('B', ('r', p1, hm)))
+        return mc, (f, t, (epoch, ('B', ('r', p1, hm))))
     elif msgtype == 7:
         id = struct.unpack('B', buf.read(1))[0]
         share = deserialize1(buf.read(PAIRING_SERIALIZED_1))
-        return mc, (f, t, ('O', id, share))
+        return mc, (f, t, (epoch, ('O', id, share)))
     else:
         raise deepDecodeException()
 
