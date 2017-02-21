@@ -110,7 +110,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
                         continue
                     if sender in rootHashes:
                         if rootHashes[sender]!= msgBundle[1][1]:
-                            print "Cheating caught, exiting, msgbundle"
+                            print "Cheating caught, exiting, msgbundle", sender
                             sys.exit(0)
                     else:
                         rootHashes[sender] = msgBundle[1][1]
@@ -128,11 +128,11 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
                         continue
                     if originBundle[0] in rootHashes:
                         if rootHashes[originBundle[0]]!= originBundle[2]:
-                            print "Cheating caught, exiting, originbundle"
+                            print "Cheating caught, exiting, originbundle", sender
                             sys.exit(0)
                     else:
                         rootHashes[originBundle[0]] = originBundle[2]
-                    opinions[originBundle[0]][sender] = originBundle[1]   # We are going to move this part to kekeketktktktk
+                    opinions[originBundle[0]][sender] = originBundle[1]
                     if len(opinions[originBundle[0]]) >= Threshold2 and not readySent[originBundle[0]]:
                             readySent[originBundle[0]] = True
                             broadcast(('r', originBundle[0], originBundle[2]))  # We are broadcasting its hash
@@ -149,7 +149,7 @@ def multiSigBr(pid, N, t, msg, broadcast, receive, outputs, send):
                     reconstDone[msgBundle[1]] = True
                     if msgBundle[1] in rootHashes:
                         if rootHashes[msgBundle[1]]!= msgBundle[2]:
-                            print "Cheating caught, exiting, roothash"
+                            print "Cheating caught, exiting, roothash", sender
                             sys.exit(0)
                     else:
                         rootHashes[msgBundle[1]] = msgBundle[2]
@@ -263,9 +263,6 @@ def includeTransaction(pid, N, t, setToInclude, broadcast, receive, send):
 HONEST_PARTY_TIMEOUT = 1
 
 import time, sys
-lock = Queue()
-finishcount = 0
-lock.put(1)
 
 @greenletFunction
 def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
@@ -291,7 +288,6 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
     transactionCache = []
     finishedTx = set()
     ENC_THRESHOLD = N - 2 * t
-    global finishcount
     encPK, encSKs = getEncKeys()
     includeTransactionChannel = defaultdict(Queue) # indexed by epoch
 
@@ -386,11 +382,6 @@ def honestParty(pid, N, t, controlChannel, broadcast, receive, send, B = -1):
                 finishedTx.update(set(rtx))
 
             mylog("[%d] %d distinct tx synced and %d tx left in the pool." % (pid, len(finishedTx), len(transactionCache) - len(finishedTx)), verboseLevel=-2)
-            #lock.get()
-            #finishcount += 1
-            #lock.put(1)
-            #if finishcount >= N - t:  # convenient for local experiments
-            #    sys.exit()
 
             # Move to next epoch
             epoch += 1

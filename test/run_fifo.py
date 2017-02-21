@@ -25,11 +25,11 @@ from os.path import expanduser
 from random import Random
 import sched
 from socket import error as SocketError
-from ..commoncoin.boldyreva_gipc import initialize as initializeGIPC
+#from ..commoncoin.boldyreva_gipc import initialize as initializeGIPC
 
 # Configure the logging verbosity level
 from ..core import utils
-utils.verbose = 2
+utils.verbose = -2
 
 BASE_PORT = 49500
 
@@ -43,14 +43,29 @@ def goodread(f, length):
         ltmp -= len(buf[-1])
     return ''.join(buf)
 
+def goodrecv(sock, length):
+    ltmp = length
+    buf = []
+    while ltmp > 0:
+        m = sock.recv(length)
+        if len(m) == 0: # File closed
+            assert False
+        buf.append(m)
+        ltmp -= len(buf[-1])
+    return ''.join(buf)
+
 def listen_to_channel(port):
     mylog('Preparing server on %d...' % port)
     q = Queue()
     def _handle(socket, address):
-        f = socket.makefile()
+        #f = socket.makefile()
         while True:
-            msglength, = struct.unpack('<I', goodread(f, 4))
-            line = goodread(f, msglength)
+            try:
+                msglength, = struct.unpack('<I', goodrecv(socket, 4))
+                line = goodrecv(socket, msglength)
+            except AssertionError:
+                print 'Receive Failed!'
+                return
             obj = decode(line)
             q.put(obj[1:])
     server = StreamServer(('127.0.0.1', port), _handle)
@@ -80,7 +95,8 @@ def connect_to_channel(hostname, port, party):
                 s.sendall(struct.pack('<I', len(content)) + content)
             except SocketError:
                 print '!! [to %d] sending %d bytes' % (party, len(content))
-
+                break
+        print 'closed channel'
     gtemp = Greenlet(_handle)
     gtemp.parent_args = (hostname, port, party)
     gtemp.name = 'connect_to_channel._handle'
@@ -146,7 +162,7 @@ def run_badger_node(myID, N, t, options):
     initiateThresholdSig(open(options.threshold_keys, 'r').read())
     initiateECDSAKeys(open(options.ecdsa, 'r').read())
     initiateThresholdEnc(open(options.threshold_encs, 'r').read())
-    initializeGIPC(PK=getKeys()[0])
+#    initializeGIPC(PK=getKeys()[0])
 
     global logGreenlet
     logGreenlet = Greenlet(logWriter, open('msglog.run_fifo', 'w'))
@@ -210,8 +226,9 @@ def run_badger_node(myID, N, t, options):
                 th.parent_args = (N, t)
                 th.name = __file__+'.honestParty(%d)' % i
                 # Sending a set of transactions on the control channel runs it once
-                for _ in range(10):
-                    controlChannels[i].put(('IncludeTransaction', transactionSet))
+                controlChannels[i].put(('IncludeTransaction', transactionSet))
+                for _ in range(100):
+                    controlChannels[i].put(('IncludeTransaction', set()))
                 # Second set
                 #controlChannels[i].put(('IncludeTransaction',
                 #    transactionSet))

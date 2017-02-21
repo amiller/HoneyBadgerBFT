@@ -2,8 +2,10 @@
 from gevent import Greenlet
 from gevent.queue import Queue
 from collections import defaultdict
-from utils import dummyCoin, greenletPacker, getKeys
-from ..commoncoin.boldyreva_gipc import serialize, deserialize1, combine_and_verify
+from utils import greenletPacker, getKeys # dummycoin
+#from ..commoncoin.boldyreva_gipc import serialize, deserialize1, combine_and_verify
+from ..commoncoin.boldyreva import serialize, deserialize1
+
 
 
 verbose = 0
@@ -96,22 +98,31 @@ def shared_coin(instance, pid, N, t, broadcast, receive):
             assert r >= 0
             received[r].add((i, serialize(sig)))
 
+            #h = PK.hash_message(str((r, instance)))
+            #assert PK.verify_share(sig, i, h)
+
             # After reaching the threshold, compute the output and
             # make it available locally
             if len(received[r]) == t + 1:
                     h = PK.hash_message(str((r, instance)))
                     def tmpFunc(r, t):
                         # Verify and get the combined signature
+                        def combine_and_verify(h, sigs):
+                            sig = PK.combine_shares(sigs)
+                            res = PK.verify_signature(sig, h)
+                            return serialize(sig)[5] # TODO: Check where to get a random byte
                         s = combine_and_verify(h, dict(tuple((t, deserialize1(sig)) for t, sig in received[r])[:t+1]))
                         outputQueue[r].put(ord(s[0]) & 1)  # explicitly convert to int
                     Greenlet(
                         tmpFunc, r, t
                     ).start()
 
-    greenletPacker(Greenlet(_recv), 'shared_coin_dummy', (pid, N, t, broadcast, receive)).start()
+    greenletPacker(Greenlet(_recv), 'shared_coin_boldyreva', (pid, N, t, broadcast, receive)).start()
 
     def getCoin(round):
-        broadcast((round, SKs[pid].sign(PK.hash_message(str((round,instance))))))  # I have to do mapping to 1..l
+        h = PK.hash_message(str((round,instance)))
+        sig = SKs[pid].sign(h)
+        broadcast((round, sig))  # I have to do mapping to 1..l
         return outputQueue[round].get()
 
     return getCoin
@@ -327,7 +338,14 @@ def binary_consensus(instance, pid, N, t, vi, decide, broadcast, receive):
                     (pid, N, t, vi, decide, broadcast, receive)).start()
 
         values = callBackWaiter[round].get()  # wait until the conditions are satisfied
-        s = coin(round)
+
+        # TODO: Abstract this into a config file
+        # It is an experiment in optimistically avoiding the sigs
+        if 1 <= round <= 10:
+            s = round % 2
+        else:
+            s = coin(round)
+
         # Here corresponds to a proof that if one party decides at round r,
         # then in all the following rounds, everybody will propose r as an estimation. (Lemma 2, Lemma 1)
         # An abandoned party is a party who has decided but no enough peers to help him end the loop.

@@ -12,11 +12,11 @@ python -m honeybadgerbft.threshenc.generate_keys $N $(( N-2*t )) > thenc$((N))_$
 #python -m honeybadgerbft.test.honest_party_test -k thsig$((N))_$((t)).keys -e ecdsa.keys -b $B -n $N -t $t -c thenc$((N))_$((t)).keys
 #python -m honeybadgerbft.test.run_fifo -k thsig$((N))_$((t)).keys -e ecdsa.keys -b $B -n $N -t $t -c thenc$((N))_$((t)).keys -i 0
 
-tmux new-session    "python -m honeybadgerbft.test.run_fifo -k thsig$((N))_$((t)).keys -e ecdsa.keys -b $B -n $N -t $t -c thenc$((N))_$((t)).keys -i 0" \;  \
-     splitw -h -p 67 "python -m honeybadgerbft.test.run_fifo -k thsig$((N))_$((t)).keys -e ecdsa.keys -b $B -n $N -t $t -c thenc$((N))_$((t)).keys -i 1" \;  \
-     splitw -h -p 50 'python -m honeybadgerbft.test.run_fifo -k thsig$((N))_$((t)).keys -e ecdsa.keys -b $B -n $N -t $t -c thenc$((N))_$((t)).keys -i 4' \; \
-     splitw -v -p 50 'python -m honeybadgerbft.test.run_fifo -k thsig$((N))_$((t)).keys -e ecdsa.keys -b $B -n $N -t $t -c thenc$((N))_$((t)).keys -i 5'  \; \
+tmux new-session    "python -m honeybadgerbft.test.run_fifo -k thsig$((N))_$((t)).keys -e ecdsa.keys -b $B -n $N -t $t -c thenc$((N))_$((t)).keys -i 0; bash" \;  \
+     splitw -h -p 67 "python -m honeybadgerbft.test.run_fifo -k thsig$((N))_$((t)).keys -e ecdsa.keys -b $B -n $N -t $t -c thenc$((N))_$((t)).keys -i 1; bash" \;  \
+     splitw -h -p 50 'python -m honeybadgerbft.test.run_fifo -k thsig$((N))_$((t)).keys -e ecdsa.keys -b $B -n $N -t $t -c thenc$((N))_$((t)).keys -i 4; bash' \; \
+     splitw -v -p 50 'python -m honeybadgerbft.test.run_fifo -k thsig$((N))_$((t)).keys -e ecdsa.keys -b $B -n $N -t $t -c thenc$((N))_$((t)).keys -i 5; bash'  \; \
      selectp -t 0 \; \
-     splitw -v -p 50 "python -m honeybadgerbft.test.run_fifo -k thsig$((N))_$((t)).keys -e ecdsa.keys -b $B -n $N -t $t -c thenc$((N))_$((t)).keys -i 2" \;  \
+     splitw -v -p 50 "python -m honeybadgerbft.test.run_fifo -k thsig$((N))_$((t)).keys -e ecdsa.keys -b $B -n $N -t $t -c thenc$((N))_$((t)).keys -i 2; bash" \;  \
      selectp -t 2\; \
-     splitw -v -p 50 "python -m honeybadgerbft.test.run_fifo -k thsig$((N))_$((t)).keys -e ecdsa.keys -b $B -n $N -t $t -c thenc$((N))_$((t)).keys -i 3"
+     splitw -v -p 50 "python -m honeybadgerbft.test.run_fifo -k thsig$((N))_$((t)).keys -e ecdsa.keys -b $B -n $N -t $t -c thenc$((N))_$((t)).keys -i 3; bash"
