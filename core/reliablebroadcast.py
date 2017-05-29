@@ -187,6 +187,7 @@ def reliablebroadcast(pid, N, f, leader, input, receive, send):
     while True:  # main receive loop
         sender, msg = receive()
         if msg[0] == 'VAL' and fromLeader is None:
+            #print 'VAL received', pid
             # Validation
             (_, roothash, branch, stripe) = msg
             if sender != leader:
