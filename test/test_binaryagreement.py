@@ -27,7 +27,7 @@ def simple_broadcast_router(N, maxdelay=0.005, seed=None):
             gevent.spawn_later(delay, queues[j].put, (i,o))
             #queues[j].put((i, o))
         def _bc(o):
-            print 'BCAST  %8s [%2d ->  *]' % (o[0], i), o[1]
+            #print 'BCAST  %8s [%2d ->  *]' % (o[0], i), o[1]
             for j in range(N): _send(j, o)
         return _bc
 

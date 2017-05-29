@@ -82,7 +82,6 @@ def _make_commonsubset(sid, pid, N, f, PK, SK, input, send, recv):
 
         # Only leader gets input
         rbc_input = input if j == pid else None
-        if rbc_input is not None: print j, pid
         rbc_recvs[j] = Queue(1)
         rbc = gevent.spawn(reliablebroadcast, pid, N, f, j,
                            rbc_input, rbc_recvs[j].get, rbc_send)
