@@ -171,7 +171,7 @@ def reliablebroadcast(pid, N, f, leader, input, receive, send):
     fromLeader = None
     stripes = defaultdict(lambda: [None for _ in range(N)])
     echoCounter = defaultdict(lambda: 0)
-    readyCounter = defaultdict(lambda: 0)
+    ready = defaultdict(set)
     readySent = False
 
     def decode_output(roothash):
@@ -187,6 +187,7 @@ def reliablebroadcast(pid, N, f, leader, input, receive, send):
     while True:  # main receive loop
         sender, msg = receive()
         if msg[0] == 'VAL' and fromLeader is None:
+            # Validation
             (_, roothash, branch, stripe) = msg
             if sender != leader:
                 print "VAL message from other than leader:", sender
@@ -195,11 +196,14 @@ def reliablebroadcast(pid, N, f, leader, input, receive, send):
             except e:
                 print "Failed to validate VAL message:", e
                 continue
+            
+            # Update
             fromLeader = roothash
             broadcast(('ECHO', roothash, branch, stripe ))
 
         elif msg[0] == 'ECHO':
             (_, roothash, branch, stripe) = msg
+            # Validation
             if roothash in stripes and stripes[roothash][sender] is not None:
                 print "Redundant ECHO"
                 continue
@@ -208,7 +212,7 @@ def reliablebroadcast(pid, N, f, leader, input, receive, send):
                 print "Failed to validate ECHO message:", e
                 continue
 
-            # Store this stripe
+            # Update
             stripes[roothash][sender] = stripe
             echoCounter[roothash] += 1
 
@@ -216,17 +220,23 @@ def reliablebroadcast(pid, N, f, leader, input, receive, send):
                 readySent = True
                 broadcast(('READY', roothash))
 
-            if readyCounter[roothash] >= OutputThreshold and echoCounter[roothash] >= K:
+            if len(ready[roothash]) >= OutputThreshold and echoCounter[roothash] >= K:
                 return decode_output(roothash)
 
         elif msg[0] == 'READY':
             (_, roothash) = msg
-            readyCounter[roothash] += 1
+            # Validation
+            if sender in ready[roothash]:
+                print "Redundant READY"
+                continue
+
+            # Update
+            ready[roothash].add(sender)
 
             # Amplify ready messages
-            if readyCounter[roothash] >= ReadyThreshold and not readySent:
+            if len(ready[roothash]) >= ReadyThreshold and not readySent:
                 readySent = True
                 broadcast(('READY', roothash))
 
-            if readyCounter[roothash] >= OutputThreshold and echoCounter[roothash] >= K:
+            if len(ready[roothash]) >= OutputThreshold and echoCounter[roothash] >= K:
                 return decode_output(roothash)
