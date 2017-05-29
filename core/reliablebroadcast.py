@@ -2,6 +2,7 @@
 from collections import defaultdict
 import zfec
 import hashlib
+import math
 
 #### zfec encode ####
 def encode(K, N, m):
