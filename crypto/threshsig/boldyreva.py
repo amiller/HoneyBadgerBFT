@@ -146,21 +146,3 @@ def dealer(players=10, k=5):
     return public_key, private_keys
 
 
-def test():
-    global PK, SKs
-    PK, SKs = dealer(players=64,k=17)
-
-    global sigs,h
-    sigs = {}
-    h = PK.hash_message('hi')
-    h.initPP()
-
-    for SK in SKs:
-        sigs[SK.i] = SK.sign(h)
-
-    SS = range(PK.l)
-    for i in range(64*4):
-        random.shuffle(SS)
-        S = set(SS[:PK.k])
-        sig = PK.combine_shares(dict((s,sigs[s]) for s in S))
-        assert PK.verify_signature(sig, h)
