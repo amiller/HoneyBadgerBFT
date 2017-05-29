@@ -123,3 +123,5 @@ def _test_rbc2(N=4, f=1, leader=None, seed=None):
 
 def test_rbc2():
     for i in range(20): _test_rbc2(seed=20)
+
+# TODO: Test more edge cases, like Byzantine behavior
