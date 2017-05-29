@@ -9,13 +9,7 @@ class CommonCoinFailureException(Exception):
 
 hash = lambda x: hashlib.sha256(x).digest()
 
-def dummy_coin(sid, pid, N, t):
-    def getCoin(round):
-        # TODO: more compelling pseudorandom sequence
-        return 1
-    return getCoin
-
-def shared_coin(sid, pid, N, t, PK, SK, broadcast, receive):
+def shared_coin(sid, pid, N, f, PK, SK, broadcast, receive):
     '''A shared coin based on threshold signatures
     :param sid: a unique instance id
     :param pid: my id number
@@ -27,7 +21,7 @@ def shared_coin(sid, pid, N, t, PK, SK, broadcast, receive):
     :param receive: receive channel
     :return: yield values b
     '''
-    assert PK.k == t+1
+    assert PK.k == f+1
     assert PK.l == N
     received = defaultdict(dict)
     outputQueue = defaultdict(lambda: Queue(1))
@@ -35,7 +29,7 @@ def shared_coin(sid, pid, N, t, PK, SK, broadcast, receive):
     def _recv():
         while True: # main receive loop
             # New shares for some round r, from sender i
-            (i, (r, sig)) = receive()
+            (i, (_, r, sig)) = receive()
             assert i in range(N)
             assert r >= 0
             if i in received[r]:
@@ -55,10 +49,10 @@ def shared_coin(sid, pid, N, t, PK, SK, broadcast, receive):
 
             # After reaching the threshold, compute the output and
             # make it available locally
-            if len(received[r]) == t + 1:                
+            if len(received[r]) == f + 1:
 
                 # Verify and get the combined signature
-                sigs = dict(list(received[r].iteritems())[:t+1])
+                sigs = dict(list(received[r].iteritems())[:f+1])
                 sig = PK.combine_shares(sigs)
                 assert PK.verify_signature(sig, h)
 
@@ -66,13 +60,13 @@ def shared_coin(sid, pid, N, t, PK, SK, broadcast, receive):
                 bit = ord(hash(serialize(sig))[0]) % 2
                 outputQueue[r].put(bit)
 
-    #greenletPacker(Greenlet(_recv), 'shared_coin', (pid, N, t, broadcast, receive)).start()
+    #greenletPacker(Greenlet(_recv), 'shared_coin', (pid, N, f, broadcast, receive)).start()
     Greenlet(_recv).start()
 
     def getCoin(round):
         # I have to do mapping to 1..l
         h = PK.hash_message(str((sid, round)))
-        broadcast( (round, SK.sign(h)) )
+        broadcast( ('COIN', round, SK.sign(h)) )
         return outputQueue[round].get()
 
     return getCoin
