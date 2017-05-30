@@ -66,24 +66,25 @@ def simple_router(N, maxdelay=0.01, seed=None):
             [makeRecv(j) for j in range(N)])
 
 def _test_rbc1(N=4, f=1, leader=None, seed=None):
-        # Test everything when runs are OK
-        #if seed is not None: print 'SEED:', seed
-        rnd = random.Random(seed)
-        router_seed = rnd.random()
-        if leader is None: leader = rnd.randint(0,N-1)
-        sends, recvs = simple_router(N, seed=seed)
-        threads = []
-        leader_input = Queue(1)
-        for i in range(N):
-            input = leader_input.get if i == leader else None
-            t = Greenlet(reliablebroadcast, i, N, f, leader, input, recvs[i], sends[i])
-            t.start()
-            threads.append(t)
+    # Test everything when runs are OK
+    #if seed is not None: print 'SEED:', seed
+    sid = 'sidA'
+    rnd = random.Random(seed)
+    router_seed = rnd.random()
+    if leader is None: leader = rnd.randint(0,N-1)
+    sends, recvs = simple_router(N, seed=seed)
+    threads = []
+    leader_input = Queue(1)
+    for i in range(N):
+        input = leader_input.get if i == leader else None
+        t = Greenlet(reliablebroadcast, sid, i, N, f, leader, input, recvs[i], sends[i])
+        t.start()
+        threads.append(t)
 
-        m = "Hello! This is a test message."
-        leader_input.put(m)
-        gevent.joinall(threads)
-        assert [t.value for t in threads] == [m]*N
+    m = "Hello! This is a test message."
+    leader_input.put(m)
+    gevent.joinall(threads)
+    assert [t.value for t in threads] == [m]*N
 
 def test_rbc1():
     for i in range(20): _test_rbc1(seed=i)
@@ -91,6 +92,7 @@ def test_rbc1():
 def _test_rbc2(N=4, f=1, leader=None, seed=None):
     # Crash up to f nodes
     #if seed is not None: print 'SEED:', seed
+    sid = 'sidA'
     rnd = random.Random(seed)
     router_seed = rnd.random()
     if leader is None: leader = rnd.randint(0,N-1)
@@ -100,7 +102,7 @@ def _test_rbc2(N=4, f=1, leader=None, seed=None):
 
     for i in range(N):
         input = leader_input.get if i == leader else None
-        t = Greenlet(reliablebroadcast, i, N, f, leader, input, recvs[i], sends[i])
+        t = Greenlet(reliablebroadcast, sid, i, N, f, leader, input, recvs[i], sends[i])
         t.start()
         threads.append(t)
 

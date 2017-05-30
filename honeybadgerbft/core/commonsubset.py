@@ -5,11 +5,9 @@ def commonsubset(pid, N, f, rbc_out, aba_in, aba_out):
     :param pid: my identifier
     :param N: number of nodes
     :param f: fault tolerance
-    :param input: input() is called to block and wait for input
-    :param rbc_in: a single input function rbc_in(v) provides input
-    :param rbc_out: an array of N input functions
-    :param abas: an array of N twoples, [(in,out), ...]
-
+    :param rbc_out: an array of N output functions
+    :param aba_in: an array of N non-blocking functions that accept an input bit
+    :param aba_out: an array of N blocking output functions, returning a bit
     :return: an N-element array, each element either None or a string
     """
     assert len(rbc_out) == N
@@ -33,13 +31,16 @@ def commonsubset(pid, N, f, rbc_out, aba_in, aba_out):
         
     def _recv_aba(j):
         # Receive output from binary agreement
-        aba_values[j] = aba_out[j]()
+        aba_values[j] = aba_out[j]()  # May block
+        #print pid, j, 'ENTERING CRITICAL'
         if sum(aba_values) >= N - f:
             # Provide 0 to all other aba
             for k in range(N):
                 if not aba_inputted[k]:
                     aba_inputted[k] = True
                     aba_in[k]( 0 )
+                    #print pid, 'ABA[%d] input -> %d' % (k, 0)
+        #print pid, j, 'EXITING CRITICAL'
 
     # Wait for all binary agreements
     a_threads = [gevent.spawn(_recv_aba, j) for j in range(N)]

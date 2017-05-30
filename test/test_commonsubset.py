@@ -23,8 +23,9 @@ def simple_router(N, maxdelay=0.005, seed=None):
     def makeSend(i):
         def _send(j, o):
             delay = rnd.random() * maxdelay
+            #delay = 0.1
             #print 'SEND   %8s [%2d -> %2d] %2.1f' % (o[0], i, j, delay*1000), o[1:]
-            gevent.spawn_later(delay, queues[j].put, (i,o))
+            gevent.spawn_later(delay, queues[j].put_nowait, (i,o))
         return _send
 
     def makeRecv(j):
@@ -57,16 +58,16 @@ def _make_commonsubset(sid, pid, N, f, PK, SK, input, send, recv):
         def coin_bcast(o):
             broadcast(('ACS_COIN', j, o))
 
-        coin_recvs[j] = Queue(1)
+        coin_recvs[j] = Queue()
         coin = shared_coin(sid + 'COIN' + str(j), pid, N, f, PK, SK,
                            coin_bcast, coin_recvs[j].get)
 
         def aba_bcast(o):
             broadcast(('ACS_ABA', j, o))
 
-        aba_recvs[j] = Queue(1)
-        aba = gevent.spawn(binaryagreement, pid, N, f, coin,
-                           aba_inputs[j].get, aba_outputs[j].put,
+        aba_recvs[j] = Queue()
+        aba = gevent.spawn(binaryagreement, sid+'ABA'+str(j), pid, N, f, coin,
+                           aba_inputs[j].get, aba_outputs[j].put_nowait,
                            aba_bcast, aba_recvs[j].get)
 
         def rbc_send(k, o):
@@ -74,8 +75,8 @@ def _make_commonsubset(sid, pid, N, f, PK, SK, input, send, recv):
 
         # Only leader gets input
         rbc_input = input if j == pid else None
-        rbc_recvs[j] = Queue(1)
-        rbc = gevent.spawn(reliablebroadcast, pid, N, f, j,
+        rbc_recvs[j] = Queue()
+        rbc = gevent.spawn(reliablebroadcast, sid+'RBC'+str(j), pid, N, f, j,
                            rbc_input, rbc_recvs[j].get, rbc_send)
         rbc_outputs[j] = rbc.get  # block for output from rbc
 
@@ -84,26 +85,27 @@ def _make_commonsubset(sid, pid, N, f, PK, SK, input, send, recv):
     def _recv():
         while True:
             (sender, (tag, j, msg)) = recv()
-            if   tag == 'ACS_COIN': coin_recvs[j].put((sender,msg))
-            elif tag == 'ACS_RBC' : rbc_recvs [j].put((sender,msg))
-            elif tag == 'ACS_ABA' : aba_recvs [j].put((sender,msg))
+            if   tag == 'ACS_COIN': coin_recvs[j].put_nowait((sender,msg))
+            elif tag == 'ACS_RBC' : rbc_recvs [j].put_nowait((sender,msg))
+            elif tag == 'ACS_ABA' : aba_recvs [j].put_nowait((sender,msg))
             else:
                 print 'Unknown tag!!', tag
                 raise
     gevent.spawn(_recv)
 
     return commonsubset(pid, N, f, rbc_outputs,
-                        [_.put for _ in aba_inputs],
+                        [_.put_nowait for _ in aba_inputs],
                         [_.get for _ in aba_outputs])
 
 ### Test asynchronous common subset
 def _test_commonsubset(N=4, f=1, seed=None):
     # Generate keys
     sid = 'sidA'
-    PK, SKs = dealer(N, f+1)
+    PK, SKs = dealer(N, f+1, seed=seed)
     rnd = random.Random(seed)
+    #print 'SEED:', seed
     router_seed = rnd.random()
-    sends, recvs = simple_router(N, seed=seed)
+    sends, recvs = simple_router(N, seed=router_seed)
 
     inputs  = [None] * N
     threads = [None] * N
@@ -132,5 +134,13 @@ def _test_commonsubset(N=4, f=1, seed=None):
         gevent.killall(threads)
         raise
 
+from nose2.tools import params
+
+#@params(*range(100))
+#def test_commonsubset(i):
+#    _test_commonsubset(seed=i)
+    #_test_commonsubset(seed=1)
+
 def test_commonsubset():
     _test_commonsubset()
+    

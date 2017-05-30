@@ -66,11 +66,11 @@ def _test_binaryagreement_dummy(N=4, f=1, seed=None):
     coin = dummy_coin(sid, N, f)  # One dummy coin function for all nodes
 
     for i in range(N):
-        inputs.append(Queue(1))
-        outputs.append(Queue(1))
+        inputs.append(Queue())
+        outputs.append(Queue())
         
-        t = gevent.spawn(binaryagreement, i, N, f, coin,
-                         inputs[i].get, outputs[i].put, sends[i], recvs[i])
+        t = gevent.spawn(binaryagreement, sid, i, N, f, coin,
+                         inputs[i].get, outputs[i].put_nowait, sends[i], recvs[i])
         threads.append(t)
 
     for i in range(N):
@@ -121,11 +121,11 @@ def _test_binaryagreement(N=4, f=1, seed=None):
     outputs = []
 
     for i in range(N):
-        inputs.append(Queue(1))
-        outputs.append(Queue(1))
+        inputs.append(Queue())
+        outputs.append(Queue())
         
-        t = gevent.spawn(binaryagreement, i, N, f, coins[i],
-                         inputs[i].get, outputs[i].put, sends[i], recvs[i])
+        t = gevent.spawn(binaryagreement, sid, i, N, f, coins[i],
+                         inputs[i].get, outputs[i].put_nowait, sends[i], recvs[i])
         threads.append(t)
 
     for i in range(N):

@@ -94,7 +94,7 @@ def merkleVerify(N, val, roothash, branch, index):
     return True
 
 
-def reliablebroadcast(pid, N, f, leader, input, receive, send):
+def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
     """Reliable broadcast
 
     Args
@@ -171,8 +171,10 @@ def reliablebroadcast(pid, N, f, leader, input, receive, send):
     fromLeader = None
     stripes = defaultdict(lambda: [None for _ in range(N)])
     echoCounter = defaultdict(lambda: 0)
+    echoSenders = set()  # Peers that have sent us ECHO messages
     ready = defaultdict(set)
     readySent = False
+    readySenders = set()  # Peers that have sent us READY messages
 
     def decode_output(roothash):
         # Rebuild the merkle tree to guarantee decoding is correct
@@ -187,7 +189,6 @@ def reliablebroadcast(pid, N, f, leader, input, receive, send):
     while True:  # main receive loop
         sender, msg = receive()
         if msg[0] == 'VAL' and fromLeader is None:
-            #print 'VAL received', pid
             # Validation
             (_, roothash, branch, stripe) = msg
             if sender != leader:
@@ -205,7 +206,8 @@ def reliablebroadcast(pid, N, f, leader, input, receive, send):
         elif msg[0] == 'ECHO':
             (_, roothash, branch, stripe) = msg
             # Validation
-            if roothash in stripes and stripes[roothash][sender] is not None:
+            if roothash in stripes and stripes[roothash][sender] is not None \
+               or sender in echoSenders:
                 print "Redundant ECHO"
                 continue
             try: assert merkleVerify(N, stripe, roothash, branch, sender)
@@ -215,6 +217,7 @@ def reliablebroadcast(pid, N, f, leader, input, receive, send):
 
             # Update
             stripes[roothash][sender] = stripe
+            echoSenders.add(sender)
             echoCounter[roothash] += 1
 
             if echoCounter[roothash] >= EchoThreshold and not readySent:
@@ -227,12 +230,13 @@ def reliablebroadcast(pid, N, f, leader, input, receive, send):
         elif msg[0] == 'READY':
             (_, roothash) = msg
             # Validation
-            if sender in ready[roothash]:
+            if sender in ready[roothash] or sender in readySenders:
                 print "Redundant READY"
                 continue
 
             # Update
             ready[roothash].add(sender)
+            readySenders.add(sender)
 
             # Amplify ready messages
             if len(ready[roothash]) >= ReadyThreshold and not readySent:

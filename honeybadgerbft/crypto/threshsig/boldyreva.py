@@ -35,8 +35,8 @@ g1.initPP()
 #g2 = g1
 g2 = group.hash('geng2', G2)
 g2.initPP()
-ZERO = group.random(ZR)*0
-ONE = group.random(ZR)*0+1
+ZERO = group.random(ZR, seed=59)*0
+ONE = group.random(ZR, seed=60)*0+1
 
 class TBLSPublicKey(object):
     def __init__(self, l, k, VK, VKs):
@@ -107,13 +107,11 @@ class TBLSPrivateKey(TBLSPublicKey):
     def sign(self, h):
         return h ** self.SK
 
-def dealer(players=10, k=5):
+def dealer(players=10, k=5, seed=None):
     # Random polynomial coefficients
-    secret = group.random(ZR)
-    a = [secret]
-    for i in range(1,k):
-        a.append(group.random(ZR))
+    a = group.random(ZR, count=k, seed=seed)
     assert len(a) == k
+    secret = a[0]
 
     # Polynomial evaluation
     def f(x):
