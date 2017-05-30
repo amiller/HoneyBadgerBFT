@@ -1,8 +1,7 @@
 import gevent
 
-def commonsubset(sid, pid, N, f, rbc_out, aba_in, aba_out):
+def commonsubset(pid, N, f, rbc_out, aba_in, aba_out):
     """The BKR93 algorithm for asynchronous common subset.
-    :param sid: session string
     :param pid: my identifier
     :param N: number of nodes
     :param f: fault tolerance

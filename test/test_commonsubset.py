@@ -100,7 +100,7 @@ def _make_commonsubset(sid, pid, N, f, PK, SK, input, send, recv):
                 raise
     gevent.spawn(_recv)
 
-    return commonsubset(sid, pid, N, f, rbc_outputs,
+    return commonsubset(pid, N, f, rbc_outputs,
                         [_.put for _ in aba_inputs],
                         [_.get for _ in aba_outputs])
 

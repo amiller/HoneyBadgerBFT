@@ -14,12 +14,12 @@ def shared_coin(sid, pid, N, f, PK, SK, broadcast, receive):
     :param sid: a unique instance id
     :param pid: my id number
     :param N: number of parties
-    :param t: fault tolerance
+    :param f: fault tolerance, f+1 shares needed to get the coin
     :param PK: boldyreva.TBLSPublicKey
     :param SK: boldyreva.TBLSPrivateKey
     :param broadcast: broadcast channel
     :param receive: receive channel
-    :return: yield values b
+    :return: a function getCoin(), where getCoin(r) blocks
     '''
     assert PK.k == f+1
     assert PK.l == N

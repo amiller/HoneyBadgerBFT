@@ -299,12 +299,6 @@ def initiateECDSAKeys(contents):
 def getEncKeys():
     return encPK, encSKs
 
-def setHash(s):
-    result = 0
-    for ele in s:
-        result ^= hash(ele)
-    return result
-
 def getKeys():
     return PK, SKs
 
@@ -344,18 +338,6 @@ def joinQueues(a, b):
     c = q.get()
     if c is a: return 'a', a.get()
     if c is b: return 'b', b.get()
-
-
-# Returns an idempotent function that only
-def makeCallOnce(callback, *args, **kargs):
-    called = [False]
-
-    def callOnce():
-        if called[0]: return
-        called[0] = True
-        callback(*args, **kargs)
-
-    return callOnce
 
 
 def makeBroadcastWithTag(tag, broadcast):
