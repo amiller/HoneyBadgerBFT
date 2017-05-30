@@ -3,11 +3,9 @@ import gevent
 import random
 from gevent.event import Event
 from gevent.queue import Queue
-from core.commoncoin import shared_coin
-import core.binaryagreement
-reload(core.binaryagreement)
-from core.binaryagreement import binaryagreement
-from crypto.threshsig.boldyreva import dealer
+from honeybadgerbft.core.commoncoin import shared_coin
+from honeybadgerbft.core.binaryagreement import binaryagreement
+from honeybadgerbft.crypto.threshsig.boldyreva import dealer
 from collections import defaultdict
 
 def simple_broadcast_router(N, maxdelay=0.005, seed=None):

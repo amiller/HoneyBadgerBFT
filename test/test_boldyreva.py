@@ -1,5 +1,5 @@
 import random
-from crypto.threshsig.boldyreva import dealer
+from honeybadgerbft.crypto.threshsig.boldyreva import dealer
 
 def test_boldyreva():
     global PK, SKs

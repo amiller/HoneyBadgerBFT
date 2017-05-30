@@ -3,8 +3,8 @@ from gevent import Greenlet
 from gevent.queue import Queue
 import gevent
 import random
-from core.reliablebroadcast import reliablebroadcast, encode, decode
-from core.reliablebroadcast import hash, merkleTree, getMerkleBranch, merkleVerify
+from honeybadgerbft.core.reliablebroadcast import reliablebroadcast, encode, decode
+from honeybadgerbft.core.reliablebroadcast import hash, merkleTree, getMerkleBranch, merkleVerify
 
 ### Merkle tree
 def test_merkletree0():

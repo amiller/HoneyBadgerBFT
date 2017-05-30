@@ -1,4 +1,4 @@
-from crypto.threshsig.boldyreva import serialize, deserialize1
+from honeybadgerbft.crypto.threshsig.boldyreva import serialize, deserialize1
 from collections import defaultdict
 from gevent import Greenlet
 from gevent.queue import Queue

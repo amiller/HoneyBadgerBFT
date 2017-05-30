@@ -3,19 +3,11 @@ import gevent
 import random
 from gevent.event import Event
 from gevent.queue import Queue
-import core.commoncoin
-reload(core.commoncoin)
-import core.binaryagreement
-reload(core.binaryagreement)
-import core.reliablebroadcast
-reload(core.reliablebroadcast)
-import core.commonsubset
-reload(core.commonsubset)
-from core.commoncoin import shared_coin
-from core.binaryagreement import binaryagreement
-from core.reliablebroadcast import reliablebroadcast
-from core.commonsubset import commonsubset
-from crypto.threshsig.boldyreva import dealer
+from honeybadgerbft.core.commoncoin import shared_coin
+from honeybadgerbft.core.binaryagreement import binaryagreement
+from honeybadgerbft.core.reliablebroadcast import reliablebroadcast
+from honeybadgerbft.core.commonsubset import commonsubset
+from honeybadgerbft.crypto.threshsig.boldyreva import dealer
 from collections import defaultdict
 
 def simple_router(N, maxdelay=0.005, seed=None):
