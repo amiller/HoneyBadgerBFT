@@ -58,7 +58,7 @@ def shared_coin(sid, pid, N, f, PK, SK, broadcast, receive):
 
                 # Compute the bit from the least bit of the hash
                 bit = ord(hash(serialize(sig))[0]) % 2
-                outputQueue[r].put(bit)
+                outputQueue[r].put_nowait(bit)
 
     #greenletPacker(Greenlet(_recv), 'shared_coin', (pid, N, f, broadcast, receive)).start()
     Greenlet(_recv).start()

@@ -5,9 +5,9 @@ def commonsubset(pid, N, f, rbc_out, aba_in, aba_out):
     :param pid: my identifier
     :param N: number of nodes
     :param f: fault tolerance
-    :param rbc_out: an array of N output functions
-    :param aba_in: an array of N non-blocking functions that accept an input bit
-    :param aba_out: an array of N blocking output functions, returning a bit
+    :param rbc_out: an array of N (blocking) output functions, returning a string
+    :param aba_in: an array of N (non-blocking) functions that accept an input bit
+    :param aba_out: an array of N (blocking) output functions, returning a bit
     :return: an N-element array, each element either None or a string
     """
     assert len(rbc_out) == N

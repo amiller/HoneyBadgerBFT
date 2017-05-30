@@ -103,12 +103,12 @@ def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
     N   : int, at least 3
     f   : fault tolerance, N >= 3f+1
     leader : 0 <= leader < N
-    input  : if pid == leader, then input() is call to wait for the input value
+    input  : if pid == leader, then input() is called to wait for the input value
     receive : receive() blocks until a message is received
        Message is of the form:
        (i, (tag, ...)) = receive()
        tag is one of {"VAL", "ECHO", "READY"}
-    send: sends a message to a designed recipient
+    send: sends (without blocking) a message to a designed recipient
        send(i, (tag, ...))
 
     Messages
