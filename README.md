@@ -61,7 +61,7 @@ pycrypt
 Clone the code:
 
     git clone https://github.com/amiller/HoneyBadgerBFT.git
-    git checkout another-dev
+    git checkout dev
 
 Generate the keys
 + Threshold Signature Keys
