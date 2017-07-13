@@ -21,6 +21,6 @@ RUN cd pbc-0.5.14 && ./configure && make && make install
 RUN git clone https://github.com/JHUISI/charm.git
 RUN cd charm && git checkout 2.7-dev && ./configure.sh && python setup.py install
 RUN git clone https://github.com/amiller/HoneyBadgerBFT.git
-RUN cd HoneyBadgerBFT && git checkout another-dev
+RUN cd HoneyBadgerBFT && git checkout dev
 COPY ./start.sh /
 CMD sh /start.sh
