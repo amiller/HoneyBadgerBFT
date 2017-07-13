@@ -29,4 +29,5 @@ ADD . $SRC/
 ENV LIBRARY_PATH /usr/local/lib
 ENV LD_LIBRARY_PATH /usr/local/lib
 
-CMD sh $SRC/start.sh
+# Run tests by default
+CMD sh test.sh
