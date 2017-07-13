@@ -15,4 +15,8 @@ RUN cd charm && git checkout 2.7-dev && ./configure.sh && python setup.py instal
 ENV SRC /usr/local/src/HoneyBadgerBFT
 WORKDIR $SRC
 ADD . $SRC/
+
+ENV LIBRARY_PATH /usr/local/lib
+ENV LD_LIBRARY_PATH /usr/local/lib
+
 CMD sh $SRC/start.sh
