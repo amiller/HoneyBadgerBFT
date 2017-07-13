@@ -1,5 +1,15 @@
 FROM ubuntu:trusty
 
+# Default cluster arguments. Override with "-e"
+#
+# total number of parties:
+ENV N 8
+# tolerance, usually N/4 in our experiments:
+ENV t 2
+# maximum number of transactions committed in a block:
+ENV B 16
+
+
 RUN apt-get update
 RUN apt-get -y install python-gevent git wget python-pip python-dev python-gmpy2 flex bison libgmp-dev libssl-dev
 
