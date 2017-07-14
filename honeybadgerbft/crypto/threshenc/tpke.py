@@ -130,9 +130,8 @@ class TPKEPrivateKey(TPKEPublicKey):
 
     def decrypt_share(self, (U, V, W)):
         # ASSUMPTION
-        # assert self.verify_ciphertext((U,V,W))
+        assert self.verify_ciphertext((U,V,W))
 
-        # H = hashH(U, V)
         # print U, V, W
         # print U
         # print self.SK
