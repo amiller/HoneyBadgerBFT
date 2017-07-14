@@ -43,7 +43,6 @@ def simple_router(N, maxdelay=0.005, seed=None):
             [makeRecv(j) for j in range(N)])
 
 
-
 ### Make the threshold signature common coins
 def _make_honeybadger(sid, pid, N, f, sPK, sSK, ePK, eSK, input, send, recv):
 

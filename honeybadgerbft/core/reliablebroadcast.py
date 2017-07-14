@@ -195,7 +195,7 @@ def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
                 print "VAL message from other than leader:", sender
                 continue
             try: assert merkleVerify(N, stripe, roothash, branch, pid)
-            except e:
+            except Exception, e:
                 print "Failed to validate VAL message:", e
                 continue
             
