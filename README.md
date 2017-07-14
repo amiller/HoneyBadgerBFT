@@ -16,12 +16,11 @@ Other licenses may be issued at the authors' discretion.
 
 Build the docker image first.
 
-    cd docker_build
     docker build -t honeybadgerbft .
 
-Then for example you want to run an instance with N=8, t=2 and B=16:
+By default, the Dockerfile will run the test suite:
 
-    docker run -e N="8" -e t="2" -e B="16" -it honeybadgerbft
+    docker run -it honeybadgerbft
 
 ### Installation && How to run the code
 
@@ -61,7 +60,7 @@ pycrypt
 Clone the code:
 
     git clone https://github.com/amiller/HoneyBadgerBFT.git
-    git checkout another-dev
+    git checkout dev
 
 Generate the keys
 + Threshold Signature Keys

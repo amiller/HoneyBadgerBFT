@@ -150,7 +150,6 @@ def _test_honeybadger(N=4, f=1, seed=None):
         outs = [threads[i].get() for i in range(N)]
 
         # Consistency check
-        print outs
         assert len(set(outs)) == 1
         
     except KeyboardInterrupt:
