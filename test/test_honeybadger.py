@@ -59,7 +59,7 @@ def _test_honeybadger(N=4, f=1, seed=None):
     for i in range(N):
         badgers[i] = HoneyBadgerBFT(sid, i, B, N, f,
                                     sPK, sSKs[i], ePK, eSKs[i],
-                                    sends[i], recvs[i])
+                                    sends[i], recvs[i], 3)
         threads[i] = gevent.spawn(badgers[i].run)
 
     for i in range(N):

@@ -10,7 +10,7 @@ from honeybadgerbft.crypto.threshenc import tpke
 
 class HoneyBadgerBFT():
 
-    def __init__(self, sid, pid, B, N, f, sPK, sSK, ePK, eSK, send, recv):
+    def __init__(self, sid, pid, B, N, f, sPK, sSK, ePK, eSK, send, recv, max_rounds):
         self.sid = sid
         self.pid = pid
         self.B = B
@@ -24,9 +24,9 @@ class HoneyBadgerBFT():
         self._recv = recv
 
         self.round = 0  # Current block number
+        self.max_rounds = max_rounds
         self.transaction_buffer = []
         self._per_round_recv = {}  # Buffer of incoming messages
-
 
     def submit_tx(self, tx):
         print 'submit_tx', self.pid, tx
@@ -53,7 +53,7 @@ class HoneyBadgerBFT():
                     _recv.put( (sender, msg) )
         self._recv_thread = gevent.spawn(_recv)
 
-        while True:
+        while self.round < self.max_rounds:
             # For each round...
             r = self.round
             if r not in self._per_round_recv:
@@ -78,8 +78,6 @@ class HoneyBadgerBFT():
             self.transaction_buffer = [_tx for _tx in self.transaction_buffer if _tx not in new_tx]
 
             self.round += 1 # Increment the round
-            if self.round >= 3: break # Only run one round for now
-
 
     def _run_round(self, r, txes_to_send, send, recv):
         # Unique sid for each round
