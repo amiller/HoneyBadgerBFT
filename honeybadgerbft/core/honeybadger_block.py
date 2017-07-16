@@ -1,6 +1,7 @@
 import gevent
 from ..crypto.threshenc import tpke
 import os
+import ast
 
 def serialize_UVW( (U,V,W) ):
     # U: element of g1 (65 byte serialized for SS512)
@@ -42,9 +43,10 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
     
     # Threshold encrypt 
     # TODO: check that propose_in is the correct length, not too large
-    prop = propose_in()
+    proposed_txes = propose_in()
+    proposal = repr(proposed_txes)
     key = os.urandom(32) # random 256-bit key
-    ciphertext = tpke.encrypt(key, prop)
+    ciphertext = tpke.encrypt(key, proposal)
     tkey = PK.encrypt(key)
 
     import cPickle as pickle
@@ -95,8 +97,9 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
         (tkey, ciph) = pickle.loads(v)
         tkey = deserialize_UVW(tkey)
         key = PK.combine_shares( tkey, svec )
-        plain = tpke.decrypt(key, ciph)
-        decryptions.append(plain)
+        txes_repr = tpke.decrypt(key, ciph)
+        txes = ast.literal_eval(txes_repr)
+        decryptions += txes
     #print 'Done!', decryptions
 
     return tuple(decryptions)

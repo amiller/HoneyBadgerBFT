@@ -52,10 +52,12 @@ def _test_honeybadger(N=4, f=1, seed=None):
     router_seed = rnd.random()
     sends, recvs = simple_router(N, seed=router_seed)
 
+    B = N # 1 tx per node, per round
+
     badgers = [None] * N
     threads = [None] * N
     for i in range(N):
-        badgers[i] = HoneyBadgerBFT(sid, i, 1, N, f,
+        badgers[i] = HoneyBadgerBFT(sid, i, B, N, f,
                                     sPK, sSKs[i], ePK, eSKs[i],
                                     sends[i], recvs[i])
         threads[i] = gevent.spawn(badgers[i].run)

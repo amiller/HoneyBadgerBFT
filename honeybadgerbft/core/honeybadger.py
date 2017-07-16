@@ -60,7 +60,7 @@ class HoneyBadgerBFT():
                 self._per_round_recv[r] = Queue()
 
             # Select all the transactions (TODO: actual random selection)
-            tx_to_send = self.transaction_buffer[:self.B]
+            txes_to_send = self.transaction_buffer[:self.B]
 
             # TODO: Wait a bit if transaction buffer is not full
 
@@ -71,7 +71,7 @@ class HoneyBadgerBFT():
                 return _send
             send_r = _make_send(r)
             recv_r = self._per_round_recv[r].get
-            new_tx = self._run_round(r, tx_to_send[0], send_r, recv_r)
+            new_tx = self._run_round(r, txes_to_send, send_r, recv_r)
             print 'new_tx:', new_tx
 
             # Remove all of the new transactions from the buffer
@@ -81,7 +81,7 @@ class HoneyBadgerBFT():
             if self.round >= 3: break # Only run one round for now
 
 
-    def _run_round(self, r, tx_to_send, send, recv):
+    def _run_round(self, r, txes_to_send, send, recv):
         # Unique sid for each round
         sid = self.sid + ':' + str(r)
         pid = self.pid
@@ -101,7 +101,7 @@ class HoneyBadgerBFT():
         rbc_outputs = [Queue(1) for _ in range(N)]
 
         my_rbc_input = Queue(1)
-        print pid, r, 'tx_to_send:', tx_to_send
+        print pid, r, 'txes_to_send:', txes_to_send
 
         def _setup(j):
             def coin_bcast(o):
@@ -157,7 +157,7 @@ class HoneyBadgerBFT():
         gevent.spawn(_recv)
 
         _input = Queue(1)
-        _input.put(tx_to_send)
+        _input.put(txes_to_send)
         return honeybadger_block(pid, self.N, self.f, self.ePK,self. eSK,
                                  _input.get,
                                  acs_in=my_rbc_input.put_nowait, acs_out=acs.get,

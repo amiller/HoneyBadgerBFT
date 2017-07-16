@@ -139,7 +139,7 @@ def _test_honeybadger(N=4, f=1, seed=None):
 
     for i in range(N):
         #if i == 1: continue
-        inputs[i].put('<[HBBFT Input %d]>' % i)
+        inputs[i].put(['<[HBBFT Input %da]>' % i])
 
     #gevent.killall(threads[N-f:])
     #gevent.sleep(3)
