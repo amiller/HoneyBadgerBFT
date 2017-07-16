@@ -60,7 +60,7 @@ class HoneyBadgerBFT():
                 self._per_round_recv[r] = Queue()
 
             # Select all the transactions (TODO: actual random selection)
-            txes_to_send = self.transaction_buffer[:self.B]
+            txes_to_send = self.transaction_buffer[:(self.B/self.N)]
 
             # TODO: Wait a bit if transaction buffer is not full
 
