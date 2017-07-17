@@ -1,6 +1,8 @@
 import socket
 import os
 import ast
+import rlp
+from ethereum.transactions import Transaction # for RLP encode/decode
 
 from gevent import monkey
 monkey.patch_all()
@@ -41,14 +43,8 @@ class TxSocket():
 
         return self.deserialize(payload)
 
-#
-# TODO: switch from repr to RLP
-#
-def bind_eth_socket(path, max_size=65536):
-    def serialize(txes):
-        return repr(txes)
+def bind_repr_socket(path, max_size=4096):
+    return TxSocket(bind_datagram_socket(path), repr, ast.literal_eval, max_size)
 
-    def deserialize(payload):
-        return ast.literal_eval(payload)
-
-    return TxSocket(bind_datagram_socket(path), serialize, deserialize, max_size)
+def bind_rlp_socket(path, max_size=65536):
+    return TxSocket(bind_datagram_socket(path), rlp.encode, rlp.decode, max_size)
