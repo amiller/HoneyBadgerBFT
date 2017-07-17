@@ -56,28 +56,32 @@ def _test_honeybadger(N=4, f=1, seed=None):
 
     badgers = [None] * N
     threads = [None] * N
+    input_queues = [Queue() for _ in range(N)]  # to submit lists of txes
+    output_queues = [Queue() for _ in range(N)] # to read lists of txes
+
+    for i in range(N):
+        input_queues[i].put(['<[HBBFT Input %d]>' % i])
+
     for i in range(N):
         badgers[i] = HoneyBadgerBFT(sid, i, B, N, f,
                                     sPK, sSKs[i], ePK, eSKs[i],
-                                    sends[i], recvs[i], 3)
+                                    sends[i], recvs[i],
+                                    input_queues[i].get, output_queues[i].put, 3)
         threads[i] = gevent.spawn(badgers[i].run)
 
     for i in range(N):
-        #if i == 1: continue
-        badgers[i].submit_tx('<[HBBFT Input %d]>' % i)
+        input_queues[i].put(['<[HBBFT Input %d]>' % (i+10)])
 
     for i in range(N):
-        badgers[i].submit_tx('<[HBBFT Input %d]>' % (i+10))
-
-    for i in range(N):
-        badgers[i].submit_tx('<[HBBFT Input %d]>' % (i+20))
+        input_queues[i].put(['<[HBBFT Input %d]>' % (i+20)])
         
-    #gevent.killall(threads[N-f:])
-    #gevent.sleep(3)
-    #for i in range(N-f, N):
-    #    inputs[i].put(0)
     try:
-        outs = [threads[i].get() for i in range(N)]
+        # Wait for each badger to finish running
+        for i in range(N):
+            threads[i].get()
+            output_queues[i].put(StopIteration)
+
+        outs = [tuple(output_queues[i]) for i in range(N)]
 
         # Consistency check
         assert len(set(outs)) == 1

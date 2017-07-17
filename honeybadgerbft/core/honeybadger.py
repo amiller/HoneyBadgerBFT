@@ -10,7 +10,7 @@ from honeybadgerbft.crypto.threshenc import tpke
 
 class HoneyBadgerBFT():
 
-    def __init__(self, sid, pid, B, N, f, sPK, sSK, ePK, eSK, send, recv, max_rounds):
+    def __init__(self, sid, pid, B, N, f, sPK, sSK, ePK, eSK, send, recv, read_txes, write_txes, max_rounds):
         self.sid = sid
         self.pid = pid
         self.B = B
@@ -20,17 +20,15 @@ class HoneyBadgerBFT():
         self.sSK = sSK
         self.ePK = ePK
         self.eSK = eSK
-        self._send = send
-        self._recv = recv
+        self._send = send            # write to another badger
+        self._recv = recv            # read from other badgers
+        self.read_txes = read_txes   # read new incoming txes
+        self.write_txes = write_txes # write out txes that have been added to a block by HB
 
         self.round = 0  # Current block number
         self.max_rounds = max_rounds
         self.transaction_buffer = []
         self._per_round_recv = {}  # Buffer of incoming messages
-
-    def submit_tx(self, tx):
-        print 'submit_tx', self.pid, tx
-        self.transaction_buffer.append(tx)
 
     def run(self):
         def _recv():
@@ -53,6 +51,15 @@ class HoneyBadgerBFT():
                     _recv.put( (sender, msg) )
         self._recv_thread = gevent.spawn(_recv)
 
+        def _read_txes():
+            while True:
+                self.transaction_buffer += self.read_txes()
+        self._read_txes_thread = gevent.spawn(_read_txes)
+
+        # let _read_txes_thread run. this helps already-pending txes make it
+        # into the first round for testing.
+        gevent.sleep(0.001)
+
         while self.round < self.max_rounds:
             # For each round...
             r = self.round
@@ -71,11 +78,13 @@ class HoneyBadgerBFT():
                 return _send
             send_r = _make_send(r)
             recv_r = self._per_round_recv[r].get
-            new_tx = self._run_round(r, txes_to_send, send_r, recv_r)
-            print 'new_tx:', new_tx
+            block_txes = self._run_round(r, txes_to_send, send_r, recv_r)
+            #print 'block_txes:', block_txes
+
+            self.write_txes(block_txes) # output our new block of transactions
 
             # Remove all of the new transactions from the buffer
-            self.transaction_buffer = [_tx for _tx in self.transaction_buffer if _tx not in new_tx]
+            self.transaction_buffer = [_tx for _tx in self.transaction_buffer if _tx not in block_txes]
 
             self.round += 1 # Increment the round
 
@@ -99,7 +108,7 @@ class HoneyBadgerBFT():
         rbc_outputs = [Queue(1) for _ in range(N)]
 
         my_rbc_input = Queue(1)
-        print pid, r, 'txes_to_send:', txes_to_send
+        #print pid, r, 'txes_to_send:', txes_to_send
 
         def _setup(j):
             def coin_bcast(o):
