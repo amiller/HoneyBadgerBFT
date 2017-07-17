@@ -4,9 +4,6 @@ import ast
 import rlp
 from ethereum.transactions import Transaction # for RLP encode/decode
 
-from gevent import monkey
-monkey.patch_all()
-
 def bind_datagram_socket(path):
     # Make sure the socket doesn't already exist:
     try:
