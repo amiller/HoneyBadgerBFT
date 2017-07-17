@@ -13,7 +13,7 @@ ENV B 16
 RUN apt-get update
 RUN apt-get -y install python-gevent git wget python-pip python-dev python-gmpy2 flex bison libgmp-dev libssl-dev
 
-RUN pip install PySocks pycrypto ecdsa zfec gipc nose2
+RUN pip install PySocks pycrypto ecdsa zfec gipc nose2 ethereum
 
 RUN wget https://crypto.stanford.edu/pbc/files/pbc-0.5.14.tar.gz
 RUN tar -xvf pbc-0.5.14.tar.gz
