@@ -6,38 +6,8 @@ from gevent.queue import Queue
 from honeybadgerbft.core.commoncoin import shared_coin
 from honeybadgerbft.core.binaryagreement import binaryagreement
 from honeybadgerbft.crypto.threshsig.boldyreva import dealer
+from honeybadgerbft.util.router import broadcast_router
 from collections import defaultdict
-
-def simple_broadcast_router(N, maxdelay=0.005, seed=None):
-    """Builds a set of connected channels, with random delay
-    @return (receives, sends)
-    """
-    rnd = random.Random(seed)
-    #if seed is not None: print 'ROUTER SEED: %f' % (seed,)
-    
-    queues = [Queue() for _ in range(N)]
-    _threads = []
-
-    def makeBroadcast(i):
-        def _send(j, o):
-            delay = rnd.random() * maxdelay
-            #print 'SEND   %8s [%2d -> %2d] %2.1f' % (o[0], i, j, delay*1000), o[1:]
-            gevent.spawn_later(delay, queues[j].put, (i,o))
-            #queues[j].put((i, o))
-        def _bc(o):
-            #print 'BCAST  %8s [%2d ->  *]' % (o[0], i), o[1]
-            for j in range(N): _send(j, o)
-        return _bc
-
-    def makeRecv(j):
-        def _recv():
-            (i,o) = queues[j].get()
-            #print 'RECV %8s [%2d -> %2d]' % (o[0], i, j)
-            return (i,o)
-        return _recv
-        
-    return ([makeBroadcast(i) for i in range(N)],
-            [makeRecv(j)      for j in range(N)])
 
 def dummy_coin(sid, N, f):
     counter = defaultdict(int)
@@ -53,12 +23,12 @@ def dummy_coin(sid, N, f):
 ### Test binary agreement with a dummy coin
 def _test_binaryagreement_dummy(N=4, f=1, seed=None):
     # Generate keys
-    sid = 'sidA'    
+    sid = 'sidA'
     # Test everything when runs are OK
     #if seed is not None: print 'SEED:', seed
     rnd = random.Random(seed)
     router_seed = rnd.random()
-    sends, recvs = simple_broadcast_router(N, seed=seed)
+    sends, recvs = broadcast_router(N, seed=seed)
 
     threads = []
     inputs = []
@@ -68,7 +38,7 @@ def _test_binaryagreement_dummy(N=4, f=1, seed=None):
     for i in range(N):
         inputs.append(Queue())
         outputs.append(Queue())
-        
+
         t = gevent.spawn(binaryagreement, sid, i, N, f, coin,
                          inputs[i].get, outputs[i].put_nowait, sends[i], recvs[i])
         threads.append(t)
@@ -97,7 +67,7 @@ def _make_coins(sid, N, f, seed):
     PK, SKs = dealer(N, f+1)
     rnd = random.Random(seed)
     router_seed = rnd.random()
-    sends, recvs = simple_broadcast_router(N, seed=seed)
+    sends, recvs = broadcast_router(N, seed=seed)
     coins = [shared_coin(sid, i, N, f, PK, SKs[i], sends[i], recvs[i]) for i in range(N)]
     return coins
 
@@ -114,7 +84,7 @@ def _test_binaryagreement(N=4, f=1, seed=None):
 
     # Router
     router_seed = rnd.random()
-    sends, recvs = simple_broadcast_router(N, seed=seed)
+    sends, recvs = broadcast_router(N, seed=seed)
 
     threads = []
     inputs = []
@@ -123,7 +93,7 @@ def _test_binaryagreement(N=4, f=1, seed=None):
     for i in range(N):
         inputs.append(Queue())
         outputs.append(Queue())
-        
+
         t = gevent.spawn(binaryagreement, sid, i, N, f, coins[i],
                          inputs[i].get, outputs[i].put_nowait, sends[i], recvs[i])
         threads.append(t)

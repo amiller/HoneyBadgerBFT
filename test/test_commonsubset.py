@@ -8,44 +8,15 @@ from honeybadgerbft.core.binaryagreement import binaryagreement
 from honeybadgerbft.core.reliablebroadcast import reliablebroadcast
 from honeybadgerbft.core.commonsubset import commonsubset
 from honeybadgerbft.crypto.threshsig.boldyreva import dealer
+from honeybadgerbft.util.router import simple_router
 from collections import defaultdict
-
-def simple_router(N, maxdelay=0.005, seed=None):
-    """Builds a set of connected channels, with random delay
-    @return (receives, sends)
-    """
-    rnd = random.Random(seed)
-    #if seed is not None: print 'ROUTER SEED: %f' % (seed,)
-    
-    queues = [Queue() for _ in range(N)]
-    _threads = []
-
-    def makeSend(i):
-        def _send(j, o):
-            delay = rnd.random() * maxdelay
-            #delay = 0.1
-            #print 'SEND   %8s [%2d -> %2d] %2.1f' % (o[0], i, j, delay*1000), o[1:]
-            gevent.spawn_later(delay, queues[j].put_nowait, (i,o))
-        return _send
-
-    def makeRecv(j):
-        def _recv():
-            (i,o) = queues[j].get()
-            #print 'RECV %8s [%2d -> %2d]' % (o[0], i, j)
-            return (i,o)
-        return _recv
-        
-    return ([makeSend(i) for i in range(N)],
-            [makeRecv(j) for j in range(N)])
-
-
 
 ### Make the threshold signature common coins
 def _make_commonsubset(sid, pid, N, f, PK, SK, input, send, recv):
 
     def broadcast(o):
         for j in range(N): send(j, o)
-    
+
     coin_recvs = [None] * N
     aba_recvs  = [None] * N
     rbc_recvs  = [None] * N
@@ -81,7 +52,7 @@ def _make_commonsubset(sid, pid, N, f, PK, SK, input, send, recv):
         rbc_outputs[j] = rbc.get  # block for output from rbc
 
     for j in range(N): _setup(j)
-        
+
     def _recv():
         while True:
             (sender, (tag, j, msg)) = recv()
@@ -111,7 +82,7 @@ def _test_commonsubset(N=4, f=1, seed=None):
     threads = [None] * N
     for i in range(N):
         inputs[i] = Queue(1)
-        
+
         threads[i] = gevent.spawn(_make_commonsubset, sid, i, N, f,
                                   PK, SKs[i],
                                   inputs[i].get, sends[i], recvs[i])
@@ -129,7 +100,7 @@ def _test_commonsubset(N=4, f=1, seed=None):
 
         # Consistency check
         assert len(set(outs)) == 1
-        
+
     except KeyboardInterrupt:
         gevent.killall(threads)
         raise
@@ -143,4 +114,3 @@ from nose2.tools import params
 
 def test_commonsubset():
     _test_commonsubset()
-    
