@@ -19,7 +19,15 @@ import ast
 from honeybadgerbft.crypto.threshsig import boldyreva
 from honeybadgerbft.crypto.threshenc import tpke
 from honeybadgerbft.core.honeybadger import HoneyBadgerBFT
-from honeybadgerbft.codec import ethereum
+import rlp
+from rlp.sedes import CountableList
+from ethereum.transactions import Transaction
+
+def eth_decode(payload):
+    return rlp.decode(payload, CountableList(Transaction))
+
+def eth_encode(txes):
+    return rlp.encode(txes)
 
 from subprocess import check_output
 from random import Random
@@ -186,7 +194,7 @@ def run_badger_node(myID, N, f, sPK, sSK, ePK, eSK):
                            sPK, sSK, ePK, eSK,
                            send, recv,
                            tx_submit.get, tx_commit.put,
-                           encode=ethereum.encode, decode=ethereum.decode)
+                           encode=eth_encode, decode=eth_decode)
     th = Greenlet(hbbft.run)
     th.parent_args = (N, f)
     th.name = __file__+'.honestParty(%d)' % i
@@ -206,8 +214,6 @@ if __name__ == '__main__':
     
     from optparse import OptionParser
     parser = OptionParser()
-    parser.add_option("-i", "--index", dest="i",
-                      help="Node index (1 through -N)", metavar="I", type="int")
     parser.add_option("-i", "--index", dest="i",
                       help="Node index (1 through -N)", metavar="I", type="int")
     (options, args) = parser.parse_args()
