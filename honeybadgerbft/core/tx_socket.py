@@ -17,17 +17,17 @@ def bind_datagram_socket(path):
 # Assumes that we read input txes from the client before writing a response
 # of committed txes.
 class TxSocket():
-    def __init__(self, sock, serialize, deserialize, max_size):
+    def __init__(self, sock, encode, decode, max_size):
         self.socket = sock
         self.connected = False
-        self.serialize = serialize
-        self.deserialize = deserialize
+        self.encode = encode
+        self.decode = decode
         self.max_size = max_size
 
     def write(self, txes):
         assert self.connected # We assume we read before writing
 
-        self.socket.send(self.serialize(txes))
+        self.socket.send(self.encode(txes))
 
     def read(self):
         payload, sender = self.socket.recvfrom(self.max_size)
@@ -35,7 +35,7 @@ class TxSocket():
             self.socket.connect(sender)
             self.connected = True
 
-        return self.deserialize(payload)
+        return self.decode(payload)
 
 def bind_codec_socket(path, encode, decode, max_size=65536):
     return TxSocket(bind_datagram_socket(path), encode, decode, max_size)
