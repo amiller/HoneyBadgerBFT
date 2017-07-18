@@ -179,7 +179,7 @@ def run_badger_node(myID, N, f, sPK, sSK, ePK, eSK):
         send_queues[j].put(obj)
 
     # Start the honeybadger instance
-    hbbft = HoneyBadgerBFT("sid", myID, 1, N, f,
+    hbbft = HoneyBadgerBFT("sid", myID, 8, N, f,
                            sPK, sSK, ePK, eSK,
                            send, recv)
     th = Greenlet(hbbft.run)
