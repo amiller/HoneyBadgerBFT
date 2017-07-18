@@ -11,7 +11,6 @@ ENV B 16
 
 RUN apt-get update
 RUN apt-get install -y software-properties-common
-RUN apt-add-repository ppa:jonathonf/golang-1.7
 RUN apt-get update
 RUN apt-get -y install python-gevent git wget python-pip python-dev python-gmpy2 flex bison libgmp-dev libssl-dev
 
@@ -24,23 +23,31 @@ RUN cd pbc-0.5.14 && ./configure && make && make install
 RUN git clone https://github.com/JHUISI/charm.git
 RUN cd charm && git checkout 2.7-dev && ./configure.sh && python setup.py install
 
-RUN add-apt-repository ppa:longsleep/golang-backports
-RUN apt-get -y install libgmp-dev libgnutls-dev tmux golang-go
+RUN apt-get -y install libgmp-dev libgnutls-dev tmux curl
+RUN curl -O https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
+RUN tar -xvf go1.8.linux-amd64.tar.gz
+RUN mv go /usr/local
+RUN mkdir /go
+ENV GOPATH /go
+ENV GOROOT /usr/local/go
+ENV PATH $PATH:/usr/local/go/bin:/go/bin
+RUN go version
 
 ENV SRC /usr/local/src/HoneyBadgerBFT
 WORKDIR /usr/local/src/
 RUN git clone https://github.com/amiller/honeybadgerbft --branch demo3 HoneyBadgerBFT
 WORKDIR $SRC
 
-RUN git clone https://github.com/bts/go-ethereum
+
+RUN git clone https://github.com/joelburget/go-ethereum #10001
 WORKDIR go-ethereum
-ENV GOPATH /go/
-RUN go get -u github.com/Azure/azure-storage-go
 RUN make geth
+#RUN go get ./cmd/geth
 
 ENV LIBRARY_PATH /usr/local/lib
 ENV LD_LIBRARY_PATH /usr/local/lib
 
+WORKDIR $SRC
 RUN mkdir dkg
 WORKDIR dkg
 RUN git clone https://github.com/amiller/distributed-keygen DKG_0.8.0
@@ -54,7 +61,8 @@ WORKDIR $SRC/
 # Now add scripts that may change
 ADD ./run_fifo.py $SRC/
 ADD ./launch-4.sh $SRC/
+ADD ./echosock.py $SRC/
+ADD ./keystore $SRC/go-ethereum/gdata/keystore/
 
 # Run tests by default
 CMD $SRC/launch-4.sh
-

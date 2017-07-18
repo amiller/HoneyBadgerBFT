@@ -19,6 +19,7 @@ import ast
 from honeybadgerbft.crypto.threshsig import boldyreva
 from honeybadgerbft.crypto.threshenc import tpke
 from honeybadgerbft.core.honeybadger import HoneyBadgerBFT
+from honeybadgerbft.codec import ethereum
 
 from subprocess import check_output
 from random import Random
@@ -185,16 +186,16 @@ def run_badger_node(myID, N, f, sPK, sSK, ePK, eSK):
                            sPK, sSK, ePK, eSK,
                            send, recv,
                            tx_submit.get, tx_commit.put,
-                           encode=repr, decode=ast.literal_eval)
+                           encode=ethereum.encode, decode=ethereum.decode)
     th = Greenlet(hbbft.run)
     th.parent_args = (N, f)
     th.name = __file__+'.honestParty(%d)' % i
     th.start()
 
     # Submit random transactions
-    for txidx in range(100):
-        tx_submit.put(["Transaction:%d:%d" % (myID, txidx)])
-        gevent.sleep(1)
+    #for txidx in range(100):
+    #    tx_submit.put(["Transaction:%d:%d" % (myID, txidx)])
+    #    gevent.sleep(1)
     th.join()
 
 import atexit
@@ -205,6 +206,8 @@ if __name__ == '__main__':
     
     from optparse import OptionParser
     parser = OptionParser()
+    parser.add_option("-i", "--index", dest="i",
+                      help="Node index (1 through -N)", metavar="I", type="int")
     parser.add_option("-i", "--index", dest="i",
                       help="Node index (1 through -N)", metavar="I", type="int")
     (options, args) = parser.parse_args()
