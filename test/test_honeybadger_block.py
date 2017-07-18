@@ -1,6 +1,7 @@
 import unittest
 import gevent
 import random
+import ast
 from gevent.event import Event
 from gevent.queue import Queue
 from honeybadgerbft.core.commoncoin import shared_coin
@@ -85,7 +86,8 @@ def _make_honeybadger(sid, pid, N, f, sPK, sSK, ePK, eSK, input, send, recv):
 
     return honeybadger_block(pid, N, f, ePK, eSK, input,
                              acs_in=my_rbc_input.put_nowait, acs_out=acs.get,
-                             tpke_bcast=tpke_bcast, tpke_recv=tpke_recv.get)
+                             tpke_bcast=tpke_bcast, tpke_recv=tpke_recv.get,
+                             encode=repr, decode=ast.literal_eval)
 
 
 ### Test asynchronous common subset

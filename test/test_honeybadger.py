@@ -1,6 +1,7 @@
 import unittest
 import gevent
 import random
+import ast
 from gevent.event import Event
 from gevent.queue import Queue
 import honeybadgerbft.core.honeybadger
@@ -38,7 +39,9 @@ def _test_honeybadger(N=4, f=1, seed=None):
         badgers[i] = HoneyBadgerBFT(sid, i, B, N, f,
                                     sPK, sSKs[i], ePK, eSKs[i],
                                     sends[i], recvs[i],
-                                    input_queues[i].get, output_queues[i].put, 3)
+                                    input_queues[i].get, output_queues[i].put,
+                                    encode=repr, decode=ast.literal_eval,
+                                    max_rounds=3)
         threads[i] = gevent.spawn(badgers[i].run)
 
     for i in range(N):

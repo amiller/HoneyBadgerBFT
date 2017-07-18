@@ -11,7 +11,7 @@ from honeybadgerbft.crypto.threshsig import boldyreva
 
 class HoneyBadgerBFT():
 
-    def __init__(self, sid, pid, B, N, f, sPK, sSK, ePK, eSK, send, recv, read_txes, write_txes, max_rounds):
+    def __init__(self, sid, pid, B, N, f, sPK, sSK, ePK, eSK, send, recv, read_txes, write_txes, encode, decode, max_rounds=float('inf')):
         self.sid = sid
         self.pid = pid
         self.B = B
@@ -25,6 +25,9 @@ class HoneyBadgerBFT():
         self._recv = recv            # read from other badgers
         self.read_txes = read_txes   # read new incoming txes
         self.write_txes = write_txes # write out txes that have been added to a block by HB
+        self.encode = encode         # encode a list of transactions
+        self.decode = decode         # decode a list of transactions
+        self.max_rounds = max_rounds # max number of rounds of consensus
 
         assert type(sPK) is boldyreva.TBLSPublicKey
         assert type(sSK) is boldyreva.TBLSPrivateKey
@@ -32,7 +35,6 @@ class HoneyBadgerBFT():
         assert type(eSK) is tpke.TPKEPrivateKey
 
         self.round = 0  # Current block number
-        self.max_rounds = max_rounds
         self.transaction_buffer = []
         self._per_round_recv = {}  # Buffer of incoming messages
 
@@ -40,7 +42,7 @@ class HoneyBadgerBFT():
         def _recv():
             while True:
                 (sender, (r, msg)) = self._recv()
-            
+
                 # Maintain an *unbounded* recv queue for each epoch
                 if r not in self._per_round_recv:
                     # Buffer this message
@@ -158,7 +160,7 @@ class HoneyBadgerBFT():
         acs = gevent.spawn(commonsubset, pid, N, f, rbc_outputs,
                            [_.put_nowait for _ in aba_inputs],
                            [_.get for _ in aba_outputs])
-        
+
         def _recv():
             while True:
                 (sender, (tag, j, msg)) = recv()
@@ -176,4 +178,5 @@ class HoneyBadgerBFT():
         return honeybadger_block(pid, self.N, self.f, self.ePK,self. eSK,
                                  _input.get,
                                  acs_in=my_rbc_input.put_nowait, acs_out=acs.get,
-                                 tpke_bcast=tpke_bcast, tpke_recv=tpke_recv.get)
+                                 tpke_bcast=tpke_bcast, tpke_recv=tpke_recv.get,
+                                 encode=self.encode, decode=self.decode)

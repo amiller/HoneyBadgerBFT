@@ -184,7 +184,8 @@ def run_badger_node(myID, N, f, sPK, sSK, ePK, eSK):
     hbbft = HoneyBadgerBFT("sid", myID, 8, N, f,
                            sPK, sSK, ePK, eSK,
                            send, recv,
-                           tx_submit.get, tx_commit.put, 100)
+                           tx_submit.get, tx_commit.put,
+                           encode=repr, decode=ast.literal_eval)
     th = Greenlet(hbbft.run)
     th.parent_args = (N, f)
     th.name = __file__+'.honestParty(%d)' % i

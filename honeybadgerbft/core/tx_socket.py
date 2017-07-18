@@ -1,8 +1,5 @@
 import socket
 import os
-import ast
-import rlp
-from ethereum.transactions import Transaction # for RLP encode/decode
 
 def bind_datagram_socket(path):
     # Make sure the socket doesn't already exist:
@@ -18,7 +15,7 @@ def bind_datagram_socket(path):
     return sock
 
 # Assumes that we read input txes from the client before writing a response
-# (post-consensus).
+# of committed txes.
 class TxSocket():
     def __init__(self, sock, serialize, deserialize, max_size):
         self.socket = sock
@@ -40,8 +37,5 @@ class TxSocket():
 
         return self.deserialize(payload)
 
-def bind_repr_socket(path, max_size=4096):
-    return TxSocket(bind_datagram_socket(path), repr, ast.literal_eval, max_size)
-
-def bind_rlp_socket(path, max_size=65536):
-    return TxSocket(bind_datagram_socket(path), rlp.encode, rlp.decode, max_size)
+def bind_codec_socket(path, encode, decode, max_size=65536):
+    return TxSocket(bind_datagram_socket(path), encode, decode, max_size)

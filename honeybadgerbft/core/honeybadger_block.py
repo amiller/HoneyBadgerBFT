@@ -1,7 +1,6 @@
 import gevent
 from ..crypto.threshenc import tpke
 import os
-import ast
 
 def serialize_UVW( (U,V,W) ):
     # U: element of g1 (65 byte serialized for SS512)
@@ -24,7 +23,7 @@ def deserialize_UVW( UVW ):
     W = tpke.deserialize2(W)
     return (U,V,W)
 
-def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast, tpke_recv):
+def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast, tpke_recv, encode, decode):
     """The HoneyBadgerBFT algorithm for a single block
     :param pid: my identifier
     :param N: number of nodes
@@ -35,18 +34,20 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
     :param acs_in: a function to provide input to acs routine
     :param acs_out: a blocking function that returns an array of ciphertexts
     :param tpke_send:
-    :param tpke_recv: 
-    :return: 
+    :param tpke_recv:
+    :param encode: function for encoding a list of transactions
+    :param decode: function for decoding a list of transactions
+    :return:
     """
     assert type(PK) is tpke.TPKEPublicKey
     assert type(SK) is tpke.TPKEPrivateKey
 
     # Broadcast inputs are of the form (tenc(key), enc(key, transactions))
-    
-    # Threshold encrypt 
+
+    # Threshold encrypt
     # TODO: check that propose_in is the correct length, not too large
     proposed_txes = propose_in()
-    proposal = repr(proposed_txes)
+    proposal = encode(proposed_txes)
     key = os.urandom(32) # random 256-bit key
     ciphertext = tpke.encrypt(key, proposal)
     tkey = PK.encrypt(key)
@@ -100,8 +101,8 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
         (tkey, ciph) = pickle.loads(v)
         tkey = deserialize_UVW(tkey)
         key = PK.combine_shares( tkey, svec )
-        rlp_txes = tpke.decrypt(key, ciph)
-        txes = ast.literal_eval(rlp_txes)
+        raw_txes = tpke.decrypt(key, ciph)
+        txes = decode(raw_txes)
         decryptions += txes
     #print 'Done!', decryptions
 
