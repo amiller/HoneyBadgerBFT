@@ -2,7 +2,6 @@ import gevent
 from ..crypto.threshenc import tpke
 import os
 import ast
-import rlp
 
 def serialize_UVW( (U,V,W) ):
     # U: element of g1 (65 byte serialized for SS512)
@@ -39,13 +38,15 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
     :param tpke_recv: 
     :return: 
     """
+    assert type(PK) is tpke.TPKEPublicKey
+    assert type(SK) is tpke.TPKEPrivateKey
 
     # Broadcast inputs are of the form (tenc(key), enc(key, transactions))
     
     # Threshold encrypt 
     # TODO: check that propose_in is the correct length, not too large
     proposed_txes = propose_in()
-    proposal = rlp.encode(proposed_txes)
+    proposal = repr(proposed_txes)
     key = os.urandom(32) # random 256-bit key
     ciphertext = tpke.encrypt(key, proposal)
     tkey = PK.encrypt(key)
@@ -69,7 +70,7 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
             continue
         (tkey, ciph) = pickle.loads(v)
         tkey = deserialize_UVW(tkey)
-        share = SK.decrypt_share( tkey )
+        share = tpke.serialize(SK.decrypt_share( tkey ))
         # share is of the form: U_i, an element of group1
         my_shares.append(share)
 
@@ -79,6 +80,7 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
     shares_received = {}
     while len(shares_received) < f+1:
         (j, shares) = tpke_recv()
+        shares = [None if share is None else tpke.deserialize1(share) for share in shares]
         if j in shares_received:
             # TODO: alert that we received a duplicate
             print 'Received a duplicate decryption share from', j
@@ -99,7 +101,7 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
         tkey = deserialize_UVW(tkey)
         key = PK.combine_shares( tkey, svec )
         rlp_txes = tpke.decrypt(key, ciph)
-        txes = rlp.decode(rlp_txes)
+        txes = ast.literal_eval(rlp_txes)
         decryptions += txes
     #print 'Done!', decryptions
 

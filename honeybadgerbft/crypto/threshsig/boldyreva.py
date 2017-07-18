@@ -10,9 +10,9 @@ import random
 # 
 
 
-#group = PairingGroup('SS512')
+group = PairingGroup('SS512')
 #group = PairingGroup('MNT159')
-group = PairingGroup('MNT224')
+#group = PairingGroup('MNT224')
 
 def serialize(g):
     # Only work in G1 here
@@ -32,9 +32,9 @@ def deserialize2(g):
 
 g1 = group.hash('geng1', G1)
 g1.initPP()
-#g2 = g1
-g2 = group.hash('geng2', G2)
-g2.initPP()
+g2 = g1
+#g2 = group.hash('geng2', G2)
+#g2.initPP()
 ZERO = group.random(ZR, seed=59)*0
 ONE = group.random(ZR, seed=60)*0+1
 
@@ -142,5 +142,3 @@ def dealer(players=10, k=5, seed=None):
     #print i, 'ok'
 
     return public_key, private_keys
-
-

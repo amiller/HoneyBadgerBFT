@@ -7,6 +7,7 @@ from honeybadgerbft.core.reliablebroadcast import reliablebroadcast
 from honeybadgerbft.core.commonsubset import commonsubset
 from honeybadgerbft.core.honeybadger_block import honeybadger_block
 from honeybadgerbft.crypto.threshenc import tpke
+from honeybadgerbft.crypto.threshsig import boldyreva
 
 class HoneyBadgerBFT():
 
@@ -25,6 +26,11 @@ class HoneyBadgerBFT():
         self.read_txes = read_txes   # read new incoming txes
         self.write_txes = write_txes # write out txes that have been added to a block by HB
 
+        assert type(sPK) is boldyreva.TBLSPublicKey
+        assert type(sSK) is boldyreva.TBLSPrivateKey
+        assert type(ePK) is tpke.TPKEPublicKey
+        assert type(eSK) is tpke.TPKEPrivateKey
+
         self.round = 0  # Current block number
         self.max_rounds = max_rounds
         self.transaction_buffer = []
@@ -38,7 +44,7 @@ class HoneyBadgerBFT():
                 # Maintain an *unbounded* recv queue for each epoch
                 if r not in self._per_round_recv:
                     # Buffer this message
-                    assert r >= round
+                    #assert r >= round
                     self._per_round_recv[r] = Queue()
 
                 _recv = self._per_round_recv[r]
@@ -54,6 +60,7 @@ class HoneyBadgerBFT():
         def _read_txes():
             while True:
                 self.transaction_buffer += self.read_txes()
+                print 'Received submit tx'
         self._read_txes_thread = gevent.spawn(_read_txes)
 
         # let _read_txes_thread run. this helps already-pending txes make it
@@ -67,7 +74,8 @@ class HoneyBadgerBFT():
                 self._per_round_recv[r] = Queue()
 
             # Select all the transactions (TODO: actual random selection)
-            txes_to_send = self.transaction_buffer[:(self.B/self.N)]
+            tx_front = self.transaction_buffer[:self.B]
+            txes_to_send = tx_front[:(self.B/self.N)]
 
             # TODO: Wait a bit if transaction buffer is not full
 
@@ -79,7 +87,7 @@ class HoneyBadgerBFT():
             send_r = _make_send(r)
             recv_r = self._per_round_recv[r].get
             block_txes = self._run_round(r, txes_to_send, send_r, recv_r)
-            #print 'block_txes:', block_txes
+            print 'block_txes:', block_txes
 
             self.write_txes(block_txes) # output our new block of transactions
 
