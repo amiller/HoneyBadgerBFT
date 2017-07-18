@@ -30,6 +30,7 @@ def shared_coin(sid, pid, N, f, PK, SK, broadcast, receive):
         while True: # main receive loop
             # New shares for some round r, from sender i
             (i, (_, r, sig)) = receive()
+            sig = deserialize1(sig)
             assert i in range(N)
             assert r >= 0
             if i in received[r]:
@@ -66,7 +67,7 @@ def shared_coin(sid, pid, N, f, PK, SK, broadcast, receive):
     def getCoin(round):
         # I have to do mapping to 1..l
         h = PK.hash_message(str((sid, round)))
-        broadcast( ('COIN', round, SK.sign(h)) )
+        broadcast( ('COIN', round, serialize(SK.sign(h))) )
         return outputQueue[round].get()
 
     return getCoin

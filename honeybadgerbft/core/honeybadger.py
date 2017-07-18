@@ -7,6 +7,7 @@ from honeybadgerbft.core.reliablebroadcast import reliablebroadcast
 from honeybadgerbft.core.commonsubset import commonsubset
 from honeybadgerbft.core.honeybadger_block import honeybadger_block
 from honeybadgerbft.crypto.threshenc import tpke
+from honeybadgerbft.crypto.threshsig import boldyreva
 
 class HoneyBadgerBFT():
 
@@ -22,6 +23,11 @@ class HoneyBadgerBFT():
         self.eSK = eSK
         self._send = send
         self._recv = recv
+
+        assert type(sPK) is boldyreva.TBLSPublicKey
+        assert type(sSK) is boldyreva.TBLSPrivateKey
+        assert type(ePK) is tpke.TPKEPublicKey
+        assert type(eSK) is tpke.TPKEPrivateKey
 
         self.round = 0  # Current block number
         self.transaction_buffer = []
@@ -40,7 +46,7 @@ class HoneyBadgerBFT():
                 # Maintain an *unbounded* recv queue for each epoch
                 if r not in self._per_round_recv:
                     # Buffer this message
-                    assert r >= round
+                    #assert r >= round
                     self._per_round_recv[r] = Queue()
 
                 _recv = self._per_round_recv[r]
@@ -60,7 +66,8 @@ class HoneyBadgerBFT():
                 self._per_round_recv[r] = Queue()
 
             # Select all the transactions (TODO: actual random selection)
-            tx_to_send = self.transaction_buffer[:self.B]
+            tx_front = self.transaction_buffer[:self.B]
+            tx_to_send = tx_front[:self.B]
 
             # TODO: Wait a bit if transaction buffer is not full
 
@@ -71,14 +78,15 @@ class HoneyBadgerBFT():
                 return _send
             send_r = _make_send(r)
             recv_r = self._per_round_recv[r].get
-            new_tx = self._run_round(r, tx_to_send[0], send_r, recv_r)
+            new_tx = self._run_round(r, tx_to_send, send_r, recv_r)
             print 'new_tx:', new_tx
 
             # Remove all of the new transactions from the buffer
             self.transaction_buffer = [_tx for _tx in self.transaction_buffer if _tx not in new_tx]
+            print 'tx buffer', self.transaction_buffer
 
             self.round += 1 # Increment the round
-            if self.round >= 3: break # Only run one round for now
+            #if self.round >= 3: break # Only run one round for now
 
 
     def _run_round(self, r, tx_to_send, send, recv):
@@ -157,8 +165,11 @@ class HoneyBadgerBFT():
         gevent.spawn(_recv)
 
         _input = Queue(1)
-        _input.put(tx_to_send)
-        return honeybadger_block(pid, self.N, self.f, self.ePK,self. eSK,
-                                 _input.get,
-                                 acs_in=my_rbc_input.put_nowait, acs_out=acs.get,
-                                 tpke_bcast=tpke_bcast, tpke_recv=tpke_recv.get)
+        _input.put(repr(tx_to_send))
+        newtx = honeybadger_block(pid, self.N, self.f, self.ePK,self. eSK,
+                                  _input.get,
+                                  acs_in=my_rbc_input.put_nowait, acs_out=acs.get,
+                                  tpke_bcast=tpke_bcast, tpke_recv=tpke_recv.get)
+        import ast
+        import itertools
+        return list(itertools.chain(*[ast.literal_eval(_) for _ in newtx]))

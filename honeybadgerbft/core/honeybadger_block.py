@@ -37,6 +37,8 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
     :param tpke_recv: 
     :return: 
     """
+    assert type(PK) is tpke.TPKEPublicKey
+    assert type(SK) is tpke.TPKEPrivateKey
 
     # Broadcast inputs are of the form (tenc(key), enc(key, transactions))
     
@@ -66,7 +68,7 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
             continue
         (tkey, ciph) = pickle.loads(v)
         tkey = deserialize_UVW(tkey)
-        share = SK.decrypt_share( tkey )
+        share = tpke.serialize(SK.decrypt_share( tkey ))
         # share is of the form: U_i, an element of group1
         my_shares.append(share)
 
@@ -76,6 +78,7 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
     shares_received = {}
     while len(shares_received) < f+1:
         (j, shares) = tpke_recv()
+        shares = [None if share is None else tpke.deserialize1(share) for share in shares]
         if j in shares_received:
             # TODO: alert that we received a duplicate
             print 'Received a duplicate decryption share from', j

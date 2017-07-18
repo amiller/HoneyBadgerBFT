@@ -127,6 +127,8 @@ class TPKEPrivateKey(TPKEPublicKey):
         assert 0 <= i < self.l
         self.i = i
         self.SK = SK
+        assert g1 ** SK == VKs[i]
+        assert g2 ** SK == VKs[i]
 
     def decrypt_share(self, (U, V, W)):
         # ASSUMPTION
