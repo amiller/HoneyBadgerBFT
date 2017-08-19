@@ -3,6 +3,8 @@ The Honey Badger of BFT Protocols
 
 <img width=200 src="http://i.imgur.com/wqzdYl4.png"/>
 
+[![Travis branch](https://img.shields.io/travis/amiller/HoneyBadgerBFT/travis-ci.svg)](https://travis-ci.org/amiller/HoneyBadgerBFT)
+
 Most fault tolerant protocols (including RAFT, PBFT, Zyzzyva, Q/U) don't guarantee good performance when there are Byzantine faults.
 Even the so-called "robust" BFT protocols (like UpRight, RBFT, Prime, Spinning, and Stellar) have various hard-coded timeout parameters, and can only guarantee performance when the network behaves approximately as expected - hence they are best suited to well-controlled settings like corporate data centers.
 
