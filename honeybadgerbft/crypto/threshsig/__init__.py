@@ -1,3 +1,3 @@
-__all__ = ["millerrabin", "boldyreva", "boldyreva_gpic", "generate_keys"]
+__all__ = ["millerrabin", "boldyreva", "boldyreva_gipc", "generate_keys"]
 import millerrabin
 import generate_keys
