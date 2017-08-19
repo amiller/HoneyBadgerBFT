@@ -10,6 +10,8 @@ Welcome to HoneyBadgerBFT's documentation!
    :maxdepth: 1
    :caption: Contents:
    
+   libref
+
 
 Indices and tables
 ==================
