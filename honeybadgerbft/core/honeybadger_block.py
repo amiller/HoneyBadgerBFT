@@ -25,6 +25,7 @@ def deserialize_UVW( UVW ):
 
 def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast, tpke_recv):
     """The HoneyBadgerBFT algorithm for a single block
+
     :param pid: my identifier
     :param N: number of nodes
     :param f: fault tolerance
@@ -33,14 +34,14 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
     :param propose_in: a function returning a sequence of transactions
     :param acs_in: a function to provide input to acs routine
     :param acs_out: a blocking function that returns an array of ciphertexts
-    :param tpke_send:
-    :param tpke_recv: 
-    :return: 
+    :param tpke_bcast:
+    :param tpke_recv:
+    :return:
     """
 
     # Broadcast inputs are of the form (tenc(key), enc(key, transactions))
-    
-    # Threshold encrypt 
+
+    # Threshold encrypt
     # TODO: check that propose_in is the correct length, not too large
     prop = propose_in()
     key = os.urandom(32) # random 256-bit key

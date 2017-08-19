@@ -10,7 +10,7 @@ from Crypto.Cipher import AES
 # - For use in hybrid encryption schemes - first encrypt
 #   a random key, use the key for symmetric AES
 
-# Baek and Zheng 
+# Baek and Zheng
 # http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.119.1717&rep=rep1&type=pdf
 
 
@@ -22,22 +22,27 @@ group = PairingGroup('SS512')
 #group = PairingGroup('MNT224')
 
 def serialize(g):
+    """ """
     # Only work in G1 here
     return decodestring(group.serialize(g)[2:])
 
 def deserialize0(g):
+    """ """
     # Only work in G1 here
     return group.deserialize('0:'+encodestring(g))
 
 def deserialize1(g):
+    """ """
     # Only work in G1 here
     return group.deserialize('1:'+encodestring(g))
 
 def deserialize2(g):
+    """ """
     # Only work in G1 here
     return group.deserialize('2:'+encodestring(g))
 
 def xor(x,y):
+    """ """
     assert len(x) == len(y) == 32
     return ''.join(chr(ord(x_)^ord(y_)) for x_,y_ in zip(x,y))
 
@@ -50,20 +55,25 @@ ZERO = group.random(ZR)*0
 ONE = group.random(ZR)*0+1
 
 def hashG(g):
+    """ """
     return SHA256.new(serialize(g)).digest()
 
 def hashH(g, x):
+    """ """
     assert len(x) == 32
     return group.hash(serialize(g) + x, G2)
 
 class TPKEPublicKey(object):
+    """ """
     def __init__(self, l, k, VK, VKs):
+        """ """
         self.l = l
         self.k = k
         self.VK = VK
         self.VKs = VKs
 
     def lagrange(self, S, j):
+        """ """
         # Assert S is a subset of range(0,self.l)
         assert len(S) == self.k
         assert type(S) is set
@@ -78,6 +88,7 @@ class TPKEPublicKey(object):
         return num / den
 
     def encrypt(self, m):
+        """ """
         # Only encrypt 32 byte strings
         assert len(m) == 32
         #print '1'
@@ -95,18 +106,21 @@ class TPKEPublicKey(object):
         return C
 
     def verify_ciphertext(self, (U, V, W)):
+        """ """
         # Check correctness of ciphertext
         H = hashH(U, V)
         assert pair(g1, W) == pair(U, H)
         return True
 
     def verify_share(self, i, U_i, (U,V,W)):
+        """ """
         assert 0 <= i < self.l
         Y_i = self.VKs[i]
         assert pair(U_i, g2) == pair(U, Y_i)
         return True
 
     def combine_shares(self, (U,V,W), shares):
+        """ """
         # sigs: a mapping from idx -> sig
         S = set(shares.keys())
         assert S.issubset(range(self.l))
@@ -115,20 +129,23 @@ class TPKEPublicKey(object):
         # assert self.verify_ciphertext((U,V,W))
 
         mul = lambda a,b: a*b
-        res = reduce(mul, 
+        res = reduce(mul,
                      [share ** self.lagrange(S, j)
                       for j,share in shares.iteritems()], ONE)
         return xor(hashG(res), V)
 
 
 class TPKEPrivateKey(TPKEPublicKey):
+    """ """
     def __init__(self, l, k, VK, VKs, SK, i):
+        """ """
         super(TPKEPrivateKey,self).__init__(l, k, VK, VKs)
         assert 0 <= i < self.l
         self.i = i
         self.SK = SK
 
     def decrypt_share(self, (U, V, W)):
+        """ """
         # ASSUMPTION
         assert self.verify_ciphertext((U,V,W))
 
@@ -138,9 +155,10 @@ class TPKEPrivateKey(TPKEPublicKey):
         U_i = U ** self.SK
 
         return U_i
-        
+
 
 def dealer(players=10, k=5):
+    """ """
     # Random polynomial coefficients
     secret = group.random(ZR)
     a = [secret]
@@ -150,6 +168,7 @@ def dealer(players=10, k=5):
 
     # Polynomial evaluation
     def f(x):
+        """ """
         y = ZERO
         xx = ONE
         for coeff in a:
@@ -180,6 +199,7 @@ def dealer(players=10, k=5):
 
 
 def test():
+    """ """
     global PK, SKs
     PK, SKs = dealer(players=100,k=35)
 
@@ -196,7 +216,7 @@ def test():
     for i in range(1):
         random.shuffle(SS)
         S = set(SS[:PK.k])
-        
+
         m_ = PK.combine_shares(C, dict((s,shares[s]) for s in S))
         assert m_ == m
 
@@ -205,17 +225,19 @@ def test():
 ## Symmetric cryptography. Use AES with a 32-byte key
 
 BS = 16
-pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS) 
+pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
 unpad = lambda s : s[:-ord(s[len(s)-1:])]
 
 def encrypt( key, raw ):
+    """ """
     assert len(key) == 32
     raw = pad(raw)
     iv = Random.new().read( AES.block_size )
     cipher = AES.new( key, AES.MODE_CBC, iv )
-    return ( iv + cipher.encrypt( raw ) ) 
+    return ( iv + cipher.encrypt( raw ) )
 
 def decrypt( key, enc ):
+    """ """
     enc = (enc)
     iv = enc[:16]
     cipher = AES.new( key, AES.MODE_CBC, iv )

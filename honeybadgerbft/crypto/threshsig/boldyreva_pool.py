@@ -1,10 +1,11 @@
 from boldyreva import dealer, serialize, deserialize1, deserialize2
-import multiprocessing 
+import multiprocessing
 
 _pool_PK = None
 _pool = None
 
 def initialize(PK):
+    """ """
     from multiprocessing import Pool
     global _pool
     _pool = Pool()
@@ -14,9 +15,10 @@ def initialize(PK):
     _pool_PK = PK
 
 def _combine_and_verify(h, sigs):
+    """ """
     global _pool_PK
     sigs = dict(sigs)
-    for s in sigs: 
+    for s in sigs:
         sigs[s] = deserialize1(sigs[s])
     h = deserialize1(h)
     sig = PK.combine_shares(sigs)
@@ -24,6 +26,7 @@ def _combine_and_verify(h, sigs):
     return True
 
 def combine_and_verify(h, sigs):
+    """ """
     assert len(sigs) == _pool_PK.k
     sigs = dict((s,serialize(v)) for s,v in sigs.iteritems())
     h = serialize(h)
@@ -33,6 +36,7 @@ def combine_and_verify(h, sigs):
 
 
 def pool_test():
+    """ """
     global PK, SKs
     PK, SKs = dealer(players=64,k=17)
 
@@ -53,7 +57,7 @@ def pool_test():
 
     # Combine 100 times
     if 1:
-        promises = [pool.apply_async(_combine_and_verify, 
+        promises = [pool.apply_async(_combine_and_verify,
                                      (_h, sigs2))
                     for i in range(100)]
         print 'launched', time.time()

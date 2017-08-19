@@ -6,8 +6,16 @@ import math
 
 #### zfec encode ####
 def encode(K, N, m):
-    """Erasure encodes string m into N blocks, such that any K
+    """Erasure encodes string ``m`` into ``N`` blocks, such that any ``K``
     can reconstruct.
+
+    :param int K: K
+    :param int N: number of blocks to encode string ``m`` into.
+    :param int m: string to encode.
+
+    :return list: Erasure codes resulting from encoding ``m`` into
+        ``N`` blocks using ``zfec`` lib.
+
     """
     encoder = zfec.Encoder(K, N)
     assert K <= 256  # TODO: Record this assumption!
@@ -22,10 +30,11 @@ def encode(K, N, m):
 def decode(K, N, stripes):
     """Decodes an erasure-encoded string from a subset of stripes
 
-    @param stripes : a container of N elements,
-        each of which is either a string or None
-        at least K elements are strings
+    :param list stripes: a container of :math:`N` elements,
+        each of which is either a string or ``None``
+        at least :math:`K` elements are strings
         all string elements are the same length
+
     """
     assert len(stripes) == N
     blocks = []
@@ -42,7 +51,7 @@ def decode(K, N, stripes):
     padlen = K - ord(m[-1])
     m = m[:-padlen]
     return m
-    
+
 #### Merkle tree ####
 def hash(x):
     assert type(x) is str
@@ -51,10 +60,12 @@ def hash(x):
 def ceil(x): return int(math.ceil(x))
 
 def merkleTree(strList):
-    """Builds a merkle tree from a list of N strings (N at least 1)
+    """Builds a merkle tree from a list of :math:`N` strings (:math:`N`
+    at least 1)
 
-    Returns tree, an array of 2*ceil(N) strings
-    The root digest is at tree[1], tree[0] is blank
+    :return list: Merkle tree, a list of ``2*ceil(N)`` strings. The root
+         digest is at ``tree[1]``, ``tree[0]`` is blank.
+
     """
     N = len(strList)
     assert N >= 1
@@ -82,7 +93,7 @@ def merkleVerify(N, val, roothash, branch, index):
     assert 0 <= index < N
     assert type(val) is str
     assert len(branch) == ceil(math.log(N, 2))
-    # Index has information on whether we are facing a left sibling or a right sibling            
+    # Index has information on whether we are facing a left sibling or a right sibling
     tmp = hash(val)
     tindex = index
     for br in branch:
@@ -97,39 +108,43 @@ def merkleVerify(N, val, roothash, branch, index):
 def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
     """Reliable broadcast
 
-    Args
-    ----
-    pid : 0 <= pid < N
-    N   : int, at least 3
-    f   : fault tolerance, N >= 3f+1
-    leader : 0 <= leader < N
-    input  : if pid == leader, then input() is called to wait for the input value
-    receive : receive() blocks until a message is received
-       Message is of the form:
-       (i, (tag, ...)) = receive()
-       tag is one of {"VAL", "ECHO", "READY"}
-    send: sends (without blocking) a message to a designed recipient
-       send(i, (tag, ...))
+    :param int pid: ``0 <= pid < N``
+    :param int N:  at least 3
+    :param int f: fault tolerance, ``N >= 3f + 1``
+    :param int leader: ``0 <= leader < N``
+    :param input: if ``pid == leader``, then :func:`input()` is called
+        to wait for the input value
+    :param receive: :func:`receive()` blocks until a message is
+        received; message is of the form::
 
-    Messages
-    -----
-    VAL( roothash, branch[i], stripe[i] )
-        sent from Leader to each other party
-    ECHO( roothash, branch[i], stripe[i] )
-        sent after receiving VAL message
-    READY( roothash )
-        sent after receiving N-f ECHO messages
-        or after receiving f+1 Ready Messages 
+            (i, (tag, ...)) = receive()
 
-    returns m after receiving 2f+1 READY messages and N-2f ECHO messages
+        where ``tag`` is one of ``{"VAL", "ECHO", "READY"}``
+    :param send: sends (without blocking) a message to a designed
+        recipient ``send(i, (tag, ...))``
 
-    Accountability 
-    --------------
-    TODO: A large computational expense occurs when attempting to
-    decode the value from erasure codes, and recomputing to check it
-    is formed correctly. By transmitting a signature along with VAL
-    and ECHO, we can ensure that if the value is decoded but not
-    necessarily reconstructed, then evidence incriminates the leader.
+    :return str: ``m`` after receiving :math:`2f+1` ``READY`` messages
+        and :math:`N-2f` ``ECHO`` messages
+
+        .. important:: **Messages**
+
+            ``VAL( roothash, branch[i], stripe[i] )``
+                sent from ``leader`` to each other party
+            ``ECHO( roothash, branch[i], stripe[i] )``
+                sent after receiving ``VAL`` message
+            ``READY( roothash )``
+                sent after receiving :math:`N-f` ``ECHO`` messages
+                or after receiving :math:`f+1` ``READY`` messages
+
+    .. todo::
+        **Accountability**
+
+        A large computational expense occurs when attempting to
+        decode the value from erasure codes, and recomputing to check it
+        is formed correctly. By transmitting a signature along with
+        ``VAL`` and ``ECHO``, we can ensure that if the value is decoded
+        but not necessarily reconstructed, then evidence incriminates
+        the leader.
 
     """
     assert N <= 3*f + 1
@@ -147,23 +162,23 @@ def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
     # (e.g., in Bracha '86) and require larger stripes, but must wait
     # for fewer nodes to respond
     #   EchoThreshold = ceil((N + f + 1.)/2)
-    #   K = EchoThreshold - f    
+    #   K = EchoThreshold - f
 
     def broadcast(o):
         for i in range(N): send(i, o)
-        
+
     if pid == leader:
         # The leader erasure encodes the input, sending one strip to each participant
         m = input()  # block until an input is received
         assert type(m) is str
         #print 'Input received: %d bytes' % (len(m),)
-        
+
         stripes = encode(K, N, m)
         mt = merkleTree(stripes)  # full binary tree
         roothash = mt[1]
 
         for i in range(N):
-            branch = getMerkleBranch(i, mt)  
+            branch = getMerkleBranch(i, mt)
             send(i, ('VAL', roothash, branch, stripes[i]))
 
     # TODO: filter policy: if leader, discard all messages until sending VAL
@@ -198,7 +213,7 @@ def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
             except Exception, e:
                 print "Failed to validate VAL message:", e
                 continue
-            
+
             # Update
             fromLeader = roothash
             broadcast(('ECHO', roothash, branch, stripe ))

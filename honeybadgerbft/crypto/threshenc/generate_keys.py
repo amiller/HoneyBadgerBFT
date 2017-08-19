@@ -3,6 +3,7 @@ import argparse
 import cPickle
 
 def main():
+    """ """
     parser = argparse.ArgumentParser()
     parser.add_argument('players', help='The number of players')
     parser.add_argument('k', help='k')
@@ -19,4 +20,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
+
