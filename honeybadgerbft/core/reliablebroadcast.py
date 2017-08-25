@@ -132,7 +132,7 @@ def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
     necessarily reconstructed, then evidence incriminates the leader.
 
     """
-    assert N <= 3*f + 1
+    assert N >= 3*f + 1
     assert f >= 0
     assert 0 <= leader < N
     assert 0 <= pid    < N
