@@ -89,7 +89,9 @@ def _test_rbc1(N=4, f=1, leader=None, seed=None):
     assert [t.value for t in threads] == [m]*N
 
 def test_rbc1():
-    for i in range(20): _test_rbc1(seed=i)
+    for i in range(20):
+        _test_rbc1(seed=i)
+
 
 def _test_rbc2(N=4, f=1, leader=None, seed=None):
     # Crash up to f nodes
