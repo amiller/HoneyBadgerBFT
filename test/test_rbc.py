@@ -1,4 +1,3 @@
-import unittest
 from gevent import Greenlet
 from gevent.queue import Queue
 import gevent
