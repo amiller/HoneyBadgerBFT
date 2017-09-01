@@ -5,27 +5,29 @@ from gevent.queue import Queue
 import hashlib
 
 class CommonCoinFailureException(Exception):
+    """Raised for common coin failures."""
     pass
 
 hash = lambda x: hashlib.sha256(x).digest()
 
 def shared_coin(sid, pid, N, f, PK, SK, broadcast, receive):
-    '''A shared coin based on threshold signatures
+    """A shared coin based on threshold signatures
+
     :param sid: a unique instance id
     :param pid: my id number
     :param N: number of parties
-    :param f: fault tolerance, f+1 shares needed to get the coin
-    :param PK: boldyreva.TBLSPublicKey
-    :param SK: boldyreva.TBLSPrivateKey
+    :param f: fault tolerance, :math:`f+1` shares needed to get the coin
+    :param PK: ``boldyreva.TBLSPublicKey``
+    :param SK: ``boldyreva.TBLSPrivateKey``
     :param broadcast: broadcast channel
     :param receive: receive channel
-    :return: a function getCoin(), where getCoin(r) blocks
-    '''
+    :return: a function ``getCoin()``, where ``getCoin(r)`` blocks
+    """
     assert PK.k == f+1
     assert PK.l == N
     received = defaultdict(dict)
     outputQueue = defaultdict(lambda: Queue(1))
-    
+
     def _recv():
         while True: # main receive loop
             # New shares for some round r, from sender i
@@ -36,15 +38,15 @@ def shared_coin(sid, pid, N, f, PK, SK, broadcast, receive):
                 print "redundant coin sig received", (sid, pid, i, r)
                 continue
 
-            h = PK.hash_message(str((sid, r)))            
+            h = PK.hash_message(str((sid, r)))
 
-            # TODO: Accountability: Optimistically skip verifying 
+            # TODO: Accountability: Optimistically skip verifying
             # each share, knowing evidence available later
             try: PK.verify_share(sig, i, h)
             except AssertionError:
                 print "Signature share failed!", (sid, pid, i, r)
                 continue
-            
+
             received[r][i] = sig
 
             # After reaching the threshold, compute the output and
@@ -64,6 +66,12 @@ def shared_coin(sid, pid, N, f, PK, SK, broadcast, receive):
     Greenlet(_recv).start()
 
     def getCoin(round):
+        """Gets a coin.
+
+        :param round: the epoch/round.
+        :returns: a coin.
+
+        """
         # I have to do mapping to 1..l
         h = PK.hash_message(str((sid, round)))
         broadcast( ('COIN', round, SK.sign(h)) )

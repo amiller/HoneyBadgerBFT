@@ -3,6 +3,7 @@ import argparse
 import cPickle
 
 def main():
+    """ """
     parser = argparse.ArgumentParser()
     parser.add_argument('players', help='The number of players');
     args = parser.parse_args()

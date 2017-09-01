@@ -12,11 +12,12 @@ from collections import defaultdict
 
 def simple_router(N, maxdelay=0.005, seed=None):
     """Builds a set of connected channels, with random delay
-    @return (receives, sends)
+
+    :return: (receives, sends)
     """
     rnd = random.Random(seed)
     #if seed is not None: print 'ROUTER SEED: %f' % (seed,)
-    
+
     queues = [Queue() for _ in range(N)]
     _threads = []
 
@@ -36,7 +37,7 @@ def simple_router(N, maxdelay=0.005, seed=None):
             #print 'RECV %8s [%2d -> %2d]' % (o[0], i, j)
             return (i,o)
         return _recv
-        
+
     return ([makeSend(i) for i in range(N)],
             [makeRecv(j) for j in range(N)])
 
@@ -48,7 +49,7 @@ def _test_honeybadger(N=4, f=1, seed=None):
     sPK, sSKs = dealer(N, f+1, seed=seed)
     # Generate threshold enc keys
     ePK, eSKs = tpke.dealer(N, f+1)
-    
+
     rnd = random.Random(seed)
     #print 'SEED:', seed
     router_seed = rnd.random()
@@ -71,7 +72,7 @@ def _test_honeybadger(N=4, f=1, seed=None):
 
     for i in range(N):
         badgers[i].submit_tx('<[HBBFT Input %d]>' % (i+20))
-        
+
     #gevent.killall(threads[N-f:])
     #gevent.sleep(3)
     #for i in range(N-f, N):
@@ -81,7 +82,7 @@ def _test_honeybadger(N=4, f=1, seed=None):
 
         # Consistency check
         assert len(set(outs)) == 1
-        
+
     except KeyboardInterrupt:
         gevent.killall(threads)
         raise

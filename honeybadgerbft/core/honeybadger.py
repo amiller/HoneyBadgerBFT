@@ -9,6 +9,25 @@ from honeybadgerbft.core.honeybadger_block import honeybadger_block
 from honeybadgerbft.crypto.threshenc import tpke
 
 class HoneyBadgerBFT():
+    """HoneyBadgerBFT object used to run the protocol.
+
+    :param str sid: The base name of the common coin that will be used to
+        derive a nonce to uniquely identify the coin.
+    :param int pid: Node id.
+    :param int B: Batch size of transactions.
+    :param int N: Number of nodes in the network.
+    :param int f: Number of faulty nodes that can be tolerated.
+    :param str sPK: Public key of the threshold signature
+        (:math:`\mathsf{TSIG}`) scheme.
+    :param str sSK: Signing key of the threshold signature
+        (:math:`\mathsf{TSIG}`) scheme.
+    :param str ePK: Public key of the threshold encryption
+        (:math:`\mathsf{TPKE}`) scheme.
+    :param str eSK: Signing key of the threshold encryption
+        (:math:`\mathsf{TPKE}`) scheme.
+    :param send:
+    :param recv:
+    """
 
     def __init__(self, sid, pid, B, N, f, sPK, sSK, ePK, eSK, send, recv):
         self.sid = sid
@@ -29,14 +48,21 @@ class HoneyBadgerBFT():
 
 
     def submit_tx(self, tx):
+        """Appends the given transaction to the transaction buffer.
+
+        :param tx: Transaction to append to the buffer.
+        """
         print 'submit_tx', self.pid, tx
         self.transaction_buffer.append(tx)
 
     def run(self):
+        """Run the HoneyBadgerBFT protocol."""
+
         def _recv():
+            """Receive messages."""
             while True:
                 (sender, (r, msg)) = self._recv()
-            
+
                 # Maintain an *unbounded* recv queue for each epoch
                 if r not in self._per_round_recv:
                     # Buffer this message
@@ -82,6 +108,13 @@ class HoneyBadgerBFT():
 
 
     def _run_round(self, r, tx_to_send, send, recv):
+        """Run one protocol round.
+
+        :param int r: round id
+        :param tx_to_send: Transaction(s) to process.
+        :param send:
+        :param recv:
+        """
         # Unique sid for each round
         sid = self.sid + ':' + str(r)
         pid = self.pid
@@ -89,6 +122,10 @@ class HoneyBadgerBFT():
         f = self.f
 
         def broadcast(o):
+            """Multicast the given input ``o``.
+
+            :param o: Input to multicast.
+            """
             for j in range(N): send(j, o)
 
         # Launch ACS, ABA, instances
@@ -104,7 +141,15 @@ class HoneyBadgerBFT():
         print pid, r, 'tx_to_send:', tx_to_send
 
         def _setup(j):
+            """Setup the sub protocols RBC, BA and common coin.
+
+            :param int j: Node index for which the setup is being done.
+            """
             def coin_bcast(o):
+                """Common coin multicast operation.
+
+                :param o: Value to multicast.
+                """
                 broadcast(('ACS_COIN', j, o))
 
             coin_recvs[j] = Queue()
@@ -113,6 +158,10 @@ class HoneyBadgerBFT():
                                coin_bcast, coin_recvs[j].get)
 
             def aba_bcast(o):
+                """Binary Byzantine Agreement multicast operation.
+
+                :param o: Value to multicast.
+                """
                 broadcast(('ACS_ABA', j, o))
 
             aba_recvs[j] = Queue()
@@ -121,6 +170,10 @@ class HoneyBadgerBFT():
                                aba_bcast, aba_recvs[j].get)
 
             def rbc_send(k, o):
+                """Reliable broadcast operation.
+
+                :param o: Value to broadcast.
+                """
                 send(k, ('ACS_RBC', j, o))
 
             # Only leader gets input
@@ -135,6 +188,7 @@ class HoneyBadgerBFT():
 
         # One instance of TPKE
         def tpke_bcast(o):
+            """Threshold encryption broadcast."""
             broadcast(('TPKE', 0, o))
 
         tpke_recv = Queue()
@@ -143,8 +197,9 @@ class HoneyBadgerBFT():
         acs = gevent.spawn(commonsubset, pid, N, f, rbc_outputs,
                            [_.put_nowait for _ in aba_inputs],
                            [_.get for _ in aba_outputs])
-        
+
         def _recv():
+            """Receive broadcasted value."""
             while True:
                 (sender, (tag, j, msg)) = recv()
                 if   tag == 'ACS_COIN': coin_recvs[j].put_nowait((sender,msg))

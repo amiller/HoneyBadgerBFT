@@ -5,17 +5,18 @@ import time
 import random
 
 if '_procs' in globals():
-    for p,pipe in _procs: 
+    for p,pipe in _procs:
         p.terminate()
         p.join()
     del _procs
 _procs = []
 
 def _worker(PK,pipe):
+    """ """
     while True:
         (h, sigs) = pipe.get()
         sigs = dict(sigs)
-        for s in sigs: 
+        for s in sigs:
             sigs[s] = deserialize1(sigs[s])
         h = deserialize1(h)
         sig = PK.combine_shares(sigs)
@@ -25,6 +26,7 @@ def _worker(PK,pipe):
 myPK = None
 
 def initialize(PK, size=1):
+    """ """
     global _procs, myPK
     myPK = PK
     _procs = []
@@ -34,6 +36,7 @@ def initialize(PK, size=1):
         _procs.append((p,w))
 
 def combine_and_verify(h, sigs):
+    """ """
     # return True  # we are skipping the verification
     assert len(sigs) == myPK.k
     sigs = dict((s,serialize(v)) for s,v in sigs.iteritems())
@@ -41,11 +44,12 @@ def combine_and_verify(h, sigs):
     # Pick a random process
     _,pipe = _procs[random.choice(range(len(_procs)))] #random.choice(_procs)
     pipe.put((h,sigs))
-    (r,s) = pipe.get() 
+    (r,s) = pipe.get()
     assert r == True
     return s
 
 def pool_test():
+    """ """
     global PK, SKs
     PK, SKs = dealer(players=64,k=17)
 
@@ -62,7 +66,7 @@ def pool_test():
 
     # Combine 100 times
     if 1:
-        #promises = [pool.apply_async(_combine_and_verify, 
+        #promises = [pool.apply_async(_combine_and_verify,
         #                             (_h, sigs2))
         #            for i in range(100)]
         threads = []
