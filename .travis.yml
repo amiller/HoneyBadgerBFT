@@ -6,23 +6,12 @@ env:
   - LIBRARY_PATH=/usr/local/lib
   - LD_LIBRARY_PATH=/usr/local/lib
 
-before_install:
-  - sudo .ci/travis-before-install.sh
-  - sudo apt-get update -qq
-  - sudo apt-get -y install flex bison libgmp-dev libmpc-dev python-dev libssl-dev
-  - wget https://crypto.stanford.edu/pbc/files/pbc-0.5.14.tar.gz
-  - tar -xvf pbc-0.5.14.tar.gz
-  - cd pbc-0.5.14
-  - ./configure
-  - make
-  - sudo make install
-  - cd ..
-
 matrix:
   include:
     - env: BUILD=tests
     - env: BUILD=docs
 
+before_install: sudo .ci/travis-before-install.sh
 install:  .ci/travis-install.sh
 script: .ci/travis-script.sh
 after_success: .ci/travis-after-success.sh
