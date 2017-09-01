@@ -23,6 +23,8 @@ def simple_router(N, maxdelay=0.005, seed=None):
     def makeSend(i):
         def _send(j, o):
             delay = rnd.random() * maxdelay
+            if not i%3:
+                delay *= 1000
             #delay = 0.1
             #print 'SEND   %8s [%2d -> %2d] %2.1f' % (o[0], i, j, delay*1000), o[1:]
             gevent.spawn_later(delay, queues[j].put_nowait, (i,o))

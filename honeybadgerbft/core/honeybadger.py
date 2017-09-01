@@ -40,7 +40,7 @@ class HoneyBadgerBFT():
                 # Maintain an *unbounded* recv queue for each epoch
                 if r not in self._per_round_recv:
                     # Buffer this message
-                    assert r >= round
+                    assert r >= self.round      # pragma: no cover
                     self._per_round_recv[r] = Queue()
 
                 _recv = self._per_round_recv[r]
