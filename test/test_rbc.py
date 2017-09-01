@@ -1,10 +1,13 @@
-import unittest
+import random
+
+import gevent
 from gevent import Greenlet
 from gevent.queue import Queue
-import gevent
-import random
+from pytest import mark
+
 from honeybadgerbft.core.reliablebroadcast import reliablebroadcast, encode, decode
 from honeybadgerbft.core.reliablebroadcast import hash, merkleTree, getMerkleBranch, merkleVerify
+
 
 ### Merkle tree
 def test_merkletree0():
@@ -86,8 +89,12 @@ def _test_rbc1(N=4, f=1, leader=None, seed=None):
     gevent.joinall(threads)
     assert [t.value for t in threads] == [m]*N
 
-def test_rbc1():
-    for i in range(20): _test_rbc1(seed=i)
+
+@mark.parametrize('N,f', ((4, 1), (5, 1), (8, 2)))
+def test_rbc1(N, f):
+    for i in range(20):
+        _test_rbc1(N=N, f=f, seed=i)
+
 
 def _test_rbc2(N=4, f=1, leader=None, seed=None):
     # Crash up to f nodes
