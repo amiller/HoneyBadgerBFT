@@ -1,6 +1,4 @@
 [run]
 source = .
 omit = *test*, docs/*, setup.py
-
-[run]
 concurrency = gevent
