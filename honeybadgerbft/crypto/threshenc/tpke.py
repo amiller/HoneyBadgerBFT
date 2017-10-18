@@ -198,30 +198,6 @@ def dealer(players=10, k=5):
     return public_key, private_keys
 
 
-def test():
-    """ """
-    global PK, SKs
-    PK, SKs = dealer(players=100,k=35)
-
-    m = SHA256.new('how').digest()
-    C = PK.encrypt(m)
-
-    assert PK.verify_ciphertext(C)
-
-    shares = [sk.decrypt_share(C) for sk in SKs]
-    for i,share in enumerate(shares):
-        assert PK.verify_share(i, share, C)
-
-    SS = range(PK.l)
-    for i in range(1):
-        random.shuffle(SS)
-        S = set(SS[:PK.k])
-
-        m_ = PK.combine_shares(C, dict((s,shares[s]) for s in S))
-        assert m_ == m
-
-
-
 ## Symmetric cryptography. Use AES with a 32-byte key
 
 BS = 16
