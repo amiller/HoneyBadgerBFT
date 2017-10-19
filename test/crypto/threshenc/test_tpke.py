@@ -67,3 +67,14 @@ def test_ciphertext_generation():
     UV = decodestring(group.serialize(U)[2:]) + V
     H = group.hash(UV, G2)
     assert pair(g1, W) == pair(U, H)
+
+
+def test_xor():
+    from honeybadgerbft.crypto.threshenc.tpke import xor
+    x = ('l\xa1=R\xcap\xc8\x83\xe0\xf0\xbb\x10\x1eBZ\x89'
+         '\xe8bM\xe5\x1d\xb2\xd29%\x93\xafj\x84\x11\x80\x90')
+    y = ('\xb2\xdf\xfeQ3 J7H\xe8yU6S\x05zU\x85\xd3'
+         '\xc1o\xa8E\xa9\xef\x02\x98\x05\xe46\xbf\x9c')
+    expected_result = ("\xde~\xc3\x03\xf9P\x82\xb4\xa8\x18\xc2E(\x11_"
+                       "\xf3\xbd\xe7\x9e$r\x1a\x97\x90\xca\x917o`'?\x0c")
+    assert xor(x, y) == expected_result
