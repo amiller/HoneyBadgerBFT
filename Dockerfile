@@ -1,4 +1,4 @@
-FROM python:2.7.13-stretch
+FROM python:2.7.14
 
 # Default cluster arguments. Override with "-e"
 #
