@@ -68,21 +68,21 @@ Clone the code:
 Generate the keys
 + Threshold Signature Keys
 
-    python -m HoneyBadgerBFT.commoncoin.generate_keys N (t+1) > thsigN_t.keys
+    python -m honeybadgerbft.crypto.threshsig.generate_keys N (t+1) > thsigN_t.keys
 
 + ECDSA Keys
 
-    python -m HoneyBadgerBFT.ecdsa.generate_keys_ecdsa N > ecdsa.keys
+    python -m honeybadgerbft.crypto.ecdsa.generate_keys_ecdsa N > ecdsa.keys
 
 Threshold Encryption Keys
 
-    python -m HoneyBadgerBFT.threshenc.generate_keys N (N-2t) > thencN_t.keys
+    python -m honeybadgerbft.crypto.threshenc.generate_keys N (N-2t) > thencN_t.keys
 
 Usually, we run ecdsa key generation with large N just once because it can be re-used for different N/t.
 And we can store threshold signature keys and threshold encryption keys into different files for convenience.
 
 ##### Launch the code
-    python -m HoneyBadgerBFT.test.honest_party_test -k thsigN_t.keys -e ecdsa.keys -b B -n N -t t -c thencN_t.keys
+    python -m experiments.honest_party_test -k thsigN_t.keys -e ecdsa.keys -b B -n N -t t -c thencN_t.keys
 
 Notice that each party will expect at least NlgN many transactions. And usually there is a key exception after they finish the consensus. Please just ignore it.
 
