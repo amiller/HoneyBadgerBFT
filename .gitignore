@@ -10,5 +10,10 @@ ec2/hosts
 *_keys
 *.keys
 
+# Unit test / coverage reports
+.cache
+.coverage
+.pytest_cache
+
 # Sphinx documentation
 docs/_build/
