@@ -120,10 +120,10 @@ def _test_rbc1(N=4, f=1, leader=None, seed=None):
     assert [t.value for t in threads] == [m]*N
 
 
+@mark.parametrize('seed', range(20))
 @mark.parametrize('N,f', ((4, 1), (5, 1), (8, 2)))
-def test_rbc1(N, f):
-    for i in range(20):
-        _test_rbc1(N=N, f=f, seed=i)
+def test_rbc1(N, f, seed):
+    _test_rbc1(N=N, f=f, seed=seed)
 
 
 def _test_rbc2(N=4, f=1, leader=None, seed=None):
@@ -160,8 +160,11 @@ def _test_rbc2(N=4, f=1, leader=None, seed=None):
     for i,t in enumerate(threads):
         if i not in crashed: assert t.value == m
 
-def test_rbc2():
-    for i in range(20): _test_rbc2(seed=20)
+
+@mark.parametrize('seed', range(20))
+@mark.parametrize('N,f', ((4, 1), (5, 1), (8, 2)))
+def test_rbc2(N, f, seed):
+    _test_rbc2(N=N, f=f, seed=seed)
 
 
 @mark.parametrize('seed', range(20))
