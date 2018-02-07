@@ -44,7 +44,8 @@ def decode(K, N, stripes):
         blocks.append(block)
         blocknums.append(i)
         if len(blocks) == K: break
-    else: raise ValueError("Too few to recover")
+    else:
+        raise ValueError("Too few to recover")
     decoder = zfec.Decoder(K, N)
     rec = decoder.decode(blocks, blocknums)
     m = ''.join(rec)
