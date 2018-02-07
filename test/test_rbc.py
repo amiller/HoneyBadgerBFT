@@ -3,7 +3,7 @@ import random
 import gevent
 from gevent import Greenlet
 from gevent.queue import Queue
-from pytest import mark
+from pytest import mark, raises
 
 from honeybadgerbft.core.reliablebroadcast import reliablebroadcast, encode, decode
 from honeybadgerbft.core.reliablebroadcast import hash, merkleTree, getMerkleBranch, merkleVerify
@@ -37,8 +37,10 @@ def test_zfec1():
     assert decode(K, N, _s) == m
     _s[3] = _s[7] = None
     assert decode(K, N, _s) == m
-    # _s[8] = None
-    # assertRaises(ValueError, decode, K, N, _s)
+    _s[8] = None
+    with raises(ValueError) as exc:
+        decode(K, N, _s)
+    assert exc.value.message == 'Too few to recover'
 
 ### RBC
 def simple_router(N, maxdelay=0.01, seed=None):
