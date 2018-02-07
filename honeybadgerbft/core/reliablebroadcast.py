@@ -225,8 +225,9 @@ def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
                or sender in echoSenders:
                 print "Redundant ECHO"
                 continue
-            try: assert merkleVerify(N, stripe, roothash, branch, sender)
-            except e:
+            try:
+                assert merkleVerify(N, stripe, roothash, branch, sender)
+            except AssertionError as e:
                 print "Failed to validate ECHO message:", e
                 continue
 
