@@ -68,6 +68,36 @@ def simple_router(N, maxdelay=0.01, seed=None):
     return ([makeSend(i) for i in range(N)],
             [makeRecv(j) for j in range(N)])
 
+
+def byzantine_router(N, maxdelay=0.01, seed=None, **byzargs):
+    """Builds a set of connected channels, with random delay,
+    and possibly byzantine behavior.
+    """
+    rnd = random.Random(seed)
+    queues = [Queue() for _ in range(N)]
+
+    def makeSend(i):
+        def _send(j, o):
+            delay = rnd.random() * maxdelay
+            if i == byzargs.get('byznode'):
+                if o[0] == byzargs.get('message_type'):
+                    screwed_up = list(o)
+                    if o[0] in ('VAL', 'ECHO'):
+                        screwed_up[3] = 'screw it'
+                    o = tuple(screwed_up)
+            gevent.spawn_later(delay, queues[j].put, (i, o))
+        return _send
+
+    def makeRecv(j):
+        def _recv():
+            i, o = queues[j].get()
+            return i ,o
+        return _recv
+
+    return ([makeSend(i) for i in range(N)],
+            [makeRecv(j) for j in range(N)])
+
+
 def _test_rbc1(N=4, f=1, leader=None, seed=None):
     # Test everything when runs are OK
     #if seed is not None: print 'SEED:', seed
@@ -132,5 +162,31 @@ def _test_rbc2(N=4, f=1, leader=None, seed=None):
 
 def test_rbc2():
     for i in range(20): _test_rbc2(seed=20)
+
+
+@mark.parametrize('seed', range(20))
+@mark.parametrize('tag', ('VAL', 'ECHO'))
+@mark.parametrize('N,f', ((4, 1), (5, 1), (8, 2)))
+def test_rbc_when_merkle_verify_fails(N, f, tag, seed):
+    rnd = random.Random(seed)
+    leader = rnd.randint(0, N-1)
+    byznode = 1
+    sends, recvs = byzantine_router(
+        N, seed=seed, byznode=byznode, message_type=tag)
+    threads = []
+    leader_input = Queue(1)
+    for pid in range(N):
+        sid = 'sid{}'.format(leader)
+        input = leader_input.get if pid == leader else None
+        t = Greenlet(reliablebroadcast, sid, pid, N, f, leader, input, recvs[pid], sends[pid])
+        t.start()
+        threads.append(t)
+
+    m = "Hello! This is a test message."
+    leader_input.put(m)
+    completed_greenlets = gevent.joinall(threads, timeout=0.5)
+    expected_rbc_result = None if leader == byznode and tag == 'VAL' else m
+    assert all([t.value == expected_rbc_result for t in threads])
+
 
 # TODO: Test more edge cases, like Byzantine behavior
