@@ -1,5 +1,11 @@
 import random
+from base64 import encodestring
+from importlib import import_module
+
+from pytest import mark
+
 from honeybadgerbft.crypto.threshsig.boldyreva import dealer
+
 
 def test_boldyreva():
     global PK, SKs
@@ -19,3 +25,13 @@ def test_boldyreva():
         S = set(SS[:PK.k])
         sig = PK.combine_shares(dict((s,sigs[s]) for s in S))
         assert PK.verify_signature(sig, h)
+
+
+@mark.parametrize('n', (0, 1, 2))
+@mark.parametrize('pairing_group', ('MNT224',), indirect=('pairing_group',))
+def test_deserialize(pairing_group, n, g):
+    from honeybadgerbft.crypto.threshsig import boldyreva
+    deserialize_func = getattr(boldyreva, 'deserialize{}'.format(n))
+    base64_encoded_data = '{}:{}'.format(n, encodestring(g))
+    assert (deserialize_func(g) ==
+            pairing_group.deserialize(base64_encoded_data))

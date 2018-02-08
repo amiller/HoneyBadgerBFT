@@ -1,8 +1,9 @@
-from base64 import decodestring
+from base64 import encodestring, decodestring
 from random import shuffle
 
 from Crypto.Hash import SHA256
 from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, pair
+from pytest import mark
 
 
 def test_tpke():
@@ -78,3 +79,13 @@ def test_xor():
     expected_result = ("\xde~\xc3\x03\xf9P\x82\xb4\xa8\x18\xc2E(\x11_"
                        "\xf3\xbd\xe7\x9e$r\x1a\x97\x90\xca\x917o`'?\x0c")
     assert xor(x, y) == expected_result
+
+
+@mark.parametrize('n', (0, 1, 2))
+@mark.parametrize('pairing_group', ('SS512',), indirect=('pairing_group',))
+def test_deserialize(pairing_group, n, g):
+    from honeybadgerbft.crypto.threshenc import tpke
+    deserialize_func = getattr(tpke, 'deserialize{}'.format(n))
+    base64_encoded_data = '{}:{}'.format(n, encodestring(g))
+    assert (deserialize_func(g) ==
+            pairing_group.deserialize(base64_encoded_data))
