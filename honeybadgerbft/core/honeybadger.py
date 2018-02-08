@@ -107,13 +107,14 @@ class HoneyBadgerBFT():
                     self._per_round_recv[r] = Queue()
 
                 _recv = self._per_round_recv[r]
-                if _recv is None:
-                    # We have already closed this
-                    # round and will stop participating!
-                    pass
-                else:
+                if _recv is not None:
                     # Queue it
                     _recv.put( (sender, msg) )
+
+                # else:
+                # We have already closed this
+                # round and will stop participating!
+
         self._recv_thread = gevent.spawn(_recv)
 
         while True:
