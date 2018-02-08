@@ -1,14 +1,30 @@
-import unittest
-import gevent
 import random
+from collections import defaultdict
+
+import gevent
 from gevent.event import Event
 from gevent.queue import Queue
+from pytest import fixture, mark, raises
+
 import honeybadgerbft.core.honeybadger
 reload(honeybadgerbft.core.honeybadger)
 from honeybadgerbft.core.honeybadger import HoneyBadgerBFT
 from honeybadgerbft.crypto.threshsig.boldyreva import dealer
 from honeybadgerbft.crypto.threshenc import tpke
-from collections import defaultdict
+from honeybadgerbft.core.honeybadger import BroadcastTag
+
+
+@fixture
+def recv_queues(request):
+    from honeybadgerbft.core.honeybadger import BroadcastReceiverQueues
+    number_of_nodes = getattr(request, 'N', 4)
+    queues = {
+        tag.value: [Queue() for _ in range(number_of_nodes)]
+        for tag in BroadcastTag if tag != BroadcastTag.TPKE
+    }
+    queues[BroadcastTag.TPKE.value] = Queue()
+    return BroadcastReceiverQueues(**queues)
+
 
 def simple_router(N, maxdelay=0.005, seed=None):
     """Builds a set of connected channels, with random delay
@@ -87,8 +103,41 @@ def _test_honeybadger(N=4, f=1, seed=None):
         gevent.killall(threads)
         raise
 
-from nose2.tools import params
 
 def test_honeybadger():
     _test_honeybadger()
 
+
+@mark.parametrize('message', ('broadcast message',))
+@mark.parametrize('node_id', range(4))
+@mark.parametrize('tag', [e.value for e in BroadcastTag])
+@mark.parametrize('sender', range(4))
+def test_broadcast_receiver_loop(sender, tag, node_id, message, recv_queues):
+    from honeybadgerbft.core.honeybadger import broadcast_receiver_loop
+    recv = Queue()
+    recv.put((sender, (tag, node_id, message)))
+    gevent.spawn(broadcast_receiver_loop, recv.get, recv_queues)
+    recv_queue = getattr(recv_queues, tag)
+    if tag != BroadcastTag.TPKE.value:
+        recv_queue = recv_queue[node_id]
+    assert recv_queue,get() == (sender, message)
+
+
+@mark.parametrize('message', ('broadcast message',))
+@mark.parametrize('node_id', range(4))
+@mark.parametrize('tag', ('BogusTag', None, 123))
+@mark.parametrize('sender', range(4))
+def test_broadcast_receiver_loop_raises(sender, tag, node_id, message, recv_queues):
+    from honeybadgerbft.core.honeybadger import broadcast_receiver_loop
+    from honeybadgerbft.exceptions import UnknownTagError
+    recv = Queue()
+    recv.put((sender, (tag, node_id, message)))
+    with raises(UnknownTagError) as exc:
+        broadcast_receiver_loop(recv.get, recv_queues)
+    expected_err_msg = 'Unknown tag: {}! Must be one of {}.'.format(
+        tag, BroadcastTag.__members__.keys())
+    assert exc.value.message == expected_err_msg
+    recv_queues_dict = recv_queues._asdict()
+    tpke_queue = recv_queues_dict.pop(BroadcastTag.TPKE.value)
+    assert tpke_queue.empty()
+    assert all([q.empty() for queues in recv_queues_dict.values() for q in queues])

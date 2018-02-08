@@ -19,6 +19,7 @@ from setuptools import setup
 
 
 install_requires = [
+    'enum34',   # TODO post python3 port: remove
     'gevent',
     'gmpy2',
     'pysocks',
