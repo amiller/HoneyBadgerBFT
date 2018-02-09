@@ -43,6 +43,17 @@ g2.initPP()
 ZERO = group.random(ZR, seed=59)*0
 ONE = group.random(ZR, seed=60)*0+1
 
+
+def polynom_eval(x, coefficients):
+    """Polynomial evaluation."""
+    y = ZERO
+    xx = ONE
+    for coeff in coefficients:
+        y += coeff * xx
+        xx *= x
+    return y
+
+
 class TBLSPublicKey(object):
     """ """
     def __init__(self, l, k, VK, VKs):
@@ -132,18 +143,9 @@ def dealer(players=10, k=5, seed=None):
     assert len(a) == k
     secret = a[0]
 
-    # Polynomial evaluation
-    def f(x):
-        y = ZERO
-        xx = ONE
-        for coeff in a:
-            y += coeff * xx
-            xx *= x
-        return y
-
     # Shares of master secret key
-    SKs = [f(i) for i in range(1, players+1)]
-    assert f(0) == secret
+    SKs = [polynom_eval(i, a) for i in range(1, players+1)]
+    assert polynom_eval(0, a) == secret
 
     # Verification keys
     VK = g2 ** secret
@@ -155,8 +157,8 @@ def dealer(players=10, k=5, seed=None):
 
     # Check reconstruction of 0
     S = set(range(0,k))
-    lhs = f(0)
-    rhs = sum(public_key.lagrange(S,j) * f(j+1) for j in S)
+    lhs = polynom_eval(0, a)
+    rhs = sum(public_key.lagrange(S,j) * polynom_eval(j+1, a) for j in S)
     assert lhs == rhs
     #print i, 'ok'
 

@@ -35,6 +35,7 @@ tests_require = [
     'flake8',
     'pytest',
     'pytest-cov',
+    'pytest-mock',
     'pytest-sugar',
     'nose2',
 ]
