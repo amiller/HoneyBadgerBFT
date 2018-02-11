@@ -65,6 +65,15 @@ def tbls_public_key(vk, vks):
 
 
 @fixture
+def tbls_private_keys(vk, vks, sks):
+    from honeybadgerbft.crypto.threshsig.boldyreva import TBLSPrivateKey
+    players = 10    # TODO bind to fixtures
+    count = 5   # TODO bind to fixtures
+    return [TBLSPrivateKey(players, count, vk, vks, sk, i)
+            for i, sk in enumerate(sks)]
+
+
+@fixture
 def serialized_tbls_public_key_dict(tbls_public_key):
     from honeybadgerbft.crypto.threshsig.boldyreva import serialize
     return {
