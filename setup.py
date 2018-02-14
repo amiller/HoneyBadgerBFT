@@ -50,7 +50,7 @@ docs_require = [
     #  - https://github.com/pallets/jinja/issues/643,
     #  - https://github.com/pallets/jinja/issues/653
     'jinja2==2.8',
-    'Sphinx',
+    'Sphinx~=1.6.7',
     'sphinx-autobuild',
     'sphinx_rtd_theme',
 ]
