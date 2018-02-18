@@ -90,10 +90,18 @@ def byzantine_router(N, maxdelay=0.01, seed=None, **byzargs):
             if (byzargs.get('fake_sender') and
                     o[0] == 'VAL' and i == byzargs.get('byznode')):
                 gevent.spawn_later(delay, queues[j].put, ((i + 1) % 4, o))
+            elif byzargs.get('slow_echo') and i != 2:
+                if o[0] == 'READY':
+                    gevent.spawn_later(delay*0.001, queues[j].put, (i, o))
+                elif o[0] == 'ECHO':
+                    gevent.spawn_later(delay*10, queues[j].put, (i, o))
+                else:
+                    gevent.spawn_later(delay, queues[j].put, (i, o))
             else:
                 gevent.spawn_later(delay, queues[j].put, (i, o))
             if byzargs.get('redundant_message_type') == o[0]:
                 gevent.spawn_later(delay, queues[j].put, (i, o))
+
         return _send
 
     def makeRecv(j):
@@ -243,6 +251,40 @@ def test_rbc_with_redundant_message(N, f, tag, seed):
     m = "Hello! This is a test message."
     leader_input.put(m)
     completed_greenlets = gevent.joinall(threads, timeout=0.5)
+    expected_rbc_result = m
+    assert all([t.value == expected_rbc_result for t in threads])
+
+
+@mark.parametrize('seed', range(1))
+@mark.parametrize('N,f', ((4, 1),))
+def test_rbc_decode_in_echo_handling_step(N, f, seed):
+    """The goal of this test is to simply force the decode operation
+    to take place upon rception of an ECHO message, (when other
+    necessary conditions are met), as opposed to the operation taking
+    place upon reception of a READY message.
+
+    The test is perhaps hackish at best, but nevertheless does achieve
+    its intent.
+
+    The test slows down the broadcasting of ECHO messages, meanwhile
+    speeding up the broadcasting of READY messages.
+    """
+    rnd = random.Random(seed)
+    leader = rnd.randint(0, N-1)
+    sends, recvs = byzantine_router(N, seed=seed, slow_echo=True)
+    threads = []
+    leader_input = Queue(1)
+    for pid in range(N):
+        sid = 'sid{}'.format(leader)
+        input = leader_input.get if pid == leader else None
+        t = Greenlet(reliablebroadcast, sid, pid, N, f,
+                     leader, input, recvs[pid], sends[pid])
+        t.start()
+        threads.append(t)
+
+    m = "Hello! This is a test message."
+    leader_input.put(m)
+    completed_greenlets = gevent.joinall(threads, timeout=1)
     expected_rbc_result = m
     assert all([t.value == expected_rbc_result for t in threads])
 
