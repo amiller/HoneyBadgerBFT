@@ -14,15 +14,17 @@ def initialize(PK):
     global _pool_PK
     _pool_PK = PK
 
-def _combine_and_verify(h, sigs):
+def _combine_and_verify(h, sigs, pk=None):
     """ """
     global _pool_PK
+    if pk is None:
+        pk = PK     # XXX PK is a global set in pool_test
     sigs = dict(sigs)
     for s in sigs:
         sigs[s] = deserialize1(sigs[s])
     h = deserialize1(h)
-    sig = PK.combine_shares(sigs)
-    print PK.verify_signature(sig, h)
+    sig = pk.combine_shares(sigs)
+    print pk.verify_signature(sig, h)
     return True
 
 def combine_and_verify(h, sigs):
@@ -30,7 +32,8 @@ def combine_and_verify(h, sigs):
     assert len(sigs) == _pool_PK.k
     sigs = dict((s,serialize(v)) for s,v in sigs.iteritems())
     h = serialize(h)
-    promise = _pool.apply_async(_combine_and_verify, (h, sigs))
+    promise = _pool.apply_async(
+        _combine_and_verify, (h, sigs), {'pk': _pool_PK})
     assert promise.get() == True
 
 
