@@ -2,3 +2,4 @@
 source = .
 omit = *test*, docs/*, setup.py
 concurrency = gevent
+branch = True
