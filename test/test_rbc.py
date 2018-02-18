@@ -87,7 +87,11 @@ def byzantine_router(N, maxdelay=0.01, seed=None, **byzargs):
                     if o[0] in ('VAL', 'ECHO'):
                         screwed_up[3] = 'screw it'
                     o = tuple(screwed_up)
-            gevent.spawn_later(delay, queues[j].put, (i, o))
+            if (byzargs.get('fake_sender') and
+                    o[0] == 'VAL' and i == byzargs.get('byznode')):
+                gevent.spawn_later(delay, queues[j].put, ((i + 1) % 4, o))
+            else:
+                gevent.spawn_later(delay, queues[j].put, (i, o))
         return _send
 
     def makeRecv(j):
@@ -191,6 +195,29 @@ def test_rbc_when_merkle_verify_fails(N, f, tag, seed):
     leader_input.put(m)
     completed_greenlets = gevent.joinall(threads, timeout=0.5)
     expected_rbc_result = None if leader == byznode and tag == 'VAL' else m
+    assert all([t.value == expected_rbc_result for t in threads])
+
+
+@mark.parametrize('seed', range(3))
+@mark.parametrize('N,f', ((4, 1), (5, 1), (8, 2)))
+def test_rbc_receives_val_from_sender_not_leader(N, f, seed):
+    rnd = random.Random(seed)
+    leader = rnd.randint(0, N-1)
+    sends, recvs = byzantine_router(
+        N, seed=seed, fake_sender=True, byznode=leader)
+    threads = []
+    leader_input = Queue(1)
+    for pid in range(N):
+        sid = 'sid{}'.format(leader)
+        input = leader_input.get if pid == leader else None
+        t = Greenlet(reliablebroadcast, sid, pid, N, f, leader, input, recvs[pid], sends[pid])
+        t.start()
+        threads.append(t)
+
+    m = "Hello! This is a test message."
+    leader_input.put(m)
+    completed_greenlets = gevent.joinall(threads, timeout=0.5)
+    expected_rbc_result = None
     assert all([t.value == expected_rbc_result for t in threads])
 
 
