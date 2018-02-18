@@ -92,6 +92,8 @@ def byzantine_router(N, maxdelay=0.01, seed=None, **byzargs):
                 gevent.spawn_later(delay, queues[j].put, ((i + 1) % 4, o))
             else:
                 gevent.spawn_later(delay, queues[j].put, (i, o))
+            if byzargs.get('redundant_message_type') == o[0]:
+                gevent.spawn_later(delay, queues[j].put, (i, o))
         return _send
 
     def makeRecv(j):
@@ -218,6 +220,30 @@ def test_rbc_receives_val_from_sender_not_leader(N, f, seed):
     leader_input.put(m)
     completed_greenlets = gevent.joinall(threads, timeout=0.5)
     expected_rbc_result = None
+    assert all([t.value == expected_rbc_result for t in threads])
+
+
+@mark.parametrize('seed', range(2))
+@mark.parametrize('tag', ('ECHO', 'READY'))
+@mark.parametrize('N,f', ((4, 1),))
+def test_rbc_with_redundant_message(N, f, tag, seed):
+    rnd = random.Random(seed)
+    leader = rnd.randint(0, N-1)
+    sends, recvs = byzantine_router(N, seed=seed, redundant_message_type=tag)
+    threads = []
+    leader_input = Queue(1)
+    for pid in range(N):
+        sid = 'sid{}'.format(leader)
+        input = leader_input.get if pid == leader else None
+        t = Greenlet(reliablebroadcast, sid, pid, N, f,
+                     leader, input, recvs[pid], sends[pid])
+        t.start()
+        threads.append(t)
+
+    m = "Hello! This is a test message."
+    leader_input.put(m)
+    completed_greenlets = gevent.joinall(threads, timeout=0.5)
+    expected_rbc_result = m
     assert all([t.value == expected_rbc_result for t in threads])
 
 
