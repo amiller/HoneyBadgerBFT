@@ -13,6 +13,7 @@ ec2/hosts
 # Unit test / coverage reports
 .cache
 .coverage
+.coverage.*
 .pytest_cache
 htmlcov
 
