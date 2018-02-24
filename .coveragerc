@@ -1,7 +1,7 @@
 [run]
 source = .
 omit = *test*, docs/*, setup.py
-concurrency = gevent
+concurrency = gevent, multiprocessing
 branch = True
 
 
