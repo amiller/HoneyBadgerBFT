@@ -87,6 +87,10 @@ def byzantine_router(N, maxdelay=0.01, seed=None, **byzargs):
                     if o[0] in ('VAL', 'ECHO'):
                         screwed_up[3] = 'screw it'
                     o = tuple(screwed_up)
+            if byzargs.get('invalid_message_type'):
+                byz_o = list(o)
+                byz_o[0] = byzargs.get('invalid_message_type')
+                o = tuple(byz_o)
             if (byzargs.get('fake_sender') and
                     o[0] == 'VAL' and i == byzargs.get('byznode')):
                 gevent.spawn_later(delay, queues[j].put, ((i + 1) % 4, o))
@@ -286,6 +290,30 @@ def test_rbc_decode_in_echo_handling_step(N, f, seed):
     leader_input.put(m)
     completed_greenlets = gevent.joinall(threads, timeout=1)
     expected_rbc_result = m
+    assert all([t.value == expected_rbc_result for t in threads])
+
+
+@mark.parametrize('seed', range(2))
+@mark.parametrize('tag', ('CHECKTHISOUT!', 'LETSGO!'))
+@mark.parametrize('N,f', ((4, 1),))
+def test_rbc_with_invalid_message(N, f, tag, seed):
+    rnd = random.Random(seed)
+    leader = rnd.randint(0, N-1)
+    sends, recvs = byzantine_router(N, seed=seed, invalid_message_type=tag)
+    threads = []
+    leader_input = Queue(1)
+    for pid in range(N):
+        sid = 'sid{}'.format(leader)
+        input = leader_input.get if pid == leader else None
+        t = Greenlet(reliablebroadcast, sid, pid, N, f,
+                     leader, input, recvs[pid], sends[pid])
+        t.start()
+        threads.append(t)
+
+    m = "Hello! This is a test message."
+    leader_input.put(m)
+    completed_greenlets = gevent.joinall(threads, timeout=0.5)
+    expected_rbc_result = None
     assert all([t.value == expected_rbc_result for t in threads])
 
 
