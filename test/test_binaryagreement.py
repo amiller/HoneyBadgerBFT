@@ -8,6 +8,9 @@ from honeybadgerbft.core.binaryagreement import binaryagreement
 from honeybadgerbft.crypto.threshsig.boldyreva import dealer
 from collections import defaultdict
 
+from pytest import mark, raises
+
+
 def simple_broadcast_router(N, maxdelay=0.005, seed=None):
     """Builds a set of connected channels, with random delay
     @return (receives, sends)
@@ -39,6 +42,52 @@ def simple_broadcast_router(N, maxdelay=0.005, seed=None):
     return ([makeBroadcast(i) for i in range(N)],
             [makeRecv(j)      for j in range(N)])
 
+
+def byzantine_broadcast_router(N, maxdelay=0.005, seed=None, **byzargs):
+    """Builds a set of connected channels, with random delay.
+
+    :return: (receives, sends) endpoints.
+    """
+    rnd = random.Random(seed)
+    queues = [Queue() for _ in range(N)]
+    _threads = []
+
+    def makeBroadcast(i):
+        def _send(j, o):
+            delay = rnd.random() * maxdelay
+            if j == byzargs.get('byznode'):
+                try:
+                    byz_tag = byzargs['byz_message_type']
+                except KeyError:
+                    pass
+                else:
+                    o = list(o)
+                    o[0] = byz_tag
+                    o = tuple(o)
+
+            gevent.spawn_later(delay, queues[j].put, (i, o))
+
+            if (j == byzargs.get('byznode') and
+                    o[0] == byzargs.get('redundant_msg_type')):
+                gevent.spawn_later(delay, queues[j].put, (i, o))
+
+        def _bc(o):
+            for j in range(N):
+                _send(j, o)
+
+        return _bc
+
+    def makeRecv(j):
+        def _recv():
+            (i,o) = queues[j].get()
+            return (i,o)
+
+        return _recv
+
+    return ([makeBroadcast(i) for i in range(N)],
+            [makeRecv(j) for j in range(N)])
+
+
 def dummy_coin(sid, N, f):
     counter = defaultdict(int)
     events = defaultdict(Event)
@@ -49,6 +98,7 @@ def dummy_coin(sid, N, f):
         events[round].wait()
         return hash((sid,round)) % 2
     return getCoin
+
 
 ### Test binary agreement with a dummy coin
 def _test_binaryagreement_dummy(N=4, f=1, seed=None):
@@ -88,8 +138,78 @@ def _test_binaryagreement_dummy(N=4, f=1, seed=None):
         gevent.killall(threads)
         raise
 
+
 def test_binaryagreement_dummy():
     _test_binaryagreement_dummy()
+
+
+@mark.parametrize('msg_type', ('EST', 'AUX'))
+@mark.parametrize('byznode', (1, 2, 3))
+def test_binaryagreement_dummy_with_redundant_messages(byznode, msg_type):
+    N = 4
+    f = 1
+    seed = None
+    sid = 'sidA'
+    rnd = random.Random(seed)
+    router_seed = rnd.random()
+    sends, recvs = byzantine_broadcast_router(
+        N, seed=seed, byznode=byznode, redundant_msg_type=msg_type)
+    threads = []
+    inputs = []
+    outputs = []
+    coin = dummy_coin(sid, N, f)  # One dummy coin function for all nodes
+
+    for i in range(N):
+        inputs.append(Queue())
+        outputs.append(Queue())
+        t = gevent.spawn(binaryagreement, sid, i, N, f, coin,
+                         inputs[i].get, outputs[i].put_nowait, sends[i], recvs[i])
+        threads.append(t)
+
+    for i in range(N):
+        inputs[i].put(random.randint(0,1))
+
+    with raises(gevent.hub.LoopExit) as err:
+        outs = [outputs[i].get() for i in range(N)]
+
+    try:
+        gevent.joinall(threads)
+    except gevent.hub.LoopExit:
+        pass
+
+
+@mark.parametrize('byznode', (1, 2, 3))
+def test_binaryagreement_dummy_with_byz_message_type(byznode):
+    N = 4
+    f = 1
+    seed = None
+    sid = 'sidA'
+    rnd = random.Random(seed)
+    router_seed = rnd.random()
+    sends, recvs = byzantine_broadcast_router(
+        N, seed=seed, byznode=byznode, byz_message_type='BUG')
+    threads = []
+    inputs = []
+    outputs = []
+    coin = dummy_coin(sid, N, f)  # One dummy coin function for all nodes
+
+    for i in range(N):
+        inputs.append(Queue())
+        outputs.append(Queue())
+        t = gevent.spawn(binaryagreement, sid, i, N, f, coin,
+                         inputs[i].get, outputs[i].put_nowait, sends[i], recvs[i])
+        threads.append(t)
+
+    for i in range(N):
+        inputs[i].put(random.randint(0,1))
+
+    with raises(gevent.hub.LoopExit) as err:
+        outs = [outputs[i].get() for i in range(N)]
+    try:
+        gevent.joinall(threads)
+    except gevent.hub.LoopExit:
+        pass
+
 
 ### Test binary agreement with boldyreva coin
 def _make_coins(sid, N, f, seed):
