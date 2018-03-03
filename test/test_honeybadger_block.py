@@ -154,7 +154,6 @@ def _test_honeybadger(N=4, f=1, seed=None):
         gevent.killall(threads)
         raise
 
-from nose2.tools import params
 
 def test_honeybadger():
     _test_honeybadger()
