@@ -8,3 +8,7 @@ class BroadcastError(HoneybadgerbftError):
 
 class UnknownTagError(BroadcastError):
     """Raised when an unknown broadcast tag is detected."""
+
+
+class RedundantMessageError(BroadcastError):
+    """Raised when a rdundant message is received."""
