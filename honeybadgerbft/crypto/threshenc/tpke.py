@@ -123,10 +123,16 @@ class TPKEPublicKey(object):
         """ """
         # sigs: a mapping from idx -> sig
         S = set(shares.keys())
+        print S
         assert S.issubset(range(self.l))
 
         # ASSUMPTION
         # assert self.verify_ciphertext((U,V,W))
+
+        # ASSUMPTION
+        for j,share in shares.iteritems():
+            if j == 0: print share
+            self.verify_share( j, share, (U,V,W) )
 
         mul = lambda a,b: a*b
         res = reduce(mul,
