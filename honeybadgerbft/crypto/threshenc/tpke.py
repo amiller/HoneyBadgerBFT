@@ -130,7 +130,6 @@ class TPKEPublicKey(object):
 
         # ASSUMPTION
         for j,share in shares.iteritems():
-            if j == 0: print share
             self.verify_share( j, share, (U,V,W) )
 
         mul = lambda a,b: a*b
