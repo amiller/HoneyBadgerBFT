@@ -123,7 +123,6 @@ class TPKEPublicKey(object):
         """ """
         # sigs: a mapping from idx -> sig
         S = set(shares.keys())
-        print S
         assert S.issubset(range(self.l))
 
         # ASSUMPTION
