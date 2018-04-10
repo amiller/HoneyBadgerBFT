@@ -44,7 +44,8 @@ def decode(K, N, stripes):
         blocks.append(block)
         blocknums.append(i)
         if len(blocks) == K: break
-    else: raise ValueError("Too few to recover")
+    else:
+        raise ValueError("Too few to recover")
     decoder = zfec.Decoder(K, N)
     rec = decoder.decode(blocks, blocknums)
     m = ''.join(rec)
@@ -225,8 +226,9 @@ def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
                or sender in echoSenders:
                 print "Redundant ECHO"
                 continue
-            try: assert merkleVerify(N, stripe, roothash, branch, sender)
-            except e:
+            try:
+                assert merkleVerify(N, stripe, roothash, branch, sender)
+            except AssertionError as e:
                 print "Failed to validate ECHO message:", e
                 continue
 

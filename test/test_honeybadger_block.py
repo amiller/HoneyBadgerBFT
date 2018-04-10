@@ -45,6 +45,9 @@ def simple_router(N, maxdelay=0.005, seed=None):
 
 ### Make the threshold signature common coins
 def _make_honeybadger(sid, pid, N, f, sPK, sSK, ePK, eSK, input, send, recv):
+    from honeybadgerbft.core.honeybadger import (BroadcastTag,
+                                                 BroadcastReceiverQueues,
+                                                 broadcast_receiver_loop)
 
     def broadcast(o):
         for j in range(N): send(j, o)
@@ -99,17 +102,13 @@ def _make_honeybadger(sid, pid, N, f, sPK, sSK, ePK, eSK, input, send, recv):
                        [_.put_nowait for _ in aba_inputs],
                        [_.get for _ in aba_outputs])
 
-    def _recv():
-        while True:
-            (sender, (tag, j, msg)) = recv()
-            if   tag == 'ACS_COIN': coin_recvs[j].put_nowait((sender,msg))
-            elif tag == 'ACS_RBC' : rbc_recvs [j].put_nowait((sender,msg))
-            elif tag == 'ACS_ABA' : aba_recvs [j].put_nowait((sender,msg))
-            elif tag == 'TPKE'    : tpke_recv.put_nowait((sender,msg))
-            else:
-                print 'Unknown tag!!', tag
-                raise
-    gevent.spawn(_recv)
+    recv_queues = BroadcastReceiverQueues(**{
+        BroadcastTag.ACS_COIN.value: coin_recvs,
+        BroadcastTag.ACS_RBC.value: rbc_recvs,
+        BroadcastTag.ACS_ABA.value: aba_recvs,
+        BroadcastTag.TPKE.value: tpke_recv,
+    })
+    gevent.spawn(broadcast_receiver_loop, recv, recv_queues)
 
     return honeybadger_block(pid, N, f, ePK, eSK, input,
                              acs_in=my_rbc_input.put_nowait, acs_out=acs.get,
@@ -155,8 +154,53 @@ def _test_honeybadger(N=4, f=1, seed=None):
         gevent.killall(threads)
         raise
 
-from nose2.tools import params
 
 def test_honeybadger():
     _test_honeybadger()
 
+
+def test_honeybadger_block_with_missing_input():
+    N = 4
+    f = 1
+    seed = None
+    sid = 'sidA'
+    sPK, sSKs = dealer(N, f+1, seed=seed)
+    ePK, eSKs = tpke.dealer(N, f+1)
+    rnd = random.Random(seed)
+    router_seed = rnd.random()
+    sends, recvs = simple_router(N, seed=router_seed)
+    inputs  = [None] * N
+    threads = [None] * N
+    for i in range(N):
+        inputs[i] = Queue(1)
+        threads[i] = gevent.spawn(_make_honeybadger, sid, i, N, f,
+                                  sPK, sSKs[i],
+                                  ePK, eSKs[i],
+                                  inputs[i].get, sends[i], recvs[i])
+
+    for i in range(N):
+        if i != 1:
+            inputs[i].put('<[HBBFT Input %d]>' % i)
+
+    gevent.joinall(threads, timeout=0.5)
+    assert all([t.value is None for t in threads])
+
+
+def broadcast_receiver_duplicates_share(recv_func, recv_queues):
+    from honeybadgerbft.core.honeybadger import BroadcastTag
+    sender, (tag, j, msg) = recv_func()
+    recv_queue = getattr(recv_queues, tag)
+
+    if tag == BroadcastTag.TPKE.value:
+        recv_queue.put_nowait((sender, msg))
+        recv_queue.put_nowait((sender, msg))
+    else:
+        recv_queue = recv_queue[j]
+        recv_queue.put_nowait((sender, msg))
+
+
+def test_when_duplicate_share_is_received(monkeypatch):
+    from honeybadgerbft.core import honeybadger
+    monkeypatch.setattr(
+        honeybadger, 'broadcast_receiver', broadcast_receiver_duplicates_share)
+    _test_honeybadger()

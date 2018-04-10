@@ -2,6 +2,9 @@ import gevent
 from gevent.event import Event
 from collections import defaultdict
 
+from honeybadgerbft.exceptions import RedundantMessageError
+
+
 def binaryagreement(sid, pid, N, f, coin, input, decide, broadcast, receive):
     """Binary consensus from [MMR14]. It takes an input ``vi`` and will
     finally write the decided value into ``decide`` channel.
@@ -35,9 +38,13 @@ def binaryagreement(sid, pid, N, f, coin, input, decide, broadcast, receive):
                 _, r, v = msg
                 assert v in (0,1)
                 if sender in est_values[r][v]:
+                    # FIXME: raise or continue? For now will raise just
+                    # because it appeared first, but maybe the protocol simply
+                    # needs to continue.
                     print 'Redundant EST received', msg
-                    raise
-                    continue
+                    raise RedundantMessageError(
+                        'Redundant EST received {}'.format(msg))
+                    # continue
 
                 est_values[r][v].add(sender)
                 # Relay after reaching first threshold
@@ -55,9 +62,13 @@ def binaryagreement(sid, pid, N, f, coin, input, decide, broadcast, receive):
                 _, r, v = msg
                 assert v in (0,1)
                 if sender in aux_values[r][v]:
+                    # FIXME: raise or continue? For now will raise just
+                    # because it appeared first, but maybe the protocol simply
+                    # needs to continue.
                     print 'Redundant AUX received', msg
-                    raise
-                    continue
+                    raise RedundantMessageError(
+                        'Redundant AUX received {}'.format(msg))
+                    # continue
 
                 aux_values[r][v].add(sender)
                 bv_signal.set()

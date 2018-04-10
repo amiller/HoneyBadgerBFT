@@ -105,7 +105,8 @@ class KEY:
         ssl.BN_bn2bin(bn, mb)
         return mb.raw
 
-if __name__ == '__main__':
+
+def main():
     # ethalone keys
     ec_secret = '' + \
         'a0dc65ffca799873cbea0ac274015b9526505daaaed385155425f7337704883e'
@@ -128,3 +129,6 @@ if __name__ == '__main__':
     print k.get_pubkey().encode('hex')
     print k.get_secret().encode('hex')
 
+
+if __name__ == '__main__':
+    main()
