@@ -15,7 +15,7 @@ def generate_key_list(players):
 def main():
     """ """
     parser = argparse.ArgumentParser()
-    parser.add_argument('players', help='The number of players');
+    parser.add_argument('players', help='The number of players')
     args = parser.parse_args()
     players = int(args.players)
     keylist = generate_key_list(players)
