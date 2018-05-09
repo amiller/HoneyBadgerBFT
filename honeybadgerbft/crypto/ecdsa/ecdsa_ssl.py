@@ -19,6 +19,7 @@ def check_result (val, func, args):
     else:
         return ctypes.c_void_p (val)
 
+
 ssl.EC_KEY_new_by_curve_name.restype = ctypes.c_void_p
 ssl.EC_KEY_new_by_curve_name.errcheck = check_result
 

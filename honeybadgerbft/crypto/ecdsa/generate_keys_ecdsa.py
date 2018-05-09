@@ -21,5 +21,6 @@ def main():
     keylist = generate_key_list(players)
     print cPickle.dumps(keylist)
 
+
 if __name__ == '__main__':
     main()

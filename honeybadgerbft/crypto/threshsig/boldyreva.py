@@ -35,6 +35,7 @@ def deserialize2(g):
     # Only work in G1 here
     return group.deserialize('2:'+encodestring(g))
 
+
 g1 = group.hash('geng1', G1)
 g1.initPP()
 #g2 = g1

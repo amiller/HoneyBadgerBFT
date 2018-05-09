@@ -46,6 +46,7 @@ def xor(x,y):
     assert len(x) == len(y) == 32
     return ''.join(chr(ord(x_)^ord(y_)) for x_,y_ in zip(x,y))
 
+
 g1 = group.hash('geng1', G1)
 g1.initPP()
 g2 = g1

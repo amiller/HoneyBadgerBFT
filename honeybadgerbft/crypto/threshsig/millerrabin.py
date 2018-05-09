@@ -14,6 +14,7 @@ def generateLargePrime(k):
             return n
     return "Failure after "+`r_` + " tries."
 
+
 _mrpt_num_trials = 50 # number of bases to test
 
 def is_probable_prime(n):
