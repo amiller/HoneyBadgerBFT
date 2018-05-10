@@ -109,7 +109,7 @@ class HoneyBadgerBFT():
                 _recv = self._per_round_recv[r]
                 if _recv is not None:
                     # Queue it
-                    _recv.put( (sender, msg) )
+                    _recv.put((sender, msg))
 
                 # else:
                 # We have already closed this

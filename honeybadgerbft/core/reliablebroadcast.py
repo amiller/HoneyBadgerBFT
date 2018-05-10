@@ -224,7 +224,7 @@ def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
 
             # Update
             fromLeader = roothash
-            broadcast(('ECHO', roothash, branch, stripe ))
+            broadcast(('ECHO', roothash, branch, stripe))
 
         elif msg[0] == 'ECHO':
             (_, roothash, branch, stripe) = msg

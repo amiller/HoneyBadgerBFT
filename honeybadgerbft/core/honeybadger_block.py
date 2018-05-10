@@ -3,7 +3,7 @@ from ..crypto.threshenc import tpke
 import os
 
 
-def serialize_UVW( (U,V,W) ):
+def serialize_UVW((U,V,W)):
     # U: element of g1 (65 byte serialized for SS512)
     U = tpke.serialize(U)
     assert len(U) == 65
@@ -16,7 +16,7 @@ def serialize_UVW( (U,V,W) ):
     return UVW
 
 
-def deserialize_UVW( UVW ):
+def deserialize_UVW(UVW):
     assert len(UVW) == 65+32+65
     U = UVW[:65]
     V = UVW[65:-65]
@@ -52,8 +52,8 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
     tkey = PK.encrypt(key)
 
     import cPickle as pickle
-    to_acs = pickle.dumps( (serialize_UVW(tkey), ciphertext) )
-    acs_in( to_acs )
+    to_acs = pickle.dumps((serialize_UVW(tkey), ciphertext))
+    acs_in(to_acs)
 
     # Wait for the corresponding ACS to finish
     vall = acs_out()
@@ -70,7 +70,7 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
             continue
         (tkey, ciph) = pickle.loads(v)
         tkey = deserialize_UVW(tkey)
-        share = SK.decrypt_share( tkey )
+        share = SK.decrypt_share(tkey)
         # share is of the form: U_i, an element of group1
         my_shares.append(share)
 
@@ -98,7 +98,7 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
             svec[j] = shares[i] # Party j's share of broadcast i
         (tkey, ciph) = pickle.loads(v)
         tkey = deserialize_UVW(tkey)
-        key = PK.combine_shares( tkey, svec )
+        key = PK.combine_shares(tkey, svec)
         plain = tpke.decrypt(key, ciph)
         decryptions.append(plain)
     #print 'Done!', decryptions

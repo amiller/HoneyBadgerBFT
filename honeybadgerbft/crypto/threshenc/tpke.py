@@ -139,7 +139,7 @@ class TPKEPublicKey(object):
 
         # ASSUMPTION
         for j,share in shares.iteritems():
-            self.verify_share( j, share, (U,V,W) )
+            self.verify_share(j, share, (U, V, W))
 
         mul = lambda a,b: a*b
         res = reduce(mul,
@@ -218,18 +218,18 @@ pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
 unpad = lambda s : s[:-ord(s[len(s)-1:])]
 
 
-def encrypt( key, raw ):
+def encrypt(key, raw):
     """ """
     assert len(key) == 32
     raw = pad(raw)
-    iv = Random.new().read( AES.block_size )
-    cipher = AES.new( key, AES.MODE_CBC, iv )
-    return ( iv + cipher.encrypt( raw ) )
+    iv = Random.new().read(AES.block_size)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    return (iv + cipher.encrypt(raw))
 
 
-def decrypt( key, enc ):
+def decrypt(key, enc):
     """ """
     enc = (enc)
     iv = enc[:16]
-    cipher = AES.new( key, AES.MODE_CBC, iv )
-    return unpad(cipher.decrypt( enc[16:] ))
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    return unpad(cipher.decrypt(enc[16:]))

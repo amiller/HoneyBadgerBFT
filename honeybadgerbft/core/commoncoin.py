@@ -77,7 +77,7 @@ def shared_coin(sid, pid, N, f, PK, SK, broadcast, receive):
         """
         # I have to do mapping to 1..l
         h = PK.hash_message(str((sid, round)))
-        broadcast( ('COIN', round, SK.sign(h)) )
+        broadcast(('COIN', round, SK.sign(h)))
         return outputQueue[round].get()
 
     return getCoin
