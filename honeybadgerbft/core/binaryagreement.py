@@ -30,7 +30,7 @@ def binaryagreement(sid, pid, N, f, coin, input, decide, broadcast, receive):
     bv_signal = Event()
 
     def _recv():
-        while True:  #not finished[pid]:
+        while True:  # not finished[pid]:
             (sender, msg) = receive()
             assert sender in range(N)
             if msg[0] == 'EST':
