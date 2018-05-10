@@ -246,7 +246,7 @@ class HoneyBadgerBFT():
 
         _input = Queue(1)
         _input.put(tx_to_send)
-        return honeybadger_block(pid, self.N, self.f, self.ePK,self. eSK,
+        return honeybadger_block(pid, self.N, self.f, self.ePK, self. eSK,
                                  _input.get,
                                  acs_in=my_rbc_input.put_nowait, acs_out=acs.get,
                                  tpke_bcast=tpke_bcast, tpke_recv=tpke_recv.get)

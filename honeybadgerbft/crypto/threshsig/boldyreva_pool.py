@@ -33,7 +33,7 @@ def _combine_and_verify(h, sigs, pk=None):
 def combine_and_verify(h, sigs):
     """ """
     assert len(sigs) == _pool_PK.k
-    sigs = dict((s,serialize(v)) for s,v in sigs.iteritems())
+    sigs = dict((s, serialize(v)) for s, v in sigs.iteritems())
     h = serialize(h)
     promise = _pool.apply_async(
         _combine_and_verify, (h, sigs), {'pk': _pool_PK})
@@ -44,9 +44,9 @@ def combine_and_verify(h, sigs):
 def pool_test():
     """ """
     global PK, SKs
-    PK, SKs = dealer(players=64,k=17)
+    PK, SKs = dealer(players=64, k=17)
 
-    global sigs,h
+    global sigs, h
     sigs = {}
     h = PK.hash_message('hi')
     h.initPP()
@@ -58,7 +58,7 @@ def pool_test():
     pool = Pool()
     print 'Pool started'
     import time
-    sigs2 = dict((s,serialize(sigs[s])) for s in range(PK.k))
+    sigs2 = dict((s, serialize(sigs[s])) for s in range(PK.k))
     _h = serialize(h)
 
     # Combine 100 times

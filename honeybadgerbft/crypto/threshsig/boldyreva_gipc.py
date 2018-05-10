@@ -3,7 +3,7 @@ import gipc
 import random
 
 if '_procs' in globals():
-    for p,pipe in _procs:
+    for p, pipe in _procs:
         p.terminate()
         p.join()
     del _procs
@@ -36,20 +36,20 @@ def initialize(PK, size=1):
     myPK = PK
     _procs = []
     for s in range(size):
-        (r,w) = gipc.pipe(duplex=True)
+        (r, w) = gipc.pipe(duplex=True)
         p = gipc.start_process(worker_loop, args=(PK, r,))
-        _procs.append((p,w))
+        _procs.append((p, w))
 
 
 def combine_and_verify(h, sigs):
     """ """
     # return True  # we are skipping the verification
     assert len(sigs) == myPK.k
-    sigs = dict((s,serialize(v)) for s,v in sigs.iteritems())
+    sigs = dict((s, serialize(v)) for s, v in sigs.iteritems())
     h = serialize(h)
     # Pick a random process
     gipc_process, pipe = _procs[random.choice(range(len(_procs)))] #random.choice(_procs)
-    pipe.put((h,sigs))
-    (r,s) = pipe.get()
+    pipe.put((h, sigs))
+    (r, s) = pipe.get()
     assert r == True
     return s, gipc_process

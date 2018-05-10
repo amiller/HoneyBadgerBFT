@@ -1,4 +1,4 @@
-from charm.toolbox.pairinggroup import PairingGroup,ZR,G1,G2,GT,pair
+from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, GT, pair
 from base64 import encodestring, decodestring
 import random
 from Crypto.Hash import SHA256
@@ -46,10 +46,10 @@ def deserialize2(g):
     return group.deserialize('2:'+encodestring(g))
 
 
-def xor(x,y):
+def xor(x, y):
     """ """
     assert len(x) == len(y) == 32
-    return ''.join(chr(ord(x_)^ord(y_)) for x_,y_ in zip(x,y))
+    return ''.join(chr(ord(x_)^ord(y_)) for x_, y_ in zip(x, y))
 
 
 g1 = group.hash('geng1', G1)
@@ -86,12 +86,12 @@ class TPKEPublicKey(object):
         # Assert S is a subset of range(0,self.l)
         assert len(S) == self.k
         assert type(S) is set
-        assert S.issubset(range(0,self.l))
+        assert S.issubset(range(0, self.l))
         S = sorted(S)
 
         assert j in S
         assert 0 <= j < self.l
-        mul = lambda a,b: a*b
+        mul = lambda a, b: a*b
         num = reduce(mul, [0 - jj - 1 for jj in S if jj != j], ONE)
         den = reduce(mul, [j - jj     for jj in S if jj != j], ONE)
         return num / den
@@ -121,14 +121,14 @@ class TPKEPublicKey(object):
         assert pair(g1, W) == pair(U, H)
         return True
 
-    def verify_share(self, i, U_i, (U,V,W)):
+    def verify_share(self, i, U_i, (U, V, W)):
         """ """
         assert 0 <= i < self.l
         Y_i = self.VKs[i]
         assert pair(U_i, g2) == pair(U, Y_i)
         return True
 
-    def combine_shares(self, (U,V,W), shares):
+    def combine_shares(self, (U, V, W), shares):
         """ """
         # sigs: a mapping from idx -> sig
         S = set(shares.keys())
@@ -138,13 +138,13 @@ class TPKEPublicKey(object):
         # assert self.verify_ciphertext((U,V,W))
 
         # ASSUMPTION
-        for j,share in shares.iteritems():
+        for j, share in shares.iteritems():
             self.verify_share(j, share, (U, V, W))
 
-        mul = lambda a,b: a*b
+        mul = lambda a, b: a*b
         res = reduce(mul,
                      [share ** self.lagrange(S, j)
-                      for j,share in shares.iteritems()], ONE)
+                      for j, share in shares.iteritems()], ONE)
         return xor(hashG(res), V)
 
 
@@ -152,7 +152,7 @@ class TPKEPrivateKey(TPKEPublicKey):
     """ """
     def __init__(self, l, k, VK, VKs, SK, i):
         """ """
-        super(TPKEPrivateKey,self).__init__(l, k, VK, VKs)
+        super(TPKEPrivateKey, self).__init__(l, k, VK, VKs)
         assert 0 <= i < self.l
         self.i = i
         self.SK = SK
@@ -160,7 +160,7 @@ class TPKEPrivateKey(TPKEPublicKey):
     def decrypt_share(self, (U, V, W)):
         """ """
         # ASSUMPTION
-        assert self.verify_ciphertext((U,V,W))
+        assert self.verify_ciphertext((U, V, W))
 
         # print U, V, W
         # print U
@@ -175,7 +175,7 @@ def dealer(players=10, k=5):
     # Random polynomial coefficients
     secret = group.random(ZR)
     a = [secret]
-    for i in range(1,k):
+    for i in range(1, k):
         a.append(group.random(ZR))
     assert len(a) == k
 
@@ -190,7 +190,7 @@ def dealer(players=10, k=5):
         return y
 
     # Shares of master secret key
-    SKs = [f(i) for i in range(1,players+1)]
+    SKs = [f(i) for i in range(1, players+1)]
     assert f(0) == secret
 
     # Verification keys
@@ -202,9 +202,9 @@ def dealer(players=10, k=5):
                     for i, SK in enumerate(SKs)]
 
     # Check reconstruction of 0
-    S = set(range(0,k))
+    S = set(range(0, k))
     lhs = f(0)
-    rhs = sum(public_key.lagrange(S,j) * f(j+1) for j in S)
+    rhs = sum(public_key.lagrange(S, j) * f(j+1) for j in S)
     assert lhs == rhs
     #print i, 'ok'
 

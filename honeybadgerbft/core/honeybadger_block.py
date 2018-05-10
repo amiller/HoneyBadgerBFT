@@ -3,7 +3,7 @@ from ..crypto.threshenc import tpke
 import os
 
 
-def serialize_UVW((U,V,W)):
+def serialize_UVW((U, V, W)):
     # U: element of g1 (65 byte serialized for SS512)
     U = tpke.serialize(U)
     assert len(U) == 65
@@ -23,7 +23,7 @@ def deserialize_UVW(UVW):
     W = UVW[-65:]
     U = tpke.deserialize1(U)
     W = tpke.deserialize2(W)
-    return (U,V,W)
+    return (U, V, W)
 
 
 def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast, tpke_recv):
@@ -64,7 +64,7 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
 
     # Broadcast all our decryption shares
     my_shares = []
-    for i,v in enumerate(vall):
+    for i, v in enumerate(vall):
         if v is None:
             my_shares.append(None)
             continue
@@ -91,7 +91,7 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
     # If decryption fails at this point, we will have evidence of misbehavior,
     # but then we should wait for more decryption shares and try again
     decryptions = []
-    for i,v  in enumerate(vall):
+    for i, v  in enumerate(vall):
         if v is None: continue
         svec = {}
         for j, shares in shares_received.iteritems():

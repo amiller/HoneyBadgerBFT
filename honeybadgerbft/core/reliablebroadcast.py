@@ -41,7 +41,7 @@ def decode(K, N, stripes):
     assert len(stripes) == N
     blocks = []
     blocknums = []
-    for i,block in enumerate(stripes):
+    for i, block in enumerate(stripes):
         if block is None: continue
         blocks.append(block)
         blocknums.append(i)

@@ -6,7 +6,7 @@ Dependencies:
     based crypto)
 
 """
-from charm.toolbox.pairinggroup import PairingGroup,ZR,G1,G2,GT,pair
+from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, GT, pair
 from base64 import encodestring, decodestring
 import random
 
@@ -72,14 +72,14 @@ class TBLSPublicKey(object):
         """ """
         d = dict(self.__dict__)
         d['VK'] = serialize(self.VK)
-        d['VKs'] = map(serialize,self.VKs)
+        d['VKs'] = map(serialize, self.VKs)
         return d
 
     def __setstate__(self, d):
         """ """
         self.__dict__ = d
         self.VK = deserialize2(self.VK)
-        self.VKs = map(deserialize2,self.VKs)
+        self.VKs = map(deserialize2, self.VKs)
         print "I'm being depickled"
 
     def lagrange(self, S, j):
@@ -87,12 +87,12 @@ class TBLSPublicKey(object):
         # Assert S is a subset of range(0,self.l)
         assert len(S) == self.k
         assert type(S) is set
-        assert S.issubset(range(0,self.l))
+        assert S.issubset(range(0, self.l))
         S = sorted(S)
 
         assert j in S
         assert 0 <= j < self.l
-        mul = lambda a,b: a*b
+        mul = lambda a, b: a*b
         num = reduce(mul, [0 - jj - 1 for jj in S if jj != j], ONE)
         den = reduce(mul, [j - jj     for jj in S if jj != j], ONE)
         #assert num % den == 0
@@ -120,10 +120,10 @@ class TBLSPublicKey(object):
         S = set(sigs.keys())
         assert S.issubset(range(self.l))
 
-        mul = lambda a,b: a*b
+        mul = lambda a, b: a*b
         res = reduce(mul,
                      [sig ** self.lagrange(S, j)
-                      for j,sig in sigs.iteritems()], 1)
+                      for j, sig in sigs.iteritems()], 1)
         return res
 
 
@@ -132,7 +132,7 @@ class TBLSPrivateKey(TBLSPublicKey):
 
     def __init__(self, l, k, VK, VKs, SK, i):
         """ """
-        super(TBLSPrivateKey,self).__init__(l, k, VK, VKs)
+        super(TBLSPrivateKey, self).__init__(l, k, VK, VKs)
         assert 0 <= i < self.l
         self.i = i
         self.SK = SK
@@ -162,9 +162,9 @@ def dealer(players=10, k=5, seed=None):
                     for i, SK in enumerate(SKs)]
 
     # Check reconstruction of 0
-    S = set(range(0,k))
+    S = set(range(0, k))
     lhs = polynom_eval(0, a)
-    rhs = sum(public_key.lagrange(S,j) * polynom_eval(j+1, a) for j in S)
+    rhs = sum(public_key.lagrange(S, j) * polynom_eval(j+1, a) for j in S)
     assert lhs == rhs
     #print i, 'ok'
 
