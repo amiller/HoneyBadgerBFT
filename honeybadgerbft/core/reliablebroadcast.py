@@ -4,6 +4,7 @@ import zfec
 import hashlib
 import math
 
+
 #### zfec encode ####
 def encode(K, N, m):
     """Erasure encodes string ``m`` into ``N`` blocks, such that any ``K``
@@ -26,6 +27,7 @@ def encode(K, N, m):
     blocks = [m[i*step : (i+1)*step] for i in range(K)]
     stripes = encoder.encode(blocks)
     return stripes
+
 
 def decode(K, N, stripes):
     """Decodes an erasure-encoded string from a subset of stripes
@@ -53,12 +55,15 @@ def decode(K, N, stripes):
     m = m[:-padlen]
     return m
 
+
 #### Merkle tree ####
 def hash(x):
     assert type(x) is str
     return hashlib.sha256(x).digest()
 
+
 def ceil(x): return int(math.ceil(x))
+
 
 def merkleTree(strList):
     """Builds a merkle tree from a list of :math:`N` strings (:math:`N`
@@ -78,6 +83,7 @@ def merkleTree(strList):
         mt[i] = hash(mt[i*2] + mt[i*2+1])
     return mt
 
+
 def getMerkleBranch(index, mt):
     """Computes a merkle tree from a list of leaves.
     """
@@ -87,6 +93,7 @@ def getMerkleBranch(index, mt):
         res.append(mt[t ^ 1])  # we are picking up the sibling
         t /= 2
     return res
+
 
 def merkleVerify(N, val, roothash, branch, index):
     """Verify a merkle tree branch proof

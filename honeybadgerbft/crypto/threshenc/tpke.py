@@ -21,25 +21,30 @@ from Crypto.Cipher import AES
 group = PairingGroup('SS512')
 #group = PairingGroup('MNT224')
 
+
 def serialize(g):
     """ """
     # Only work in G1 here
     return decodestring(group.serialize(g)[2:])
+
 
 def deserialize0(g):
     """ """
     # Only work in G1 here
     return group.deserialize('0:'+encodestring(g))
 
+
 def deserialize1(g):
     """ """
     # Only work in G1 here
     return group.deserialize('1:'+encodestring(g))
 
+
 def deserialize2(g):
     """ """
     # Only work in G1 here
     return group.deserialize('2:'+encodestring(g))
+
 
 def xor(x,y):
     """ """
@@ -55,14 +60,17 @@ g2 = g1
 ZERO = group.random(ZR)*0
 ONE = group.random(ZR)*0+1
 
+
 def hashG(g):
     """ """
     return SHA256.new(serialize(g)).digest()
+
 
 def hashH(g, x):
     """ """
     assert len(x) == 32
     return group.hash(serialize(g) + x, G2)
+
 
 class TPKEPublicKey(object):
     """ """
@@ -209,6 +217,7 @@ BS = 16
 pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
 unpad = lambda s : s[:-ord(s[len(s)-1:])]
 
+
 def encrypt( key, raw ):
     """ """
     assert len(key) == 32
@@ -216,6 +225,7 @@ def encrypt( key, raw ):
     iv = Random.new().read( AES.block_size )
     cipher = AES.new( key, AES.MODE_CBC, iv )
     return ( iv + cipher.encrypt( raw ) )
+
 
 def decrypt( key, enc ):
     """ """

@@ -4,6 +4,7 @@ import multiprocessing
 _pool_PK = None
 _pool = None
 
+
 def initialize(PK):
     """ """
     from multiprocessing import Pool
@@ -13,6 +14,7 @@ def initialize(PK):
 
     global _pool_PK
     _pool_PK = PK
+
 
 def _combine_and_verify(h, sigs, pk=None):
     """ """
@@ -26,6 +28,7 @@ def _combine_and_verify(h, sigs, pk=None):
     sig = pk.combine_shares(sigs)
     print pk.verify_signature(sig, h)
     return True
+
 
 def combine_and_verify(h, sigs):
     """ """

@@ -1,6 +1,7 @@
 import random
 import math
 
+
 def generateLargePrime(k):
     #k is the desired bit length
     r=100*(math.log(k,2)+1) #number of attempts max
@@ -16,6 +17,7 @@ def generateLargePrime(k):
 
 
 _mrpt_num_trials = 50 # number of bases to test
+
 
 def is_probable_prime(n):
     """

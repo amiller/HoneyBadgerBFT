@@ -29,6 +29,7 @@ def worker_loop(PK, pipe):
 
 myPK = None
 
+
 def initialize(PK, size=1):
     """ """
     global _procs, myPK
@@ -38,6 +39,7 @@ def initialize(PK, size=1):
         (r,w) = gipc.pipe(duplex=True)
         p = gipc.start_process(worker_loop, args=(PK, r,))
         _procs.append((p,w))
+
 
 def combine_and_verify(h, sigs):
     """ """

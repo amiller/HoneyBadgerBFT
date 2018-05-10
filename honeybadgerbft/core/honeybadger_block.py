@@ -2,6 +2,7 @@ import gevent
 from ..crypto.threshenc import tpke
 import os
 
+
 def serialize_UVW( (U,V,W) ):
     # U: element of g1 (65 byte serialized for SS512)
     U = tpke.serialize(U)
@@ -14,6 +15,7 @@ def serialize_UVW( (U,V,W) ):
     UVW = U + V + W
     return UVW
 
+
 def deserialize_UVW( UVW ):
     assert len(UVW) == 65+32+65
     U = UVW[:65]
@@ -22,6 +24,7 @@ def deserialize_UVW( UVW ):
     U = tpke.deserialize1(U)
     W = tpke.deserialize2(W)
     return (U,V,W)
+
 
 def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast, tpke_recv):
     """The HoneyBadgerBFT algorithm for a single block

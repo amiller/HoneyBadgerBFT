@@ -1,5 +1,6 @@
 import gevent
 
+
 def commonsubset(pid, N, f, rbc_out, aba_in, aba_out):
     """The BKR93 algorithm for asynchronous common subset.
 

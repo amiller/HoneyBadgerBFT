@@ -15,20 +15,24 @@ import random
 #group = PairingGroup('MNT159')
 group = PairingGroup('MNT224')
 
+
 def serialize(g):
     """ """
     # Only work in G1 here
     return decodestring(group.serialize(g)[2:])
+
 
 def deserialize0(g):
     """ """
     # Only work in G1 here
     return group.deserialize('0:'+encodestring(g))
 
+
 def deserialize1(g):
     """ """
     # Only work in G1 here
     return group.deserialize('1:'+encodestring(g))
+
 
 def deserialize2(g):
     """ """
@@ -136,6 +140,7 @@ class TBLSPrivateKey(TBLSPublicKey):
     def sign(self, h):
         """ """
         return h ** self.SK
+
 
 def dealer(players=10, k=5, seed=None):
     """ """
