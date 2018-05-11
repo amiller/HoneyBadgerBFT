@@ -24,7 +24,7 @@ def encode(K, N, m):
     padlen = K - (len(m) % K)
     m += padlen * chr(K-padlen)
     step = len(m)/K
-    blocks = [m[i*step : (i+1)*step] for i in range(K)]
+    blocks = [m[i*step: (i+1)*step] for i in range(K)]
     stripes = encoder.encode(blocks)
     return stripes
 

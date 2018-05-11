@@ -215,7 +215,7 @@ def dealer(players=10, k=5):
 
 BS = 16
 pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
-unpad = lambda s : s[:-ord(s[len(s)-1:])]
+unpad = lambda s: s[:-ord(s[len(s)-1:])]
 
 
 def encrypt(key, raw):
