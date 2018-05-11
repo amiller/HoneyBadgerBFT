@@ -19,7 +19,7 @@ from Crypto.Cipher import AES
 
 
 group = PairingGroup('SS512')
-#group = PairingGroup('MNT224')
+# group = PairingGroup('MNT224')
 
 
 def serialize(g):
@@ -55,8 +55,8 @@ def xor(x, y):
 g1 = group.hash('geng1', G1)
 g1.initPP()
 g2 = g1
-#g2 = group.hash('geng2', G2)
-#g2.initPP()
+# g2 = group.hash('geng2', G2)
+# g2.initPP()
 ZERO = group.random(ZR)*0
 ONE = group.random(ZR)*0+1
 
@@ -100,17 +100,17 @@ class TPKEPublicKey(object):
         """ """
         # Only encrypt 32 byte strings
         assert len(m) == 32
-        #print '1'
+        # print '1'
         r = group.random(ZR)
-        #print '2'
+        # print '2'
         U = g1 ** r
-        #print '3'
-        #V = xor(m, hashG(pair(g1, self.VK ** r)))
-        #V = xor(m, hashG(pair(g1, self.VK ** r)))
+        # print '3'
+        # V = xor(m, hashG(pair(g1, self.VK ** r)))
+        # V = xor(m, hashG(pair(g1, self.VK ** r)))
         V = xor(m, hashG(self.VK ** r))
-        #print '4'
+        # print '4'
         W = hashH(U, V) ** r
-        #print '5'
+        # print '5'
         C = (U, V, W)
         return C
 
@@ -206,7 +206,7 @@ def dealer(players=10, k=5):
     lhs = f(0)
     rhs = sum(public_key.lagrange(S, j) * f(j+1) for j in S)
     assert lhs == rhs
-    #print i, 'ok'
+    # print i, 'ok'
 
     return public_key, private_keys
 

@@ -101,6 +101,6 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
         key = PK.combine_shares(tkey, svec)
         plain = tpke.decrypt(key, ciph)
         decryptions.append(plain)
-    #print 'Done!', decryptions
+    # print 'Done!', decryptions
 
     return tuple(decryptions)

@@ -179,7 +179,7 @@ def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
         # The leader erasure encodes the input, sending one strip to each participant
         m = input()  # block until an input is received
         assert type(m) is str
-        #print 'Input received: %d bytes' % (len(m),)
+        # print 'Input received: %d bytes' % (len(m),)
 
         stripes = encode(K, N, m)
         mt = merkleTree(stripes)  # full binary tree

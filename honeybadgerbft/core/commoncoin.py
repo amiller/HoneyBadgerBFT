@@ -65,7 +65,7 @@ def shared_coin(sid, pid, N, f, PK, SK, broadcast, receive):
                 bit = ord(hash(serialize(sig))[0]) % 2
                 outputQueue[r].put_nowait(bit)
 
-    #greenletPacker(Greenlet(_recv), 'shared_coin', (pid, N, f, broadcast, receive)).start()
+    # greenletPacker(Greenlet(_recv), 'shared_coin', (pid, N, f, broadcast, receive)).start()
     Greenlet(_recv).start()
 
     def getCoin(round):

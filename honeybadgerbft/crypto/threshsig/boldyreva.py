@@ -11,8 +11,8 @@ from base64 import encodestring, decodestring
 import random
 
 
-#group = PairingGroup('SS512')
-#group = PairingGroup('MNT159')
+# group = PairingGroup('SS512')
+# group = PairingGroup('MNT159')
 group = PairingGroup('MNT224')
 
 
@@ -42,7 +42,7 @@ def deserialize2(g):
 
 g1 = group.hash('geng1', G1)
 g1.initPP()
-#g2 = g1
+# g2 = g1
 g2 = group.hash('geng2', G2)
 g2.initPP()
 ZERO = group.random(ZR, seed=59)*0
@@ -95,7 +95,7 @@ class TBLSPublicKey(object):
         mul = lambda a, b: a*b
         num = reduce(mul, [0 - jj - 1 for jj in S if jj != j], ONE)
         den = reduce(mul, [j - jj     for jj in S if jj != j], ONE)
-        #assert num % den == 0
+        # assert num % den == 0
         return num / den
 
     def hash_message(self, m):
@@ -166,7 +166,7 @@ def dealer(players=10, k=5, seed=None):
     lhs = polynom_eval(0, a)
     rhs = sum(public_key.lagrange(S, j) * polynom_eval(j+1, a) for j in S)
     assert lhs == rhs
-    #print i, 'ok'
+    # print i, 'ok'
 
     return public_key, private_keys
 
