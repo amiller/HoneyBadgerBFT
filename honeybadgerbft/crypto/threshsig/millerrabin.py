@@ -11,7 +11,7 @@ def generateLargePrime(k):
        # unusable for serious crypto purposes
         n = random.randrange(2**(k-1), 2**(k))
         r -= 1
-        if is_probable_prime(n) == True:
+        if is_probable_prime(n) is True:
             return n
     return "Failure after "+`r_` + " tries."
 

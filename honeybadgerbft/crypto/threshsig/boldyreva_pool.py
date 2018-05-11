@@ -37,7 +37,7 @@ def combine_and_verify(h, sigs):
     h = serialize(h)
     promise = _pool.apply_async(
         _combine_and_verify, (h, sigs), {'pk': _pool_PK})
-    assert promise.get() == True
+    assert promise.get() is True
 
 
 def pool_test():
@@ -66,7 +66,7 @@ def pool_test():
                     for i in range(100)]
         print 'launched', time.time()
         for p in promises:
-            assert p.get() == True
+            assert p.get() is True
         print 'done', time.time()
 
     # Combine 100 times

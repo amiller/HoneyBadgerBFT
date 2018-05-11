@@ -51,5 +51,5 @@ def combine_and_verify(h, sigs):
     gipc_process, pipe = _procs[random.choice(range(len(_procs)))]  # random.choice(_procs)
     pipe.put((h, sigs))
     (r, s) = pipe.get()
-    assert r == True
+    assert r is True
     return s, gipc_process
