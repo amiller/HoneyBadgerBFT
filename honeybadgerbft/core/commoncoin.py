@@ -10,7 +10,8 @@ class CommonCoinFailureException(Exception):
     pass
 
 
-hash = lambda x: hashlib.sha256(x).digest()
+def hash(x):
+    return hashlib.sha256(x).digest()
 
 
 def shared_coin(sid, pid, N, f, PK, SK, broadcast, receive):

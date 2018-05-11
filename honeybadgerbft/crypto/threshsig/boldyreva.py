@@ -9,6 +9,7 @@ Dependencies:
 from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, GT, pair
 from base64 import encodestring, decodestring
 import random
+from operator import mul
 
 
 # group = PairingGroup('SS512')
@@ -92,7 +93,6 @@ class TBLSPublicKey(object):
 
         assert j in S
         assert 0 <= j < self.l
-        mul = lambda a, b: a*b
         num = reduce(mul, [0 - jj - 1 for jj in S if jj != j], ONE)
         den = reduce(mul, [j - jj for jj in S if jj != j], ONE)
         # assert num % den == 0
@@ -120,7 +120,6 @@ class TBLSPublicKey(object):
         S = set(sigs.keys())
         assert S.issubset(range(self.l))
 
-        mul = lambda a, b: a*b
         res = reduce(mul,
                      [sig ** self.lagrange(S, j)
                       for j, sig in sigs.iteritems()], 1)

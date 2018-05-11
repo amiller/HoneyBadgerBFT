@@ -1,6 +1,8 @@
 from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, GT, pair
 from base64 import encodestring, decodestring
 import random
+from operator import mul
+
 from Crypto.Hash import SHA256
 from Crypto import Random
 from Crypto.Cipher import AES
@@ -91,7 +93,6 @@ class TPKEPublicKey(object):
 
         assert j in S
         assert 0 <= j < self.l
-        mul = lambda a, b: a*b
         num = reduce(mul, [0 - jj - 1 for jj in S if jj != j], ONE)
         den = reduce(mul, [j - jj for jj in S if jj != j], ONE)
         return num / den
@@ -141,7 +142,6 @@ class TPKEPublicKey(object):
         for j, share in shares.iteritems():
             self.verify_share(j, share, (U, V, W))
 
-        mul = lambda a, b: a*b
         res = reduce(mul,
                      [share ** self.lagrange(S, j)
                       for j, share in shares.iteritems()], ONE)
@@ -214,8 +214,14 @@ def dealer(players=10, k=5):
 # Symmetric cryptography. Use AES with a 32-byte key
 
 BS = 16
-pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
-unpad = lambda s: s[:-ord(s[len(s)-1:])]
+
+
+def pad(s):
+    return s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
+
+
+def unpad(s):
+    return s[:-ord(s[len(s)-1:])]
 
 
 def encrypt(key, raw):
