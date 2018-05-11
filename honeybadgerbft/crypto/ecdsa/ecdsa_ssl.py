@@ -9,7 +9,7 @@ import ctypes.util
 ssl = ctypes.cdll.LoadLibrary(ctypes.util.find_library('ssl') or 'libeay32')
 
 # this specifies the curve used with ECDSA.
-NID_secp256k1 = 714 # from openssl/obj_mac.h
+NID_secp256k1 = 714     # from openssl/obj_mac.h
 
 
 # Thx to Sam Devlin for the ctypes magic 64-bit fix.

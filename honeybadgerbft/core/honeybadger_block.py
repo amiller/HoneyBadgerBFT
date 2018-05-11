@@ -47,7 +47,7 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
     # Threshold encrypt
     # TODO: check that propose_in is the correct length, not too large
     prop = propose_in()
-    key = os.urandom(32) # random 256-bit key
+    key = os.urandom(32)    # random 256-bit key
     ciphertext = tpke.encrypt(key, prop)
     tkey = PK.encrypt(key)
 
@@ -95,7 +95,7 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
         if v is None: continue
         svec = {}
         for j, shares in shares_received.iteritems():
-            svec[j] = shares[i] # Party j's share of broadcast i
+            svec[j] = shares[i]     # Party j's share of broadcast i
         (tkey, ciph) = pickle.loads(v)
         tkey = deserialize_UVW(tkey)
         key = PK.combine_shares(tkey, svec)

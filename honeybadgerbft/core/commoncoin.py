@@ -32,7 +32,7 @@ def shared_coin(sid, pid, N, f, PK, SK, broadcast, receive):
     outputQueue = defaultdict(lambda: Queue(1))
 
     def _recv():
-        while True: # main receive loop
+        while True:     # main receive loop
             # New shares for some round r, from sender i
             (i, (_, r, sig)) = receive()
             assert i in range(N)

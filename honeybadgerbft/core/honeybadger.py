@@ -141,8 +141,8 @@ class HoneyBadgerBFT():
             # Remove all of the new transactions from the buffer
             self.transaction_buffer = [_tx for _tx in self.transaction_buffer if _tx not in new_tx]
 
-            self.round += 1 # Increment the round
-            if self.round >= 3: break # Only run one round for now
+            self.round += 1     # Increment the round
+            if self.round >= 3: break   # Only run one round for now
 
 
     def _run_round(self, r, tx_to_send, send, recv):

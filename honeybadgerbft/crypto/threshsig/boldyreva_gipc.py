@@ -48,7 +48,7 @@ def combine_and_verify(h, sigs):
     sigs = dict((s, serialize(v)) for s, v in sigs.iteritems())
     h = serialize(h)
     # Pick a random process
-    gipc_process, pipe = _procs[random.choice(range(len(_procs)))] # random.choice(_procs)
+    gipc_process, pipe = _procs[random.choice(range(len(_procs)))]  # random.choice(_procs)
     pipe.put((h, sigs))
     (r, s) = pipe.get()
     assert r == True
