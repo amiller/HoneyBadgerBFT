@@ -40,7 +40,6 @@ def combine_and_verify(h, sigs):
     assert promise.get() == True
 
 
-
 def pool_test():
     """ """
     global PK, SKs
@@ -52,7 +51,6 @@ def pool_test():
     h.initPP()
     for SK in SKs:
         sigs[SK.i] = SK.sign(h)
-
 
     from multiprocessing import Pool
     pool = Pool()

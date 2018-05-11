@@ -83,7 +83,6 @@ class HoneyBadgerBFT():
         self.transaction_buffer = []
         self._per_round_recv = {}  # Buffer of incoming messages
 
-
     def submit_tx(self, tx):
         """Appends the given transaction to the transaction buffer.
 
@@ -143,7 +142,6 @@ class HoneyBadgerBFT():
 
             self.round += 1     # Increment the round
             if self.round >= 3: break   # Only run one round for now
-
 
     def _run_round(self, r, tx_to_send, send, recv):
         """Run one protocol round.
