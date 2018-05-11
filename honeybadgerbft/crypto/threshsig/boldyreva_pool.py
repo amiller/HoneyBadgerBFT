@@ -65,7 +65,8 @@ def pool_test():
                                      (_h, sigs2))
                     for i in range(100)]
         print 'launched', time.time()
-        for p in promises: assert p.get() == True
+        for p in promises:
+            assert p.get() == True
         print 'done', time.time()
 
     # Combine 100 times

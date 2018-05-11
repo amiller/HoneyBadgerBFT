@@ -44,10 +44,12 @@ def decode(K, N, stripes):
     blocks = []
     blocknums = []
     for i, block in enumerate(stripes):
-        if block is None: continue
+        if block is None:
+            continue
         blocks.append(block)
         blocknums.append(i)
-        if len(blocks) == K: break
+        if len(blocks) == K:
+            break
     else:
         raise ValueError("Too few to recover")
     decoder = zfec.Decoder(K, N)
@@ -177,7 +179,8 @@ def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
     #   K = EchoThreshold - f
 
     def broadcast(o):
-        for i in range(N): send(i, o)
+        for i in range(N):
+            send(i, o)
 
     if pid == leader:
         # The leader erasure encodes the input, sending one strip to each participant
@@ -221,7 +224,8 @@ def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
             if sender != leader:
                 print "VAL message from other than leader:", sender
                 continue
-            try: assert merkleVerify(N, stripe, roothash, branch, pid)
+            try:
+                assert merkleVerify(N, stripe, roothash, branch, pid)
             except Exception, e:
                 print "Failed to validate VAL message:", e
                 continue

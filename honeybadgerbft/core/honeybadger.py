@@ -141,7 +141,8 @@ class HoneyBadgerBFT():
             self.transaction_buffer = [_tx for _tx in self.transaction_buffer if _tx not in new_tx]
 
             self.round += 1     # Increment the round
-            if self.round >= 3: break   # Only run one round for now
+            if self.round >= 3:
+                break   # Only run one round for now
 
     def _run_round(self, r, tx_to_send, send, recv):
         """Run one protocol round.
@@ -162,7 +163,8 @@ class HoneyBadgerBFT():
 
             :param o: Input to multicast.
             """
-            for j in range(N): send(j, o)
+            for j in range(N):
+                send(j, o)
 
         # Launch ACS, ABA, instances
         coin_recvs = [None] * N
@@ -220,7 +222,8 @@ class HoneyBadgerBFT():
             rbc_outputs[j] = rbc.get  # block for output from rbc
 
         # N instances of ABA, RBC
-        for j in range(N): _setup(j)
+        for j in range(N):
+            _setup(j)
 
         # One instance of TPKE
         def tpke_bcast(o):

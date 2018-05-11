@@ -45,7 +45,8 @@ def shared_coin(sid, pid, N, f, PK, SK, broadcast, receive):
 
             # TODO: Accountability: Optimistically skip verifying
             # each share, knowing evidence available later
-            try: PK.verify_share(sig, i, h)
+            try:
+                PK.verify_share(sig, i, h)
             except AssertionError:
                 print "Signature share failed!", (sid, pid, i, r)
                 continue
