@@ -5,7 +5,9 @@ import hashlib
 import math
 
 
-#### zfec encode ####
+#####################
+#    zfec encode    #
+#####################
 def encode(K, N, m):
     """Erasure encodes string ``m`` into ``N`` blocks, such that any ``K``
     can reconstruct.
@@ -56,7 +58,9 @@ def decode(K, N, stripes):
     return m
 
 
-#### Merkle tree ####
+#####################
+#    Merkle tree    #
+#####################
 def hash(x):
     assert type(x) is str
     return hashlib.sha256(x).digest()

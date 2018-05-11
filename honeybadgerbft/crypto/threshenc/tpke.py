@@ -211,7 +211,7 @@ def dealer(players=10, k=5):
     return public_key, private_keys
 
 
-## Symmetric cryptography. Use AES with a 32-byte key
+# Symmetric cryptography. Use AES with a 32-byte key
 
 BS = 16
 pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
