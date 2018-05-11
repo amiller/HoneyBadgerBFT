@@ -158,11 +158,11 @@ def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
     assert N >= 3*f + 1
     assert f >= 0
     assert 0 <= leader < N
-    assert 0 <= pid    < N
+    assert 0 <= pid < N
 
-    K               = N - 2 * f  # Need this many to reconstruct
-    EchoThreshold   = N - f      # Wait for this many ECHO to send READY
-    ReadyThreshold  = f + 1      # Wait for this many READY to amplify READY
+    K = N - 2 * f  # Need this many to reconstruct
+    EchoThreshold = N - f      # Wait for this many ECHO to send READY
+    ReadyThreshold = f + 1      # Wait for this many READY to amplify READY
     OutputThreshold = 2 * f + 1  # Wait for this many READY to output
     # NOTE: The above thresholds  are chosen to minimize the size
     # of the erasure coding stripes, i.e. to maximize K.
