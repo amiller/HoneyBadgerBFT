@@ -91,7 +91,7 @@ def honeybadger_block(pid, N, f, PK, SK, propose_in, acs_in, acs_out, tpke_bcast
     # If decryption fails at this point, we will have evidence of misbehavior,
     # but then we should wait for more decryption shares and try again
     decryptions = []
-    for i, v  in enumerate(vall):
+    for i, v in enumerate(vall):
         if v is None: continue
         svec = {}
         for j, shares in shares_received.iteritems():
