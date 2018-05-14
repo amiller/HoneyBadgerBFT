@@ -201,9 +201,9 @@ class HoneyBadgerBFT():
                 broadcast(('ACS_ABA', j, o))
 
             aba_recvs[j] = Queue()
-            aba = gevent.spawn(binaryagreement, sid+'ABA'+str(j), pid, N, f, coin,
-                               aba_inputs[j].get, aba_outputs[j].put_nowait,
-                               aba_bcast, aba_recvs[j].get)
+            gevent.spawn(binaryagreement, sid+'ABA'+str(j), pid, N, f, coin,
+                         aba_inputs[j].get, aba_outputs[j].put_nowait,
+                         aba_bcast, aba_recvs[j].get)
 
             def rbc_send(k, o):
                 """Reliable broadcast operation.
