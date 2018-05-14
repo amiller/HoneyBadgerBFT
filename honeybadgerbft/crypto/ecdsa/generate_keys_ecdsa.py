@@ -1,4 +1,4 @@
-from ecdsa_ssl import *
+from ecdsa_ssl import KEY
 import argparse
 import cPickle
 
