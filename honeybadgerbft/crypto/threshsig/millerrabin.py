@@ -7,8 +7,8 @@ def generateLargePrime(k):
     r = 100*(math.log(k, 2)+1)    # number of attempts max
     r_ = r
     while r > 0:
-       # randrange is mersenne twister and is completely deterministic
-       # unusable for serious crypto purposes
+        # randrange is mersenne twister and is completely deterministic
+        # unusable for serious crypto purposes
         n = random.randrange(2**(k-1), 2**(k))
         r -= 1
         if is_probable_prime(n) is True:
