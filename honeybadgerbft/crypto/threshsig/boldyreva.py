@@ -168,5 +168,3 @@ def dealer(players=10, k=5, seed=None):
     # print i, 'ok'
 
     return public_key, private_keys
-
-
