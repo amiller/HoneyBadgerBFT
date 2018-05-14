@@ -64,7 +64,7 @@ class TBLSPublicKey(object):
     """ """
     def __init__(self, l, k, VK, VKs):
         """ """
-        self.l = l
+        self.l = l  # noqa: E741
         self.k = k
         self.VK = VK
         self.VKs = VKs

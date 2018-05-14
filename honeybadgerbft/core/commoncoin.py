@@ -28,7 +28,7 @@ def shared_coin(sid, pid, N, f, PK, SK, broadcast, receive):
     :return: a function ``getCoin()``, where ``getCoin(r)`` blocks
     """
     assert PK.k == f+1
-    assert PK.l == N
+    assert PK.l == N    # noqa: E741
     received = defaultdict(dict)
     outputQueue = defaultdict(lambda: Queue(1))
 
