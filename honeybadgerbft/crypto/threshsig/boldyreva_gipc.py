@@ -1,4 +1,4 @@
-from boldyreva import serialize, deserialize1, deserialize2
+from boldyreva import serialize, deserialize1
 import gipc
 import random
 

@@ -1,5 +1,4 @@
-from boldyreva import dealer, serialize, deserialize1, deserialize2
-import multiprocessing
+from boldyreva import dealer, serialize, deserialize1
 
 _pool_PK = None
 _pool = None

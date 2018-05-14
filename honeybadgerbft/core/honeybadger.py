@@ -2,7 +2,6 @@ from collections import namedtuple
 from enum import Enum
 
 import gevent
-from gevent.event import Event
 from gevent.queue import Queue
 
 from honeybadgerbft.core.commoncoin import shared_coin
@@ -10,7 +9,6 @@ from honeybadgerbft.core.binaryagreement import binaryagreement
 from honeybadgerbft.core.reliablebroadcast import reliablebroadcast
 from honeybadgerbft.core.commonsubset import commonsubset
 from honeybadgerbft.core.honeybadger_block import honeybadger_block
-from honeybadgerbft.crypto.threshenc import tpke
 from honeybadgerbft.exceptions import UnknownTagError
 
 

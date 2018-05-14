@@ -6,9 +6,8 @@ Dependencies:
     based crypto)
 
 """
-from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, GT, pair
+from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, pair
 from base64 import encodestring, decodestring
-import random
 from operator import mul
 
 

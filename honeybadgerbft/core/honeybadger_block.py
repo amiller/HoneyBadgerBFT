@@ -1,4 +1,3 @@
-import gevent
 from ..crypto.threshenc import tpke
 import os
 
