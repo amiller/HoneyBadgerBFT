@@ -1,20 +1,23 @@
 import random
 import math
 
-def generateLargePrime(k):
-    #k is the desired bit length
-    r=100*(math.log(k,2)+1) #number of attempts max
-    r_ = r
-    while r>0:
-       #randrange is mersenne twister and is completely deterministic
-       #unusable for serious crypto purposes
-        n = random.randrange(2**(k-1),2**(k))
-        r-=1
-        if is_probable_prime(n) == True:
-            return n
-    return "Failure after "+`r_` + " tries."
 
-_mrpt_num_trials = 50 # number of bases to test
+def generateLargePrime(k):
+    # k is the desired bit length
+    r = 100*(math.log(k, 2)+1)    # number of attempts max
+    r_ = r
+    while r > 0:
+        # randrange is mersenne twister and is completely deterministic
+        # unusable for serious crypto purposes
+        n = random.randrange(2**(k-1), 2**(k))
+        r -= 1
+        if is_probable_prime(n) is True:
+            return n
+    return "Failure after " + repr(r_) + " tries."
+
+
+_mrpt_num_trials = 50   # number of bases to test
+
 
 def is_probable_prime(n):
     """
@@ -82,11 +85,11 @@ def is_probable_prime(n):
         for i in range(s):
             if pow(a, 2**i * d, n) == n-1:
                 return False
-        return True # n is definitely composite
+        return True     # n is definitely composite
 
     for i in range(_mrpt_num_trials):
         a = random.randrange(2, n)
         if try_composite(a):
             return False
 
-    return True # no base tested showed n as composite
+    return True     # no base tested showed n as composite

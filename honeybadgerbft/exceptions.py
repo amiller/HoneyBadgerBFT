@@ -3,7 +3,7 @@ class HoneybadgerbftError(Exception):
 
 
 class BroadcastError(HoneybadgerbftError):
-    """Base class for broadcast errors.""" 
+    """Base class for broadcast errors."""
 
 
 class UnknownTagError(BroadcastError):

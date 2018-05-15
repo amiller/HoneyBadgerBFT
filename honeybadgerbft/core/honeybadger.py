@@ -2,7 +2,6 @@ from collections import namedtuple
 from enum import Enum
 
 import gevent
-from gevent.event import Event
 from gevent.queue import Queue
 
 from honeybadgerbft.core.commoncoin import shared_coin
@@ -10,7 +9,6 @@ from honeybadgerbft.core.binaryagreement import binaryagreement
 from honeybadgerbft.core.reliablebroadcast import reliablebroadcast
 from honeybadgerbft.core.commonsubset import commonsubset
 from honeybadgerbft.core.honeybadger_block import honeybadger_block
-from honeybadgerbft.crypto.threshenc import tpke
 from honeybadgerbft.exceptions import UnknownTagError
 
 
@@ -83,7 +81,6 @@ class HoneyBadgerBFT():
         self.transaction_buffer = []
         self._per_round_recv = {}  # Buffer of incoming messages
 
-
     def submit_tx(self, tx):
         """Appends the given transaction to the transaction buffer.
 
@@ -109,7 +106,7 @@ class HoneyBadgerBFT():
                 _recv = self._per_round_recv[r]
                 if _recv is not None:
                     # Queue it
-                    _recv.put( (sender, msg) )
+                    _recv.put((sender, msg))
 
                 # else:
                 # We have already closed this
@@ -141,9 +138,9 @@ class HoneyBadgerBFT():
             # Remove all of the new transactions from the buffer
             self.transaction_buffer = [_tx for _tx in self.transaction_buffer if _tx not in new_tx]
 
-            self.round += 1 # Increment the round
-            if self.round >= 3: break # Only run one round for now
-
+            self.round += 1     # Increment the round
+            if self.round >= 3:
+                break   # Only run one round for now
 
     def _run_round(self, r, tx_to_send, send, recv):
         """Run one protocol round.
@@ -164,14 +161,15 @@ class HoneyBadgerBFT():
 
             :param o: Input to multicast.
             """
-            for j in range(N): send(j, o)
+            for j in range(N):
+                send(j, o)
 
         # Launch ACS, ABA, instances
         coin_recvs = [None] * N
-        aba_recvs  = [None] * N
-        rbc_recvs  = [None] * N
+        aba_recvs = [None] * N
+        rbc_recvs = [None] * N
 
-        aba_inputs  = [Queue(1) for _ in range(N)]
+        aba_inputs = [Queue(1) for _ in range(N)]
         aba_outputs = [Queue(1) for _ in range(N)]
         rbc_outputs = [Queue(1) for _ in range(N)]
 
@@ -203,9 +201,9 @@ class HoneyBadgerBFT():
                 broadcast(('ACS_ABA', j, o))
 
             aba_recvs[j] = Queue()
-            aba = gevent.spawn(binaryagreement, sid+'ABA'+str(j), pid, N, f, coin,
-                               aba_inputs[j].get, aba_outputs[j].put_nowait,
-                               aba_bcast, aba_recvs[j].get)
+            gevent.spawn(binaryagreement, sid+'ABA'+str(j), pid, N, f, coin,
+                         aba_inputs[j].get, aba_outputs[j].put_nowait,
+                         aba_bcast, aba_recvs[j].get)
 
             def rbc_send(k, o):
                 """Reliable broadcast operation.
@@ -222,7 +220,8 @@ class HoneyBadgerBFT():
             rbc_outputs[j] = rbc.get  # block for output from rbc
 
         # N instances of ABA, RBC
-        for j in range(N): _setup(j)
+        for j in range(N):
+            _setup(j)
 
         # One instance of TPKE
         def tpke_bcast(o):
@@ -246,7 +245,7 @@ class HoneyBadgerBFT():
 
         _input = Queue(1)
         _input.put(tx_to_send)
-        return honeybadger_block(pid, self.N, self.f, self.ePK,self. eSK,
+        return honeybadger_block(pid, self.N, self.f, self.ePK, self. eSK,
                                  _input.get,
                                  acs_in=my_rbc_input.put_nowait, acs_out=acs.get,
                                  tpke_bcast=tpke_bcast, tpke_recv=tpke_recv.get)

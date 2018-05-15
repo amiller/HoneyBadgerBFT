@@ -9,6 +9,7 @@ env:
 matrix:
   include:
     - env: BUILD=tests
+    - env: BUILD=flake8
     - env: BUILD=docs
 
 before_install: sudo .ci/travis-before-install.sh

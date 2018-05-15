@@ -21,22 +21,22 @@ def binaryagreement(sid, pid, N, f, coin, input, decide, broadcast, receive):
     :return: blocks until
     """
     # Messages received are routed to either a shared coin, the broadcast, or AUX
-    est_values = defaultdict(lambda:[set(),set()])
-    aux_values = defaultdict(lambda:[set(),set()])
-    est_sent = defaultdict(lambda:[False,False])
+    est_values = defaultdict(lambda: [set(), set()])
+    aux_values = defaultdict(lambda: [set(), set()])
+    est_sent = defaultdict(lambda: [False, False])
     bin_values = defaultdict(set)
 
     # This event is triggered whenever bin_values or aux_values changes
     bv_signal = Event()
 
     def _recv():
-        while True:  #not finished[pid]:
+        while True:  # not finished[pid]:
             (sender, msg) = receive()
             assert sender in range(N)
             if msg[0] == 'EST':
                 # BV_Broadcast message
                 _, r, v = msg
-                assert v in (0,1)
+                assert v in (0, 1)
                 if sender in est_values[r][v]:
                     # FIXME: raise or continue? For now will raise just
                     # because it appeared first, but maybe the protocol simply
@@ -60,7 +60,7 @@ def binaryagreement(sid, pid, N, f, coin, input, decide, broadcast, receive):
             elif msg[0] == 'AUX':
                 # Aux message
                 _, r, v = msg
-                assert v in (0,1)
+                assert v in (0, 1)
                 if sender in aux_values[r][v]:
                     # FIXME: raise or continue? For now will raise just
                     # because it appeared first, but maybe the protocol simply
@@ -74,16 +74,16 @@ def binaryagreement(sid, pid, N, f, coin, input, decide, broadcast, receive):
                 bv_signal.set()
 
     # Translate mmr14 broadcast into coin.broadcast
-    #_coin_broadcast = lambda (r, sig): broadcast(('COIN', r, sig))
-    #_coin_recv = Queue()
-    #coin = shared_coin(sid+'COIN', pid, N, f, _coin_broadcast, _coin_recv.get)
+    # _coin_broadcast = lambda (r, sig): broadcast(('COIN', r, sig))
+    # _coin_recv = Queue()
+    # coin = shared_coin(sid+'COIN', pid, N, f, _coin_broadcast, _coin_recv.get)
 
     # Run the receive loop in the background
     _thread_recv = gevent.spawn(_recv)
 
     # Block waiting for the input
     vi = input()
-    assert vi in (0,1)
+    assert vi in (0, 1)
     est = vi
     r = 0
     already_decided = None
@@ -105,15 +105,15 @@ def binaryagreement(sid, pid, N, f, coin, input, decide, broadcast, receive):
             # Block until at least N-f AUX values are received
             if 1 in bin_values[r] and len(aux_values[r][1]) >= N - f:
                 values = set((1,))
-                #print '[sid:%s] [pid:%d] VALUES 1 %d' % (sid,pid,r)
+                # print '[sid:%s] [pid:%d] VALUES 1 %d' % (sid,pid,r)
                 break
             if 0 in bin_values[r] and len(aux_values[r][0]) >= N - f:
                 values = set((0,))
-                #print '[sid:%s] [pid:%d] VALUES 0 %d' % (sid,pid,r)
+                # print '[sid:%s] [pid:%d] VALUES 0 %d' % (sid,pid,r)
                 break
             if sum(len(aux_values[r][v]) for v in bin_values[r]) >= N - f:
-                values = set((0,1))
-                #print '[sid:%s] [pid:%d] VALUES BOTH %d' % (sid,pid,r)
+                values = set((0, 1))
+                # print '[sid:%s] [pid:%d] VALUES BOTH %d' % (sid,pid,r)
                 break
             bv_signal.clear()
             bv_signal.wait()
@@ -127,7 +127,7 @@ def binaryagreement(sid, pid, N, f, coin, input, decide, broadcast, receive):
                 if already_decided is None:
                     already_decided = v
                     decide(v)
-                    #print '[sid:%s] [pid:%d] DECIDED %d in round %d' % (sid,pid,v,r)
+                    # print '[sid:%s] [pid:%d] DECIDED %d in round %d' % (sid,pid,v,r)
                 elif already_decided == v:
                     # Here corresponds to a proof that if one party
                     # decides at round r, then in all the following
@@ -136,7 +136,7 @@ def binaryagreement(sid, pid, N, f, coin, input, decide, broadcast, receive):
                     # party is a party who has decided but no enough
                     # peers to help him end the loop.  Lemma: # of
                     # abandoned party <= t
-                    #print '[sid:%s] [pid:%d] QUITTING in round %d' % (sid,pid,r)
+                    # print '[sid:%s] [pid:%d] QUITTING in round %d' % (sid,pid,r)
                     _thread_recv.kill()
                     return
                 est = v

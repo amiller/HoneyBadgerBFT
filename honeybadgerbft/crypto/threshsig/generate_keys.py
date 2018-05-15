@@ -1,4 +1,4 @@
-from boldyreva import dealer, serialize, group
+from boldyreva import dealer, serialize
 import argparse
 import cPickle
 

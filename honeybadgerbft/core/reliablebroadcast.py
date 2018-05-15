@@ -4,7 +4,10 @@ import zfec
 import hashlib
 import math
 
-#### zfec encode ####
+
+#####################
+#    zfec encode    #
+#####################
 def encode(K, N, m):
     """Erasure encodes string ``m`` into ``N`` blocks, such that any ``K``
     can reconstruct.
@@ -23,9 +26,10 @@ def encode(K, N, m):
     padlen = K - (len(m) % K)
     m += padlen * chr(K-padlen)
     step = len(m)/K
-    blocks = [m[i*step : (i+1)*step] for i in range(K)]
+    blocks = [m[i*step: (i+1)*step] for i in range(K)]
     stripes = encoder.encode(blocks)
     return stripes
+
 
 def decode(K, N, stripes):
     """Decodes an erasure-encoded string from a subset of stripes
@@ -39,11 +43,13 @@ def decode(K, N, stripes):
     assert len(stripes) == N
     blocks = []
     blocknums = []
-    for i,block in enumerate(stripes):
-        if block is None: continue
+    for i, block in enumerate(stripes):
+        if block is None:
+            continue
         blocks.append(block)
         blocknums.append(i)
-        if len(blocks) == K: break
+        if len(blocks) == K:
+            break
     else:
         raise ValueError("Too few to recover")
     decoder = zfec.Decoder(K, N)
@@ -53,12 +59,17 @@ def decode(K, N, stripes):
     m = m[:-padlen]
     return m
 
-#### Merkle tree ####
+
+#####################
+#    Merkle tree    #
+#####################
 def hash(x):
     assert type(x) is str
     return hashlib.sha256(x).digest()
 
+
 def ceil(x): return int(math.ceil(x))
+
 
 def merkleTree(strList):
     """Builds a merkle tree from a list of :math:`N` strings (:math:`N`
@@ -78,6 +89,7 @@ def merkleTree(strList):
         mt[i] = hash(mt[i*2] + mt[i*2+1])
     return mt
 
+
 def getMerkleBranch(index, mt):
     """Computes a merkle tree from a list of leaves.
     """
@@ -87,6 +99,7 @@ def getMerkleBranch(index, mt):
         res.append(mt[t ^ 1])  # we are picking up the sibling
         t /= 2
     return res
+
 
 def merkleVerify(N, val, roothash, branch, index):
     """Verify a merkle tree branch proof
@@ -151,11 +164,11 @@ def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
     assert N >= 3*f + 1
     assert f >= 0
     assert 0 <= leader < N
-    assert 0 <= pid    < N
+    assert 0 <= pid < N
 
-    K               = N - 2 * f  # Need this many to reconstruct
-    EchoThreshold   = N - f      # Wait for this many ECHO to send READY
-    ReadyThreshold  = f + 1      # Wait for this many READY to amplify READY
+    K = N - 2 * f  # Need this many to reconstruct
+    EchoThreshold = N - f      # Wait for this many ECHO to send READY
+    ReadyThreshold = f + 1      # Wait for this many READY to amplify READY
     OutputThreshold = 2 * f + 1  # Wait for this many READY to output
     # NOTE: The above thresholds  are chosen to minimize the size
     # of the erasure coding stripes, i.e. to maximize K.
@@ -166,13 +179,14 @@ def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
     #   K = EchoThreshold - f
 
     def broadcast(o):
-        for i in range(N): send(i, o)
+        for i in range(N):
+            send(i, o)
 
     if pid == leader:
         # The leader erasure encodes the input, sending one strip to each participant
         m = input()  # block until an input is received
         assert type(m) is str
-        #print 'Input received: %d bytes' % (len(m),)
+        # print 'Input received: %d bytes' % (len(m),)
 
         stripes = encode(K, N, m)
         mt = merkleTree(stripes)  # full binary tree
@@ -210,14 +224,15 @@ def reliablebroadcast(sid, pid, N, f, leader, input, receive, send):
             if sender != leader:
                 print "VAL message from other than leader:", sender
                 continue
-            try: assert merkleVerify(N, stripe, roothash, branch, pid)
+            try:
+                assert merkleVerify(N, stripe, roothash, branch, pid)
             except Exception, e:
                 print "Failed to validate VAL message:", e
                 continue
 
             # Update
             fromLeader = roothash
-            broadcast(('ECHO', roothash, branch, stripe ))
+            broadcast(('ECHO', roothash, branch, stripe))
 
         elif msg[0] == 'ECHO':
             (_, roothash, branch, stripe) = msg

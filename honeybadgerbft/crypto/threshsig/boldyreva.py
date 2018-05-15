@@ -6,38 +6,43 @@ Dependencies:
     based crypto)
 
 """
-from charm.toolbox.pairinggroup import PairingGroup,ZR,G1,G2,GT,pair
+from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, pair
 from base64 import encodestring, decodestring
-import random
+from operator import mul
 
 
-#group = PairingGroup('SS512')
-#group = PairingGroup('MNT159')
+# group = PairingGroup('SS512')
+# group = PairingGroup('MNT159')
 group = PairingGroup('MNT224')
+
 
 def serialize(g):
     """ """
     # Only work in G1 here
     return decodestring(group.serialize(g)[2:])
 
+
 def deserialize0(g):
     """ """
     # Only work in G1 here
     return group.deserialize('0:'+encodestring(g))
+
 
 def deserialize1(g):
     """ """
     # Only work in G1 here
     return group.deserialize('1:'+encodestring(g))
 
+
 def deserialize2(g):
     """ """
     # Only work in G1 here
     return group.deserialize('2:'+encodestring(g))
 
+
 g1 = group.hash('geng1', G1)
 g1.initPP()
-#g2 = g1
+# g2 = g1
 g2 = group.hash('geng2', G2)
 g2.initPP()
 ZERO = group.random(ZR, seed=59)*0
@@ -58,7 +63,7 @@ class TBLSPublicKey(object):
     """ """
     def __init__(self, l, k, VK, VKs):
         """ """
-        self.l = l
+        self.l = l  # noqa: E741
         self.k = k
         self.VK = VK
         self.VKs = VKs
@@ -67,14 +72,14 @@ class TBLSPublicKey(object):
         """ """
         d = dict(self.__dict__)
         d['VK'] = serialize(self.VK)
-        d['VKs'] = map(serialize,self.VKs)
+        d['VKs'] = map(serialize, self.VKs)
         return d
 
     def __setstate__(self, d):
         """ """
         self.__dict__ = d
         self.VK = deserialize2(self.VK)
-        self.VKs = map(deserialize2,self.VKs)
+        self.VKs = map(deserialize2, self.VKs)
         print "I'm being depickled"
 
     def lagrange(self, S, j):
@@ -82,15 +87,14 @@ class TBLSPublicKey(object):
         # Assert S is a subset of range(0,self.l)
         assert len(S) == self.k
         assert type(S) is set
-        assert S.issubset(range(0,self.l))
+        assert S.issubset(range(0, self.l))
         S = sorted(S)
 
         assert j in S
         assert 0 <= j < self.l
-        mul = lambda a,b: a*b
         num = reduce(mul, [0 - jj - 1 for jj in S if jj != j], ONE)
-        den = reduce(mul, [j - jj     for jj in S if jj != j], ONE)
-        #assert num % den == 0
+        den = reduce(mul, [j - jj for jj in S if jj != j], ONE)
+        # assert num % den == 0
         return num / den
 
     def hash_message(self, m):
@@ -115,10 +119,9 @@ class TBLSPublicKey(object):
         S = set(sigs.keys())
         assert S.issubset(range(self.l))
 
-        mul = lambda a,b: a*b
         res = reduce(mul,
                      [sig ** self.lagrange(S, j)
-                      for j,sig in sigs.iteritems()], 1)
+                      for j, sig in sigs.iteritems()], 1)
         return res
 
 
@@ -127,7 +130,7 @@ class TBLSPrivateKey(TBLSPublicKey):
 
     def __init__(self, l, k, VK, VKs, SK, i):
         """ """
-        super(TBLSPrivateKey,self).__init__(l, k, VK, VKs)
+        super(TBLSPrivateKey, self).__init__(l, k, VK, VKs)
         assert 0 <= i < self.l
         self.i = i
         self.SK = SK
@@ -135,6 +138,7 @@ class TBLSPrivateKey(TBLSPublicKey):
     def sign(self, h):
         """ """
         return h ** self.SK
+
 
 def dealer(players=10, k=5, seed=None):
     """ """
@@ -156,12 +160,10 @@ def dealer(players=10, k=5, seed=None):
                     for i, SK in enumerate(SKs)]
 
     # Check reconstruction of 0
-    S = set(range(0,k))
+    S = set(range(0, k))
     lhs = polynom_eval(0, a)
-    rhs = sum(public_key.lagrange(S,j) * polynom_eval(j+1, a) for j in S)
+    rhs = sum(public_key.lagrange(S, j) * polynom_eval(j+1, a) for j in S)
     assert lhs == rhs
-    #print i, 'ok'
+    # print i, 'ok'
 
     return public_key, private_keys
-
-

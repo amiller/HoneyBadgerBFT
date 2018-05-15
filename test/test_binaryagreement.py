@@ -266,7 +266,9 @@ def _test_binaryagreement(N=4, f=1, seed=None):
 def test_binaryagreement():
     for i in range(5): _test_binaryagreement(seed=i)
 
+
+@mark.xfail(
+    raises=NotImplementedError,
+    reason='Place holder for https://github.com/amiller/HoneyBadgerBFT/issues/59')
 def test_issue59_attack():
-    """ Place holder for https://github.com/amiller/HoneyBadgerBFT/issues/59
-    """
     raise NotImplementedError("Placeholder test failure for Issue #59")

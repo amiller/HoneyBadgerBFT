@@ -1,5 +1,6 @@
 import gevent
 
+
 def commonsubset(pid, N, f, rbc_out, aba_in, aba_out):
     """The BKR93 algorithm for asynchronous common subset.
 
@@ -16,7 +17,7 @@ def commonsubset(pid, N, f, rbc_out, aba_in, aba_out):
         string
     """
     assert len(rbc_out) == N
-    assert len(aba_in ) == N
+    assert len(aba_in) == N
     assert len(aba_out) == N
 
     aba_inputted = [False] * N
@@ -30,22 +31,22 @@ def commonsubset(pid, N, f, rbc_out, aba_in, aba_out):
         if not aba_inputted[j]:
             # Provide 1 as input to the corresponding bin agreement
             aba_inputted[j] = True
-            aba_in[j]( 1 )
+            aba_in[j](1)
 
     r_threads = [gevent.spawn(_recv_rbc, j) for j in range(N)]
 
     def _recv_aba(j):
         # Receive output from binary agreement
         aba_values[j] = aba_out[j]()  # May block
-        #print pid, j, 'ENTERING CRITICAL'
+        # print pid, j, 'ENTERING CRITICAL'
         if sum(aba_values) >= N - f:
             # Provide 0 to all other aba
             for k in range(N):
                 if not aba_inputted[k]:
                     aba_inputted[k] = True
-                    aba_in[k]( 0 )
-                    #print pid, 'ABA[%d] input -> %d' % (k, 0)
-        #print pid, j, 'EXITING CRITICAL'
+                    aba_in[k](0)
+                    # print pid, 'ABA[%d] input -> %d' % (k, 0)
+        # print pid, j, 'EXITING CRITICAL'
 
     # Wait for all binary agreements
     a_threads = [gevent.spawn(_recv_aba, j) for j in range(N)]
