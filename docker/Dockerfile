@@ -10,6 +10,7 @@ RUN apt-get -y install flex
 RUN apt-get -y install bison
 RUN apt-get -y install libgmp-dev
 RUN apt-get -y install libssl-dev
+RUN pip install --upgrade setuptools
 RUN pip install PySocks
 RUN pip install pycrypto
 RUN pip install ecdsa
