@@ -16,7 +16,7 @@ Other licenses may be issued at the authors' discretion.
 
 Build the docker image first.
 
-    cd docker_build
+    cd docker
     docker build -t honeybadgerbft .
 
 Then for example you want to run an instance with N=8, t=2 and B=16:
