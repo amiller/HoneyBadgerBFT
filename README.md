@@ -1,3 +1,6 @@
+# _THIS PROJECT HAS MOVED_
+Please see https://github.com/initc3/HoneyBadgerBFT-Python/ for the more up-to-date Python implementation, and https://github.com/initc3/HoneyBadgerBFT/ for an umbrella project about the HoneyBadgerBFT protocol. 
+
 # HoneyBadgerBFT
 The Honey Badger of BFT Protocols
 
