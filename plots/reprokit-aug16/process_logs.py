@@ -151,3 +151,9 @@ def plot_latency_throughput():
 
 # waits for 1471088150.0
 # timestampE (1, 1471088204.750964)
+print "Creating plot_throughput:"
+plot_throughput()
+print "Done."
+print "Creating plot_latency_throughput:"
+plot_latency_throughput()
+print "Done."
