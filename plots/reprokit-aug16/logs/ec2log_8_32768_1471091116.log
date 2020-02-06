@@ -1,0 +1,166 @@
+[52.38.214.180] Executing task 'runProtocol'
+[52.53.236.59] Executing task 'runProtocol'
+[54.166.163.26] Executing task 'runProtocol'
+[52.67.62.65] Executing task 'runProtocol'
+[52.208.59.13] Executing task 'runProtocol'
+[52.62.67.220] Executing task 'runProtocol'
+[54.169.195.39] Executing task 'runProtocol'
+[52.196.178.73] Executing task 'runProtocol'
+8 2 262144 1471091130
+[52.196.178.73] run: killall -9 python
+8 2 262144 1471091130
+[54.169.195.39] run: killall -9 python
+8 2 262144 1471091130
+[52.208.59.13] run: killall -9 python
+8 2 262144 1471091130
+[52.67.62.65] run: killall -9 python
+8 2 262144 1471091130
+[52.62.67.220] run: killall -9 python
+8 2 262144 1471091130
+[52.53.236.59] run: killall -9 python
+8 2 262144 1471091130
+8 2 262144 1471091130
+[54.166.163.26] run: killall -9 python
+[52.38.214.180] run: killall -9 python
+[54.166.163.26] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig8_2.keys -e ecdsa.keys -a 1471091130 -b 262144 -n 8 -t 2 -c thenc8_2.keys
+[54.166.163.26] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[54.166.163.26] out:   warnings.warn(msg, UserWarning)
+[52.53.236.59] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig8_2.keys -e ecdsa.keys -a 1471091130 -b 262144 -n 8 -t 2 -c thenc8_2.keys
+[52.208.59.13] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig8_2.keys -e ecdsa.keys -a 1471091130 -b 262144 -n 8 -t 2 -c thenc8_2.keys
+[52.38.214.180] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig8_2.keys -e ecdsa.keys -a 1471091130 -b 262144 -n 8 -t 2 -c thenc8_2.keys
+[52.53.236.59] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.53.236.59] out:   warnings.warn(msg, UserWarning)
+[52.208.59.13] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.208.59.13] out:   warnings.warn(msg, UserWarning)
+[52.67.62.65] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig8_2.keys -e ecdsa.keys -a 1471091130 -b 262144 -n 8 -t 2 -c thenc8_2.keys
+[52.38.214.180] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.38.214.180] out:   warnings.warn(msg, UserWarning)
+[52.196.178.73] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig8_2.keys -e ecdsa.keys -a 1471091130 -b 262144 -n 8 -t 2 -c thenc8_2.keys
+[52.67.62.65] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.67.62.65] out:   warnings.warn(msg, UserWarning)
+[52.196.178.73] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.196.178.73] out:   warnings.warn(msg, UserWarning)
+[54.166.163.26] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.166.163.26] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.166.163.26] out: 
+[54.166.163.26] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.166.163.26] out: 100    13  100    13    0     0   9665      0 --:--:-- --:--:-- --:--:-- 13000
+[54.166.163.26] out: servers started
+[52.62.67.220] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig8_2.keys -e ecdsa.keys -a 1471091130 -b 262144 -n 8 -t 2 -c thenc8_2.keys
+[54.169.195.39] out: python: no process found
+[54.169.195.39] out: 
+
+
+Warning: run() received nonzero return code 1 while executing 'killall -9 python'!
+
+[54.169.195.39] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig8_2.keys -e ecdsa.keys -a 1471091130 -b 262144 -n 8 -t 2 -c thenc8_2.keys
+[52.38.214.180] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.38.214.180] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.38.214.180] out: 
+[52.38.214.180] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.38.214.180] out: 100    13  100    13    0     0  11235      0 --:--:-- --:--:-- --:--:-- 13000
+[52.38.214.180] out: servers started
+[52.62.67.220] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.62.67.220] out:   warnings.warn(msg, UserWarning)
+[52.53.236.59] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.53.236.59] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.53.236.59] out: 
+[52.53.236.59] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.53.236.59] out: 100    12  100    12    0     0   9860      0 --:--:-- --:--:-- --:--:-- 12000
+[52.53.236.59] out: servers started
+[52.208.59.13] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.208.59.13] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.208.59.13] out: 
+[52.208.59.13] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.208.59.13] out: 100    12  100    12    0     0  10526      0 --:--:-- --:--:-- --:--:-- 12000
+[52.208.59.13] out: servers started
+[54.169.195.39] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[54.169.195.39] out:   warnings.warn(msg, UserWarning)
+[52.67.62.65] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.67.62.65] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.67.62.65] out: 
+[52.67.62.65] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.67.62.65] out: 100    11  100    11    0     0   8634      0 --:--:-- --:--:-- --:--:-- 11000
+[52.67.62.65] out: servers started
+[52.196.178.73] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.196.178.73] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.196.178.73] out: 
+[52.196.178.73] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.196.178.73] out: 100    13  100    13    0     0  10204      0 --:--:-- --:--:-- --:--:-- 13000
+[52.196.178.73] out: servers started
+[52.62.67.220] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.62.67.220] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.62.67.220] out: 
+[52.62.67.220] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.62.67.220] out: 100    12  100    12    0     0   9382      0 --:--:-- --:--:-- --:--:-- 12000
+[52.62.67.220] out: servers started
+[54.169.195.39] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.169.195.39] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.169.195.39] out: 
+[54.169.195.39] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.169.195.39] out: 100    13  100    13    0     0   9180      0 --:--:-- --:--:-- --:--:-- 13000
+[54.169.195.39] out: servers started
+[52.38.214.180] out: 0 waits for 1471091130.0 now is 1471091126.19
+[52.53.236.59] out: 1 waits for 1471091130.0 now is 1471091126.31
+[54.166.163.26] out: 2 waits for 1471091130.0 now is 1471091126.64
+[52.208.59.13] out: 4 waits for 1471091130.0 now is 1471091126.37
+[52.196.178.73] out: 7 waits for 1471091130.0 now is 1471091126.96
+[52.67.62.65] out: 3 waits for 1471091130.0 now is 1471091127.52
+[52.62.67.220] out: 5 waits for 1471091130.0 now is 1471091128.49
+[54.166.163.26] out: timestampB (2, 1471091130.047873)
+[54.166.163.26] out: [2] proposing 32768 transactions
+[52.53.236.59] out: timestampB (1, 1471091130.048756)
+[52.53.236.59] out: [1] proposing 32768 transactions
+[52.38.214.180] out: timestampB (0, 1471091130.049293)
+[52.38.214.180] out: [0] proposing 32768 transactions
+[54.169.195.39] out: 6 waits for 1471091130.0 now is 1471091129.89
+[54.166.163.26] out: timestampIB (2, 1471091130.195409)
+[52.53.236.59] out: timestampIB (1, 1471091130.196616)
+[52.67.62.65] out: timestampB (3, 1471091130.059959)
+[52.38.214.180] out: timestampIB (0, 1471091130.197522)
+[52.67.62.65] out: [3] proposing 32768 transactions
+[54.169.195.39] out: timestampB (6, 1471091130.045891)
+[54.169.195.39] out: [6] proposing 32768 transactions
+[52.67.62.65] out: timestampIB (3, 1471091130.218384)
+[52.208.59.13] out: timestampB (4, 1471091130.048430)
+[52.196.178.73] out: timestampB (7, 1471091130.047623)
+[52.208.59.13] out: [4] proposing 32768 transactions
+[52.196.178.73] out: [7] proposing 32768 transactions
+[54.169.195.39] out: timestampIB (6, 1471091130.189865)
+[52.62.67.220] out: timestampB (5, 1471091130.048364)
+[52.62.67.220] out: [5] proposing 32768 transactions
+[52.208.59.13] out: timestampIB (4, 1471091130.196561)
+[52.196.178.73] out: timestampIB (7, 1471091130.194495)
+[52.62.67.220] out: timestampIB (5, 1471091130.195659)
+[52.53.236.59] out: timestampIE (1, 1471091142.548841)
+[52.53.236.59] out: timestampIE2 (1, 1471091142.564814)
+[52.38.214.180] out: timestampIE (0, 1471091142.526517)
+[54.166.163.26] out: timestampIE (2, 1471091142.617211)
+[52.38.214.180] out: timestampIE2 (0, 1471091142.543219)
+[54.166.163.26] out: timestampIE2 (2, 1471091142.633240)
+[52.208.59.13] out: timestampIE (4, 1471091142.318303)
+[52.196.178.73] out: [52.208.59.13] out: timestampIE (7, 1471091142.323263)
+timestampIE2 (4, 1471091142.334779)
+[52.196.178.73] out: timestampIE2 (7, 1471091142.339384)
+[52.67.62.65] out: timestampIE (3, 1471091142.543376)
+[52.67.62.65] out: timestampIE2 (3, 1471091142.559615)
+[52.62.67.220] out: timestampIE (5, 1471091142.322673)
+[54.169.195.39] out: timestampIE (6, 1471091142.455802)
+[54.169.195.39] out: timestampIE2 (6, 1471091142.471641)
+[52.62.67.220] out: timestampIE2 (5, 1471091142.339089)
+[54.166.163.26] out: timestampE (2, 1471091143.637637)
+[52.67.62.65] out: timestampE (3, 1471091143.478082)
+[52.208.59.13] out: timestampE (4, 1471091143.303637)
+[52.53.236.59] out: timestampE (1, 1471091143.644850)
+[52.196.178.73] out: timestampE (7, 1471091143.329740)
+[52.38.214.180] out: timestampE (0, 1471091143.650534)
+[52.62.67.220] out: timestampE (5, 1471091143.299142)
+[54.169.195.39] out: timestampE (6, 1471091143.440829)
+[54.166.163.26] out: [2] 172016 distinct tx synced and 90128 tx left in the pool.
+[52.208.59.13] out: [4] 172016 distinct tx synced and 90128 tx left in the pool.
+[52.53.236.59] out: [1] 172016 distinct tx synced and 90128 tx left in the pool.
+[52.196.178.73] out: [7] 172016 distinct tx synced and 90128 tx left in the pool.
+[52.67.62.65] out: [3] 172016 distinct tx synced and 90128 tx left in the pool.
+[52.38.214.180] out: [0] 172016 distinct tx synced and 90128 tx left in the pool.
+[54.169.195.39] out: [6] 172016 distinct tx synced and 90128 tx left in the pool.
+[52.62.67.220] out: [5] 172016 distinct tx synced and 90128 tx left in the pool.

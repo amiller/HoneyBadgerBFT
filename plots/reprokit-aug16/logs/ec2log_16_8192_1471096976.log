@@ -1,0 +1,320 @@
+[52.38.115.98] Executing task 'runProtocol'
+[52.38.214.180] Executing task 'runProtocol'
+[54.183.198.34] Executing task 'runProtocol'
+[52.53.236.59] Executing task 'runProtocol'
+[54.197.16.51] Executing task 'runProtocol'
+[54.166.163.26] Executing task 'runProtocol'
+[52.67.127.31] Executing task 'runProtocol'
+[52.67.62.65] Executing task 'runProtocol'
+[52.208.59.13] Executing task 'runProtocol'
+[52.209.245.185] Executing task 'runProtocol'
+[52.62.67.220] Executing task 'runProtocol'
+[52.64.219.60] Executing task 'runProtocol'
+[54.169.171.179] Executing task 'runProtocol'
+[54.169.195.39] Executing task 'runProtocol'
+[52.196.178.73] Executing task 'runProtocol'
+[52.69.177.109] Executing task 'runProtocol'
+16 4 131072 1471097010
+[52.69.177.109] run: killall -9 python
+16 4 131072 1471097010
+[52.196.178.73] run: killall -9 python
+16 4 131072 1471097010
+[54.169.195.39] run: killall -9 python
+16 4 131072 1471097010
+[54.169.171.179] run: killall -9 python
+16 4 131072 1471097010
+[52.64.219.60] run: killall -9 python
+16 4 131072 1471097010
+[52.62.67.220] run: killall -9 python
+16 4 131072 1471097010
+[52.209.245.185] run: killall -9 python
+16 4 131072 1471097010
+[52.208.59.13] run: killall -9 python
+16 4 131072 1471097010
+[52.67.62.65] run: killall -9 python
+16 4 131072 1471097010
+[52.67.127.31] run: killall -9 python
+16 4 131072 1471097010
+[54.166.163.26] run: killall -9 python
+16 4 131072 1471097010
+[54.197.16.51] run: killall -9 python
+16 4 131072 1471097010
+[52.53.236.59] run: killall -9 python
+16 4 131072 1471097010
+[54.183.198.34] run: killall -9 python
+16 4 131072 1471097010
+[52.38.214.180] run: killall -9 python
+16 4 131072 1471097010
+[52.38.115.98] run: killall -9 python
+[54.166.163.26] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig16_4.keys -e ecdsa.keys -a 1471097010 -b 131072 -n 16 -t 4 -c thenc16_4.keys
+[54.197.16.51] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig16_4.keys -e ecdsa.keys -a 1471097010 -b 131072 -n 16 -t 4 -c thenc16_4.keys
+[54.197.16.51] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[54.197.16.51] out:   warnings.warn(msg, UserWarning)
+[54.166.163.26] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[54.166.163.26] out:   warnings.warn(msg, UserWarning)
+[54.183.198.34] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig16_4.keys -e ecdsa.keys -a 1471097010 -b 131072 -n 16 -t 4 -c thenc16_4.keys
+[52.53.236.59] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig16_4.keys -e ecdsa.keys -a 1471097010 -b 131072 -n 16 -t 4 -c thenc16_4.keys
+[52.209.245.185] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig16_4.keys -e ecdsa.keys -a 1471097010 -b 131072 -n 16 -t 4 -c thenc16_4.keys
+[52.208.59.13] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig16_4.keys -e ecdsa.keys -a 1471097010 -b 131072 -n 16 -t 4 -c thenc16_4.keys
+[52.38.214.180] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig16_4.keys -e ecdsa.keys -a 1471097010 -b 131072 -n 16 -t 4 -c thenc16_4.keys
+[52.38.115.98] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig16_4.keys -e ecdsa.keys -a 1471097010 -b 131072 -n 16 -t 4 -c thenc16_4.keys
+[54.183.198.34] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[54.183.198.34] out:   warnings.warn(msg, UserWarning)
+[52.53.236.59] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.53.236.59] out:   warnings.warn(msg, UserWarning)
+[52.209.245.185] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.209.245.185] out:   warnings.warn(msg, UserWarning)
+[52.208.59.13] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.208.59.13] out:   warnings.warn(msg, UserWarning)
+[52.38.214.180] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.38.214.180] out:   warnings.warn(msg, UserWarning)
+[52.69.177.109] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig16_4.keys -e ecdsa.keys -a 1471097010 -b 131072 -n 16 -t 4 -c thenc16_4.keys
+[52.196.178.73] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig16_4.keys -e ecdsa.keys -a 1471097010 -b 131072 -n 16 -t 4 -c thenc16_4.keys
+[52.67.127.31] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig16_4.keys -e ecdsa.keys -a 1471097010 -b 131072 -n 16 -t 4 -c thenc16_4.keys
+[52.38.115.98] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.38.115.98] out:   warnings.warn(msg, UserWarning)
+[52.67.62.65] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig16_4.keys -e ecdsa.keys -a 1471097010 -b 131072 -n 16 -t 4 -c thenc16_4.keys
+[52.69.177.109] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.69.177.109] out:   warnings.warn(msg, UserWarning)
+[52.196.178.73] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.196.178.73] out:   warnings.warn(msg, UserWarning)
+[52.67.127.31] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.67.127.31] out:   warnings.warn(msg, UserWarning)
+[52.64.219.60] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig16_4.keys -e ecdsa.keys -a 1471097010 -b 131072 -n 16 -t 4 -c thenc16_4.keys
+[52.62.67.220] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig16_4.keys -e ecdsa.keys -a 1471097010 -b 131072 -n 16 -t 4 -c thenc16_4.keys
+[52.67.62.65] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.67.62.65] out:   warnings.warn(msg, UserWarning)
+[54.169.171.179] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig16_4.keys -e ecdsa.keys -a 1471097010 -b 131072 -n 16 -t 4 -c thenc16_4.keys
+[54.169.195.39] run: python -m HoneyBadgerBFT.test.honest_party_test_EC2 -k thsig16_4.keys -e ecdsa.keys -a 1471097010 -b 131072 -n 16 -t 4 -c thenc16_4.keys
+[52.64.219.60] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.64.219.60] out:   warnings.warn(msg, UserWarning)
+[52.62.67.220] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[52.62.67.220] out:   warnings.warn(msg, UserWarning)
+[54.169.171.179] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[54.169.171.179] out:   warnings.warn(msg, UserWarning)
+[54.169.195.39] out: /usr/lib/python2.7/dist-packages/pkg_resources.py:1031: UserWarning: /home/ubuntu/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+[54.169.195.39] out:   warnings.warn(msg, UserWarning)
+[54.166.163.26] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.166.163.26] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.166.163.26] out: 
+[54.166.163.26] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.166.163.26] out: 100    13  100    13    0     0  10204      0 --:--:-- --:--:-- --:--:-- 13000
+[54.166.163.26] out: servers started
+[54.197.16.51] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.197.16.51] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.197.16.51] out: 
+[54.197.16.51] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.197.16.51] out: 100    12  100    12    0     0   9042      0 --:--:-- --:--:-- --:--:-- 12000
+[54.197.16.51] out: servers started
+[54.183.198.34] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.183.198.34] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.183.198.34] out: 
+[54.183.198.34] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.183.198.34] out: 100    13  100    13    0     0  10603      0 --:--:-- --:--:-- --:--:-- 13000
+[54.183.198.34] out: servers started
+[52.38.214.180] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.38.214.180] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.38.214.180] out: 
+[52.38.214.180] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.38.214.180] out: 100    13  100    13    0     0  10236      0 --:--:-- --:--:-- --:--:-- 13000
+[52.38.214.180] out: servers started
+[52.208.59.13] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.208.59.13] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.208.59.13] out: 
+[52.208.59.13] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.208.59.13] out: 100    12  100    12    0     0   9188      0 --:--:-- --:--:-- --:--:-- 12000
+[52.208.59.13] out: servers started
+[52.53.236.59] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.53.236.59] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.53.236.59] out: 
+[52.53.236.59] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.53.236.59] out: 100    12  100    12    0     0   9654      0 --:--:-- --:--:-- --:--:-- 12000
+[52.53.236.59] out: servers started
+[52.209.245.185] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.209.245.185] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.209.245.185] out: 
+[52.209.245.185] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.209.245.185] out: 100    14  100    14    0     0  11532      0 --:--:-- --:--:-- --:--:-- 14000
+[52.209.245.185] out: servers started
+[52.67.127.31] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.67.127.31] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.67.127.31] out: 
+[52.67.127.31] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.67.127.31] out: 100    12  100    12    0     0  10265      0 --:--:-- --:--:-- --:--:-- 12000
+[52.67.127.31] out: servers started
+[52.38.115.98] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.38.115.98] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.38.115.98] out: 
+[52.38.115.98] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.38.115.98] out: 100    12  100    12    0     0  10685      0 --:--:-- --:--:-- --:--:-- 12000
+[52.38.115.98] out: servers started
+[52.69.177.109] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.69.177.109] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.69.177.109] out: 
+[52.69.177.109] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.69.177.109] out: 100    13  100    13    0     0  11265      0 --:--:-- --:--:-- --:--:-- 13000
+[52.69.177.109] out: servers started
+[52.196.178.73] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.196.178.73] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.196.178.73] out: 
+[52.196.178.73] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.196.178.73] out: 100    13  100    13    0     0  12357      0 --:--:-- --:--:-- --:--:-- 13000
+[52.196.178.73] out: servers started
+[52.67.62.65] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.67.62.65] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.67.62.65] out: 
+[52.67.62.65] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.67.62.65] out: 100    11  100    11    0     0   9031      0 --:--:-- --:--:-- --:--:-- 11000
+[52.67.62.65] out: servers started
+[52.62.67.220] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.62.67.220] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.62.67.220] out: 
+[52.62.67.220] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.62.67.220] out: 100    12  100    12    0     0   9860      0 --:--:-- --:--:-- --:--:-- 12000
+[52.62.67.220] out: servers started
+[52.64.219.60] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[52.64.219.60] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[52.64.219.60] out: 
+[52.64.219.60] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[52.64.219.60] out: 100    12  100    12    0     0   9811      0 --:--:-- --:--:-- --:--:-- 12000
+[52.64.219.60] out: servers started
+[54.169.171.179] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.169.171.179] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.169.171.179] out: 
+[54.169.171.179] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.169.171.179] out: 100    14  100    14    0     0  13526      0 --:--:-- --:--:-- --:--:-- 14000
+[54.169.171.179] out: servers started
+[54.169.195.39] out:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+[54.169.195.39] out:                                  Dload  Upload   Total   Spent    Left  Speed
+[54.169.195.39] out: 
+[54.169.195.39] out:   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[54.169.195.39] out: 100    13  100    13    0     0   8519      0 --:--:-- --:--:-- --:--:-- 13000
+[54.169.195.39] out: servers started
+[54.166.163.26] out: 5 waits for 1471097010.0 now is 1471096990.41
+[54.197.16.51] out: 4 waits for 1471097010.0 now is 1471096990.45
+[54.183.198.34] out: 2 waits for 1471097010.0 now is 1471096990.87
+[52.38.214.180] out: 1 waits for 1471097010.0 now is 1471096991.38
+[52.53.236.59] out: 3 waits for 1471097010.0 now is 1471096991.56
+[52.38.115.98] out: 0 waits for 1471097010.0 now is 1471096991.59
+[52.69.177.109] out: 15 waits for 1471097010.0 now is 1471096991.83
+[52.196.178.73] out: 14 waits for 1471097010.0 now is 1471096991.52
+[52.208.59.13] out: 8 waits for 1471097010.0 now is 1471096991.63
+[52.209.245.185] out: 9 waits for 1471097010.0 now is 1471096992.2
+[52.67.127.31] out: 6 waits for 1471097010.0 now is 1471096993.25
+[52.67.62.65] out: 7 waits for 1471097010.0 now is 1471096993.81
+[52.62.67.220] out: 10 waits for 1471097010.0 now is 1471096993.75
+[52.64.219.60] out: 11 waits for 1471097010.0 now is 1471096994.32
+[54.169.171.179] out: 12 waits for 1471097010.0 now is 1471096994.83
+[54.169.195.39] out: 13 waits for 1471097010.0 now is 1471096995.14
+[54.166.163.26] out: timestampB (5, 1471097010.037957)
+[54.166.163.26] out: [5] proposing 8192 transactions
+[52.53.236.59] out: timestampB (3, 1471097010.039519)
+[52.53.236.59] out: [3] proposing 8192 transactions
+[54.166.163.26] out: timestampIB (5, 1471097010.079333)
+[52.38.214.180] out: timestampB (1, 1471097010.039711)
+[52.38.214.180] out: [1] proposing 8192 transactions
+[52.53.236.59] out: timestampIB (3, 1471097010.081813)
+[52.38.214.180] out: timestampIB (1, 1471097010.081723)
+[54.197.16.51] out: timestampB (4, 1471097010.022950)
+[54.197.16.51] out: [4] proposing 8192 transactions
+[54.197.16.51] out: timestampIB (4, 1471097010.065454)
+[52.209.245.185] out: timestampB (9, 1471097010.036315)
+[52.69.177.109] out: [52.209.245.185] out: timestampB (15, 1471097010.037395)
+[9] proposing 8192 transactions
+[52.69.177.109] out: [15] proposing 8192 transactions
+[52.67.127.31] out: timestampB (6, 1471097010.038011)
+[52.67.127.31] out: [6] proposing 8192 transactions
+[52.38.115.98] out: timestampB (0, 1471097010.022637)
+[54.183.198.34] out: timestampB (2, 1471097010.022117)
+[54.183.198.34] out: [2] proposing 8192 transactions
+[52.38.115.98] out: [0] proposing 8192 transactions
+[52.67.62.65] out: timestampB (7, 1471097010.043260)
+[52.67.62.65] out: [7] proposing 8192 transactions
+[54.183.198.34] out: timestampIB (2, 1471097010.063897)
+[52.69.177.109] out: [52.209.245.185] out: timestampIB (15, 1471097010.079244)
+timestampIB (9, 1471097010.079248)
+[52.67.127.31] out: timestampIB (6, 1471097010.079406)
+[52.67.62.65] out: timestampIB (7, 1471097010.086529)
+[52.38.115.98] out: timestampIB (0, 1471097010.064548)
+[54.169.171.179] out: timestampB (12, 1471097010.036206)
+[54.169.171.179] out: [12] proposing 8192 transactions
+[54.169.171.179] out: timestampIB (12, 1471097010.077316)
+[52.64.219.60] out: timestampB (11, 1471097010.021516)
+[52.64.219.60] out: [11] proposing 8192 transactions
+[52.64.219.60] out: timestampIB (11, 1471097010.063655)
+[54.169.195.39] out: timestampB (13, 1471097010.022298)
+[54.169.195.39] out: [13] proposing 8192 transactions
+[54.169.195.39] out: timestampIB (13, 1471097010.063239)
+[52.196.178.73] out: timestampB (14, 1471097010.022812)
+[52.196.178.73] out: [14] proposing 8192 transactions
+[52.208.59.13] out: timestampB (8, 1471097010.021931)
+[52.208.59.13] out: [8] proposing 8192 transactions
+[52.208.59.13] out: timestampIB (8, 1471097010.065283)
+[52.196.178.73] out: timestampIB (14, 1471097010.065271)
+[52.62.67.220] out: timestampB (10, 1471097010.022488)
+[52.62.67.220] out: [10] proposing 8192 transactions
+[52.62.67.220] out: timestampIB (10, 1471097010.064950)
+[54.197.16.51] out: timestampIE (4, 1471097018.281470)
+[52.38.115.98] out: timestampIE (0, 1471097018.201215)
+[54.166.163.26] out: timestampIE (5, 1471097018.442502)
+[54.166.163.26] out: timestampIE2 (5, 1471097018.474862)
+[52.53.236.59] out: timestampIE (3, 1471097018.433557)
+[52.38.214.180] out: timestampIE (1, 1471097018.391954)
+[52.38.214.180] out: timestampIE2 (1, 1471097018.423468)
+[54.183.198.34] out: timestampIE (2, 1471097018.244175)
+[52.38.115.98] out: timestampIE2 (0, 1471097018.233534)
+[54.197.16.51] out: timestampIE2 (4, 1471097018.314777)
+[52.53.236.59] out: timestampIE2 (3, 1471097018.465492)
+[54.183.198.34] out: timestampIE2 (2, 1471097018.276351)
+[52.209.245.185] out: timestampIE (9, 1471097018.309962)
+[52.69.177.109] out: timestampIE (15, 1471097018.322177)
+[52.208.59.13] out: timestampIE (8, 1471097017.952819)
+[52.67.127.31] out: timestampIE (6, 1471097018.331481)
+[52.196.178.73] out: timestampIE (14, 1471097017.979818)
+[52.208.59.13] out: timestampIE2 (8, 1471097017.984473)
+[52.209.245.185] out: timestampIE2 (9, 1471097018.341701)
+[52.69.177.109] out: timestampIE2 (15, 1471097018.354001)
+[52.67.62.65] out: timestampIE (7, 1471097018.326921)
+[52.67.127.31] out: timestampIE2 (6, 1471097018.362083)
+[52.196.178.73] out: timestampIE2 (14, 1471097018.011925)
+[52.67.62.65] out: timestampIE2 (7, 1471097018.359441)
+[52.62.67.220] out: timestampIE (10, 1471097017.925835)
+[52.64.219.60] out: timestampIE (11, 1471097018.245401)
+[52.62.67.220] out: timestampIE2 (10, 1471097017.958166)
+[52.64.219.60] out: timestampIE2 (11, 1471097018.277496)
+[54.169.195.39] out: timestampIE (13, 1471097018.212571)
+[54.169.195.39] out: timestampIE2 (13, 1471097018.243888)
+[54.169.171.179] out: timestampIE (12, 1471097018.396570)
+[54.169.171.179] out: timestampIE2 (12, 1471097018.427920)
+[54.166.163.26] out: timestampE (5, 1471097019.209128)
+[54.197.16.51] out: timestampE (4, 1471097019.101932)
+[52.196.178.73] out: [52.38.115.98] out: timestampE (14, 1471097018.714772)
+timestampE (0, 1471097019.032798)
+[52.69.177.109] out: timestampE (15, 1471097019.085103)
+[52.67.127.31] out: timestampE (6, 1471097019.078861)
+[52.67.62.65] out: timestampE (7, 1471097019.062457)
+[54.166.163.26] out: [5] 84173 distinct tx synced and 46899 tx left in the pool.
+[52.53.236.59] out: timestampE (3, 1471097019.252007)
+[52.38.214.180] out: timestampE (1, 1471097019.231633)
+[54.183.198.34] out: timestampE (2, 1471097019.067370)
+[54.197.16.51] out: [4] 84173 distinct tx synced and 46899 tx left in the pool.
+[52.209.245.185] out: timestampE (9, 1471097019.108755)
+[52.196.178.73] out: [14] 84173 distinct tx synced and 46899 tx left in the pool.
+[52.208.59.13] out: timestampE (8, 1471097018.781388)
+[52.53.236.59] out: [3] 84173 distinct tx synced and 46899 tx left in the pool.
+[52.64.219.60] out: timestampE (11, 1471097019.002374)
+[52.38.214.180] out: [1] 84173 distinct tx synced and 46899 tx left in the pool.
+[54.169.195.39] out: timestampE (13, 1471097018.932841)
+[54.183.198.34] out: [2] 84173 distinct tx synced and 46899 tx left in the pool.
+[54.169.171.179] out: timestampE (12, 1471097019.080289)
+[52.38.115.98] out: [0] 84173 distinct tx synced and 46899 tx left in the pool.
+[52.209.245.185] out: [9] 84173 distinct tx synced and 46899 tx left in the pool.
+[52.69.177.109] out: [15] 84173 distinct tx synced and 46899 tx left in the pool.
+[52.67.127.31] out: [6] 84173 distinct tx synced and 46899 tx left in the pool.
+[52.67.62.65] out: [7] 84173 distinct tx synced and 46899 tx left in the pool.
+[52.64.219.60] out: [11] 84173 distinct tx synced and 46899 tx left in the pool.
+[52.62.67.220] out: timestampE (10, 1471097018.747996)
+[54.169.195.39] out: [13] 84173 distinct tx synced and 46899 tx left in the pool.
+[54.169.171.179] out: [12] 84173 distinct tx synced and 46899 tx left in the pool.
+[52.208.59.13] out: [8] 84173 distinct tx synced and 46899 tx left in the pool.
+[52.62.67.220] out: [10] 84173 distinct tx synced and 46899 tx left in the pool.
